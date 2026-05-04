@@ -1,0 +1,10 @@
+ 1. Wave 5 docs: PvP design (Chaos shard rules), Procedural quest       
+  skeletons (#8 §3.3 promised but never specced), Voice Chat (#27 §11  
+  deferred), Data export & GDPR portability (#28 mentioned but never     
+  specced), Console certification (PS5/Xbox specifics).                
+  2. Documentation polish: render the full doc set to PDF as the
+  "Britannia Reborn Prototype Bible" called out in Doc #11 §closing.
+  3. Implementation scaffolding: with all BLOCK-P1 items resolved (Doc   
+  #25), the 12-week prototype can technically begin — want a Doc #35 that
+   lays out repo structure, monorepo vs polyrepo, language/framework     
+  picks, CI scaffold, week-by-week engineering plan?   
