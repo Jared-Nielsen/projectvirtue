@@ -56,6 +56,8 @@ type PhysicalComponent = {
   velocity:      Vec3     // [I*]
   region:        RegionId // [I*]
   containedBy:   EntityId | null  // [I*] null = loose in world
+  volume_tile_footprint: TileFootprint  // [A] default {1,1} [amended from #23 §3]
+  blocks_los:    bool                   // [A] default true if solidity == Solid AND footprint area >= 1 [amended from #23 §7]
 }
 ```
 
@@ -218,6 +220,30 @@ Canonical, exhaustive list of interaction verbs implied by the docs. Every playe
 | `sleep`              | Doc #6 §3 | Player.location | save state, time advance | — | no | yes | "Campfire save" in private instances |
 | `place(entity)`      | Doc #7 §2 | UGC permissions | spawns persistent entity | — | n/a | yes | UGC editor only; goes through dispatcher with `caller=UGC` |
 | `script_invoke(verb, args)` | Doc #7 §2 | UGC sandbox | varies | varies | n/a | yes | UGC scripts call through dispatcher; cannot bypass it |
+| `move_to(target, options?)` | Doc #23 §5 [amended from #23 §5] | Physical, MoverArchetype, TerrainCapSet, spatial index | spawns/updates `MoveTask`; `Physical.position` per tile-crossing under `WorldState` | none direct (trespass into private region rejected upstream as `ERR_VIRTUE_REJECTED`) | n/a (movement) | yes | A* pathfind; submitted by player click-to-move, NPC ScheduleSystem (Doc #17 §7), combat AI, MCP `avatar.basic` |
+| `defend(actor)` | Doc #16 §2.4 [amended from #16 §2.4] | Combat | sets `Combat.stance = Defensive` for 5s (`+50%` armor_class, `-25%` outgoing damage) | none | n/a | yes | Used by AI mode 5 (Defend) and player keybind `[D]` |
+| `flee(actor)` | Doc #16 §2.5 [amended from #16 §2.5] | Combat, RegionMetadata, spatial index | sets `Combat.stance = Fleeing`; engages flee pathfinding to nearest safe tile | Valor (companion abandonment context per Doc #5 §2; not direct delta on the verb itself) | n/a | yes | Used by AI mode 11 (Flee) and player verb; companion flee triggers Doc #5 abandonment evaluation |
+| `bribe(actor, npc, gold_amount)` | Doc #15 §6.5 [amended from #15 §6.5] | Ownership, OwnershipComponent, NPC.faction, actor.virtues.honor | gold transfer (PlayerInventory scope); clears actor's Wanted flag in NPC's faction; updates NPC reaction state | Honesty − (bribery itself is dishonest, default −3) | yes | yes | Requires `npc.faction.accepts_bribes == true`; high-Honor pays MORE (intentional inversion) |
+| `buy(merchant_or_stall, item, qty)` | Doc #18 §12 [amended from #18 §12] | Shop, MarketStall, Ownership | atomic gold→item transfer per Doc #18 §7.1 / §8.2; updates `OwnershipComponent.acquired_via = Purchased` | Honesty (low-Honesty buyer pays +50% in always_watched zones); none on the verb itself | yes | yes | Shop-component primitive; may return `ERR_VIRTUE_REJECTED` per §7.2 refusal rules |
+| `sell(merchant, item, qty)` | Doc #18 §12 [amended from #18 §12] | Shop, Ownership | atomic item→gold transfer per Doc #18 §7.1 | none direct | yes | yes | Shop-component primitive; NPC merchants only — stalls do not accept SELL |
+
+### 2.1 GM verbs (per #26 §8) [amended from #26 §8]
+
+The following 11 mutating GM verbs flow through `VerbDispatcher.dispatch(invocation)` with `Caller = { kind: "GM", session_id, gm_avatar_id }` (see §4 Caller enum). Available only to a host whose session has been opened via `gm_session_open` (capability `gm.host`, scoped to that session's lifetime). All are audit-logged in `gm_session_audit`.
+
+| Verb | Source | Reads | Writes | Virtues Affected | Notes |
+|---|---|---|---|---|---|
+| `puppet(npc_entity_id, override)` | #26 §8 | NPC entity, Schedule, State | adds temporary `Puppeted` component; preserves underlying schedule for restoration | none directly; downstream NPC actions score normally | GM "speaks/acts AS an NPC"; restores schedule on `unpuppet` or session end |
+| `unpuppet(npc_entity_id)` | #26 §8 | `Puppeted` | removes `Puppeted`; resumes NPC schedule | none | Inverse of `puppet`; auto-fires on session end |
+| `narrate(participants, text)` | #26 §8 | session participants | none (broadcast only) | none | Narration broadcast; flagged in chat as "GM narration"; does not enter dialogue session |
+| `gm_spawn(template_id, location)` | #26 §8 | archetype DB, SpawnLimits | spawns NPCs/entities into pocket realm; persistence via Doc #21 §13.2 instance-scoped procedural | none directly; downstream verbs by spawned entities score normally | Bounded by `SpawnLimits.max_concurrent_entities` (default 50); shard-realm spawns require non-`Ephemeral` policy + moderation approval |
+| `private_handout(player_id, item_template, qty)` | #26 §8 | HandoutLimits, archetype DB | gives item to participant via `drag` semantics; bypasses economy | applies normal Virtue side-effects (poisoned weapon, stolen unique, etc., scored against the GM) | Logged for audit; bounded by `HandoutLimits` |
+| `gather(participants?, location)` | #26 §8 | participant `gather_consent` flag, spatial index | teleports consenting participants to `location` | none | Consent granted at session join; revocable mid-session |
+| `time_skip(hours)` | #26 §8 | session region clock | advances local clock for the session's region; NPC schedule effects fire normally | none directly | Legal only in pocket realm OR `LiveWithRollback` arcs; forbidden in `LiveCanonical` |
+| `weather_set(weather_type, duration)` | #26 §8 | session region weather | sets weather in pocket realm region | none | Pocket realm only; live-world weather is simulation-governed |
+| `grant_virtue(player_id, virtue, delta)` | #26 §8 | VirtueGrantLimits | writes through Virtue Engine (Doc #5 §4); audit-logged in `player_virtue_log` (Doc #21 §3.4) with verb=`gm.grant_virtue` | bounded by `VirtueGrantLimits.max_abs_delta_per_session_per_virtue` (default ±5); fires standard Virtue side-effects | Crossing the bound returns `ERR_GM_VIRTUE_BUDGET` |
+| `set_scene(scene_state)` | #26 §8 | `GMSession.pacing_state` | moves `pacing_state`; `InScene` triggers soft-pause (#26 §9) | none | Single lever for the soft-pause mechanism |
+| `leave_session()` | #26 §8 | participant list | removes caller from `GMSession.participants`; closes their shared dialogue if any | Honor delta if leaving during `LiveCanonical` (#26 §14) | Available to participants, not the GM (GM uses `gm_session_close`) |
 
 Notes:
 - `right_click(action)` is a UI wrapper. The exact menu taxonomy (Mix/Pour/Ignite/Lockpick/etc. as named in Doc #4 §2) and which become first-class verbs vs. `script_invoke` is `[OPEN]`.
@@ -309,21 +335,21 @@ dispatch(inv: VerbInvocation):
 
 Items the docs leave unspecified that block implementation. These must be resolved before vertical-slice freeze.
 
-1. `[OPEN]` **Right-click sub-verb taxonomy.** Doc #4 §2 lists Mix, Pour, Ignite, Lockpick "etc." Need an enumerated, closed set vs. a `script_invoke` extension model — affects UGC API stability.
-2. `[OPEN]` **NPC ownership transfer on death.** When an NPC dies, do their owned items become `Owner.World` (free to take), enter a corpse Container with original Ownership preserved (looting = stealing), or transfer to next-of-kin/faction? Doc #4 §4 mentions corpse decay timers but not ownership.
-3. `[OPEN]` **Schedule slot granularity.** Doc #4 §5 says "up to 8 daily time slots" — is this a hard cap per archetype, per instance, or per day? What time resolution (minute, 15-min, hour)?
-4. `[OPEN]` **Witness model for stealing.** Doc #4 §3 implies sound propagation and NPC LOS, Doc #5 §4 implies any steal triggers Virtue loss. Is the loss applied (a) always, (b) only if witnessed, or (c) always for the score but only with legal consequence if witnessed? Affects dispatcher's `score_virtues` purity.
+1. `[RESOLVED — see #25 §T-13-1]` **Right-click sub-verb taxonomy.** Doc #4 §2 lists Mix, Pour, Ignite, Lockpick "etc." Need an enumerated, closed set vs. a `script_invoke` extension model — affects UGC API stability.
+2. `[OPEN — partially resolved]` **NPC ownership transfer on death.** When an NPC dies, do their owned items become `Owner.World` (free to take), enter a corpse Container with original Ownership preserved (looting = stealing), or transfer to next-of-kin/faction? Doc #4 §4 mentions corpse decay timers but not ownership. Companion case resolved in #15 §3.7; non-companion NPC corpse rule carries the #20 §4.1 placeholder (300s decay → World) pending Phase-2 ratification.
+3. `[RESOLVED — see #17 §6.1 + #25 §T-13-3]` **Schedule slot granularity.** Doc #4 §5 says "up to 8 daily time slots" — is this a hard cap per archetype, per instance, or per day? What time resolution (minute, 15-min, hour)?
+4. `[RESOLVED — see #15 §6.2 + #25 §T-13-4]` **Witness model for stealing.** Doc #4 §3 implies sound propagation and NPC LOS, Doc #5 §4 implies any steal triggers Virtue loss. Is the loss applied (a) always, (b) only if witnessed, or (c) always for the score but only with legal consequence if witnessed? Affects dispatcher's `score_virtues` purity.
 5. `[OPEN]` **Virtue opposition coupling.** Doc #5 §2 mentions raising one Virtue may slightly lower its philosophical opposite. The opposition graph (which Virtue opposes which) and the coupling coefficient are unspecified.
 6. `[OPEN]` **Avatar Score formula.** Doc #5 §3 references a "single hidden Avatar Score" weighing all eight Virtues — weights and aggregation function not given.
 7. `[OPEN]` **Cross-shard Virtue reputation.** Doc #6 §3 says VirtueReputation is "global & permanent" but Doc #6 §2 allows multiple shard types (Classic, Virtue, Chaos). Does Chaos-shard behavior leak into Virtue-shard reputation? "New Avatar reset" semantics also undefined.
 8. `[OPEN]` **Housing inactivity grace period.** Doc #6 §3 cites "owner inactivity (grace period)" for housing reset — duration not specified.
-9. `[OPEN]` **Crafting recipe representation.** Doc #4.1 §4 says recipes are "combination rule[s] in the simulation database (no hard-coded crafting list)" — schema for recipes (predicate + product) not defined; needed for UGC recipe authoring (Doc #7 §2).
-10. `[OPEN]` **Container weight/volume cascading.** Doc #4 §4 enforces limits and allows unlimited nesting. Does an outer container's weight include nested contents (realistic) or only direct children (gameplay)? Affects `drag` precondition checks.
-11. `[OPEN]` **Replication interest set for instanced housing.** Private instances (Doc #6 §2) need an explicit rule for which dispatcher writes replicate to visiting friends vs. owner-only.
-12. `[OPEN]` **Sandbox levels for ScriptHook.** Doc #7 §2 distinguishes visual-node from Lua "advanced mode" but does not enumerate the sandbox capabilities (what verbs/components a script can read vs. write, rate limits, CPU budget per tick).
-13. `[OPEN]` **MCP caller authority.** MCP tool calls flowing through the dispatcher need an authority model: do they act as the connected player, as a privileged GM, or as a sandboxed third party? Affects validation step 1 in §4.
-14. `[OPEN]` **Combat pause semantics under multiplayer.** Doc #4 §7 says "real-time with pause-on-inventory" — single-player only, or does opening inventory in multiplayer pause locally while the world continues for others? Affects which combat verbs are truly non-pausable in dispatcher terms.
-15. `[OPEN]` **Procedurally-generated entity persistence.** Doc #8 §3 says generated objects are "fully interactive from the moment they spawn" — do they default to `WorldState` scope, or to a new `Procedural` scope with regeneration semantics?
+9. `[RESOLVED — see #18 §2]` **Crafting recipe representation.** Doc #4.1 §4 says recipes are "combination rule[s] in the simulation database (no hard-coded crafting list)" — schema for recipes (predicate + product) not defined; needed for UGC recipe authoring (Doc #7 §2).
+10. `[RESOLVED — see #15 §5.2 + #25 §T-13-10]` **Container weight/volume cascading.** Doc #4 §4 enforces limits and allows unlimited nesting. Does an outer container's weight include nested contents (realistic) or only direct children (gameplay)? Affects `drag` precondition checks.
+11. `[RESOLVED — see #22 §15]` **Replication interest set for instanced housing.** Private instances (Doc #6 §2) need an explicit rule for which dispatcher writes replicate to visiting friends vs. owner-only.
+12. `[RESOLVED — see #19 §5 + #16 §5]` **Sandbox levels for ScriptHook.** Doc #7 §2 distinguishes visual-node from Lua "advanced mode" but does not enumerate the sandbox capabilities (what verbs/components a script can read vs. write, rate limits, CPU budget per tick).
+13. `[RESOLVED — see #25 §T-13-13]` **MCP caller authority.** MCP tool calls flowing through the dispatcher need an authority model: do they act as the connected player, as a privileged GM, or as a sandboxed third party? Affects validation step 1 in §4.
+14. `[RESOLVED — see #16 §10]` **Combat pause semantics under multiplayer.** Doc #4 §7 says "real-time with pause-on-inventory" — single-player only, or does opening inventory in multiplayer pause locally while the world continues for others? Affects which combat verbs are truly non-pausable in dispatcher terms.
+15. `[RESOLVED — see #21 §13 + #25 §T-13-15]` **Procedurally-generated entity persistence.** Doc #8 §3 says generated objects are "fully interactive from the moment they spawn" — do they default to `WorldState` scope, or to a new `Procedural` scope with regeneration semantics?
 
 ---
 

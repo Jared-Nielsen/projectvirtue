@@ -94,7 +94,8 @@ Capability sets (initial; extensible):
 | Capability | Tools enabled | Resources enabled | Typical client |
 | ----- | ----- | ----- | ----- |
 | `inspect.read` | none | all `forge://` resources scoped to bound shard | dashboards, devtools |
-| `avatar.basic` | `examine`, `list_actions`, `move_to` | `inspect.read` set | accessibility, tutorial agent |
+| `avatar.minimal` | `examine`, `list_actions` | `inspect.read` set + `avatar/{a}/virtues` for own avatar only | LLM observer [amended from #25 §T-13-13] |
+| `avatar.basic` | `avatar.minimal` set + `move_to` | `inspect.read` set | accessibility, tutorial agent |
 | `avatar.full` | all verb tools | `inspect.read` set | LLM Avatar agent, QA harness |
 | `ugc.author` | `avatar.full` + UGC authoring tools (out of scope here, see \#7) | `inspect.read` set | in-game editor bridge |
 
