@@ -22,7 +22,10 @@ Shard Types (player-selectable at login):
 * Chaos Shard – Light PvP allowed (consensual duels, guild wars) with reduced Virtue penalties for combat.  
 * Beginner / Tutorial Shard – Instanced starting zones with guided onboarding.
 
-Technical Architecture (Unreal Engine 5 recommended base):
+Technical Architecture (canonical — see Doc \#41 Engine & Stack ADR):
+
+Shard simulation runs in a Rust authoritative server. UE5 is client-only (production target for desktop + PS5 + Xbox); the TS / PixiJS web thin-client connects to the same Rust shard. UE5 does not host shard logic, world simulation, or persistence — it is a "dumb view" rendering server-authoritative state over a Protobuf wire protocol.
+
 
 * Hybrid Authoritative Server Model – Game servers handle simulation and physics; dedicated database cluster stores all persistent state.  
 * Spatial Partitioning – World divided into “regions” (Britain, Trinsic, etc.). Only players in the same region see each other unless using global chat or moongates.  

@@ -86,4 +86,12 @@ Seamless co-op \+ opt-in social systems. \[Visual: Multiple Avatars in Britain m
 
  Slide 11: UGC & Creation Tools (Document \#7)  
 In-game editor so any player can build quests, dungeons, and stories.  
-Moderated marketplace with creator revenue share. \[Visual: Screenshot mockup of the simple drag-and-drop editor\]  
+Moderated marketplace with creator revenue share. \[Visual: Screenshot mockup of the simple drag-and-drop editor\]
+
+---
+
+ Slide 12: Engine & Stack (Document \#41)  
+UE5 production client (desktop + PS5 + Xbox) + TS / PixiJS web thin-client + Rust authoritative server.  
+The UE5 client is a "dumb view" — Rust owns simulation, rules, and persistence. Protobuf on the wire, codegen for Rust / C++ / TS.  
+\[Visual: Three-box diagram — UE5 client and Web client both pointing at a single Rust server\]  
+

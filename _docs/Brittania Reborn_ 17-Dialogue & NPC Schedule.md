@@ -5,7 +5,9 @@ Date: May 2026
 Author: [Narrative Systems Lead]
 Status: Living Technical Reference — Normative spec for the keyword dialogue system, NPC daily schedules, schedule execution, interruption rules, and gossip propagation
 
-Depends on: #2 GDD §4.6, #3 World Bible §6, #4 Simulation §5, #5 Virtues §3 §4, #13 Core Schema (Entity, Verb, Scope), #14 MCP Server Surface, #15 Character, Party & Inventory.
+> **Updated 2026-05-04 per Doc #41.** NPC dialogue selection, schedule evaluation, and AI behaviors are server-authoritative (Rust). UE5 Behavior Trees and UE5 NavMesh are forbidden for NPCs. NPC pathing, decision-making, and schedule transitions all happen on the Rust shard tick; UE5 is a dumb view that renders the NPC at the position the server reports.
+
+Depends on: #2 GDD §4.6, #3 World Bible §6, #4 Simulation §5, #5 Virtues §3 §4, #13 Core Schema (Entity, Verb, Scope), #14 MCP Server Surface, #15 Character, Party & Inventory, #41 Engine & Stack ADR.
 
 Source heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VII Part Two: Serpent Isle* (1993). `[U4]` = *Ultima IV: Quest of the Avatar* (1985). `[BR]` = original to Britannia Reborn.
 
@@ -274,6 +276,8 @@ Override slots take precedence at equal `start_time` ties.
 ---
 
 ## 7. Schedule Execution
+
+> **Server-authoritative NPC AI (per Doc #41).** All NPC decision-making — schedule slot resolution, activity dispatch, dialogue keyword filtering, gossip propagation, hostile-AI mode selection (Doc #16 §9), and pathing — runs deterministically on the Rust shard tick (per Doc #22 network/replication). UE5 Behavior Trees, UE5 NavMesh, and UE5 AIController are forbidden for NPCs. Clients render only the resulting position, animation state, and dialogue text/audio that the server emits over the wire protocol (Protobuf, `/shared/proto`). Pathfinding is the Rust pathfinding system in Doc #23 — not UE5 NavMesh.
 
 `ScheduleSystem` ticks **once per game-second**. One game-day defaults to 12 real-time minutes `[BG]`, configurable per shard (Doc #6 §2); MP shards typically run 30–60 minute days.
 
@@ -636,6 +640,7 @@ Per Doc #11. Deliberately minimal; proves the keyword loop and schedule executio
 | §11 Reaction Matrix | Doc #5 §3, Doc #13 §1.7, Doc #6 §5 |
 | §12 MCP | Doc #14 §3 (capabilities), Doc #14 §5 (tool envelope), Doc #14 §6 (resources) |
 | §13 Phase 1 | Doc #11 (milestones), Doc #14 §8, Doc #15 §8 |
+| §7 server-authoritative AI | Doc #41 (Engine & Stack ADR — Rust shard tick owns NPC AI; UE5 Behavior Trees / NavMesh forbidden) |
 
 ---
 

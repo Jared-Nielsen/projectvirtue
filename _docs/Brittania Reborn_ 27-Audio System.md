@@ -7,6 +7,8 @@ Status: Living Technical Reference — Normative spec for the audio engine, soun
 
 Depends on: #4 Simulation & Interaction §3 (sound propagation), #5 Virtues, #10 Art & Audio Style Bible §5 (style targets, prototype scope §7), #11 Phase 1 Vertical Slice (soundtrack loop, 20+ SFX, 8 voice lines), #13 Core Schema §2 (verb registry — verb-keyed SFX), #14 MCP Server Surface §5 (tool envelope), §6 (resources), #16 Combat & Magic, #17 Dialogue & NPC Schedule §2 (`Response.voice_clip`), §12 (`say_keyword` returns `voice_clip`), #22 Network Protocol & Replication §4 (event channel), #26 Long-range Arcs & Hosted GM Sessions.
 
+> **Updated 2026-05-04 per Doc #41.** Audio architecture follows the Doc #41 boundary: the Dynamic Music Director STATE lives on the Rust server (which scene/cue is active); audio MIXING, ducking, and spatialization happen in each client (UE5 or TS web).
+
 ---
 
 ## 1. Audio Philosophy
@@ -152,6 +154,14 @@ Per emission. Designers may override per-asset; defaults below are normative sta
 
 ## 5. Dynamic Music System
 
+### 5.0 Server / Client Boundary (per Doc #41)
+
+The Dynamic Music Director is split per the Doc #41 engine boundary:
+
+- **State lives on the Rust server.** The server owns which scene / cue is active for every subscribed client based on §5.2 inputs (`region_id`, `time_of_day`, `combat_intensity`, `avatar_virtue_aggregate`, `story_arc_stage`). The server emits cue events (`combat_tense_start`, `combat_exit`, `town_safe`, `region_change`, `virtue_tone_shift`, etc.) over the Protobuf wire protocol whenever the `MusicProfile` selection or the active `StemMix` target changes.
+- **Mixing happens on each client.** The UE5 client takes those cue events and drives the actual mix through MetaSounds (Wwise / FMOD optional), including stem cross-fades, ducking against dialogue and combat SFX, and HRTF spatialization. The TS / PixiJS web prototype consumes the same cue events but renders a simpler mix through the Web Audio API (stem gain ramps, basic stereo pan, no HRTF).
+- **Wire shape.** Cue events are small (cue id + target StemMix + `transition_ms`) and sit on the existing `event` channel from Doc #22 §4 alongside `SoundEvent`. The server never ships PCM audio for music — only cue identifiers; the actual stem assets are pre-loaded per region per §8.3.
+
 ### 5.1 Stem layering
 
 Music is composed of mixable stems (Wwise-style; UE5 MetaSounds host). Per region:
@@ -281,7 +291,7 @@ TTS is **out of scope for Phase 1**. UGC NPCs in Phase 1 are silent (text-only) 
 
 - **Avatar is silent.** Doc #10 §5.3 silent-protagonist tradition is preserved; no Avatar VO is recorded or generated for any response.
 - **Canonical companions** (Iolo, Shamino, Dupre — the Phase 1 set per Doc #15 §8 lists Iolo and Shamino) have full VO for their barks, banter, and dialogue trees.
-- **Player-to-player voice chat** is a separate Phase 3+ system, out of this doc's scope; preliminary notes in Doc #22 §16 (P2P NAT traversal [OPEN]).
+- **Player-to-player voice chat** is a separate Phase 3+ system, out of this doc's scope; preliminary notes in Doc #22 §16 (P2P NAT traversal [OPEN]). See Doc #37 for full voice spec, and Doc #41 §6 for the boundary — Rust signaling + LiveKit SFU + UE5/TS audio I/O.
 
 ---
 
@@ -473,5 +483,7 @@ Per Doc #11 §3 audio row and Doc #10 §5/§7. Deliberately minimal; proves the 
 | §11 MCP Additions | Doc #14 §5 (tools), Doc #14 §6 (resources), Doc #26 (GM `set_music_state`) |
 | §12 Phase 1 | Doc #11 §3 audio row, Doc #10 §7 prototype scope, Doc #14 §8 (minimal MCP), Doc #17 §13 (15 NPCs roster) |
 | §13 Open Questions | Doc #11 (production budget), Doc #23 (spatial hash), Doc #26 (GM tooling), Doc #29 (moderation hooks) |
+
+See Doc #41 (Engine & Stack ADR) for the canonical engine/stack decision: Music Director STATE on Rust server (cue events over Protobuf), audio MIX on each client (UE5 via MetaSounds / Wwise / FMOD; TS web via Web Audio API).
 
 ---

@@ -139,6 +139,10 @@ Appendix A: Key References
 * Garriott interviews on Virtues and simulation design.  
 * Roblox Studio, Unreal Engine 5 Editor, Star Citizen, and No Man’s Sky as technical benchmarks (not visual).
 
+Appendix C: Engine & Stack (canonical)
+
+The finalized stack is: a Rust authoritative server (all simulation, persistence, and rules), a UE5 production client (desktop + PS5 + Xbox), and a TS / PixiJS web thin-client (early prototype + permanent web client). Wire format is Protobuf with codegen for Rust, C++, and TS. The UE5 client is a "dumb view" — it renders state and forwards verbs; it never simulates authoritatively. See Doc \#41 — Engine & Stack ADR for the full decision record.
+
 Appendix B: Open Questions for Lord British  
 (Reserved section for Garriott’s direct input on Virtue edge cases, favorite NPCs, etc.)
 

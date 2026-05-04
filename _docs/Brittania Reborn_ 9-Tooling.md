@@ -3,6 +3,8 @@ Technical Design Document (TDD) & Engine/Platform Choice
 (Revised to include Roblox & other UGC-centric platforms)Document Version: 1.1  
 Date: May 2026
 
+> **Superseded in part by Doc #41 — Engine & Stack ADR (2026-05-04).** This doc's original recommendation of UE5 for both client and server is now refined: UE5 remains the production CLIENT engine; the authoritative SERVER is Rust per Doc #40; a TS/PixiJS web client exists for prototyping. See Doc #41 for the full decision and the 12-system boundary table.
+
 ---
 
 1\. Purpose
@@ -32,11 +34,11 @@ This revised TDD now explicitly evaluates Roblox and other UGC/modding-first pla
 
 3\. Detailed Analysis of Key Options
 
-Unreal Engine 5 (Still the Strong Recommendation)
+Unreal Engine 5 (Still the Strong Recommendation — **as the CLIENT engine**; see Doc #41)
 
-* Best balance of simulation depth, retro isometric fidelity, and powerful UGC tools.  
+* Best balance of simulation depth, retro isometric fidelity, and powerful UGC tools (client-side rendering and editor surface).  
 * We can expose the full editor to players for true Roblox-like creation while keeping pixel-art lock and deep simulation.  
-* Native tools for persistent servers and matchmaking.  
+* Native tools for persistent servers and matchmaking. *(Note: per Doc #41, the dedicated server is Rust; UE5 dedicated server is not used. UE5 native replication is forbidden — the UE5 client talks raw sockets to the Rust authoritative server via the protobuf wire protocol in `/shared/proto`.)*  
 * No platform fees or style restrictions.
 
 Roblox (Strong UGC Alternative – But Not Recommended as Primary)  
@@ -60,14 +62,16 @@ Strong middle ground (Unreal-based \+ excellent UGC), but carries Fortnite brand
 
 4\. Final Recommendation
 
-Primary Choice: Unreal Engine 5  
+Primary Choice: Unreal Engine 5 **(as the production client engine — desktop + PS5 + Xbox)**  
 We get Roblox-level UGC power plus full control over the retro isometric simulation, Virtues system, and visual fidelity that a licensed Ultima 7 spiritual successor demands.Roblox Option  
 Only viable if we decide to build a lighter, more casual version of Project FORGE as a Roblox experience (e.g. a side project or proof-of-concept). It would be faster to prototype but would require significant compromises on art style and simulation depth.Decision:  
-We will proceed with Unreal Engine 5 as the main engine, while keeping Roblox-style UGC workflows as the design target (we will replicate the best parts of Roblox inside UE5).
+We will proceed with Unreal Engine 5 as the main **client** engine, while keeping Roblox-style UGC workflows as the design target (we will replicate the best parts of Roblox inside UE5).
+
+> **Scope refinement per Doc #41 (2026-05-04):** UE5 is the production **client** engine only. The authoritative server is Rust (`bevy_ecs` + Tokio) per Doc #40. UE5 native replication is FORBIDDEN — the UE5 client is a "dumb view" that talks raw sockets to the Rust server using the protobuf wire protocol in `/shared/proto`. A second, web-only TypeScript / PixiJS / Solid.js client exists for prototyping and as a permanent web-thin-client; that web client NEVER targets console, NEVER runs authoritative logic, and NEVER carries exclusive features (web-feature-flagged subset only — may OMIT features, never ADD). Determinism is server-side only.
 
 ---
 
-5\. Target System Requirements (Unreal Engine 5 Path)
+5\. Target System Requirements (Unreal Engine 5 Path — **client-side; see Doc #41 for server-side targets**)
 
 Minimum (1080p / 60 fps Low)
 
@@ -83,4 +87,9 @@ Recommended (1440p / 60–120 fps High)
 * GPU: RTX 3060 / RX 6700 XT  
 * Storage: 40 GB NVMe SSD
 
-Console Targets (Phase 2): PlayStation 5 / Xbox Series X|S (equivalent to Recommended).  
+Console Targets (Phase 2): PlayStation 5 / Xbox Series X|S (equivalent to Recommended). Console cert ships only on the UE5 client — the TS/PixiJS web client never targets console (Doc #41).
+
+---
+
+For the authoritative engineering plan, see Doc #40. For the engine-boundary contract, see Doc #41.
+

@@ -9,6 +9,8 @@ Depends on: #4 Simulation, #6 Persistent World, #9 Tooling, #11 Prototype Scope,
 
 Resolves: Doc #13 §5 [OPEN] item 15 (procedurally-generated entity persistence scope) — see §13.
 
+> **Updated 2026-05-04 per Doc #41.** Save FORMAT is defined in Rust and is canonical. On console, the actual file write/read goes through UE5's platform save APIs (PSN / Xbox cloud save) — this is a cert requirement, not a design choice.
+
 ---
 
 ## 1. Persistence Philosophy
@@ -563,6 +565,18 @@ Manual save in single-player or private instance, dispatched via the `sleep` ver
 
 Slots 1–7 may be promoted to a named save (UI-side concept, file rename) without changing the save format.
 
+### 8.1 Platform Save Routing (per Doc #41)
+
+The save FORMAT defined in §5 (SQLite blob, Rust-canonical schema) is identical on every platform; only the *write/read mechanism* varies by platform per the Doc #41 engine boundary:
+
+| Platform | Save write path | Save read path |
+|---|---|---|
+| PC / Mac / Linux | Rust server (multiplayer) or local Rust binary (single-player) writes the `.fdsave` SQLite file directly to disk via the §8 atomic `tmp + fsync + rename` flow. | Rust opens the SQLite file directly. |
+| **PS5** | Rust serializes the save into the canonical `.fdsave` blob (in-memory). UE5 client receives the blob and hands it to PSN's native save API (PlayStation Save Data API) per Doc #39 cert requirements. | UE5 client requests the blob from PSN's save API; passes it back to Rust which opens it as in-memory SQLite. |
+| **Xbox** | Same flow as PS5: Rust produces the canonical blob, UE5 client writes via the Xbox Connected Storage / cloud save API per Doc #39. | UE5 fetches the blob from Connected Storage; Rust deserializes. |
+
+This split is a console certification requirement, not a design choice — PS5 and Xbox cert require platform-managed save storage (cloud sync, parental controls, account binding). The Rust-defined format remains canonical and lossless across all three write paths; the UE5 client never inspects, mutates, or re-encodes the blob — it is opaque bytes from the client's perspective ("UE5 client is a dumb view" per Doc #41).
+
 ---
 
 ## 9. Verb Dispatcher Persistence Write Contract
@@ -771,6 +785,8 @@ Amendments to Doc #14 §5 (tools) and §6 (resources). All gated by capability s
 | §12 Phase 1 scope | Doc #11 (roadmap), Doc #20 (OPEN triage) |
 | §13 Procedural scope | Doc #13 §5 [OPEN] item 15 (RESOLVED here), Doc #8, Doc #20 T-13-15 |
 | §14 MCP additions | Doc #14 §3 (capabilities), §5 (tools), §6 (resources) |
+
+See Doc #41 (Engine & Stack ADR) for the canonical engine/stack decision: Rust owns the save FORMAT and PC/Mac/Linux file I/O; on PS5 and Xbox, UE5 hands the Rust-format blob to the platform's native save API per Doc #39 cert requirements.
 
 ---
 

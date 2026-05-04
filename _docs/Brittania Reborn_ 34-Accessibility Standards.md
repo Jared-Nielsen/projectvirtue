@@ -15,6 +15,12 @@ Source heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ul
 
 Britannia is meant for everyone who wants to walk it. Accessibility is not "added later" — it is a launch-day commitment, scoped into Phase 1 (§14), validated against external standards (§2), and audited by external consultants before public release (§11). Britannia Reborn targets **WCAG 2.1 AA equivalent** for game UI and meets or exceeds **CVAA** (Communications and Video Accessibility Act) standards for any communications surface (chat, voice, dialogue captioning). The original `[BG]` and `[SI]` predated the modern accessibility frameworks (WCAG 1.0 was published in 1999, the CVAA in 2010, the Game Accessibility Guidelines first appeared in 2012); reviving Britannia in 2026+ means meeting the standards the originals could not. Accessibility settings are per-Avatar persisted (§12), surfaced through the same `VerbDispatcher` and MCP capability model the rest of the simulation uses (§13), and validated for UGC at compile time (§10).
 
+**Client-split note (canonical stack — see Doc #41 Engine & Stack ADR).** Britannia Reborn ships two clients against a single Rust authoritative server: a UE5 production client (desktop + PS5 + Xbox) and a TS / PixiJS web thin-client. Accessibility implementation splits accordingly:
+
+- **Platform-mandated accessibility features** (PS5 / Xbox certification requirements — DualSense haptic alternatives, platform screen-reader API conformance, system-level caption settings inheritance, console text-size minimums) are implemented in the **UE5 client only**, since the web client does not ship to console. See `[OPEN]` §15-3.
+- **Cross-cutting accessibility features** (color-blind palettes §3.1, high-contrast UI §3.2, text size scaling §3.3, dyslexia-friendly font §3.4, reduced motion §3.5, subtitles §4, keyboard remap §5, combat slow mode §5, auto-pause §7, etc.) **must be implemented in BOTH clients** at functional parity. A player switching between UE5 and web should find the same accessibility profile (§12) honored identically.
+- Where a feature has client-specific plumbing (e.g., screen-reader OS bridge — UIA/AX/AT-SPI in UE5 via Slate; ARIA + DOM accessibility tree in web), the per-client implementation differs but the player-facing behavior must match.
+
 ---
 
 ## 2. Standards Alignment

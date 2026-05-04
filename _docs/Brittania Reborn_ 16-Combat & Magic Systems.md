@@ -5,7 +5,9 @@ Date: May 2026
 Author: [Combat & Magic Systems Lead]
 Status: Living Technical Reference — Normative spec for damage, spells, AI-mode dispatch, and combat-driven Virtue scoring
 
-Depends on: #2 GDD §4.3, §4.4, #4 Simulation §6, §7, #4.1 Crafting & Alchemy (reagents as physical entities), #5 Virtues §4 (environmental kills), #13 Core Schema (Entity, Verb, Scope), #14 MCP Surface (`attack`/`cast_spell`/`throw`), #15 Character, Party & Inventory (Hits/Mana derivation, 10 SI combat AI modes, paperdoll traversal).
+> **Updated 2026-05-04 per Doc #41.** Combat resolution is fully server-authoritative (Rust). UE5's Gameplay Ability System (GAS) is FORBIDDEN — it is non-deterministic and fights this doc's design. UE5 is the renderer; combat math lives only on the Rust shard.
+
+Depends on: #2 GDD §4.3, §4.4, #4 Simulation §6, §7, #4.1 Crafting & Alchemy (reagents as physical entities), #5 Virtues §4 (environmental kills), #13 Core Schema (Entity, Verb, Scope), #14 MCP Surface (`attack`/`cast_spell`/`throw`), #15 Character, Party & Inventory (Hits/Mana derivation, 10 SI combat AI modes, paperdoll traversal), #41 Engine & Stack ADR.
 
 Heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VII Part Two: Serpent Isle* (1993). `[U4]` = *Ultima IV: Quest of the Avatar* (1985). `[BR]` = original to Britannia Reborn.
 
@@ -20,6 +22,8 @@ Combat in Britannia Reborn is real-time, mouse-driven, and pause-on-inventory `[
 ## 2. Combat Verb Dispatch Contracts
 
 The three combat verbs from Doc #13 §2 (`attack`, `throw`, `cast_spell`) are formalized below, plus two new verbs (`defend`, `flee`) added to support AI modes (§4) and listed in §11 as MCP surface additions.
+
+> **Client/server boundary (per Doc #41).** Client-side animation, VFX, and audio are presentational only. All damage rolls, status effects, mana costs, range/LOS validation, target validation, Virtue deltas, and durability decrements happen on the Rust server. Clients (UE5 and TS) submit ACTION INTENTS via the wire protocol (Protobuf in `/shared/proto`); the Rust server returns RESOLUTION EVENTS that drive presentation. Swing animations, hit-flashes, spell particles, and combat audio cues are triggered by inbound resolution events — never by local prediction of damage outcomes. UE5's Gameplay Ability System (GAS) MUST NOT be used; the verb dispatcher in §2.1–§2.5 is the only authoritative path.
 
 ### 2.1 attack
 
@@ -574,6 +578,7 @@ Phase 1 success metric: a player can enter Cave of Trials with Iolo (set to `Att
 | §10 MP Combat | Doc #6 §2 (shard types), Doc #14 §4 invariant 4 (shard binding) |
 | §11 MCP Surface | Doc #14 §5 (tool envelope), §6 (resources), §3 (capabilities) |
 | §12 Phase 1 | Doc #11 (vertical slice), Doc #14 §8, Doc #15 §8 |
+| §2 client/server boundary | Doc #41 (Engine & Stack ADR — Rust authoritative; GAS forbidden; UE5/TS as dumb views consuming Protobuf resolution events) |
 
 ### Resolved Doc #13 [OPEN] Items
 

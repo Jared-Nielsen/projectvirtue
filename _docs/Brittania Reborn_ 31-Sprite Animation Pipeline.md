@@ -5,7 +5,9 @@ Date: May 2026
 Author: [Art Pipeline Lead]
 Status: Living Technical Reference — Normative spec for the pixel-art sprite asset format, animation state machine, frame budget, UGC import pipeline, runtime rendering integration with UE5, and animation-state replication. Implements the visual style targets in Doc #10 §2–§4 and §6.
 
-Depends on: #4 Simulation & Interaction §2 (entity state drives visual state), #7 UGC Modding §2 (custom asset import), §5 (style validator), #10 Art & Audio Style Bible §2 (pixel-art rules), §3 (character animation), §4 (environment objects), §6 (style validator), §7 (Phase 1 Britain visual slice), #11 Phase 1 Vertical Slice (15 NPCs, dynamic lighting), #13 Core Schema §1 (Entity, components), §2 (verb registry), §4 (dispatch contract — animation as side effect), #14 MCP Server Surface §5 (tool envelope), §6 (resources), #22 Network Protocol & Replication §4 (event channel; state delta replication), §5 (per-entity replication cadence), #23 Pathfinding & Spatial Systems §2 (Direction8, footprint), §5.6 (footstep audio side effect), #27 Audio System §10.1 (verb-keyed SFX hooks — frame-emitted sound IDs).
+Depends on: #4 Simulation & Interaction §2 (entity state drives visual state), #7 UGC Modding §2 (custom asset import), §5 (style validator), #10 Art & Audio Style Bible §2 (pixel-art rules), §3 (character animation), §4 (environment objects), §6 (style validator), §7 (Phase 1 Britain visual slice), #11 Phase 1 Vertical Slice (15 NPCs, dynamic lighting), #13 Core Schema §1 (Entity, components), §2 (verb registry), §4 (dispatch contract — animation as side effect), #14 MCP Server Surface §5 (tool envelope), §6 (resources), #22 Network Protocol & Replication §4 (event channel; state delta replication), §5 (per-entity replication cadence), #23 Pathfinding & Spatial Systems §2 (Direction8, footprint), §5.6 (footstep audio side effect), #27 Audio System §10.1 (verb-keyed SFX hooks — frame-emitted sound IDs), #41 Engine & Stack ADR.
+
+> **Updated 2026-05-04 per Doc #41.** The asset pipeline must DUAL-EMIT for two clients: UE5 (Paper2D / SlateUI) and TS web (PixiJS). A single source (Aseprite + manifest YAML) builds artifacts for both targets. The animation FSM lives in EACH CLIENT — the Rust authoritative server emits entity state only ("ATTACKING", "IDLE", duration); each client picks blends and timings independently. See §2.5 Dual-Emit Requirement and §5.5 Per-Client FSM (per Doc #41).
 
 Heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VII Part Two: Serpent Isle* (1993). `[BR]` = original to Britannia Reborn.
 
@@ -79,6 +81,18 @@ assets://legacy/sprites/{shape_id}/{frame}.png
 | `fireball_loop_5.png` | effect.fireball, state=loop, frame 5 |
 
 Direction omitted for facing-agnostic states. Direction tokens use the Doc #23 §2 `Direction8` set: `n`, `ne`, `e`, `se`, `s`, `sw`, `w`, `nw`.
+
+### 2.5 Dual-Emit Requirement (per Doc #41)
+
+Per Doc #41, the same asset source must produce importer artifacts for BOTH the UE5 production client and the TS/PixiJS web client. The pipeline is single-source, dual-emit.
+
+- **Single source of truth:** Aseprite (`.aseprite`) files plus a per-archetype manifest (`manifest.yaml`) describing states, frame counts, fps, anchors, hit boxes, frame-emitted sound/event IDs, and overlay archetype references. Designers edit Aseprite + YAML and never the per-engine artifacts directly.
+- **Build step emits both artifacts in lockstep:**
+  - **(a) UE5 importer artifact.** A texture atlas (PNG) plus either a `.uasset` package authored by an editor-time UE5 build commandlet OR a JSON-driven importer manifest the UE5 client loads at runtime through Paper2D / SlateUI. The choice between `.uasset` pre-bake and runtime-JSON is per-asset-class (legacy assets pre-bake; UGC stays JSON-driven).
+  - **(b) PixiJS importer artifact.** A texture atlas (PNG) plus a JSON spritesheet in the standard `pixi-spritesheet` shape (frames, animations, meta) that PixiJS `Spritesheet` consumes directly.
+- **One canonical manifest format consumed by both.** The same `manifest.yaml` is the input; both emitters are pure projections of it. There is no UE5-only field and no PixiJS-only field in the canonical manifest — engine-specific concerns live entirely inside the emitters.
+- **CI parity check.** CI must validate that both emitters produce **visually identical output** for a fixed sample set (golden frames per state per direction for a representative archetype). The parity test renders one frame from the UE5 artifact and the same frame from the PixiJS artifact through a headless renderer, diffs them at the pixel level, and fails the build on any discrepancy beyond a tight tolerance (palette-locked sprites should diff zero pixels barring sub-pixel filter rounding).
+- **No engine-only assets.** A sprite that exists only for UE5 or only for PixiJS is a Doc #41 violation. The TS/PixiJS web client is a permanent web-thin-client and must remain visually feature-complete with UE5; it is never console, never authoritative, and never has exclusive features (per Doc #41), but symmetrically it is never asset-starved relative to UE5.
 
 ---
 
@@ -269,6 +283,18 @@ on_damage_dealt(actor, dmg):
 ```
 
 `HURT_PRIORITY = 80`. `attack` priority = 60 (interruptible by hurt), `cast_spell` priority = 70 (interruptible by hurt at higher threshold). `dead` priority = 100 (preempts everything; sets `interruptible=false` so nothing else can transition out).
+
+### 5.5 Per-Client FSM (per Doc #41 boundary table)
+
+Per Doc #41's client/server boundary table, the animation FSM lives in **each client**, not on the server.
+
+- **Server emits entity STATE ONLY.** The Rust authoritative server emits a coarse-grained state token per entity — for example `ATTACKING`, `IDLE`, `WALKING`, `HURT`, `CASTING`, `DEAD` — together with the `facing` direction, an `animation_speed_mult`, the active `overlay_states` set, and (where the state has a finite server-side duration) a duration in milliseconds. This is the entirety of the animation-relevant payload on the wire (the `[I*]` fields enumerated in §9.1).
+- **Each client owns its own FSM.**
+  - **UE5 client** runs the state machine inside the Paper2D / SlateUI animation graph; UE5 picks the concrete frame sequence, blend timings, and any cosmetic blends between sub-states from its local archetype data.
+  - **TS / PixiJS web client** runs the state machine in a PixiJS animation controller; it picks frame sequences and timings from the same canonical manifest (§2.5) but using its own controller code.
+- **Frame-level decisions are client-local.** Which exact frame plays at a given wall-clock instant, how blends interpolate, when sub-pixel anchor offsets resolve, and any cosmetic flourishes (idle micro-animations, breath cycles) are each client's responsibility. Two clients viewing the same `ATTACKING` state at the same `ServerTick` may show slightly different in-between frames; this is expected and explicitly permitted by Doc #41.
+- **Server never sends `current_frame`.** Per §9.2, `current_frame` and `frame_progress_ms` are not on the wire. This is reaffirmed by Doc #41: per-frame data on the wire would imply a server-side FSM, which is forbidden.
+- **No animation-driven authority leak.** Frame-emitted events (e.g. `"hit_landed"` at frame 4 of an attack) remain client-side render hints; the **server** decides damage timing independently and emits the canonical damage write through the normal dispatcher path. A client that fails to render `hit_landed` does not change the simulation outcome.
 
 ---
 
@@ -630,6 +656,8 @@ Per Doc #11 (12-week "Britain Alive") and Doc #10 §7 (Britain visual & audio ve
 6. `[OPEN]` **Legal review for community Pentagram/Exult tooling integration.** §12.3. Pentagram and Exult are community projects with their own licensing terms. Using them as build-time tools to extract assets BR has an EA / Origin license for is presumed safe but needs counsel review. Working assumption: tools are MIT/GPL-compatible build dependencies and non-shipping; only the extracted assets (subject to BR's own EA license) ship.
 7. `[OPEN]` **Sprite hot-reload during dev iteration.** Designers iterating in-editor want sub-second roundtrip from PNG save → in-game update without restart. Naive: file watcher + manifest invalidation. Risk: in-flight `MoveTask`s and live multiplayer sessions break if their referenced frames change mid-state. Proposal: hot-reload only in single-player / private-instance mode; persistent shards require designer push through the same UGC pipeline (§10) with mod-author capability gate. Phase 2 work; Phase 1 ships restart-required.
 8. `[OPEN]` **Animation determinism for replay / rollback recovery.** Doc #22 references rollback recovery and Doc #23 §12.5 calls out A* determinism. Animation state changes are dispatcher side effects, so they are deterministic given the same verb sequence — but `animation_speed_mult` per haste spell and overlay add/remove timing must also be deterministic. Likely already-correct (everything routes through dispatcher), but no explicit replay test exists. Defer test design to Phase 2 telemetry/QA work (Doc #28).
+
+> **Cross-reference: Doc #41 (Engine & Stack ADR).** The dual-emit pipeline (§2.5), the per-client animation FSM (§5.5), and the rule that the server emits coarse entity state only (no `current_frame` on the wire) are bound to Doc #41. Any sprite or animation feature that ships only to one client, or any move toward a server-side animation FSM, requires a Doc #41 amendment first. The CI parity check between UE5 and PixiJS emitters (§2.5) is the build-time enforcement of this binding.
 
 ---
 

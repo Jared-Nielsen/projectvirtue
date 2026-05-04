@@ -102,4 +102,9 @@ Next Steps Proposed
 We believe Ultima VII: Britannia Reborn has the potential to become the definitive modern Ultima and one of the most important RPG revivals in gaming history.Signed,  
 \[Your Name\]  
 \[Your Studio\]  
-\[Contact Information\]  
+\[Contact Information\]
+
+---
+
+Footnote — Engine & Stack: Britannia Reborn ships as a production client on Unreal Engine 5 (desktop + PS5 + Xbox), a permanent TS / PixiJS web thin-client (also used as the early prototype), and a Rust authoritative server. The UE5 client is a "dumb view" over the Rust simulation. See Doc \#41 — Engine & Stack ADR for the canonical decision.
+

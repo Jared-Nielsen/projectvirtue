@@ -9,6 +9,8 @@ Depends on: #2 GDD §4.1 (no auto-pathing breaks simulation invariant), #4 Simul
 
 Heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VII Part Two: Serpent Isle* (1993). `[BR]` = original to Britannia Reborn.
 
+> **Updated 2026-05-04 per Doc #41.** All NPC pathfinding is server-side (Rust grid pathfinding). UE5 NavMesh is FORBIDDEN. Player movement is client-predicted and server-validated; the prediction logic must mirror server logic line-for-line.
+
 ---
 
 ## 1. Spatial Philosophy
@@ -132,6 +134,14 @@ Most archetypes default all-false. Boats are special: the boat entity is a mover
 > Resolves Doc #17 §14 [OPEN] item 3 (pathfinder algorithm).
 
 A* on the tile graph, octile heuristic, with dynamic-obstacle awareness and bounded path repair. Single algorithm services NPC schedules, combat positioning, player click-to-move, companion formation, and `flee`.
+
+### 4.0 Server / Client Boundary (per Doc #41)
+
+Per Doc #41 (Engine & Stack ADR) the engine boundary for spatial work is split as follows:
+
+- **NPCs**: Rust-only grid pathfinding. The Rust server runs A* (this section's algorithm) for every NPC, hostile, companion, and procedural mover. Clients (UE5 production target, TS / PixiJS web prototype) render only the resulting positions delivered over the Protobuf wire protocol; they never compute NPC paths. UE5 NavMesh is forbidden — the "UE5 client is a dumb view" rule applies.
+- **Player movement**: client-predicted, server-authoritative. Both the UE5 client and the TS web client run the prediction step locally so player input feels instant; the Rust server is the authority and re-runs the same step. The prediction logic must mirror the server logic line-for-line (shared Rust crate compiled to native for UE5 / WASM for TS, or a hand-port held to byte-equivalent test vectors). On mismatch, the server snaps the client to the authoritative position and the client reconciles forward.
+- **Spatial queries** (line-of-sight per §7, AOE / radius per §9, broadcast scopes per Doc #22): server-only. Clients never run LOS, witness, or radius queries; they receive results (or downstream effects like which entities are visible) from the server.
 
 ### 4.1 Graph
 
@@ -699,6 +709,8 @@ Per Doc #11 (12-week "Britain Alive") and the Phase 1 scope tables in Docs #15, 
 
 - **Doc #17 §14 [OPEN] item 3 (Pathfinder algorithm)** — fully resolved: A* on 8-connected tile graph, octile heuristic, dynamic-obstacle re-validation per step, repair within 8-tile radius, greedy fallback at 5 ms hard cap. Performance budget: 1 ms average / 5 ms worst case per pathfind. Navmesh authoring deferred to §15 [OPEN] item 4 pending Phase 2+ region scale data.
 - **Doc #14 §5.11 (`move_to` envelope ambiguity)** — formalized at §5 and §13.1: `MoveTarget` (tile or entity), `MoveOptions` (stop_at_distance, urgency, formation_slot, cancellable), explicit `MoveResult` with seven enumerated error codes.
+
+See Doc #41 (Engine & Stack ADR) for the canonical engine/stack decision: Rust server runs all pathfinding and spatial queries; UE5 (production) and TS / PixiJS (web prototype) clients are dumb views that render server-authoritative positions and run only mirror-image player-movement prediction.
 
 ---
 

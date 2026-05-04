@@ -5,7 +5,9 @@ Date: May 2026
 Author: [UGC & Modding Lead / Systems Architecture]
 Status: Living Technical Reference — Normative spec for visual + Lua UGC scripting, sandbox tiers, virtue validation, and verb-dispatcher integration
 
-Depends on: #5 Virtues, #6 Persistent World, #7 UGC, #8 Procedural Generation, #11 Prototype Scope, #13 Core Schema (Entity/Verb/Scope), #14 MCP Server Surface, #17 Dialogue & NPC Schedule.
+> **Updated 2026-05-04 per Doc #41.** The UGC scripting RUNTIME is server-side (Rust, sandboxed Lua/Wasm). The UGC EDITOR is a web/TS authoring tool — NOT in UE5. UE5 is the runtime renderer only. UE5 never compiles, validates, or executes UGC scripts.
+
+Depends on: #5 Virtues, #6 Persistent World, #7 UGC, #8 Procedural Generation, #11 Prototype Scope, #13 Core Schema (Entity/Verb/Scope), #14 MCP Server Surface, #17 Dialogue & NPC Schedule, #41 Engine & Stack ADR.
 
 Resolves: Doc #13 §5 [OPEN] #12 (Sandbox levels for ScriptHook).
 
@@ -160,6 +162,8 @@ type ActorRef =
 ```
 
 ### 2.3 Editor surface
+
+> **Editor host (per Doc #41).** The UGC editor lives on the **web** as a TS-based authoring tool, in the same repo as the web thin client (PixiJS web prototype + permanent web-thin-client). It is **not** an in-engine UE5 editor module. Authors compose graphs in the browser; the editor publishes scripts to the Rust server, which validates them (§8), compiles them (§2.4), and is the sole executor at runtime. UE5 never executes UGC code directly — the UE5 client receives only the resulting world deltas (verb resolutions, entity diffs) over the wire protocol. References below to "in-game editor" describe the in-shard authoring overlay surfaced in the web client; the prior phrase predates Doc #41 and refers to the same TS-hosted editor.
 
 - Renders as a drag-and-drop directed graph in the in-game "Trigger & Dialogue Editor" (Doc #7 §2).
 - Type checking on edge creation: outputs typed (`flow`, `actor`, `entity`, `value`); incompatible connections rejected at edit time.
@@ -645,6 +649,10 @@ Success criterion (matches Doc #7 §6): a Phase 1 creator builds a 1-room dungeo
 - `[OPEN]` **Party-wide quest progress sharing.** §3.3 mentioned `share_progress: true`; semantics for late-joining party members and dropouts undefined.
 - `[OPEN]` **`CompositeNode` permission inheritance.** When a `Restricted` creator embeds a `Trusted`-authored subgraph (`CompositeNode.subgraph`), does the subgraph execute at its author's level or the calling graph's level? Default plan: lowest-of-the-two, but this restricts useful sharing.
 - `[OPEN]` **Virtue weight tuning.** §8.2 uses uniform `weight(virtue) = 1.0`; whether some Virtues (Honor, Spirituality) deserve higher validator weights for skeleton/featured curation is undecided.
+
+---
+
+**See also: Doc #41 Engine & Stack ADR** — canonical decision that the UGC runtime is the Rust server (sandboxed Lua/Wasm) and the UGC editor is the web/TS authoring tool. UE5 is renderer-only and never executes UGC code directly.
 
 ---
 

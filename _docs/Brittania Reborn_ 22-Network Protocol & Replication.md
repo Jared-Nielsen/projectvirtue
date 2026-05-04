@@ -5,13 +5,15 @@ Date: May 2026
 Author: [Network & Live Ops Engineering Lead]
 Status: Living Technical Reference — Normative spec for the wire protocol, entity replication, region partitioning, region handoff, lag compensation, and anti-cheat surface for persistent-shard play
 
-Depends on: #6 Persistent World §2 §3 §4 §5, #9 Tooling (UE5 chosen), #11 Phase 1 Vertical Slice, #13 Core Schema (Entity, Verb, Scope) §1 `[I*]` markers, §4 dispatch invariant, #14 MCP Server Surface §2 §3 §4, #15 Character, Party & Inventory, #16 Combat & Magic §10 multiplayer-pause resolution, §4 AI tick rate, #17 Dialogue & NPC Schedule §5 per-player session instancing, §7 schedule cadence, #18 Economy, Crafting & Trade §9 trade-session two-phase commit, #21 Save Format & Shard DB Schema (Postgres + Redis target; SQLite Phase 1).
+Depends on: #6 Persistent World §2 §3 §4 §5, #9 Tooling (UE5 chosen), #11 Phase 1 Vertical Slice, #13 Core Schema (Entity, Verb, Scope) §1 `[I*]` markers, §4 dispatch invariant, #14 MCP Server Surface §2 §3 §4, #15 Character, Party & Inventory, #16 Combat & Magic §10 multiplayer-pause resolution, §4 AI tick rate, #17 Dialogue & NPC Schedule §5 per-player session instancing, §7 schedule cadence, #18 Economy, Crafting & Trade §9 trade-session two-phase commit, #21 Save Format & Shard DB Schema (Postgres + Redis target; SQLite Phase 1), #41 Engine & Stack ADR.
+
+> **Updated 2026-05-04 per Doc #41.** Replication is custom protocol over raw sockets, NOT UE5's native replication system. Both UE5 and TS web clients consume the same wire protocol. The authoritative server is Rust (bevy_ecs + Tokio); UE5 and TS/PixiJS/Solid.js are both "dumb view" clients. UE5 native replication (UPROPERTY(Replicated), RepNotify, RPCs, NetMulticast, etc.) is **forbidden** — see Doc #41 §UE5-forbidden.
 
 ---
 
 ## 1. Networking Philosophy
 
-Britannia Reborn runs an **authoritative server model** (Doc #6 §2). Clients send `VerbInvocation` messages; the server runs all simulation, scoring, persistence, and replication; clients render replicated `[I*]` state and perform local prediction only on Avatar movement. This matches UE5's built-in dedicated-server replication model and preserves the single-ingress invariant from Doc #13 §4 and the five non-bypassable invariants from Doc #14 §4 across the wire — every wire-side `VerbInvocation` lands on the same `VerbDispatcher` as a mouse click. Pause-on-inventory and pause-on-spellbook are single-player and private-instance only (Doc #16 §10); on persistent shards the shared simulation never pauses for any one client.
+Britannia Reborn runs an **authoritative server model** (Doc #6 §2). Clients send `VerbInvocation` messages; the server runs all simulation, scoring, persistence, and replication; clients render replicated `[I*]` state and perform local prediction only on Avatar movement. ~~This matches UE5's built-in dedicated-server replication model~~ *(Forbidden per Doc #41 §UE5-forbidden — we ship our own protocol over sockets. UE5 native replication is not used; the Rust server is authoritative and emits a custom wire format consumed identically by both UE5 and TS/PixiJS web clients.)* The protocol preserves the single-ingress invariant from Doc #13 §4 and the five non-bypassable invariants from Doc #14 §4 across the wire — every wire-side `VerbInvocation` lands on the same `VerbDispatcher` as a mouse click. Pause-on-inventory and pause-on-spellbook are single-player and private-instance only (Doc #16 §10); on persistent shards the shared simulation never pauses for any one client.
 
 ---
 
@@ -52,12 +54,12 @@ Britannia Reborn runs an **authoritative server model** (Doc #6 §2). Clients se
 | Layer | Tech | Process Model | Notes |
 |---|---|---|---|
 | Edge gateway | NGINX or Envoy + auth service | One per geo region | TLS terminate, route by `shard_id`/`region_id`, rate-limit pre-shard |
-| Game server (region) | UE5 dedicated-server binary | One process per shard region; horizontally scaled with parallel instances per popular region | Owns simulation, dispatcher, MCP Subsystem (Doc #14 §2) |
+| Game server (region) | Rust binary (bevy_ecs + Tokio) per Doc #41 — *NOT* a UE5 dedicated-server binary *(Forbidden per Doc #41 §UE5-forbidden — UE5 is a dumb view client only; no authoritative logic, no UE5 native replication)* | One process per shard region; horizontally scaled with parallel instances per popular region | Owns simulation, dispatcher, MCP Subsystem (Doc #14 §2) |
 | Cross-region bus | NATS preferred; Redis pub/sub fallback | Cluster | Region handoff, global chat, Virtue Watch alerts |
 | Persistence | PostgreSQL + Redis (Doc #21) | DB cluster | Phase 1: SQLite, no Redis (Doc #21 Phase 1 scope) |
-| MCP transport | stdio (in-proc) or SSE/HTTP via edge | Same UE5 process as game server (Doc #14 §2) | Verbs flow through same dispatcher as in-engine input |
+| MCP transport | stdio (in-proc) or SSE/HTTP via edge | Same Rust process as game server (Doc #41); MCP is a Rust module co-resident with the dispatcher, *NOT* a UE Subsystem *(Forbidden per Doc #41 §UE5-forbidden — UE5 hosts no authoritative subsystems)* | Verbs flow through same dispatcher as in-engine input |
 
-The MCP server is a UE Subsystem co-resident with the game server (Doc #14 §2). It does **not** run on a separate process; remote MCP clients reach it through the same edge gateway by SSE/HTTP, then the Subsystem submits to `PlayerInputDispatcher` exactly as a local `stdio` client would.
+The MCP server is a Rust module co-resident with the dispatcher in the authoritative game-server process (Doc #14 §2, updated per Doc #41). It does **not** run on a separate process; remote MCP clients reach it through the same edge gateway by SSE/HTTP, then the module submits to `PlayerInputDispatcher` exactly as a local `stdio` client would. *(References to "UE Subsystem" in older revisions are forbidden per Doc #41 §UE5-forbidden — the authoritative server is Rust; UE5 is a view-only client.)*
 
 ---
 
@@ -66,7 +68,7 @@ The MCP server is a UE Subsystem co-resident with the game server (Doc #14 §2).
 | Loop | Rate | Source | Notes |
 |---|---|---|---|
 | Server simulation | 20 Hz (50 ms) | [BR] | Real-time combat fidelity floor; `attack` resolution lands on a sim tick |
-| Client render | 60+ Hz | UE5 default | Client interpolates between received state snapshots |
+| Client render | 60+ Hz | UE5 default; PixiJS web client targets 60 Hz via `requestAnimationFrame` | Both clients interpolate between received state snapshots from the Rust server (per Doc #41 dual-client rule) |
 | Network state broadcast | 10 Hz | [BR] | Delta updates per region; aggregates 2 sim ticks |
 | Schedule system tick | 1 Hz | Doc #17 §7 | NPC schedule slot transitions, status-effect timers (Doc #16 §7) |
 | Combat AI tick | 2 Hz (500 ms) | Doc #16 §4 | `CompanionAI.tick`, `HostileAI` state machine (Doc #16 §9) |
@@ -80,8 +82,8 @@ The MCP server is a UE Subsystem co-resident with the game server (Doc #14 §2).
 
 ### 4.1 Wire Format & Transport
 
-- **Encoding:** MessagePack at Phase 1 prototype (cheap, schema-evolvable, native UE5 plugin available). FlatBuffers and Cap'n Proto are alternatives pending a perf bake-off (§16 [OPEN]).
-- **Transport:** UE5 Networking layer over a single TCP connection per client at Phase 1 (reliable). Phase 2 promotes to UDP for unreliable game-state channel + reliable channel for verb invocations and trade/dialogue.
+- **Encoding:** **Protobuf** is the canonical wire format per Doc #41 — schemas live in `/shared/proto` and codegen Rust + C++ + TS bindings (see §4.5 Wire Protocol as Source of Truth). The earlier Phase 1 plan to use MessagePack with a native UE5 plugin is **superseded by Doc #41**; UE5-specific serialization plugins are not used because the same wire format must be consumed identically by both UE5 and the TS web client. *(Forbidden per Doc #41 §UE5-forbidden — no UE5-only encodings.)*
+- **Transport:** Plain TCP (and later UDP) sockets opened by the Rust server's Tokio runtime — *NOT* the UE5 Networking layer *(Forbidden per Doc #41 §UE5-forbidden)*. Phase 1 = single reliable TCP connection per client. Phase 2 promotes to UDP for unreliable game-state channel + reliable channel for verb invocations and trade/dialogue. Both UE5 and TS clients connect via the same socket protocol (TS uses native WebSocket with a thin framing adapter to the same Protobuf payloads).
 - **Channels:**
   - `verb` (reliable, ordered) — every `ClientMessage::VerbInvocation` and every `ServerMessage::VerbResult`.
   - `state` (unreliable, sequenced) — `EntityDelta`, `ServerTick`. Loss tolerated; sequencing drops stale snapshots.
@@ -160,6 +162,20 @@ client                          edge                       region GS            
 ```
 
 The dispatcher is the single ingress (Doc #14 §4 invariant 1). MCP, mouse click, gamepad, and remote network client are all indistinguishable downstream of `PlayerInputDispatcher.Submit`.
+
+### 4.5 Wire Protocol as Source of Truth (per Doc #41)
+
+The wire protocol — not any client representation — is the canonical source of truth for every replicated game-state shape. This is the cornerstone of the Doc #41 dual-client rule.
+
+- **Schema location:** all message and component schemas live in `/shared/proto` as **Protobuf** definitions (`.proto` files). No engine-specific schemas (no UE5 `USTRUCT`-derived wire types, no hand-written TS interfaces) are authoritative.
+- **Codegen targets, all from the same `.proto` source:**
+  - **Rust** — server simulation, dispatcher, replication writer (via `prost` or equivalent).
+  - **C++** — UE5 client decoder + view-layer adapter (via the standard `protoc` plugin); UE5 reads Protobuf into POD structs that feed the view layer only.
+  - **TypeScript** — TS/PixiJS/Solid.js web client (via `ts-proto` or equivalent).
+- **Protocol freeze:** the wire schema **freezes at W5–W6 of the 12-week prototype** (see Doc #40 milestone plan). After freeze, schema changes require version bump + migration plan; ad-hoc field additions are not permitted in `/shared/proto` post-W6.
+- **Version negotiation is mandatory from v1.** Every client `Auth` message includes `protocol_version: u32`; the server replies with its supported range and either accepts (matching version) or rejects with `ERR_PROTOCOL_VERSION` (incompatible). Clients with a stale version receive a forced-update prompt; the server never silently downgrades. This is non-optional from the first shipped client.
+- **No client-only fields.** If a value is replicated, it is in `/shared/proto`. If a value is purely client-cosmetic (camera shake amplitude, particle count), it never crosses the wire and is not in the schema.
+- **Identity across clients:** the TS web client and UE5 client decode bit-identical bytes off the socket. Any divergence in observed entity state between the two clients on the same shard at the same `ServerTick` is a bug, not a "client-specific behavior."
 
 ---
 
@@ -291,11 +307,14 @@ type HandoffPacket = {
 
 | Verb class | Strategy | Rationale |
 |---|---|---|
-| Avatar movement | Client-side prediction. Client extrapolates from local input; server reconciles every `MovementInput` vs. authoritative path. Mismatch > 0.5 tiles → server forces snap; client visibly corrects. | Standard UE5 character-movement-component pattern |
+| Avatar movement | **Client-side prediction is mandatory in BOTH clients (UE5 and TS/PixiJS web).** Each client extrapolates the player's own avatar from local input; the Rust server reconciles every `MovementInput` vs. authoritative path. Mismatch > 0.5 tiles → server forces snap; client visibly corrects. *(Note per Doc #41: this is **not** UE5's `CharacterMovementComponent` pattern — the UE5 character-movement component is forbidden per Doc #41 §UE5-forbidden because it ties prediction to UE5 native replication. We ship our own predictor.)* | Hides RTT for the local avatar in both clients; required for playable feel on web and desktop |
+| NPC / world entity motion | **No client-side prediction.** Server-authoritative; clients interpolate between received state snapshots only. | Doc #41 boundary: NPCs and the world tick are server-authoritative; clients are dumb views |
 | All other verbs | Server-authoritative; client shows "pending" state until `VerbResult` arrives | Preserves Doc #13 §4 invariant |
 | Combat (`attack`, `cast_spell`, `throw`) | Server-authoritative on hit detection. **No client-side hit prediction.** | Anti-cheat; matches BG/SI engine-deterministic outcome model `[BG]` |
 | Dialogue (`talk`, `say_keyword`) | Pure server-authoritative; latency is acceptable for keyword UI | Doc #17 §5 |
 | Trade (`accept_trade`, etc.) | Pure server-authoritative; two-phase commit unaffected | Doc #18 §9 |
+
+**Prediction parity rule (per Doc #41).** The player-avatar prediction logic in each client must mirror the Rust server's authoritative movement step **line-for-line**. Drift from the server step produces visible snap-corrections. Ideal target: the movement step is implemented **once** in a shared crate that codegens to Rust (server), C++ (UE5 client), and TS (web client) — paralleling the `/shared/proto` rule of §4.5. Where full codegen is not yet feasible (Phase 1), the Rust step is the reference implementation and any C++/TS port is regenerated from it on every change with a property-test suite gating drift. Hand-divergent prediction in either client is a Doc #41 violation.
 
 **Pending-state rendering:** when a client emits a `VerbInvocation`, the client UI shows the verb as in-flight (greyed cursor, queued action indicator). On `VerbResult { ok: true }` the result animates. On `VerbResult { ok: false }` or `Error`, the UI rolls back any local optimistic visual and surfaces the error code per Doc #14 §5 (`ERR_VIRTUE_REJECTED`, `ERR_OUT_OF_RANGE`, etc.).
 
@@ -479,6 +498,8 @@ This makes housing instances `Friends`-default with explicit per-entity override
 6. `[OPEN]` **`enchantments` field replication semantics.** §5.2 marks `MagicComponent.enchantments` replicated, but specific enchantments (a curse on an item) may be intended to remain hidden until the item is identified (Doc #4.1 alchemy/identify path). May need to split `enchantments_visible` vs. `enchantments_hidden` `[I*]`/`[I]`.
 7. `[OPEN]` **Friends-list persistence scope for housing access.** §15 needs a definitive scope: `PlayerInventory` (per-owner) vs. a new `Social` scope. The friends-list also feeds Doc #6 §4 party invites and may be globally shared — affects cross-shard reachability.
 8. `[OPEN]` **Ghost / observer mode** (whether an Avatar can be invisibly present in a region for spectator/streamer purposes) and its replication relevance treatment.
+
+> **Cross-reference: Doc #41 (Engine & Stack ADR).** The decisions in this document — Rust authoritative server, custom socket protocol over Protobuf in `/shared/proto`, mandatory version negotiation, dual-emit codegen for Rust + C++ + TS, client-side prediction in BOTH clients, no UE5 native replication — are all bound to Doc #41. Any deviation from those constraints in a future revision of this doc requires a Doc #41 amendment first. The wire-format bake-off `[OPEN]` (item 2 above) is **closed by Doc #41**: Protobuf is the chosen format. Item 2 is retained here only as historical context until the next revision.
 
 ---
 

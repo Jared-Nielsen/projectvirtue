@@ -1,9 +1,11 @@
 # Document #32: Anti-cheat & Security Hardening
 
+**Updated 2026-05-04 per Doc #41.** All anti-cheat validation runs on the Rust server. Clients (UE5 and TS web) are treated as untrusted; never trust a client-asserted state. The TS web client is especially exposed (browser environment) but this is fine — server validates everything. Any client-side anti-cheat tooling (e.g., kernel-level on PC) is OUT OF SCOPE for the prototype but can be added to the UE5 client only in Phase 2.
+
 Status: Draft (Phase 2 hardening priority; partial Phase 1 scaffolding per §18)
 Scope: server-side validation contracts, packet integrity, rate limiting, suspicious-pattern detection, MCP security model, account security
 Resolves: Doc #22 §9 deferred anti-cheat hardening; Doc #19 §14 [OPEN] item 1 (Lua VM choice)
-Cross-refs: Docs #5, #13, #14, #18, #19, #21, #22, #23, #25, #28, #29
+Cross-refs: Docs #5, #13, #14, #18, #19, #21, #22, #23, #25, #28, #29, **#41 (Engine & Stack ADR)**
 
 ---
 
@@ -57,6 +59,18 @@ ValidationResult {
 ```
 
 Client-facing error responses are opaque codes only. Internal diagnostic strings (which check failed, which value tripped it) are written to `validation_log` for forensics; never echoed to the client. This denies attackers the oracle needed to probe validation boundaries.
+
+### 3.1 Server / client validation boundary (per Doc #41)
+
+Per Doc #41's "UE5 client is a dumb view" rule, the trust boundary is explicit:
+
+| Where | Role | Trust |
+|---|---|---|
+| **Rust server** | Authoritative — runs every check in §3 (rate limits, action validity, position deltas, inventory invariants, range, LOS, capability, resource, sanity) | Mandatory; the only source of truth |
+| **UE5 client** | Presentation; renders replicated state; submits intent | Untrusted |
+| **TS / PixiJS web client** | Presentation (web prototype); same wire protocol (Protobuf); same intent submission | Untrusted; especially exposed (browser) — accepted because server validates everything |
+
+Client-side checks (e.g., grey-out a button when out of range, predict movement locally) are **presentation-only** and may be bypassed by a modified client without affecting integrity. The server re-runs every check on every `VerbInvocation`; a tampered client gains nothing beyond a smoother UI for itself.
 
 ---
 

@@ -5,7 +5,9 @@ Date: May 2026
 Author: \[Tooling & Integration Lead\]
 Status: Living Technical Contract – Defines the externally-callable surface for AI clients, tools, and scripted automation against a running shard
 
-Depends on: \#4 Simulation, \#5 Virtues, \#6 Persistent World, \#7 UGC, \#9 Tooling, \#13 Core Schema (Entity/Verb/Scope spec — drafted in parallel; this document treats its model as canonical).
+> **Updated 2026-05-04 per Doc #41.** The MCP server is implemented in Rust; both UE5 and TS clients consume MCP-driven world updates via the wire protocol (Protobuf), not by direct MCP calls. UE5 and TS clients are presentation-only consumers; they do not host MCP transports, MCP sessions, or the dispatcher.
+
+Depends on: \#4 Simulation, \#5 Virtues, \#6 Persistent World, \#7 UGC, \#9 Tooling, \#13 Core Schema (Entity/Verb/Scope spec — drafted in parallel; this document treats its model as canonical), \#41 Engine & Stack ADR.
 
 ---
 
@@ -31,7 +33,7 @@ Design rule: An MCP-driven action must be indistinguishable, downstream of the d
 
 ## 2. Architecture
 
-The MCP server is implemented as a UE5 Subsystem plus a Modular Feature plugin. It binds two transports:
+The MCP server is implemented as a Rust process co-located with the authoritative Rust shard server (per Doc #41: bevy_ecs + Tokio). It is **not** a UE5 Subsystem and **not** an in-engine plugin. UE5 and TS clients never originate MCP calls; they receive resulting world deltas over the wire protocol (Protobuf in `/shared/proto`). MCP runs on the server; clients are consumers, not callers. It binds two transports:
 
 * `stdio` — local development, single-process, used by editor tools and CI harnesses.
 * `SSE / HTTP` — remote clients (LLM agents, web devtools), terminated at the shard's edge gateway, authenticated per session.
@@ -39,8 +41,8 @@ The MCP server is implemented as a UE5 Subsystem plus a Modular Feature plugin. 
 ```
 +----------------+   stdio / SSE    +-------------------+
 |   MCP Client   | <--------------> |   MCP Server      |
-| (LLM, devtool) |                  |  (UE Subsystem +  |
-+----------------+                  |  Modular Feature) |
+| (LLM, devtool) |                  |  (Rust process,   |
++----------------+                  |  per Doc #41)     |
                                     +---------+---------+
                                               |
                                               v
@@ -66,8 +68,8 @@ Critical property: MCP has no edge into Simulation/ECS that does not first pass 
 
 | Layer | Process | Reachable from MCP? |
 | ----- | ----- | ----- |
-| Transport (stdio / SSE) | UE Subsystem | yes (tool/resource RPC) |
-| Session & capability gate | UE Subsystem | yes (handshake only) |
+| Transport (stdio / SSE) | Rust process (Doc #41) | yes (tool/resource RPC) |
+| Session & capability gate | Rust process (Doc #41) | yes (handshake only) |
 | PlayerInputDispatcher | Game thread | indirect (one-way submit) |
 | VerbDispatcher | Game thread | indirect |
 | Virtue / Persistence / Replication | Game thread + DB | not reachable |
@@ -421,6 +423,7 @@ Phase 1 success metric: a non-engine client process can, via stdio MCP, enumerat
 * **\#7 UGC:** the modding API surface (\#7) and this MCP surface are deliberately parallel — the UGC editor is in-engine, MCP is out-of-process — but they share `PlayerInputDispatcher` as their single ingress.
 * **\#9 Tooling:** UE5 is primary; Roblox is alt only, with the caveats in section 7.
 * **\#13 Core Schema:** Entity, Verb, and Scope definitions are canonical there. This document does not redefine them; it binds tools to them.
+* **\#41 Engine & Stack ADR:** canonical engine/stack decision. The MCP server is Rust; UE5 and TS clients are dumb views consuming Protobuf wire messages and never host the dispatcher or MCP transport.
 
 ---
 
