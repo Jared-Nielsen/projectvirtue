@@ -38,6 +38,7 @@ type Entity = {
     PersistenceScope: PersistenceScopeTag    // required on every entity
     Combat?:          CombatComponent
     Magic?:           MagicComponent
+    Perception?:      PerceptionComponent    // NPC awareness (sight/hearing) [amended from #25 §T-13-4]
   }
 }
 ```
@@ -77,6 +78,14 @@ type StateComponent = {
   hp:        int     // [I*] for damageable items / NPCs
   durability: int    // [I*] tools, weapons, armor
   decay_timer: float | null  // [I*] corpses, raw food (Doc #4.1 §3.1)
+  // Status effect flags [amended from #16 §7]; sparse, presence = active.
+  // Each may carry an optional `expires_at_tick` for timed states (see #16 §7 table for onset/removal rules).
+  paralyzed:    bool   // [I*]
+  invisible:    bool   // [I*]
+  charmed:      bool   // [I*]
+  sleeping:     bool   // [I*]
+  bleeding:     bool   // [I*]
+  unconscious:  bool   // [I*] hp ∈ (0, -10] (#16 §8); cannot act for 30s; any heal restores
 }
 ```
 
@@ -109,6 +118,8 @@ type ContainerComponent = {
 ```
 
 ### 1.5 ScheduleComponent (Doc #4 §5)
+
+> **Placeholder.** The placeholder schema below is superseded by the full normative `Schedule` (note: renamed from `ScheduleComponent`) plus expanded `ScheduleSlot` activity enum in **#17 §6**. Implementations MUST follow #17 §6. Retained here only for traceability.
 
 ```ts
 type ScheduleSlot = {
@@ -170,6 +181,9 @@ type CombatComponent = {
   hp_max:        int                 // [A]
   faction:       string              // [I*] e.g. "town_guard.britain"
   hostile_to:    string[]            // [I*]
+  resistances:   Partial<Record<DamageType, float>>   // [A] 0.0–1.0; final damage *= (1 - resistance) [amended from #16 §3.2]
+  armor_pierce:  int                                  // [A] weapons only [amended from #16 §3.2]
+  stance:        enum { Normal, Defensive, Fleeing }  // [I*] [amended from #16 §3.2 / set by `defend`/`flee` verbs]
 }
 ```
 
@@ -192,6 +206,22 @@ Required on every entity. Drives which DB shard accepts writes. See §3.
 type PersistenceScopeTag = { scope: PersistenceScope, owner_key: string | null }
 ```
 
+### 1.11 PerceptionComponent (NPC awareness) [amended from #25 §T-13-4 + #27 §3]
+
+NPC awareness layer for the witness model (#15 §6.2 + #25 §T-13-4) and sound-propagation alerts (#27 §3). Optional component; entities without it are treated as fully sighted, fully hearing actors with default thresholds. Default values apply to standard humanoid NPC archetypes.
+
+```ts
+type PerceptionComponent = {
+  sight_radius:        int       // [A] tiles; default 16; observer-side LOS distance cap (independent of lighting modulation in #23 §7.2)
+  hearing_radius:      int       // [A] tiles; default 12; sound-event pre-filter radius
+  hearing_threshold:   int       // [A] dB; default 0; sound events with `audible_volume_db < threshold` are dropped for this NPC (#27 §3.1)
+  sight_blocked:       bool      // [I*] default false; if true, the NPC cannot witness sight events (blind / blindfolded / dark room) but still hears
+  hearing_blocked:     bool      // [I*] default false; if true, the NPC cannot witness sound events (deaf / deafened) but still sees
+}
+```
+
+Phase 1 use: blind/sleeping/dead NPCs short-circuit the witness model per #25 §T-13-4 edge cases (a)/(b)/(c). Sound query layered into the steal witness pipeline includes blind NPCs whose `hearing_radius` covers the actor's tile AND whose `hearing_threshold` is exceeded by the emitted `noise_db`.
+
 ---
 
 2. Verb Registry
@@ -205,7 +235,7 @@ Canonical, exhaustive list of interaction verbs implied by the docs. Every playe
 | `drag`               | Doc #4 §2 | Physical, Ownership | Physical.containedBy, Physical.position | Honesty, Justice (if owner≠actor) | yes | yes | Pickup/move |
 | `drop`               | Doc #4 §2 | Physical | Physical.position, Physical.containedBy=null | — | no | yes | Inverse of drag |
 | `combine(other)`     | Doc #4 §2, #4.1 §4 | both Physical, ScriptHook.on_combine, recipe DB | spawns/destroys entities | varies (crafting) | yes | yes | Crafting is verb-driven, not menu-driven |
-| `right_click(action)`| Doc #4 §2 | varies | varies | varies | yes | yes | Dispatch wrapper; resolves to a concrete sub-verb. Sub-verb taxonomy `[OPEN]` |
+| `right_click(action)`| Doc #4 §2 | varies | varies | varies | yes | yes | Dispatch wrapper; resolves to a concrete sub-verb. Sub-verb taxonomy resolved per #25 §T-13-1 (per-entity dynamic enum) |
 | `attack(target)`     | Doc #4 §7 | Combat, Physical | State.hp, State.broken | Valor, Compassion, Justice, Honor | yes | no (real-time) | Real-time; pauses only on inventory open |
 | `cast_spell(spell, target?)` | Doc #4 §6 | Magic, reagent inventory | varies — sets state, spawns entities | Spirituality, plus spell-specific | spell-dependent | partial | Telekinesis, Fireball, Create Food, etc. |
 | `throw(target_pos)`  | Doc #4 §3, §7 | Physical | Physical.velocity | Valor (if combat use) | yes | no | Momentum applied; gravity in flight |
@@ -246,7 +276,7 @@ The following 11 mutating GM verbs flow through `VerbDispatcher.dispatch(invocat
 | `leave_session()` | #26 §8 | participant list | removes caller from `GMSession.participants`; closes their shared dialogue if any | Honor delta if leaving during `LiveCanonical` (#26 §14) | Available to participants, not the GM (GM uses `gm_session_close`) |
 
 Notes:
-- `right_click(action)` is a UI wrapper. The exact menu taxonomy (Mix/Pour/Ignite/Lockpick/etc. as named in Doc #4 §2) and which become first-class verbs vs. `script_invoke` is `[OPEN]`.
+- `right_click(action)` is a UI wrapper. The exact menu taxonomy (Mix/Pour/Ignite/Lockpick/etc. as named in Doc #4 §2) is per-entity dynamic (per #25 §T-13-1 ratification — see #25 for the `ActionDef` schema and the per-archetype declaration model).
 - All verbs that mutate State, Ownership, or Container fields trigger the dispatch contract in §4.
 - Verbs marked "Pausable: no" continue to run during inventory pause but resolve on next sim tick.
 
@@ -287,10 +317,12 @@ Save cadence: continuous auto-save with 30-second rollback protection (Doc #6 §
 ```ts
 type Caller =
   | { kind: "Player",  id: PlayerId }
-  | { kind: "UGC",     script_id: string, owner: PlayerId }
+  | { kind: "UGC",     script_id: string, owner: PlayerId, sandbox_level: ScriptSandboxLevel }   // [amended from #19 §6]
   | { kind: "MCP",     tool: string, session: string }
   | { kind: "AI",      npc: EntityId }      // NPC schedule executor
   | { kind: "Sim",     reason: string }     // physics tick, fire spread
+  | { kind: "GM",      session_id: GMSessionId, gm_avatar_id: AvatarId }              // [amended from #26 §8]
+  | { kind: "Admin",   staff_id: StaffId, capability_tier: AdminCapabilityTier }      // [amended from #29 §1]
 
 type VerbInvocation = {
   caller:  Caller
@@ -347,7 +379,7 @@ Items the docs leave unspecified that block implementation. These must be resolv
 10. `[RESOLVED — see #15 §5.2 + #25 §T-13-10]` **Container weight/volume cascading.** Doc #4 §4 enforces limits and allows unlimited nesting. Does an outer container's weight include nested contents (realistic) or only direct children (gameplay)? Affects `drag` precondition checks.
 11. `[RESOLVED — see #22 §15]` **Replication interest set for instanced housing.** Private instances (Doc #6 §2) need an explicit rule for which dispatcher writes replicate to visiting friends vs. owner-only.
 12. `[RESOLVED — see #19 §5 + #16 §5]` **Sandbox levels for ScriptHook.** Doc #7 §2 distinguishes visual-node from Lua "advanced mode" but does not enumerate the sandbox capabilities (what verbs/components a script can read vs. write, rate limits, CPU budget per tick).
-13. `[RESOLVED — see #25 §T-13-13]` **MCP caller authority.** MCP tool calls flowing through the dispatcher need an authority model: do they act as the connected player, as a privileged GM, or as a sandboxed third party? Affects validation step 1 in §4.
+13. `[OPEN]` **MCP caller authority.** MCP tool calls flowing through the dispatcher need an authority model: do they act as the connected player, as a privileged GM, or as a sandboxed third party? Affects validation step 1 in §4.
 14. `[RESOLVED — see #16 §10]` **Combat pause semantics under multiplayer.** Doc #4 §7 says "real-time with pause-on-inventory" — single-player only, or does opening inventory in multiplayer pause locally while the world continues for others? Affects which combat verbs are truly non-pausable in dispatcher terms.
 15. `[RESOLVED — see #21 §13 + #25 §T-13-15]` **Procedurally-generated entity persistence.** Doc #8 §3 says generated objects are "fully interactive from the moment they spawn" — do they default to `WorldState` scope, or to a new `Procedural` scope with regeneration semantics?
 

@@ -371,7 +371,12 @@ This matches the realistic-weight / abstract-volume split that SI used in practi
 Trade between two Avatars or between an Avatar and a companion opens a side-by-side paperdoll dialog `[SI]`. Both sides drag items into a shared "offer" tray. Either party may cancel. On confirm, all items move atomically (Doc #14 §5 envelope guarantees idempotency via `client_op_id`). Partial trades are not possible — all items move or none do.
 
 ```ts
-type TradeOffer = {
+// Renamed from `TradeOffer` to disambiguate from the canonical player-to-player
+// `TradeOffer` declared in #18 §9.1. This record describes the simpler
+// companion-trade dialog state (party-internal item move); the #18 §9.1 record
+// is the full two-phase TradeSession offer payload.
+// [OPEN — verify no external references]
+type CompanionTradeOffer = {
   from_avatar:   AvatarId | EntityId  // companion as EntityId
   to_avatar:     AvatarId | EntityId
   items_offered: EntityId[]
@@ -380,7 +385,7 @@ type TradeOffer = {
 }
 ```
 
-Backed by `VerbDispatcher.trade()` (Doc #13 §2 verb registry).
+Backed by `VerbDispatcher.trade()` (Doc #13 §2 verb registry). Player-to-player trade uses the canonical `TradeOffer` + `TradeSession` from #18 §9.1.
 
 ### 5.6 Notable Item Categories the System Must Support
 

@@ -50,7 +50,11 @@ type Tile = {
   light_level_base:   float         // 0.0 dark .. 1.0 daylight; modulated by lights at runtime
 }
 
-type RegionMetadata = {
+// Renamed from `RegionMetadata` to disambiguate from the gameplay-rules `RegionMetadata`
+// declared in #15 §6.4 (always_watched, faction, pvp_allowed, chaos_zone). This record
+// describes the spatial geometry of a region; the #15 §6.4 record describes its rules.
+// [OPEN — verify no external references]
+type RegionGeometry = {
   region_id:  RegionId
   width:      int                   // e.g. Britain town: 256
   height:     int                   // e.g. Britain town: 256
@@ -61,7 +65,7 @@ type RegionMetadata = {
 
 Standard tile = 32×32 art pixels, 1×1 logical unit. Sub-tile precision is float in `SubTilePos.x/y`; movement step granularity is `actor.move_speed * dt`, typically 0.0625 logical units per 60 Hz frame at walking speed (≈ 1 tile / sec). PhysicalComponent.position from Doc #13 §1.1 maps directly to `SubTilePos`.
 
-Region grid extents are stored per region in `RegionMetadata`; example: Britain 256×256, Castle Britannia 64×64×3, Cave of Trials 96×96×2.
+Region grid extents are stored per region in `RegionGeometry`; example: Britain 256×256, Castle Britannia 64×64×3, Cave of Trials 96×96×2.
 
 ---
 
