@@ -22,7 +22,7 @@
   },
   "scripts": {
     "build": "tsc -b",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc -b",
     "lint": "biome check .",
     "test": "vitest --run"
   },
