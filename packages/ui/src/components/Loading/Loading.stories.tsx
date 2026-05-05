@@ -19,7 +19,7 @@ export const SpinnerOnly: Story = {
 };
 
 export const FullLoading: Story = {
-  render: () => <Loading label="Travelling to Britain…" />,
+  render: () => <Loading label="Travelling to Highmere…" />,
 };
 
 export const SkeletonStack: Story = {

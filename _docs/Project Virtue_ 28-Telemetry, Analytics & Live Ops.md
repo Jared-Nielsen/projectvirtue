@@ -604,7 +604,7 @@ Per §10.3: `telemetry.read`, `telemetry.admin`, `liveops.schedule`. These exten
 
 ## 13. Phase 1 Prototype Scope
 
-Per Doc #11, the prototype is single-shard, 8-player, Britain-only, 12 weeks. Telemetry scope is deliberately minimal.
+Per Doc #11, the prototype is single-shard, 8-player, Highmere-only, 12 weeks. Telemetry scope is deliberately minimal.
 
 | Element | Phase 1 | Deferred to Post-Phase 1 |
 |---|---|---|

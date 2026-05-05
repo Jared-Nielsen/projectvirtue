@@ -3,7 +3,7 @@
     "id": "char_new_avatar_01",
     "avatarId": "avatar_new_avatar_01",
     "accountId": "acct_01HXYZ_avatar",
-    "shardId": "shard_britannia_order",
+    "shardId": "shard_avermere_order",
     "name": "Wynne the Wanderer",
     "race": "human",
     "class": "avatar",
@@ -24,14 +24,14 @@
     "stamina": { "current": 30, "max": 30 },
     "currency": { "gold": 25, "silver": 0, "copper": 0 },
     "virtueScores": {
-      "compassion": 50,
-      "honesty": 50,
+      "mercy": 50,
+      "truth": 50,
       "honor": 50,
       "humility": 50,
       "justice": 50,
-      "sacrifice": 50,
-      "spirituality": 50,
-      "valor": 50
+      "devotion": 50,
+      "insight": 50,
+      "courage": 50
     },
     "publicTitle": "Newly Arrived",
     "createdAt": "2026-05-04T20:30:00.000Z",

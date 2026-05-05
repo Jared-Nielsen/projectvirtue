@@ -123,7 +123,7 @@
           "id": "ch_swear",
           "label": {
             "key": "dupre.choice.swear",
-            "en": "I swear by Honor to defend the weak of Trinsic until the brigands are scattered."
+            "en": "I swear by Honor to defend the weak of Stonereach until the brigands are scattered."
           },
           "endsConversation": true
         },

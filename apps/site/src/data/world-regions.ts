@@ -60,14 +60,14 @@ export const WORLD_REGIONS: readonly WorldRegion[] = [
     name: 'Westport',
     subtitle: 'Port City',
     description:
-      "Britannia's busiest harbor. Smugglers, shipwrights, and a black market that pretends to be a bazaar.",
+      "Avermere's busiest harbor. Smugglers, shipwrights, and a black market that pretends to be a bazaar.",
     kind: 'city',
     polygon: '120,340 240,320 280,420 200,460 120,440',
     pin: [200, 390],
   },
   {
-    id: 'dungeon-despise',
-    name: 'Dungeon: Despise',
+    id: 'dungeon-blacktarn',
+    name: 'Dungeon: Blacktarn',
     subtitle: 'A Place of Shadow',
     description:
       'Sealed by the Council, broken open by something inside. PvP-enabled regardless of shard kind.',
@@ -86,9 +86,9 @@ export const WORLD_REGIONS: readonly WorldRegion[] = [
   },
   {
     id: 'serpent-coast',
-    name: 'Serpent Coast',
+    name: 'Wyrm Reach',
     subtitle: 'Stranger Sea',
-    description: 'Beyond the Pillars: ferries leave from here for the Serpent Isle shard.',
+    description: 'Beyond the Pillars: ferries leave from here for the The Iron Marches shard.',
     kind: 'wilderness',
     polygon: '900,200 1080,180 1120,300 1020,360 900,320',
     pin: [1000, 270],

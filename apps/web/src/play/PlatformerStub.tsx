@@ -1,7 +1,7 @@
 // Exploratory 3D platformer stub — concept-art reference 2-99-PlatformerCombatIn3D.png.
 //
 // Flagged [design-in-flight]: the screen is a placeholder so the design
-// team can iterate on what 3D platformer combat means inside Britannia
+// team can iterate on what 3D platformer combat means inside Avermere
 // without holding back the rest of the HUD. Gated behind the
 // `?platformer=1` query string so it's strictly opt-in during dev.
 

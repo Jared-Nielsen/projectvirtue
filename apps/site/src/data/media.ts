@@ -81,7 +81,7 @@ export const MEDIA: readonly MediaItem[] = [
   {
     id: 'serpent-isle-coast',
     kind: 'concept',
-    title: 'Serpent Isle Coast',
+    title: 'The Iron Marches Coast',
     caption: 'Strange tides on the EU shard.',
     src: '/media/serpent-isle.svg',
     alt: 'Coastline with twin moons',

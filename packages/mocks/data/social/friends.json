@@ -1,16 +1,16 @@
 {
   "friends": [
     {
-      "id": "friend_iolo",
-      "characterId": "char_npc_iolo",
-      "handle": "iolo_bowyer",
-      "displayName": "Iolo",
-      "avatarUrl": "/assets/portraits/iolo.webp",
+      "id": "friend_erevan",
+      "characterId": "char_npc_erevan",
+      "handle": "erevan_bowyer",
+      "displayName": "Erevan",
+      "avatarUrl": "/assets/portraits/erevan.webp",
       "status": "online",
       "note": "Owes me three coppers.",
       "favorite": true,
       "lastSeen": "2026-05-04T20:00:00.000Z",
-      "currentShard": "shard_britannia_order",
+      "currentShard": "shard_avermere_order",
       "currentRegion": "region_britain"
     },
     {
@@ -20,11 +20,11 @@
       "displayName": "Shamino",
       "avatarUrl": "/assets/portraits/shamino.webp",
       "status": "online",
-      "note": "Yew patrol partner.",
+      "note": "Blackford patrol partner.",
       "favorite": true,
       "lastSeen": "2026-05-04T19:54:00.000Z",
-      "currentShard": "shard_britannia_order",
-      "currentRegion": "region_yew"
+      "currentShard": "shard_avermere_order",
+      "currentRegion": "region_blackford"
     },
     {
       "id": "friend_dupre",
@@ -36,8 +36,8 @@
       "note": "Probably at the tavern.",
       "favorite": false,
       "lastSeen": "2026-05-04T16:12:00.000Z",
-      "currentShard": "shard_britannia_order",
-      "currentRegion": "region_trinsic"
+      "currentShard": "shard_avermere_order",
+      "currentRegion": "region_stonereach"
     },
     {
       "id": "friend_mariah",
@@ -64,7 +64,7 @@
     {
       "id": "friend_lirael",
       "characterId": "char_apprentice_lirael",
-      "handle": "lirael_moonglow",
+      "handle": "lirael_lumencove",
       "displayName": "Lirael",
       "avatarUrl": "/assets/portraits/lirael.webp",
       "status": "online",

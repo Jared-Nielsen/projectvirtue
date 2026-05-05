@@ -166,8 +166,8 @@ function reputationLabel(c: Character): string {
 
 function keeperOf(npcId: string): string {
   // Convenience subtitle. Real NPC manifest will carry a localized title.
-  if (npcId.includes('lord-british')) return 'Sovereign of Britain';
-  if (npcId.includes('iolo')) return 'Bard of Britain';
-  if (npcId.includes('dupre') || npcId === 'branch') return 'Knight of Trinsic';
+  if (npcId.includes('lord-avermere')) return 'Sovereign of Highmere';
+  if (npcId.includes('erevan')) return 'Bard of Highmere';
+  if (npcId.includes('dupre') || npcId === 'branch') return 'Knight of Stonereach';
   return 'Keeper of Secrets';
 }

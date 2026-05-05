@@ -7,7 +7,7 @@ Status: Living Technical Reference — Normative spec for the tile grid model, A
 
 Depends on: #2 GDD §4.1 (no auto-pathing breaks simulation invariant), #4 Simulation §3 (grid + sub-tile precision), §5 (pathfinding around dynamic obstacles), #13 Core Schema §1.1 (PhysicalComponent.position, Vec3), §2 (verb registry), §4 (dispatch contract), #14 MCP Surface §5 (`move_to` envelope), #15 Character, Party & Inventory §3 (companions, formation), #16 Combat & Magic §2.5 (`flee` pathfinding), §4 (Flank/Protect/Defend AI modes), §9 (Hostile AI Aware → Engage walk), #17 Dialogue & NPC Schedule §7 (ScheduleSystem submits `move_to`), §14 [OPEN] item 3 (pathfinder algorithm), #22 Network Protocol & Replication §5 (movement replication cadence), §7 (region handoff).
 
-Heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VII Part Two: Serpent Isle* (1993). `[BR]` = original to Project Virtue.
+Heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VII Part Two: The Iron Marches* (1993). `[BR]` = original to Project Virtue.
 
 > **Updated 2026-05-04 per Doc #41.** All NPC pathfinding is server-side (Rust grid pathfinding). UE5 NavMesh is FORBIDDEN. Player movement is client-predicted and server-validated; the prediction logic must mirror server logic line-for-line.
 
@@ -15,7 +15,7 @@ Heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VI
 
 ## 1. Spatial Philosophy
 
-Britannia is a 2D tile grid with sub-tile precision for smooth visual movement, exactly as in BG/SI `[BG]`. Every actor — Avatar, companion, scheduled NPC, hostile, projectile — physically occupies tiles and physically traverses them; there is no auto-pathing that bypasses the simulation, per Doc #2 §4.1 invariant. Pathfinding is a service consumed by NPC schedules (Doc #17 §7), combat AI (Doc #16 §4 Flank/Protect/Flee modes, §9 Hostile Aware→Engage), player click-to-move, and any UGC or MCP caller that submits a `move_to` verb. The pathfinder shares the grid model and dispatcher path with every other verb; collisions, doors, dynamic obstacles, and floor transitions are all simulation truths, not pathfinder hacks.
+Avermere is a 2D tile grid with sub-tile precision for smooth visual movement, exactly as in BG/SI `[BG]`. Every actor — Avatar, companion, scheduled NPC, hostile, projectile — physically occupies tiles and physically traverses them; there is no auto-pathing that bypasses the simulation, per Doc #2 §4.1 invariant. Pathfinding is a service consumed by NPC schedules (Doc #17 §7), combat AI (Doc #16 §4 Flank/Protect/Flee modes, §9 Hostile Aware→Engage), player click-to-move, and any UGC or MCP caller that submits a `move_to` verb. The pathfinder shares the grid model and dispatcher path with every other verb; collisions, doors, dynamic obstacles, and floor transitions are all simulation truths, not pathfinder hacks.
 
 ---
 
@@ -58,8 +58,8 @@ type Tile = {
 // [OPEN — verify no external references]
 type RegionGeometry = {
   region_id:  RegionId
-  width:      int                   // e.g. Britain town: 256
-  height:     int                   // e.g. Britain town: 256
+  width:      int                   // e.g. Highmere town: 256
+  height:     int                   // e.g. Highmere town: 256
   z_floors:   int                   // count of vertical layers; ground-only regions = 1
   tile_size_px: int                 // standard 32 (art space); 1 logical unit per tile
 }
@@ -67,7 +67,7 @@ type RegionGeometry = {
 
 Standard tile = 32×32 art pixels, 1×1 logical unit. Sub-tile precision is float in `SubTilePos.x/y`; movement step granularity is `actor.move_speed * dt`, typically 0.0625 logical units per 60 Hz frame at walking speed (≈ 1 tile / sec). PhysicalComponent.position from Doc #13 §1.1 maps directly to `SubTilePos`.
 
-Region grid extents are stored per region in `RegionGeometry`; example: Britain 256×256, Castle Britannia 64×64×3, Cave of Trials 96×96×2.
+Region grid extents are stored per region in `RegionGeometry`; example: Highmere 256×256, Castle Avermere 64×64×3, Cave of Trials 96×96×2.
 
 ---
 
@@ -217,7 +217,7 @@ Budget enforcement: A* runs on a worker thread per region; the open-set expansio
 | **A* on tile grid** | **Chosen** | Matches BG/SI grid topology exactly; designer-readable; integrates with door/lock/object simulation per-tile. |
 | **Navmesh** | Rejected for Phase 1 | Authoring tooling and dynamic-obstacle re-stitch on mesh is heavyweight; benefit is for large open 3D spaces, which BR does not have. Open question for outdoor regions deferred to §15. |
 | **Flow field** | Rejected | Useful for many-to-one pathing (RTS swarms); BR has at most ~20 active NPCs per region, so per-actor A* is cheaper than maintaining a per-target flow field. |
-| **Hierarchical pathfinder (HPA*)** | Deferred | Worth revisiting if Phase 2 region sizes exceed 512×512 with > 50 active NPCs; not needed for Britain/Castle/Trinsic. |
+| **Hierarchical pathfinder (HPA*)** | Deferred | Worth revisiting if Phase 2 region sizes exceed 512×512 with > 50 active NPCs; not needed for Highmere/Castle/Stonereach. |
 
 ---
 
@@ -486,7 +486,7 @@ Backed by a **uniform grid bucket** per region: 8×8 tile buckets in a flat arra
 
 Index update rate: real-time on every entity position write through the dispatcher. The dispatcher is the single ingress (Doc #13 §4), so no race between simulation tick and index rebuild — writes are sequenced.
 
-Memory: Britain at 256×256 with z=1 → 32×32 = 1024 buckets, ~16 bytes per bucket header + 8 bytes per EntityId. With ~500 entities, ~12 KB total per region. Negligible.
+Memory: Highmere at 256×256 with z=1 → 32×32 = 1024 buckets, ~16 bytes per bucket header + 8 bytes per EntityId. With ~500 entities, ~12 KB total per region. Negligible.
 
 ---
 
@@ -653,12 +653,12 @@ Amendments to Doc #14 §5 (tools) and §6 (resources). All gated by capabilities
 
 ## 14. Phase 1 Prototype Scope
 
-Per Doc #11 (12-week "Britain Alive") and the Phase 1 scope tables in Docs #15, #16, #17.
+Per Doc #11 (12-week "Highmere Alive") and the Phase 1 scope tables in Docs #15, #16, #17.
 
 | Subsystem | In Scope | Deferred |
 |---|---|---|
-| A* pathfinder | Operational across Britain town tiles (256×256, single floor) | — |
-| Multi-floor support | **Castle Britannia (3 floors)** with stair tiles wired up | Other multi-floor regions (Cave of Trials in §16 §12 is single-floor for Phase 1; SI gabled houses deferred) |
+| A* pathfinder | Operational across Highmere town tiles (256×256, single floor) | — |
+| Multi-floor support | **Castle Avermere (3 floors)** with stair tiles wired up | Other multi-floor regions (Cave of Trials in §16 §12 is single-floor for Phase 1; SI gabled houses deferred) |
 | NPC schedules using `move_to` | **15 NPCs** per Doc #17 §13, full daily slots driving real path execution through dispatcher | Override-slot installation for events |
 | Player click-to-move | Single right-click step + double-right-click full pathfind, both via `move_to` | Right-click-and-hold continuous path (Phase 1 ships with click-step only; hold-pathfind is Phase 2 polish) |
 | LOS | Wired for `talk` precondition (Doc #17 §5.1) and `attack` LOS check (Doc #16 §2.1) | LOS for spells (cast_spell deferred per Doc #16 §12), witness LOS deferred to Phase 2 per Doc #15 §8 |
@@ -669,7 +669,7 @@ Per Doc #11 (12-week "Britain Alive") and the Phase 1 scope tables in Docs #15, 
 | MCP surface | `move_to` tool ships (per Doc #14 §8 `avatar.basic` set); `path_exists`/`line_of_sight`/`cancel_move` tools deferred | All §13 resources except per-tile inspection deferred |
 | Performance budget | Targets in §4.5 enforced; greedy fallback active | Full HPA* / hierarchical pathfinder evaluation (only if perf data demands) |
 
-**Phase 1 success metric:** the Avatar can stand outside Garritt's bakery, double-right-click on a tile across the Britain town square (path length ~30 tiles, around two market stalls and one passing NPC), arrive in under 30 seconds at walk speed without colliding into stationary obstacles, and during the walk a separate scheduled NPC (the Britain guard on patrol) re-paths around the Avatar's blocking tile rather than stalling. Castle Britannia: Avatar can pathfind from throne room (floor 0) to Lord British's bedchamber (floor 2) via the central staircase, with the pathfinder selecting the staircase route over an unreachable balcony alternative.
+**Phase 1 success metric:** the Avatar can stand outside Garritt's bakery, double-right-click on a tile across the Highmere town square (path length ~30 tiles, around two market stalls and one passing NPC), arrive in under 30 seconds at walk speed without colliding into stationary obstacles, and during the walk a separate scheduled NPC (the Highmere guard on patrol) re-paths around the Avatar's blocking tile rather than stalling. Castle Avermere: Avatar can pathfind from throne room (floor 0) to Lord Avermere's bedchamber (floor 2) via the central staircase, with the pathfinder selecting the staircase route over an unreachable balcony alternative.
 
 ---
 
@@ -680,7 +680,7 @@ Per Doc #11 (12-week "Britain Alive") and the Phase 1 scope tables in Docs #15, 
 3. `[OPEN]` **Pathfinding around moving ships at sea.** Ships occupy multiple water tiles, are mobile, and the Avatar may stand on the deck (containedBy boat). When the boat moves, the Avatar's effective position moves; pathfinding "on" the boat (deck movement) vs "off" the boat (jumping into water) needs disambiguation. Proposal: deck is its own micro-region attached to the boat entity; embarkation/disembarkation is a region handoff per §12.4. Sea travel is post-Phase-1 per Doc #11.
 4. `[OPEN]` **Navmesh vs pure tile grid for large outdoor areas.** §4.6 chose tile grid for Phase 1. If Phase 3+ adds 1024×1024 wilderness regions with sparse obstacles, a hybrid (navmesh outdoors, tile grid in towns) may be needed. Decision deferred to performance data from Phase 2.
 5. `[OPEN]` **Telekinesis interaction with passability.** Doc #16 §6 references `cast_spell(in_por)` (telekinesis) lifting a barrel into an enemy. While the barrel is mid-cast (in flight), is its tile briefly passable? The §4.3 dynamic obstacle model would make it impassable as soon as it enters the destination tile, possibly causing pathfinder weirdness for nearby NPCs in the same tick. Proposal: in-flight projectiles do NOT register as occupants (only their landing tile does, on impact). Same rule should apply to thrown objects (Doc #16 §2.3) and Telekinesis trajectories.
-6. `[OPEN]` **See-through-z tiles for balconies/holes.** §8.2. Specific tiles should allow LOS to/from another floor (a hole in the floor, a balcony rail). Tile schema needs a `los_z_target: int | null` field; pathfinder must NOT treat these as stair edges (no movement, only sight). Defer until first multi-floor region needs it (Castle Britannia's throne hall has a balcony but Phase 1 ships with it walled-LOS).
+6. `[OPEN]` **See-through-z tiles for balconies/holes.** §8.2. Specific tiles should allow LOS to/from another floor (a hole in the floor, a balcony rail). Tile schema needs a `los_z_target: int | null` field; pathfinder must NOT treat these as stair edges (no movement, only sight). Defer until first multi-floor region needs it (Castle Avermere's throne hall has a balcony but Phase 1 ships with it walled-LOS).
 7. `[OPEN]` **Pathfinder response to door being unlocked mid-path.** If an NPC is pathfinding around a locked door and a player picks the lock during the NPC's path execution, should the NPC re-plan to the now-shorter route? Cheap (next-step re-validation in §4.3 will not detect the new option; would require periodic full re-plan). Proposal: NPCs re-plan every 8 tiles or 5 seconds of path execution, whichever comes first. Adds CPU cost; defer measurement to Phase 2.
 8. `[OPEN]` **Formation slot rotation for narrow corridors.** §10. When the leader enters a corridor narrower than the formation width, slots should collapse to single-file order. Current §10.1 algorithm doesn't model this — companions just queue up via A* naturally, which works visually but isn't elegant. Proposal: detect 1-tile-wide passages via spatial index and collapse formation to slot-idx order. Defer to formation-system Phase 2 work.
 
@@ -697,7 +697,7 @@ Per Doc #11 (12-week "Britain Alive") and the Phase 1 scope tables in Docs #15, 
 | §5 move_to verb | Doc #13 §2 (verb registry), Doc #13 §4 (dispatch contract), Doc #14 §5.11 (formalizes) |
 | §6 Click-to-Move | Doc #2 §4.1 (preserves auto-pathing invariant), Doc #10 (cursor library) |
 | §7 LOS | Doc #4 §3 (lighting), Doc #15 §6.2 (witness model), Doc #16 §2.1 §2.2 (combat LOS), Doc #17 §5.1 (talk LOS) |
-| §8 Multi-floor | Castle Britannia layout (Doc #3 World Bible), Doc #15 §3 (party navigation) |
+| §8 Multi-floor | Castle Avermere layout (Doc #3 World Bible), Doc #15 §3 (party navigation) |
 | §9 Spatial Queries | Doc #15 §6.2 (witness queries), Doc #16 §4 (Flank arc, hostile detection), Doc #17 §3.1 (reactive injection) |
 | §10 Group Movement | Doc #15 §3 (companion roster), Doc #16 §4 (combat takes ownership) |
 | §11 Combat Positioning | Doc #16 §4 (10 AI modes), Doc #16 §2.5 (flee target predicate) |

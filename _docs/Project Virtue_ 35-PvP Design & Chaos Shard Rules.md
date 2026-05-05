@@ -8,7 +8,7 @@ Status: Living Design Reference — Normative spec for player-vs-player combat, 
 
 Depends on: #2 GDD §4.3 §6, #5 Virtues §2 §4 §5, #6 Persistent World §2 §4 §5, #13 Core Schema (Entity, Verb, Scope), #14 MCP Server Surface §3 §4 §5, #15 Character, Party & Inventory §4 §5, #16 Combat & Magic §2 §3 §7 §8 §10, #18 Economy, Crafting & Trade §9, #21 Save Format & Shard DB, #22 Network Protocol & Replication §3 §6 §11, #28 Telemetry, Analytics & Live Ops §7, #29 Moderation & Admin Tools, #32 Anti-cheat & Security Hardening §3 §6 §7 §12 §15.
 
-Source heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VII Part Two: Serpent Isle* (1993). `[U4]` = *Ultima IV: Quest of the Avatar* (1985). `[UO]` = *Ultima Online* (1997, the canonical Trammel/Felucca template). `[BR]` = original to Project Virtue.
+Source heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VII Part Two: The Iron Marches* (1993). `[U4]` = *Ultima IV: Quest of the Avatar* (1985). `[UO]` = *Ultima Online* (1997, the canonical Trammel/Felucca template). `[BR]` = original to Project Virtue.
 
 ---
 
@@ -133,7 +133,7 @@ Combat resolution follows Doc #16 §2 verb contracts unmodified, and is **Rust-s
 | Crit RNG | Server-side per Doc #32 §7 | Server-side per Doc #32 §7 |
 | State effects (poison, fire, bleed) | Apply per Doc #16 §7 | Apply per Doc #16 §7 |
 | Charm (`in_quas`) | Cannot target players (`ERR_INVALID_TARGET`) | Can target players, with consent gate (§3.6) — resolves Doc #16 §13 [OPEN] item 4 |
-| Virtue scoring | Compassion/Justice negative on murder of innocent | §5.1 alternate Virtue table |
+| Virtue scoring | Mercy/Justice negative on murder of innocent | §5.1 alternate Virtue table |
 | Persistence write | Standard | Standard plus Murder Count update (§5.2) |
 | Replication | Standard | Standard plus halo update (§5.4) |
 
@@ -145,7 +145,7 @@ The following regions are sanctuary on Chaos (no PvP, no looting, no PK conseque
 
 - An 8-tile radius around any of the eight Virtue shrines (matches Doc #5 shrine canon).
 - The interior of any Healer building (so players can resurrect without being farmed at the resurrection point — see §7.2).
-- The interior of the Lord British throne room (canonical lore-sanctuary).
+- The interior of the Lord Avermere throne room (canonical lore-sanctuary).
 - The interior of Banker buildings during a banking interaction (locks for the duration of the open-bank session).
 - Tutorial / Beginner shard regions, even if a Chaos player visits via cross-shard travel (which is forbidden anyway by §9.2, but defense in depth).
 
@@ -260,12 +260,12 @@ Faction enrollment is the long-form, persistent declared-war framework. It is to
 
 #### 4.6.1 Two Factions
 
-Per Doc #5 Order/Chaos virtue framing and the historical Britannia lore arc:
+Per Doc #5 Order/Chaos virtue framing and the historical Avermere lore arc:
 
 | Faction | Theme | Recruiter | Aligned Virtues (scored bonus) | Hostile Virtues (penalty for actions) |
 |---|---|---|---|---|
-| **Order** | Lord British's standing army; defenders of Britannia | Sir Geoffrey, Britain Castle | Justice, Honor, Compassion | (none — Order is the Virtue baseline) |
-| **Chaos** | Lord Blackthorn's heirs (post-canon split); revolutionary faction | Hawkwind's apostate, Buccaneer's Den | Valor, Honor, Spirituality | Compassion (when killing innocents to advance faction goals) |
+| **Order** | Lord Avermere's standing army; defenders of Avermere | Sir Geoffrey, Highmere Castle | Justice, Honor, Mercy | (none — Order is the Virtue baseline) |
+| **Chaos** | Lord Blackthorn's heirs (post-canon split); revolutionary faction | Hawkwind's apostate, Buccaneer's Den | Courage, Honor, Insight | Mercy (when killing innocents to advance faction goals) |
 
 Both factions are valid Virtuous paths in the BR ethical framework; "Chaos" is not "Evil." This is critical for Doc #5 alignment — Chaos players can still be high-Virtue Avatars. The naming maps the faction to the *political* alignment; the *moral* alignment is scored independently per Doc #5.
 
@@ -284,7 +284,7 @@ Both factions are valid Virtuous paths in the BR ethical framework; "Chaos" is n
 
 #### 4.6.4 Alignment Shift via Virtue System
 
-A player's Virtue scores nudge their faction recruitment: a player with high Justice + high Honor receives in-game letters of invitation from the Order recruiter; a player with high Valor + high Spirituality but low Compassion receives equivalent from Chaos. These are flavor / discoverability hooks; the actual enrollment decision is always the player's.
+A player's Virtue scores nudge their faction recruitment: a player with high Justice + high Honor receives in-game letters of invitation from the Order recruiter; a player with high Courage + high Insight but low Mercy receives equivalent from Chaos. These are flavor / discoverability hooks; the actual enrollment decision is always the player's.
 
 A player whose Virtue scores swing dramatically while enrolled (e.g., an Order knight whose Justice falls below 30) receives a warning letter from their faction; if Virtue does not recover within 14 in-game days, the faction expels them automatically (forfeit all tokens, 24 h cooldown).
 
@@ -321,15 +321,15 @@ The Virtue Engine (Doc #5) does not pause on Chaos. PvP kills score Virtue, but 
 
 | Action on Chaos | Virtue Deltas |
 |---|---|
-| Kill another player flagged Aggressor (§5.3) toward you | Valor + (small), Compassion 0, Justice 0, Honor 0 — self-defense |
-| Kill another player flagged Criminal | Valor + (small), Justice + (small) — vigilante kill |
-| Kill another player who is Innocent (not Aggressor, not Criminal, not at war) | Compassion − (large), Justice − (large), Honor − (moderate); Murder Count +1 |
-| Kill another player who is in a faction war with you | Valor + (small), Honor + (small if combat was fair: similar level, no AOE bystander damage) |
-| Kill in a duel (consented arena) | Valor + (small), Honor + (small if won within rules) |
+| Kill another player flagged Aggressor (§5.3) toward you | Courage + (small), Mercy 0, Justice 0, Honor 0 — self-defense |
+| Kill another player flagged Criminal | Courage + (small), Justice + (small) — vigilante kill |
+| Kill another player who is Innocent (not Aggressor, not Criminal, not at war) | Mercy − (large), Justice − (large), Honor − (moderate); Murder Count +1 |
+| Kill another player who is in a faction war with you | Courage + (small), Honor + (small if combat was fair: similar level, no AOE bystander damage) |
+| Kill in a duel (consented arena) | Courage + (small), Honor + (small if won within rules) |
 | Kill another player from invisibility / sleep / paralysis | Apply above plus Honor − (large) — striking from concealment |
 | Loot a corpse | Per §4.3 — Honor − scaled by item type |
 | Resurrect-kill (§7.2 violation attempted but blocked) | No score (system blocked the act); Honor − applied for the attempt itself |
-| Kill in self-defense after being unprovokedly attacked | No Murder Count; Valor +; Honor + |
+| Kill in self-defense after being unprovokedly attacked | No Murder Count; Courage +; Honor + |
 
 The Virtue penalties for murdering Innocents on Chaos are *higher* in absolute magnitude than the equivalent NPC-murder penalties on the Order shard, by 50%. The reasoning: PvP victims are sentient agents, not scripted NPCs, and the Virtue Engine ought to weigh the harm proportionally.
 
@@ -433,7 +433,7 @@ Dungeon regions on Chaos are open PvP with two amplifications:
 
 The Phase 2 launch features one siege loop: **Faction Stronghold Capture**.
 
-- Each faction holds 2 strongholds at launch (Order: Britain Castle outer wall, Yew sheriff's tower; Chaos: Buccaneer's Den keep, Wrong dungeon).
+- Each faction holds 2 strongholds at launch (Order: Highmere Castle outer wall, Blackford sheriff's tower; Chaos: Buccaneer's Den keep, Wrong dungeon).
 - A stronghold is "active" for capture when its `siege_window` opens — a 4-hour window every 48 hours, scheduled differently per stronghold for time-zone fairness (§12 [OPEN] — exact schedule).
 - During the siege window, the opposing faction may attempt to plant a Sigil (faction artifact entity) on the stronghold's command tile.
 - Sigil planting takes 2 minutes of channeling; channel interrupts on damage to the planter.
@@ -805,7 +805,7 @@ All gated by appropriate capability tier per Doc #14 §3.
 
 ## 14. Phase 1 / Phase 2 Scope
 
-Per Doc #11 (12-week vertical slice) and Doc #6 §7 ("Britain Persistent Test"). PvP is a Phase 2 feature; nothing in this doc is in scope for Phase 1.
+Per Doc #11 (12-week vertical slice) and Doc #6 §7 ("Highmere Persistent Test"). PvP is a Phase 2 feature; nothing in this doc is in scope for Phase 1.
 
 | Subsystem | Phase 1 (Vertical Slice) | Phase 2 (Multi-Shard Launch) | Phase 3 (Hardcore Toggle) |
 |---|---|---|---|
@@ -822,7 +822,7 @@ Per Doc #11 (12-week vertical slice) and Doc #6 §7 ("Britain Persistent Test").
 | Cross-shard transfer | Off | §9 fully enforced | Reserved expansion |
 | MCP surface (§13.3 §13.4) | None | All §13.3 tools and §13.4 resources live | Reserved |
 
-Phase 2 success metric: a player creates two Avatars (one on Order, one on Chaos), experiences zero PvP-related interruptions on Order while interacting with 2,000+ concurrent Avatars in Britain, then experiences full §3 PvP loop on Chaos within 30 minutes of cross-shard travel — including an attempted murder, a bounty placed and claimed, and a single duel-arena match. No griefing exploits succeed in launch-week telemetry; anti-grief detection rate exceeds 95% of intentional griefing attempts on internal red-team test.
+Phase 2 success metric: a player creates two Avatars (one on Order, one on Chaos), experiences zero PvP-related interruptions on Order while interacting with 2,000+ concurrent Avatars in Highmere, then experiences full §3 PvP loop on Chaos within 30 minutes of cross-shard travel — including an attempted murder, a bounty placed and claimed, and a single duel-arena match. No griefing exploits succeed in launch-week telemetry; anti-grief detection rate exceeds 95% of intentional griefing attempts on internal red-team test.
 
 ---
 

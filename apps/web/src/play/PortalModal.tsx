@@ -92,7 +92,7 @@ export function PortalModal(props: PortalModalProps): JSX.Element {
               viewBox="0 0 100 100"
               preserveAspectRatio="xMidYMid meet"
               role="img"
-              aria-label="Sosaria overview map"
+              aria-label="Mythenor overview map"
             >
               <rect
                 x="0"

@@ -9,13 +9,13 @@ Status: Living Technical Reference — Normative spec for damage, spells, AI-mod
 
 Depends on: #2 GDD §4.3, §4.4, #4 Simulation §6, §7, #4.1 Crafting & Alchemy (reagents as physical entities), #5 Virtues §4 (environmental kills), #13 Core Schema (Entity, Verb, Scope), #14 MCP Surface (`attack`/`cast_spell`/`throw`), #15 Character, Party & Inventory (Hits/Mana derivation, 10 SI combat AI modes, paperdoll traversal), #41 Engine & Stack ADR.
 
-Heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VII Part Two: Serpent Isle* (1993). `[U4]` = *Ultima IV: Quest of the Avatar* (1985). `[BR]` = original to Project Virtue.
+Heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VII Part Two: The Iron Marches* (1993). `[U4]` = *Ultima IV: Quest of the Avatar* (1985). `[BR]` = original to Project Virtue.
 
 ---
 
 ## 1. Combat Philosophy
 
-Combat in Project Virtue is real-time, mouse-driven, and pause-on-inventory `[BG]` — there is no turn-based mode and no initiative system. It is a consumer of the same simulation layer as every other verb (Doc #4 §7), so a thrown lit torch into hay is a combat outcome by virtue of the fire-spread sim, not a special-case combat rule. Every kill, miss, mercy, and environmental burn is scored by the Virtue Engine through the dispatcher (Doc #5 §4) — the system distinguishes a sword to the throat from a fireball into a barn from a barrel-pushed-into-fire, all via the same `VerbDispatcher` (Doc #13 §4). Serpent Isle improvements (10 named AI modes, right-hand swing fix, visible weapon durability) are pulled forward where strict upgrades `[SI]`; we do not import SI's stat-only genesis or its Black-Sword-specific rules.
+Combat in Project Virtue is real-time, mouse-driven, and pause-on-inventory `[BG]` — there is no turn-based mode and no initiative system. It is a consumer of the same simulation layer as every other verb (Doc #4 §7), so a thrown lit torch into hay is a combat outcome by virtue of the fire-spread sim, not a special-case combat rule. Every kill, miss, mercy, and environmental burn is scored by the Virtue Engine through the dispatcher (Doc #5 §4) — the system distinguishes a sword to the throat from a fireball into a barn from a barrel-pushed-into-fire, all via the same `VerbDispatcher` (Doc #13 §4). The Iron Marches improvements (10 named AI modes, right-hand swing fix, visible weapon durability) are pulled forward where strict upgrades `[SI]`; we do not import SI's stat-only genesis or its Black-Sword-specific rules.
 
 ---
 
@@ -98,7 +98,7 @@ Resolve order:
 7. **Reagent consumption** — atomically decrement one of each from stacks; routed through dispatcher writes.
 8. **Mana deduction** — actor.Magic.mana -= spell.mana_cost.
 9. **Effect resolution** — for each `SpellEffect` in spell.effect, invoke its handler; effects that mutate other entities re-enter the dispatcher (Doc #13 §4 §6 forbidden-direct-write rule applies).
-10. **Virtue scoring** — Spirituality + (sanctioned cast), plus per-effect deltas (Damage on innocent → Compassion/Justice loss, Heal → Compassion +, Resurrect → Spirituality + + Sacrifice +).
+10. **Virtue scoring** — Insight + (sanctioned cast), plus per-effect deltas (Damage on innocent → Mercy/Justice loss, Heal → Mercy +, Resurrect → Insight + + Devotion +).
 11. **Persistence + replication** as standard.
 
 Error modes: `ERR_OWNERSHIP`, `ERR_SPELL_UNKNOWN`, `ERR_INSUFFICIENT_MANA`, `ERR_MISSING_REAGENT`, `ERR_OUT_OF_RANGE`, `ERR_LOS_BLOCKED`, `ERR_INVALID_TARGET`, `ERR_INTERRUPTED`, `ERR_VIRTUE_REJECTED`.
@@ -130,7 +130,7 @@ Resolve order:
 3. **Ballistic resolution** — physics tick computes parabolic arc with gravity; first entity intersected becomes impact_entity.
 4. **Impact damage** — if impact_entity has `Combat` component: `damage = projectile.Physical.weight * velocity / 2` rounded, capped at 30. State of projectile carries: a lit torch sets `on_fire` on impact, a poisoned dart sets `poisoned`.
 5. **Fragility check** — if `projectile.Physical.fragility > random(0,1)`: projectile destroyed; if it was a sealed liquid container (oil flask, potion), spill effect applied to impact tile.
-6. **Virtue scoring** — if impact_entity is hostile: Valor scoring identical to `attack`. If projectile was a gifted item: Honor − (Doc #14 §5.10).
+6. **Virtue scoring** — if impact_entity is hostile: Courage scoring identical to `attack`. If projectile was a gifted item: Honor − (Doc #14 §5.10).
 7. **Persistence + replication** as standard.
 
 Error modes: `ERR_OUT_OF_RANGE`, `ERR_LOS_BLOCKED`, `ERR_PHYSICS` (projectile too heavy: weight > actor.STR / 2).
@@ -151,7 +151,7 @@ type FleeInput = { actor: EntityId }
 type FleeResult = { ok: bool, fleeing_until_tick: int }
 ```
 
-Sets `actor.Combat.stance = Fleeing`; engages pathfinder to nearest tile in a region whose `RegionMetadata.always_watched_by` is the actor's faction OR whose `chaos_zone == false`, whichever is nearer. Companion who flees triggers the Doc #5 abandonment event for the player (Valor − for player if companion was protecting them and is abandoned — `[OPEN]` how this scopes). Player flee verb has no Virtue impact directly; the Virtue Engine evaluates flight context separately (Doc #5 §2 Valor).
+Sets `actor.Combat.stance = Fleeing`; engages pathfinder to nearest tile in a region whose `RegionMetadata.always_watched_by` is the actor's faction OR whose `chaos_zone == false`, whichever is nearer. Companion who flees triggers the Doc #5 abandonment event for the player (Courage − for player if companion was protecting them and is abandoned — `[OPEN]` how this scopes). Player flee verb has no Virtue impact directly; the Virtue Engine evaluates flight context separately (Doc #5 §2 Courage).
 
 ---
 
@@ -287,7 +287,7 @@ type Spell = {
   id:              SpellId
   name:            string                 // "In Lor", "Vas Flam"
   circle:          1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
-  incantation:     string                 // canonical Britannian, displayed on cast
+  incantation:     string                 // canonical Avermerean, displayed on cast
   reagents:        ReagentId[]            // multiset; duplicates = multiple of same reagent
   mana_cost:       int                    // = circle * 5
   cast_time_ms:    int                    // [BR] 500 (1st) → 3000 (8th); table in §5.5
@@ -380,11 +380,11 @@ Verbs interact with environmental state through the existing simulation, not via
 | `attack(arrow)` with `arrow.State.lit = true` | hits flammable entity | `on_fire` applied to target; if target tile has flammable: ignite chain | If target is innocent NPC and dies in resulting fire: env-kill scoring |
 | `throw(barrel)` of oil | barrel.fragility breaks on impact (§2.3) | Spills `oil` entity over impact tile (Doc #4.1 alchemy); `Physical.flammability = 0.95` | None until ignited |
 | Subsequent `cast_spell(in_flam)` or `attack(lit_arrow)` on oil | oil tile + ignition source | Oil ignites; fire damage to all entities in tile | Env-kill for any NPC death in resulting fire (Doc #5 §4) |
-| `attack(target, intent="displace")` | target adjacent to fire tile | Target shoved into fire tile; takes On Fire damage | Env-kill scoring; Honor − is small; Compassion − is reduced vs. direct murder |
+| `attack(target, intent="displace")` | target adjacent to fire tile | Target shoved into fire tile; takes On Fire damage | Env-kill scoring; Honor − is small; Mercy − is reduced vs. direct murder |
 | `cast_spell(in_por)` (telekinesis) on barrel into enemy | barrel weight + velocity → impact damage | Standard `throw` resolution | Same as `throw` of barrel at enemy |
 | `ignite(haystack)` near sleeping enemy | hay.flammability = 1.0, enemy on adjacent tile | Fire spreads to enemy tile; enemy takes On Fire | Env-kill; if enemy is sleeping, Honor − still applies |
 
-Env-kill multiplier (applied to Compassion/Justice negative deltas only):
+Env-kill multiplier (applied to Mercy/Justice negative deltas only):
 
 ```
 env_kill_virtue_mult = 0.4   // [BR] env-kills score at 40% of direct-murder magnitude (Doc #5 §4)
@@ -433,7 +433,7 @@ on_damage(target: Entity, dmg: int):
 |---|---|---|
 | **Unconscious** | hp drops to (0, -10] | `target.State.unconscious = true`; cannot act for 30s; ANY heal restores consciousness; if not healed in 30s → die |
 | **Dead** | hp ≤ -10 OR 30s post-unconscious without heal | Spawn corpse `Entity` per Doc #15 §3.7 (companion 60s claim window applies for companions; non-companion NPC corpse rules `[OPEN]` per Doc #13 §5 item 2 — partially carried forward) |
-| **Avatar death** | Avatar.State.hp ≤ -10 | Triggers Doc #15 §4.1 respawn flow (Lord British's chamber single-player, nearest meditated shrine multiplayer) |
+| **Avatar death** | Avatar.State.hp ≤ -10 | Triggers Doc #15 §4.1 respawn flow (Lord Avermere's chamber single-player, nearest meditated shrine multiplayer) |
 | **Resurrection** | `cast_spell(in_mani_corp)` on corpse OR Healer spawned by Ankh of Renewal (Doc #15 §4.2) | Corpse → live entity at full Hits = STR; permadeath-locked companions reject |
 
 Corpse decay timer per Doc #4.1 §3.1 / Doc #13 §1.2. Resurrect-on-decayed-corpse fails with `ERR_INVALID_TARGET`.
@@ -525,7 +525,7 @@ Amendments to Doc #14 §5 (tools) and §6 (resources). All gated by `avatar.full
 
 ## 12. Phase 1 Prototype Scope
 
-Per Doc #11 (12-week "Britain Alive") and Doc #15 §8.
+Per Doc #11 (12-week "Highmere Alive") and Doc #15 §8.
 
 | Subsystem | In Scope | Deferred |
 |---|---|---|
@@ -541,7 +541,7 @@ Per Doc #11 (12-week "Britain Alive") and Doc #15 §8.
 | Reagents | All 8 reagents exist as items, stealable, weighable; no active spell consumption | Reagent consumption in casts |
 | MCP | None of §11 tools required for Phase 1 (per Doc #14 §8 already restricts MCP to `examine`/`use`) | All §11 tools and resources deferred to Phase 2 |
 
-Phase 1 success metric: a player can enter Cave of Trials with Iolo (set to `AttackNearest`) and Shamino (set to `Manual`), engage three brigands, take poisoned-arrow damage, drink a cure potion (uses §7 RemoveState path via `use` verb on potion), kill one brigand directly (Valor +, Compassion −), kill another by knocking him into the burning brazier with `attack(intent=displace)` (env-kill scoring confirmed at 40% of direct-murder magnitude), and witness a third brigand die to On Fire DoT after Iolo's torch ignited him.
+Phase 1 success metric: a player can enter Cave of Trials with Erevan (set to `AttackNearest`) and Shamino (set to `Manual`), engage three brigands, take poisoned-arrow damage, drink a cure potion (uses §7 RemoveState path via `use` verb on potion), kill one brigand directly (Courage +, Mercy −), kill another by knocking him into the burning brazier with `attack(intent=displace)` (env-kill scoring confirmed at 40% of direct-murder magnitude), and witness a third brigand die to On Fire DoT after Erevan's torch ignited him.
 
 ---
 

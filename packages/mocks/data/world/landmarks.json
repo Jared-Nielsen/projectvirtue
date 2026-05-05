@@ -1,19 +1,19 @@
 {
   "landmarks": [
     {
-      "id": "lm_castle_britannia",
-      "name": "castle_britannia",
-      "displayName": { "key": "lm.castle_britannia", "en": "Castle Britannia" },
+      "id": "lm_castle_avermere",
+      "name": "castle_avermere",
+      "displayName": { "key": "lm.castle_avermere", "en": "Castle Avermere" },
       "regionId": "region_britain",
       "position": { "x": 16, "y": 2, "z": 0 },
       "category": "castle",
-      "description": "Lord British's seat. The throne room is the heart of Order on this shard.",
+      "description": "Lord Avermere's seat. The throne room is the heart of Order on this shard.",
       "discovered": true
     },
     {
       "id": "lm_shrine_of_compassion",
       "name": "shrine_of_compassion",
-      "displayName": { "key": "lm.shrine_of_compassion", "en": "Shrine of Compassion" },
+      "displayName": { "key": "lm.shrine_of_compassion", "en": "Shrine of Mercy" },
       "regionId": "region_britain",
       "position": { "x": 26, "y": 12, "z": 0 },
       "category": "shrine",
@@ -24,7 +24,7 @@
       "id": "lm_shrine_of_honor",
       "name": "shrine_of_honor",
       "displayName": { "key": "lm.shrine_of_honor", "en": "Shrine of Honor" },
-      "regionId": "region_trinsic",
+      "regionId": "region_stonereach",
       "position": { "x": 44, "y": 14, "z": 0 },
       "category": "shrine",
       "description": "The Paladin's stone. To touch it falsely is to forfeit one's word.",
@@ -34,16 +34,16 @@
       "id": "lm_empath_abbey",
       "name": "empath_abbey",
       "displayName": { "key": "lm.empath_abbey", "en": "Empath Abbey" },
-      "regionId": "region_yew",
+      "regionId": "region_blackford",
       "position": { "x": 6, "y": 32, "z": 0 },
       "category": "wonder",
-      "description": "Bell tower of Yew. The bells are tolled by hand by druids in rotation.",
+      "description": "Bell tower of Blackford. The bells are tolled by hand by druids in rotation.",
       "discovered": true
     },
     {
       "id": "lm_moongate_britain",
       "name": "moongate_britain",
-      "displayName": { "key": "lm.moongate_britain", "en": "Moongate of Britain" },
+      "displayName": { "key": "lm.moongate_britain", "en": "Moongate of Highmere" },
       "regionId": "region_britain",
       "position": { "x": 1, "y": 1, "z": 0 },
       "category": "moongate",
@@ -51,10 +51,10 @@
       "discovered": true
     },
     {
-      "id": "lm_dungeon_despise_entrance",
-      "name": "dungeon_despise_entrance",
-      "displayName": { "key": "lm.despise_entrance", "en": "Despise's Maw" },
-      "regionId": "region_dungeon_despise",
+      "id": "lm_dungeon_blacktarn_entrance",
+      "name": "dungeon_blacktarn_entrance",
+      "displayName": { "key": "lm.blacktarn_entrance", "en": "Blacktarn's Maw" },
+      "regionId": "region_dungeon_blacktarn",
       "position": { "x": 4, "y": 50, "z": 0 },
       "category": "dungeon",
       "description": "A jagged stone mouth in a hill. The wind from inside smells of rust and goblin.",

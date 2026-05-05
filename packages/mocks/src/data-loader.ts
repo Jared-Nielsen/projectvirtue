@@ -76,8 +76,8 @@ import combatState from '../data/combat/state.json';
 import craftingRecipes from '../data/crafting/recipes.json';
 import craftingStations from '../data/crafting/stations.json';
 import dialogBranch from '../data/dialog/branch.json';
-import dialogIolo from '../data/dialog/iolo.json';
-import dialogLordBritish from '../data/dialog/lord-british.json';
+import dialogIolo from '../data/dialog/erevan.json';
+import dialogLordBritish from '../data/dialog/lord-avermere.json';
 import discordPresence from '../data/discord/presence.json';
 import economyMarketListings from '../data/economy/market-listings.json';
 import gmCampaignList from '../data/gm/campaign-list.json';
@@ -106,7 +106,7 @@ import voiceChannels from '../data/voice/channels.json';
 import worldLandmarks from '../data/world/landmarks.json';
 import worldNpcs from '../data/world/npcs.json';
 import worldRegions from '../data/world/regions.json';
-import worldTilesSosaria from '../data/world/tiles/sosaria.json';
+import worldTilesMythenor from '../data/world/tiles/mythenor.json';
 
 // ---------- Auth + account ----------
 
@@ -127,7 +127,7 @@ export const loadShardStatus = (): { readonly snapshots: readonly ShardStatusSna
 
 export const loadRegions = (): { readonly regions: readonly Region[] } =>
   worldRegions as unknown as { readonly regions: readonly Region[] };
-export const loadTileMapSosaria = (): TileMap => worldTilesSosaria as unknown as TileMap;
+export const loadTileMapMythenor = (): TileMap => worldTilesMythenor as unknown as TileMap;
 export const loadNpcs = (): { readonly npcs: readonly Npc[] } =>
   worldNpcs as unknown as { readonly npcs: readonly Npc[] };
 export const loadLandmarks = (): { readonly landmarks: readonly Landmark[] } =>
@@ -254,7 +254,7 @@ export const loadSampleCampaign = (): Campaign => {
     participants: [],
     createdAt: '2026-04-30T00:00:00.000Z',
     playtimeSeconds: 18000,
-    questModule: 'module_lord_british_banquet',
+    questModule: 'module_lord_avermere_banquet',
     tags: first.tags,
     contentWarnings: ['poison', 'court-intrigue'],
     maxPlayers: first.maxPlayers,

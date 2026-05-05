@@ -16,7 +16,7 @@ export const FEATURES: readonly Feature[] = [
     title: 'The Virtue System',
     subtitle: 'Choice has weight',
     description:
-      'Eight virtues quietly track every meaningful decision: honesty, compassion, valor, justice, sacrifice, honor, spirituality, humility. Your alignment shapes how the world responds — which guards greet you, which merchants trust you, which prophecies name you.',
+      'Eight virtues quietly track every meaningful decision: truth, mercy, courage, justice, devotion, honor, insight, humility. Your alignment shapes how the world responds — which guards greet you, which merchants trust you, which prophecies name you.',
     bullets: [
       'No alignment meter on the HUD — virtue is observed, not gamified',
       'NPCs remember the choices that shaped you',
@@ -29,7 +29,7 @@ export const FEATURES: readonly Feature[] = [
     title: 'A Living, Breathing World',
     subtitle: 'Persistent and reactive',
     description:
-      'Sosaria runs on real time and real consequence. Crops grow. Markets shift. Factions march. NPCs follow daily routines — sleeping, working, mourning — and remember what you did to them yesterday.',
+      'Mythenor runs on real time and real consequence. Crops grow. Markets shift. Factions march. NPCs follow daily routines — sleeping, working, mourning — and remember what you did to them yesterday.',
     bullets: [
       'Day / night with regional weather systems',
       'Dynamic world events that close after a window — miss them, lose them',
@@ -55,7 +55,7 @@ export const FEATURES: readonly Feature[] = [
     title: 'GM Campaign Mode',
     subtitle: "A dungeon master's table, online",
     description:
-      'Host a private campaign for six friends. Spawn NPCs in real time, scribe encounters on the fly, and run a season of stories that exists nowhere else. Per Doc #42 — the GM is a player who runs Britannia for an evening, and the world remembers it.',
+      'Host a private campaign for six friends. Spawn NPCs in real time, scribe encounters on the fly, and run a season of stories that exists nowhere else. Per Doc #42 — the GM is a player who runs Avermere for an evening, and the world remembers it.',
     bullets: [
       'Invite-only shards, six to eight seats',
       'Live encounter editor: spawn, narrate, branch',

@@ -99,7 +99,7 @@ picks it up automatically — no per-system patches.
 
 Today `tiles.ts` draws colored iso diamonds programmatically (decor too —
 trees, buildings, moongates as primitive shapes). This is fine for the demo
-but doesn't scale to authoring a real Britannia. Selected approach:
+but doesn't scale to authoring a real Avermere. Selected approach:
 
 **Tiled Map Editor + `pixi-tiledmap`** (selected 2026-05-05).
 
@@ -153,7 +153,7 @@ R2 paths assigned yet.
    source into `@br/mocks/data/world/tiles/<region>.json`. Tiled becomes
    the *source*; the typed JSON in `@br/mocks` stays the *wire-format*
    placeholder for the eventual protobuf codegen target (Doc #22 §4.5).
-5. Per-region maps live on R2 (e.g. `media.gamecodex.com/maps/sosaria.kenney-miniature.tmj`),
+5. Per-region maps live on R2 (e.g. `media.gamecodex.com/maps/mythenor.kenney-miniature.tmj`),
    not in `apps/web/public/`. The `tools/r2-sync` script can pull them
    into `apps/web/public/maps/` during dev for offline iteration.
 

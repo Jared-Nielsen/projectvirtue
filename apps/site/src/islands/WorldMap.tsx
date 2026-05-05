@@ -1,4 +1,4 @@
-// Interactive Sosaria map (zoom + pan + region select). Hydrated client:visible
+// Interactive Mythenor map (zoom + pan + region select). Hydrated client:visible
 // from /worlds/map.astro — visible only when the user scrolls the map into view.
 //
 // Zoom + pan: wheel-zoom on desktop, pinch-zoom on touch, and click-drag pan.
@@ -156,7 +156,7 @@ const WorldMap: Component = () => {
   };
 
   return (
-    <section class="worldmap" aria-label="Map of Sosaria">
+    <section class="worldmap" aria-label="Map of Mythenor">
       <div class="worldmap__inner">
         <div
           class="worldmap__viewport"
@@ -183,10 +183,10 @@ const WorldMap: Component = () => {
             viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
             class="worldmap__svg"
             role="img"
-            aria-label="Interactive map of Sosaria"
+            aria-label="Interactive map of Mythenor"
             preserveAspectRatio="xMidYMid meet"
           >
-            <title>Sosaria</title>
+            <title>Mythenor</title>
             <g transform={transform()}>
               <defs>
                 <radialGradient id="vignette" cx="50%" cy="50%" r="70%">

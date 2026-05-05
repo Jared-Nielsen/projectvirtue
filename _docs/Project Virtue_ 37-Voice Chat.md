@@ -10,7 +10,7 @@ Status: Living Technical Reference — Normative spec for player-to-player voice
 
 Depends on: #6 Persistent World §2 §4 (party / friends / global chat split), #10 Art & Audio Style Bible §5 (audio aesthetics — voice chat must not collide with the soundtrack mix), #14 MCP Server Surface §3 (capability tiers), #22 Network Protocol & Replication §2 (topology), §3 (tick rates), §4 (event channel), §16 item 1 (P2P NAT traversal [OPEN] — resolved here), #26 Long-range Arcs & Hosted GM Sessions §5 §12 (hosted-session voice surface), #27 Audio System §1 (sound-as-simulation), §3 (propagation model — proximity voice attenuates on the same physical model), §7 (Avatar voice — silent-protagonist tradition; this doc handles **player-to-player**, not Avatar VO), §8 (audio replication shape), §9 (accessibility hooks), #29 Moderation & Admin Tools §3 (queue), §11 (anti-cheat hooks), #32 Anti-cheat & Security Hardening §5 (packet integrity), §10 (account security), §11 (MCP security model), #33 Localization & i18n (transcription locales), #34 Accessibility Standards §4 (auditory accessibility — voice-chat transcription called out at Phase 3+; this doc delivers it), #38 Privacy & Data Governance (GDPR / COPPA — pending; cross-references throughout).
 
-Source heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VII Part Two: Serpent Isle* (1993). `[BR]` = original to Project Virtue. Voice chat is wholly `[BR]` — neither original game shipped with player voice; the design challenge is to introduce a 21st-century social layer without breaking the single-player feel of Britannia.
+Source heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VII Part Two: The Iron Marches* (1993). `[BR]` = original to Project Virtue. Voice chat is wholly `[BR]` — neither original game shipped with player voice; the design challenge is to introduce a 21st-century social layer without breaking the single-player feel of Avermere.
 
 ---
 
@@ -248,7 +248,7 @@ Voice channel persistence across Doc #22 §7 region handoffs is per-channel-kind
 | `GMSession` | Persists; GM sessions have their own pocket realm and don't traverse normal regions |
 | `Private` | Persists; private 1:1 spans regions |
 
-The SFU per region cooperates: when a player handoffs from `britain.0` to `trinsic`, the source SFU forwards the player's outbound stream to the target SFU via an internal mesh link, and the target SFU re-fans-out to subscribers. Net visible effect to the player: a 100–300 ms voice gap during the handoff transport switchover.
+The SFU per region cooperates: when a player handoffs from `highmere.0` to `stonereach`, the source SFU forwards the player's outbound stream to the target SFU via an internal mesh link, and the target SFU re-fans-out to subscribers. Net visible effect to the player: a 100–300 ms voice gap during the handoff transport switchover.
 
 ---
 
@@ -379,7 +379,7 @@ A single mid-range cloud instance (8 vCPU, 16 GB RAM, 1 Gbps NIC) handles 1 regi
 
 | Scale point | Bandwidth | CPU | Action |
 |---|---|---|---|
-| Region SFU > 70% utilization for 10 min | 3.5 MB/s sustained | 5.6 cores | Spawn parallel instance per Doc #22 §6 (`britain.0` → `britain.1` voice cohort split) |
+| Region SFU > 70% utilization for 10 min | 3.5 MB/s sustained | 5.6 cores | Spawn parallel instance per Doc #22 §6 (`highmere.0` → `highmere.1` voice cohort split) |
 | Region SFU > 90% utilization | 4.5 MB/s | 7.2 cores | Force-degrade: drop active-speaker fan-out cap from 6 to 4; surface "voice traffic high — quality reduced" notice to channel owners |
 | Edge TURN > 60% bandwidth | depends | n/a | Add TURN capacity at edge; this is the most-likely scaling pinch in restrictive-NAT geographies |
 
@@ -569,7 +569,7 @@ Per Doc #34 §4 ("Voice-chat transcription (Phase 3+)") — this doc delivers it
 | Locales | At launch: en. Phase 3+ expansion driven by Doc #33 localization priorities |
 | Latency | < 1 s (text trails speech by < 1 s in steady operation) |
 | Display | On-screen overlay near the speaker's HUD portrait (proximity / party / raid) or in a dedicated captions panel for guild rooms |
-| Speaker labels | "Iolo: ..." with the speaker's display name and the same color coding as Doc #34 §4 dialogue speaker identification |
+| Speaker labels | "Erevan: ..." with the speaker's display name and the same color coding as Doc #34 §4 dialogue speaker identification |
 | Privacy | Live captions run **on the listener's client** via downloaded ASR model; no audio is shipped to the moderation infrastructure for caption purposes. Server-side transcription is exclusively a moderation feature (§7.3) |
 | Confidence display | Low-confidence words italicized to signal the ASR is unsure |
 
@@ -794,7 +794,7 @@ The design principle: every voice channel has a parallel text channel that pre-e
 
 Voice chat is **Phase 3+** content per Doc #11 and Doc #27 §7. Phase 1 ships with no voice anywhere; Phase 2 adds text-chat infrastructure improvements (Doc #6 §4) and the voice scaffolding (capability surface stubs, settings UI placeholders); Phase 3 is the first voice ship.
 
-### 14.1 Phase 1 (vertical slice, single-player + 8-player Britain)
+### 14.1 Phase 1 (vertical slice, single-player + 8-player Highmere)
 
 | Subsystem | Scope |
 |---|---|
@@ -860,7 +860,7 @@ Three concrete integration points, in increasing order of complexity and trust r
 
 #### Rich Presence
 
-The game publishes a Discord status string for the running client. Example: "Playing Project Virtue — in Trinsic". The status updates as the player moves between regions, joins a party, or enters a hosted GM session (Doc #26 §5).
+The game publishes a Discord status string for the running client. Example: "Playing Project Virtue — in Stonereach". The status updates as the player moves between regions, joins a party, or enters a hosted GM session (Doc #26 §5).
 
 | Element | Spec |
 |---|---|
@@ -896,10 +896,10 @@ A server-side Rust service (a small companion to the main game-server fleet, dep
 | Posting category | Direction | Default | Examples |
 |---|---|---|---|
 | Server status | Out | On | "Atlantic shard back online after maintenance" |
-| Raid kill-feed | Out | On (configurable per guild) | "Guildmember Iolo defeated Lord British's Lich (raid: Despise Level 3)" |
+| Raid kill-feed | Out | On (configurable per guild) | "Guildmember Erevan defeated Lord Avermere's Lich (raid: Blacktarn Level 3)" |
 | Login / logout summary | Out | On (rolled up hourly to avoid spam) | "12 guildmembers online: …" |
 | Scheduled events | Out | On | Auto-posts when a guild leader schedules an event in-game |
-| Achievement broadcasts | Out | Per-member opt-in | "Iolo earned the *Champion of Britannia* title" |
+| Achievement broadcasts | Out | Per-member opt-in | "Erevan earned the *Champion of Avermere* title" |
 | Inbound commands | In | Read-only allowlist | `!who-online`, `!guild-treasury-readonly`, `!next-event` |
 
 **OUTBOUND ONLY by default.** The guild bot's inbound surface is restricted to a **strict read-only allowlist.** Inbound Discord commands MUST NOT move currency, transfer items, change membership, queue actions, or affect game state in any way. This is a hard architectural rule, not a configuration setting — there is no code path from a Discord webhook to a writable game-state verb. The economic-attack-surface implications (Doc #32) make this non-negotiable.
@@ -917,7 +917,7 @@ A server-side Rust service (a small companion to the main game-server fleet, dep
 
 | Surface | Decision | Reason |
 |---|---|---|
-| In-game proximity chat → Discord | **No** | Proximity is location-based (§2.4, attenuation per Doc #27 §3); Discord is room-based. The semantics do not translate — there is no Discord channel for "everyone within 30 metres of the Trinsic fountain." |
+| In-game proximity chat → Discord | **No** | Proximity is location-based (§2.4, attenuation per Doc #27 §3); Discord is room-based. The semantics do not translate — there is no Discord channel for "everyone within 30 metres of the Stonereach fountain." |
 | Discord voice replacing LiveKit | **No** | Console certification (Doc #39) requires first-party voice with platform-mute integration (§10). Discord cannot satisfy console mute hooks. |
 | Discord text channels replacing in-game text chat | **No** | Two losses: moderation sovereignty (Doc #29 — we cannot enforce CoC on Discord) and GDPR portability (Doc #38 — we cannot export Discord messages). |
 | Game state mutated by Discord commands | **No** | Inbound is read-only by architectural rule. No currency, items, membership writes, action queueing, or any state-affecting verb is reachable from a Discord webhook path. |

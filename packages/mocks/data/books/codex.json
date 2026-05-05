@@ -5,13 +5,13 @@
       "bookId": "book_the_virtues",
       "title": "Of the Eight Virtues",
       "category": "virtue",
-      "excerpt": "Compassion, Honesty, Honor, Humility, Justice, Sacrifice, Spirituality, Valor — these are the pillars of a life well lived in Britannia.",
+      "excerpt": "Mercy, Truth, Honor, Humility, Justice, Devotion, Insight, Courage — these are the pillars of a life well lived in Avermere.",
       "discovered": true,
       "relatedQuests": ["quest_first_dawn", "quest_pilgrimage_compassion"]
     },
     {
-      "id": "codex_lord_british",
-      "title": "Lord British, the Reigning Sovereign",
+      "id": "codex_lord_avermere",
+      "title": "Lord Avermere, the Reigning Sovereign",
       "category": "history",
       "excerpt": "Of the line of British, monarch since the founding. He answers to the Eight before he answers to the throne.",
       "discovered": true,
@@ -28,7 +28,7 @@
     },
     {
       "id": "codex_serpent_isle",
-      "title": "Serpent Isle, the Far Country",
+      "title": "The Iron Marches, the Far Country",
       "category": "cartography",
       "excerpt": "Beyond the Pillars of the Argentrock Isle lies a sea of green; beyond that, a stranger continent under colder stars.",
       "discovered": false,
@@ -36,7 +36,7 @@
     },
     {
       "id": "codex_brigand_lord",
-      "title": "Ratticus, Brigand-Captain of Despise",
+      "title": "Ratticus, Brigand-Captain of Blacktarn",
       "category": "bestiary",
       "excerpt": "A creature of low cunning and lower humility. Reportedly bears a stolen sigil-ring of Honor.",
       "discovered": true,
@@ -46,7 +46,7 @@
       "id": "codex_companions",
       "title": "The Companions of the Avatar",
       "category": "lore",
-      "excerpt": "Iolo, Shamino, Dupre, Mariah, Geoffrey, Jaana, Julia, Katrina. Each binds to a Virtue; together they are the Avatar's mirror.",
+      "excerpt": "Erevan, Shamino, Dupre, Mariah, Geoffrey, Jaana, Julia, Katrina. Each binds to a Virtue; together they are the Avatar's mirror.",
       "discovered": true,
       "relatedQuests": []
     }

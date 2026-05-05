@@ -2,7 +2,7 @@ Document #20: Phase 1 [OPEN] Item Triage
 Project Title: Ultima VII: Project Virtue
 Document Version: 1.0
 Date: May 2026
-Status: Triage of all `[OPEN]` markers across Docs #13–#19 against the Doc #11 12-week "Britain Alive" vertical slice. Self-contained: a project lead can run a kickoff meeting from this document alone.
+Status: Triage of all `[OPEN]` markers across Docs #13–#19 against the Doc #11 12-week "Highmere Alive" vertical slice. Self-contained: a project lead can run a kickoff meeting from this document alone.
 
 > See Doc #41 (Engine & Stack ADR) for the canonical engine boundary.
 
@@ -85,7 +85,7 @@ Notable cascade: **T-13-13 alone touches 5 downstream docs**; resolve first.
 | T-13-2 | NPC ownership transfer on death | [#13§5.2] | **BLOCK-P1-MINOR** | Companion case resolved in [#15§4] (corpse Container preserves Owner; looting = stealing for 60s claim window). Non-companion NPCs need a default. **Placeholder: corpse Container retains original Owner for `corpse_decay_seconds = 300`, then Owner→World.** Ratify before Phase 1. |
 | T-13-3 | Schedule slot granularity | [#13§5.3] | **BLOCK-P1** | #17§6.1 claims to resolve this; verify the cap/resolution choice and lock. Recommend: **8 slots per NPC instance per day, 15-min resolution, archetype provides default but per-instance overrides allowed.** Phase 1 baker (4-slot schedule) success metric depends on this. **Owner: Design. Effort: 1 day (write into #13).** |
 | T-13-4 | Witness model for stealing | [#13§5.4] | **BLOCK-P1** | #15§6 resolves for Phase 1 (option **c**: score always, legal consequence only if witnessed). Ratify and propagate to #13. Phase 1 success metric (steal bread under one watching baker) requires this to be unambiguous. **Owner: Design. Effort: 1 day.** |
-| T-13-5 | Virtue opposition coupling | [#13§5.5] | **BLOCK-P1-MINOR** | Phase 1 only scores Honesty/Justice/Sacrifice/Compassion/Valor in observable contexts. **Placeholder: opposition coupling = 0.0 for Phase 1 (no cross-Virtue penalty). Eight-way opposition graph deferred to Phase 2 balance pass.** |
+| T-13-5 | Virtue opposition coupling | [#13§5.5] | **BLOCK-P1-MINOR** | Phase 1 only scores Truth/Justice/Devotion/Mercy/Courage in observable contexts. **Placeholder: opposition coupling = 0.0 for Phase 1 (no cross-Virtue penalty). Eight-way opposition graph deferred to Phase 2 balance pass.** |
 | T-13-6 | Avatar Score formula | [#13§5.6] | **DEFER-P2** | Hidden score, no Phase 1 surface. **Placeholder: `avatar_score = mean(virtues)` for any internal use.** |
 | T-13-7 | Cross-shard Virtue reputation | [#13§5.7] | **DEFER-LIVE-OPS** | Phase 1 is single-shard ("not applicable" per #19§13). Revisit before multi-shard launch. #15§1 explicitly defers. |
 | T-13-8 | Housing inactivity grace period | [#13§5.8] | **DEFER-P2** | No housing in Phase 1. Set placeholder **30 real-time days** for any prep work. Blocks T-18-5 when housing ships. |
@@ -103,18 +103,18 @@ Notable cascade: **T-13-13 alone touches 5 downstream docs**; resolve first.
 |---|---|---|---|---|
 | T-15-1 | Gypsy question content | [#15§10.1] | **BLOCK-P1** | Phase 1 ships **3 of 7 questions** (per #15§8). The 3 must be authored before character-gen UI can be tested end-to-end (Week 3–5 milestone). Constraint per source doc: each question is a binary Virtue dilemma; collectively the full 7 touch all 8 Virtues. **Owner: Design. Effort: 5 days (write 7, ship first 3 in vertical slice).** |
 | T-15-2 | Avatar customization beyond portrait | [#15§10.2] | **BLOCK-P1-MINOR** | **Placeholder: portrait + name only at genesis in Phase 1; dyes are in-game cosmetics, not genesis options. No `cosmetics` block needed in §1.1 for Phase 1.** |
-| T-15-3 | Atrophy formula for assembled companions | [#15§10.3] | **DEFER-P2** | Phase 1 companions = Iolo + Shamino only; no assembled companions. |
+| T-15-3 | Atrophy formula for assembled companions | [#15§10.3] | **DEFER-P2** | Phase 1 companions = Erevan + Shamino only; no assembled companions. |
 | T-15-4 | Permadeath-locked companion list | [#15§10.4] | **DEFER-P2** | Phase 1 has no permadeath logic ("no permadeath logic" per #15§8). Resolve before BG-storyline-fidelity pass. |
 | T-15-5 | `CompanionPolicy.loyalty` extension | [#15§10.5] | **DEFER-P2** | No companion-leaving logic in Phase 1; loyalty surface unused. |
-| T-15-6 | Starting kit data table `data/starting_kits.toml` | [#15§10.6] | **BLOCK-P1** | Phase 1 success metric requires Iolo + Shamino + Avatar to walk into Britain equipped. The 3 class skews (or whatever subset Phase 1 ships) need authored kit rows. **Owner: Design. Effort: 2 days. Hint: §1.4 already specifies 50gp + 1 ration + 3 torches + reagent pouch for casters — this is mostly transcription to TOML.** |
-| T-15-7 | Gate-travel key naming (Serpent Jawbone analog) | [#15§10.7] | **DEFER-P2** | No gate travel in Phase 1 (Britain-only per Doc #11). |
+| T-15-6 | Starting kit data table `data/starting_kits.toml` | [#15§10.6] | **BLOCK-P1** | Phase 1 success metric requires Erevan + Shamino + Avatar to walk into Highmere equipped. The 3 class skews (or whatever subset Phase 1 ships) need authored kit rows. **Owner: Design. Effort: 2 days. Hint: §1.4 already specifies 50gp + 1 ration + 3 torches + reagent pouch for casters — this is mostly transcription to TOML.** |
+| T-15-7 | Gate-travel key naming (Serpent Jawbone analog) | [#15§10.7] | **DEFER-P2** | No gate travel in Phase 1 (Highmere-only per Doc #11). |
 | T-15-8 | Two-handed-weapon back-slot interaction | [#15§10.8] | **BLOCK-P1-MINOR** | **Placeholder: yes, two-handed weapons can be slung on back. Engine permits; art validates per asset.** Phase 1 Cave of Trials may include a two-handed weapon. |
 
 ### 4.3 Doc #16 — Combat & Magic Systems (13 items)
 
 | ID | Title | Section | Bucket | Notes / Default |
 |---|---|---|---|---|
-| T-16-INLINE-150 | Companion-flee Valor scoping (player penalised when protected-by companion flees) | [#16§2.5] | **BLOCK-P1-MINOR** | Phase 1 ships `flee` plumbed but no flee AI (per #16§12). **Placeholder: scope flee-abandonment Valor penalty to Avatar only when the fleeing companion was actively engaged in defending the Avatar within the last 5s. Phase 1 companions don't auto-flee, so realistically this fires only on Manual flee.** |
+| T-16-INLINE-150 | Companion-flee Courage scoping (player penalised when protected-by companion flees) | [#16§2.5] | **BLOCK-P1-MINOR** | Phase 1 ships `flee` plumbed but no flee AI (per #16§12). **Placeholder: scope flee-abandonment Courage penalty to Avatar only when the fleeing companion was actively engaged in defending the Avatar within the last 5s. Phase 1 companions don't auto-flee, so realistically this fires only on Manual flee.** |
 | T-16-1 | Full BR spell roster | [#16§13.1] | **DEFER-P2** | Phase 1 has no `cast_spell` (per #16§12); spellbook schema only. Reagent items exist but are inert. |
 | T-16-2 | Weapon durability formula | [#16§13.2] | **BLOCK-P1-MINOR** | **Placeholder: durability decrement = 1 per swing on hit; no decrement on miss. Repair at blacksmith costs 10% item base price per 10 durability restored. Visible in tooltip.** |
 | T-16-3 | Area-effect spell tile geometry | [#16§13.3] | **DEFER-P2** | No spells in Phase 1. |
@@ -150,10 +150,10 @@ Notable cascade: **T-13-13 alone touches 5 downstream docs**; resolve first.
 | T-18-1 | Base price table `data/prices/base.toml` | [#18§15.1] | **BLOCK-P1** | Required for Phase 1 baker BUY/SELL success metric. **Owner: Design (economy). Effort: 5 days. Coordinated with T-18-INLINE-119 to avoid input-cost > output-price recipes.** |
 | T-18-2 | Regional scarcity propagation algorithm | [#18§15.2] | **DEFER-P2** | Phase 1 hard-codes `scarcity_mod = 1.0` per #18§13. |
 | T-18-3 | Cross-shard wallet portability for cosmetic purchases | [#18§15.3] | **DEFER-LIVE-OPS** | Per source: "Resolution likely lives in a future live-ops doc." |
-| T-18-4 | Companion-merchant interaction | [#18§15.4] | **BLOCK-P1-MINOR** | **Placeholder: Phase 1 follows BG precedent — companions hold items but cannot transact independently. Iolo and Shamino can carry purchased goods; the Avatar must initiate every BUY/SELL.** |
+| T-18-4 | Companion-merchant interaction | [#18§15.4] | **BLOCK-P1-MINOR** | **Placeholder: Phase 1 follows BG precedent — companions hold items but cannot transact independently. Erevan and Shamino can carry purchased goods; the Avatar must initiate every BUY/SELL.** |
 | T-18-5 | MarketStall ownership transfer on housing abandonment | [#18§15.5] | **DEFER-P2** | Stalls deferred per #18§13. Blocks on T-13-8. |
 | T-18-6 | Haggle dispatcher path | [#18§15.6] | **DEFER-P2** | "All other merchants; haggle" deferred per #18§13. Blocks on T-13-1 when un-deferred. |
-| T-18-7 | Crafting failure Virtue scoring | [#18§15.7] | **BLOCK-P1-MINOR** | **Placeholder: catastrophic crafting failure (e.g., setting your own alchemy lab on fire) costs Humility −1 only. Spirituality scoring deferred until magic crafting in Phase 2.** Phase 1 has alchemy bench in Britain; failure path must score *something*. |
+| T-18-7 | Crafting failure Virtue scoring | [#18§15.7] | **BLOCK-P1-MINOR** | **Placeholder: catastrophic crafting failure (e.g., setting your own alchemy lab on fire) costs Humility −1 only. Insight scoring deferred until magic crafting in Phase 2.** Phase 1 has alchemy bench in Highmere; failure path must score *something*. |
 | T-18-8 | UGC recipe Virtue review pipeline | [#18§15.8] | **DEFER-P2** | UGC recipes deferred; #19 ships `SpawnEntity`/`OpenDialogue`/`GiveItem` only in Phase 1, no recipe publication. |
 | T-18-9 | Recipe journal persistence scope | [#18§15.9] | **BLOCK-P1-MINOR** | **Placeholder: `PlayerInventory` scope. Learned recipes survive client wipe. Cheap and matches BG fidelity.** |
 | T-18-10 | Two-phase trade timeout under network partition | [#18§15.10] | **DEFER-P2** | "Player-to-player trade — Deferred" per #18§13. |
@@ -204,7 +204,7 @@ Ordered sequence of decisions that must be made before Week 1 of implementation 
 | 1 | Pre-Week-0 | T-13-13 — MCP caller authority. Lock the session-bound-Avatar model. | Engineering + Garriott approval | 16 |
 | 2 | Pre-Week-0 | T-13-1 — Right-click sub-verb taxonomy (closed enum + script_invoke escape). Even if Phase 1 doesn't ship the MCP variant, the engine dispatches `right_click` for mouse clicks. | Engineering | 24 |
 | 3 | Pre-Week-0 | Issue a one-line edit to Doc #13 §5 marking items 9, 10, 12, 14 as resolved, item 2 as partially resolved, item 3 and item 4 as resolved per #17/#15 — no design work, just cross-linking. | Doc owner | 1 |
-| 4 | Week 0 | T-13-3 (ratify schedule granularity at 8 slots × 15 min × per-instance overrides). Required for Britain NPC schedule import. | Design | 8 |
+| 4 | Week 0 | T-13-3 (ratify schedule granularity at 8 slots × 15 min × per-instance overrides). Required for Highmere NPC schedule import. | Design | 8 |
 | 5 | Week 0 | T-13-4 (ratify witness model: score always, legal consequence iff witnessed). Required for stealing success metric. | Design | 4 |
 | 6 | Week 0 | T-13-15 (procedural entity persistence scope). Required for Cave of Trials work in Week 9–10. | Engineering | 8 |
 | 7 | Week 1 | T-15-1 (author 3 of 7 gypsy questions). Required for character-gen UI by Week 3. | Design | 24 (concurrent with 8) |

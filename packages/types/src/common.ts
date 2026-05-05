@@ -73,16 +73,17 @@ export interface LocalizedString {
 
 // ---------- Domain enums shared across files ----------
 
-/** The eight Britannian Virtues (Doc #5). */
+/** The eight Avermerean Virtues (Doc #5). Differentiated from prior
+ *  fantasy-RPG virtue lists per the trademark-avoidance memo. */
 export type Virtue =
-  | 'compassion'
-  | 'honesty'
+  | 'courage'
+  | 'devotion'
   | 'honor'
   | 'humility'
+  | 'insight'
   | 'justice'
-  | 'sacrifice'
-  | 'spirituality'
-  | 'valor';
+  | 'mercy'
+  | 'truth';
 
 export type GameMode = 'single-player' | 'persistent' | 'gm-campaign';
 

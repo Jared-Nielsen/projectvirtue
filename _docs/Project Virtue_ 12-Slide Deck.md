@@ -1,15 +1,15 @@
 Slide 1: Title  
 ULTIMA VII: PROJECT VIRTUE  
-An Official Licensed Remake Proposal \[Visual: Classic Ultima VII Britain town at dusk with subtle modern lighting glow\]  
+An Official Licensed Remake Proposal \[Visual: Classic Ultima VII Highmere town at dusk with subtle modern lighting glow\]  
 Subtitle: A faithful isometric simulation RPG that becomes a living platform for generations.  
-Presented to: Richard Garriott (Lord British)  
+Presented to: Richard Garriott (Lord Avermere)  
 \[Your Studio Name\] | May 2026
 
 ---
 
  Slide 2: The Vision in One Sentence  
 We are not remaking Ultima VII.  
-We are reviving it as the persistent, community-shaped Britannia you always envisioned. \[Visual: Split image – left: 1992 original screenshot | right: modern prototype mockup of same scene\]
+We are reviving it as the persistent, community-shaped Avermere you always envisioned. \[Visual: Split image – left: 1992 original screenshot | right: modern prototype mockup of same scene\]
 
 ---
 
@@ -59,9 +59,9 @@ All in service of your original vision.
 
 ---
 
- Slide 7: The World Bible – Britannia Eternal (Document \#3)  
+ Slide 7: The World Bible – Avermere Eternal (Document \#3)  
 Faithful 1992 map \+ controlled expansion.  
-Canon rules protect the Eight Virtues and your legacy while allowing player stories. \[Visual: Classic Britannia map with subtle procedural frontier glow\]
+Canon rules protect the Eight Virtues and your legacy while allowing player stories. \[Visual: Classic Avermere map with subtle procedural frontier glow\]
 
 ---
 
@@ -79,8 +79,8 @@ Redemption is always possible. \[Visual: Eight Virtues wheel with example conseq
 ---
 
  Slide 10: Persistent Multiplayer (Document \#6)  
-Shared Britannia where friends (and thousands of Avatars) coexist.  
-Seamless co-op \+ opt-in social systems. \[Visual: Multiple Avatars in Britain marketplace\]
+Shared Avermere where friends (and thousands of Avatars) coexist.  
+Seamless co-op \+ opt-in social systems. \[Visual: Multiple Avatars in Highmere marketplace\]
 
 ---
 

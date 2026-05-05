@@ -105,8 +105,8 @@ export function Landing(): JSX.Element {
               <Icon name="star" size={20} />
             </span>
             <span class={styles.loreCopy}>
-              <strong>Serpent Isle</strong>A lawless tale of secrets and ancient power. Your story
-              begins here.
+              <strong>The Iron Marches</strong>A lawless tale of secrets and ancient power. Your
+              story begins here.
             </span>
           </aside>
         </div>

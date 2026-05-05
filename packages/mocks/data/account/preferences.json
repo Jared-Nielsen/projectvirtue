@@ -6,6 +6,6 @@
   "telemetryConsent": true,
   "marketingConsent": false,
   "pushNotifications": true,
-  "preferredShard": "shard_britannia_order",
+  "preferredShard": "shard_avermere_order",
   "hidesAdultContent": false
 }

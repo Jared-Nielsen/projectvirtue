@@ -5,9 +5,9 @@ Date: May 2026
 Author: [Localization Lead]
 Status: Living Technical Reference — Normative spec for string externalization, locale-keyed catalogs, keyword-dialogue localization, per-locale voice, UGC translation, and the `translator` capability tier. Resolves Doc #17 §14 [OPEN] item 2 (`LocalizedString`); resolves Doc #24 §15 [OPEN] item 3 (path-choice prompt archaic register).
 
-Depends on: #1 Vision §5 (Garriott as Creative Steward), #3 World Bible §7 (Alternate Britannia mode), #5 Virtues, #7 UGC Modding §3 §4 (multilingual UGC), #10 Art & Audio Style Bible §5.3 (British-accented period delivery), #11 Phase 1 Vertical Slice, #13 Core Schema, #14 MCP Server Surface §3 (capabilities), §5 (tools), §6 (resources), #17 Dialogue & NPC Schedule §2 (keyword model, `LocalizedString`), §3 (universal keywords), #24 Onboarding & Tutorial Flow §4 (Tutor NPCs), §15 (path-choice prompt), #27 Audio System §6 (per-locale voice files), #28 Telemetry & Live Ops, #29 Moderation, #34 Accessibility (in flight).
+Depends on: #1 Vision §5 (Garriott as Creative Steward), #3 World Bible §7 (Alternate Avermere mode), #5 Virtues, #7 UGC Modding §3 §4 (multilingual UGC), #10 Art & Audio Style Bible §5.3 (British-accented period delivery), #11 Phase 1 Vertical Slice, #13 Core Schema, #14 MCP Server Surface §3 (capabilities), §5 (tools), §6 (resources), #17 Dialogue & NPC Schedule §2 (keyword model, `LocalizedString`), §3 (universal keywords), #24 Onboarding & Tutorial Flow §4 (Tutor NPCs), §15 (path-choice prompt), #27 Audio System §6 (per-locale voice files), #28 Telemetry & Live Ops, #29 Moderation, #34 Accessibility (in flight).
 
-Source heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VII Part Two: Serpent Isle* (1993). `[U4]` = *Ultima IV: Quest of the Avatar* (1985). `[BR]` = original to Project Virtue.
+Source heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VII Part Two: The Iron Marches* (1993). `[U4]` = *Ultima IV: Quest of the Avatar* (1985). `[BR]` = original to Project Virtue.
 
 ---
 
@@ -31,9 +31,9 @@ i18n://strings/{locale}/{namespace}.{key}
 |---|---|---|
 | `locale` | BCP-47 language tag, optionally with a register suffix `{lang}-{region}-{register}` | `en-US-archaic`, `de-DE`, `ja-JP`, `es-ES` |
 | `namespace` | one of: `dialogue`, `ui`, `system`, `journal`, `item_name`, `quest`, `region_name`, `keyword`, `cutscene`, `tutorial`, `error`, `audio_caption` | `dialogue` |
-| `key` | dot-segmented stable identifier; never a free-text English string | `lord_british.greeting.first_meet` |
+| `key` | dot-segmented stable identifier; never a free-text English string | `lord_avermere.greeting.first_meet` |
 
-Reference catalog: **`en-US-archaic`** — Britannia's "King's English with archaic register". All other locales translate from this reference. A secondary `en-US-modern` catalog exists for accessibility (Doc #34) and TTS fallback (§7.5).
+Reference catalog: **`en-US-archaic`** — Avermere's "King's English with archaic register". All other locales translate from this reference. A secondary `en-US-modern` catalog exists for accessibility (Doc #34) and TTS fallback (§7.5).
 
 ### 2.2 Catalog format — ICU MessageFormat
 
@@ -41,9 +41,9 @@ Catalogs are JSON-encoded; values are ICU MessageFormat strings. ICU is mandator
 
 ```json
 {
-  "lord_british.greeting.first_meet": "Faithful Avatar! Hast thou returned?",
+  "lord_avermere.greeting.first_meet": "Faithful Avatar! Hast thou returned?",
   "shop.purchase.confirm": "{name} hath {item_count, plural, =0 {nothing in mind} one {a single # to purchase} other {# items to purchase}}.",
-  "journal.virtue.deltas.gained": "{virtue, select, Honesty {Thou hast acted with Honesty.} Compassion {Thou hast shown Compassion.} other {Thy {virtue} hath risen.}}"
+  "journal.virtue.deltas.gained": "{virtue, select, Truth {Thou hast acted with Truth.} Mercy {Thou hast shown Mercy.} other {Thy {virtue} hath risen.}}"
 }
 ```
 
@@ -100,12 +100,12 @@ type StringRecord = {
 
 | Register | Speakers | Example (en-US) | Notes |
 |---|---|---|---|
-| `Archaic` | Lord British, Companions, formal NPCs, ritual contexts | "Hast thou the courage, Avatar?" | Default for all named NPCs in Britannia per Doc #10 §5.3 period-delivery target |
+| `Archaic` | Lord Avermere, Companions, formal NPCs, ritual contexts | "Hast thou the courage, Avatar?" | Default for all named NPCs in Avermere per Doc #10 §5.3 period-delivery target |
 | `Period` | Guards, clergy, scholars, shopkeepers | "Wouldst tell me thy business, friend?" | Slightly less archaic; standard medieval-fantasy register |
 | `Modern` | Beggars, children, low-rank or comic NPCs | "Can you tell me where the bakery is?" | Class/age signal; never used by named principals |
 | `Casual` | Tutorial Shard tutors only (Doc #24 §4) | "What's up? Try clicking the apple." | **Restricted to Toridan, Avila, Quill** (Doc #24 §4.2); clarity > immersion is permitted only inside the instanced garden. **Forbidden in any persistent shard.** |
 
-Per-locale register equivalents are documented in the per-locale **Translator Brief** (§12.4) — e.g., `de-DE` Archaic uses `Ihr` formal address, archaic verb conjugations, and uncommon vocabulary; `ja-JP` Archaic uses 候文-leaning sentence endings and `〜じゃ` for Lord British.
+Per-locale register equivalents are documented in the per-locale **Translator Brief** (§12.4) — e.g., `de-DE` Archaic uses `Ihr` formal address, archaic verb conjugations, and uncommon vocabulary; `ja-JP` Archaic uses 候文-leaning sentence endings and `〜じゃ` for Lord Avermere.
 
 ### 3.3 Register selection
 
@@ -122,7 +122,7 @@ Each NPC archetype declares its `default_register`; each `Response` may override
 | **Tier 3 (within 18 months)** | `es-LA`, `pt-BR`, `it`, `ko`, `ru`, `pl`, `zh-Hant` | Launch + 18mo | Subtitles only; TTS optional (§7.5) | One per locale; RTL readiness (§9) |
 | **Tier 4 (community)** | any | Triggered when a language community demand reaches **1,000 active Avatars** | Subtitles only; community TTS opt-in | Community translator collective |
 
-Tier counts: **Tier 1 = 2**, **Tier 2 = 5**, **Tier 3 = 7**, **Tier 4 = open**. `en-US-archaic` is reference; `en-GB` differs in spelling and a small set of lexical items (lift/elevator etc., though Britannia is a fantasy setting, so divergence is small).
+Tier counts: **Tier 1 = 2**, **Tier 2 = 5**, **Tier 3 = 7**, **Tier 4 = open**. `en-US-archaic` is reference; `en-GB` differs in spelling and a small set of lexical items (lift/elevator etc., though Avermere is a fantasy setting, so divergence is small).
 
 Tier promotion: Tier 4 → Tier 3 occurs when a community-maintained locale crosses (a) 1k active Avatars, (b) 95% string coverage, and (c) cultural-review sign-off. Promotion grants in-house QA support and the Tier-3 budget for VO incremental recording.
 
@@ -190,7 +190,7 @@ The enumeration is bounded: most NPC trees have ≤ 16 keywords with ≤ 8 visib
 
 ### 5.5 Archaic-register translator pass
 
-After the standard translation pass, the per-locale archaic-register translator does a second pass over keywords specifically. Worked example: German `WAHRHEIT` ("truth", modern) vs. `WAHRLICH` ("verily", archaic) for the conceptual cluster around `HONESTY`. The choice depends on the NPC's register: a Lord-British-tier NPC takes the archaic form; a beggar takes the modern. Both forms point to the same `CanonicalKeyword`; the rendering is per-NPC-register, supplied by `KeywordRendering.display` resolved against `Response.register`.
+After the standard translation pass, the per-locale archaic-register translator does a second pass over keywords specifically. Worked example: German `WAHRHEIT` ("truth", modern) vs. `WAHRLICH` ("verily", archaic) for the conceptual cluster around `HONESTY`. The choice depends on the NPC's register: a Lord-Avermere-tier NPC takes the archaic form; a beggar takes the modern. Both forms point to the same `CanonicalKeyword`; the rendering is per-NPC-register, supplied by `KeywordRendering.display` resolved against `Response.register`.
 
 ### 5.6 Keyword discovery from world events
 
@@ -240,9 +240,9 @@ Slavic locales (ru, pl) frequently require declined name forms (vocative for dir
 
 ```
 "{case, select,
-  nom {Lord British awaits.}
-  voc {Lord British, hear me!}
-  other {Lord British's word is law.}
+  nom {Lord Avermere awaits.}
+  voc {Lord Avermere, hear me!}
+  other {Lord Avermere's word is law.}
 }"
 ```
 
@@ -343,7 +343,7 @@ Tier 3 reserves capacity for RTL targets (Arabic primarily); engine UI must supp
 
 | Surface | RTL behavior |
 |---|---|
-| Game world (isometric Britannia) | **Not mirrored.** Geometry, NPC walk paths, sprite faces are unchanged. The world is the world. |
+| Game world (isometric Avermere) | **Not mirrored.** Geometry, NPC walk paths, sprite faces are unchanged. The world is the world. |
 | Inventory paperdoll (Doc #15 §5) | Mirrored: equipment slots flip horizontally; armor visual on Avatar sprite is unchanged |
 | Dialogue panel (Doc #17 §5) | Mirrored: keyword list right-aligned; response text right-aligned; portrait flipped to right edge |
 | Journal | Mirrored: page layout, entry order in column |
@@ -367,13 +367,13 @@ Tier 3 reserves capacity for RTL targets (Arabic primarily); engine UI must supp
 
 All numbers, dates, real-world times, currencies, percentages format via ICU on the client, locale-aware. The engine passes raw numeric / timestamp values; the catalog string places them with `{value, number, ...}`, `{date, date, ...}`, `{amount, number, ::currency/USD}` etc.
 
-### 10.2 Britannian fictional time and units
+### 10.2 Avermerean fictional time and units
 
-Britannia uses a fictional calendar (Doc #3) and fictional units (gold pieces; stones for weight per Doc #15). The fictional system is **canonical**; the locale only affects digit shape and separator characters, not the fictional names.
+Avermere uses a fictional calendar (Doc #3) and fictional units (gold pieces; stones for weight per Doc #15). The fictional system is **canonical**; the locale only affects digit shape and separator characters, not the fictional names.
 
 | Surface | Locale effect |
 |---|---|
-| In-game time ("Trinsic, 14:30 of the third day") | Hour digits formatted per locale digit script (e.g., Arabic-Indic); separator per locale |
+| In-game time ("Stonereach, 14:30 of the third day") | Hour digits formatted per locale digit script (e.g., Arabic-Indic); separator per locale |
 | Coin amounts ("47 gold pieces") | Number formatted per locale; "gold pieces" is a translatable noun in `item_name.gold_pieces` |
 | Weight ("3 stones") | Number formatted per locale; "stones" stays canonical (translated word, but the unit system is unchanged); see §16 [OPEN] for the alternative-units question |
 | Real-world live-event scheduling (Doc #28) | Standard ICU date/time format per locale |
@@ -396,13 +396,13 @@ Each Tier 1/2/3 locale has a contracted regional games-industry consultant who p
 | Sensitive topics | Region-specific (e.g., depictions of historical violence, swastika-adjacent symbology, censored color/word lists). |
 | Naming collisions | Personal names, place names that map to slurs or politically loaded terms in target culture. The glossary (§12) blocks known collisions; reviewer adds region-specific entries. |
 
-### 11.3 Alternate Britannia mode (Doc #3 §7)
+### 11.3 Alternate Avermere mode (Doc #3 §7)
 
-Where a region requires content edits that affect canon (e.g., a banned symbol on a tapestry, a rephrased oath), the reviewer may push a region-specific UGC variant via Doc #3 §7's Alternate Britannia mechanism. The variant is gated to the affected region's locale-default players; canonical content remains accessible via locale switch.
+Where a region requires content edits that affect canon (e.g., a banned symbol on a tapestry, a rephrased oath), the reviewer may push a region-specific UGC variant via Doc #3 §7's Alternate Avermere mechanism. The variant is gated to the affected region's locale-default players; canonical content remains accessible via locale switch.
 
 ### 11.4 Garriott approval (Doc #1 §5)
 
-Per Doc #1 §5, Garriott as Creative Steward retains final word on lore-affecting changes. Cultural-edit changes that touch named principals, the Eight Virtues, the Codex, or Lord British's domain require Garriott sign-off through the standard Doc #1 §5 review channel before the cultural-reviewer change ships.
+Per Doc #1 §5, Garriott as Creative Steward retains final word on lore-affecting changes. Cultural-edit changes that touch named principals, the Eight Virtues, the Codex, or Lord Avermere's domain require Garriott sign-off through the standard Doc #1 §5 review channel before the cultural-reviewer change ships.
 
 ---
 
@@ -432,9 +432,9 @@ Canonical translations for game terms. Owned by the lore team plus per-locale cu
 
 | Term type | Translation policy | Examples |
 |---|---|---|
-| Character names | **Do not translate** the personal name. Honorifics translate per locale's archaic register. | "Lord British" stays; the honorific "Lord" maps to a per-locale archaic-register equivalent (de: "Fürst" or "Herr"; ja: 卿 or 様 depending on register) |
-| Place names | Do not translate Britannia, Trinsic, Yew, Empath Abbey, etc. (proper nouns) | "Britannia" stays in all locales |
-| Eight Virtues | **Do translate** (they are common-noun concepts) | Honesty / Ehrlichkeit / honnêteté / 誠 |
+| Character names | **Do not translate** the personal name. Honorifics translate per locale's archaic register. | "Lord Avermere" stays; the honorific "Lord" maps to a per-locale archaic-register equivalent (de: "Fürst" or "Herr"; ja: 卿 or 様 depending on register) |
+| Place names | Do not translate Avermere, Stonereach, Blackford, Empath Abbey, etc. (proper nouns) | "Avermere" stays in all locales |
+| Eight Virtues | **Do translate** (they are common-noun concepts) | Truth / Ehrlichkeit / honnêteté / 誠 |
 | The Codex | Do not translate "Codex"; do translate the appositive ("Codex der Höchsten Weisheit") | |
 | Item types | Translate (common nouns) | "longsword" → "Langschwert" |
 | Magical reagents | Do not translate the canonical name; gloss in journal | "Mandrake Root" stays canonical with a gloss panel showing local name |
@@ -450,7 +450,7 @@ Exposed via MCP at `forge://i18n/glossary` (§14.2) read-only for all clients wi
 
 A markdown brief per locale, owned by the cultural reviewer, containing:
 
-- archaic-register guidance (e.g., German `Ihr`/`Du` policy for Britannian formal speech),
+- archaic-register guidance (e.g., German `Ihr`/`Du` policy for Avermerean formal speech),
 - gender enumeration the language supports,
 - declension/case requirements (Slavic),
 - plural categories (ICU),
@@ -568,12 +568,12 @@ Per Doc #11. Single-locale; the externalization scaffold and validator deliver t
 | Catalog format | ICU MessageFormat; JSON files; `i18n://strings/{locale}/{namespace}.{key}` resolver | Hot-reload in production; CDN-served catalogs |
 | Locale set | **`en-US-archaic` only** (single-locale build); `en-US-modern` skeleton present for accessibility/TTS | All Tier 1+ locales |
 | String externalization | All ~200 Phase 1 strings catalog-loaded; **no hard-coded player-facing strings in code** (linter-enforced) | Per-locale full string set |
-| Registers | `Archaic` and `Casual` registers used (`Archaic` for Britain NPCs; `Casual` permitted only inside the Phase 2 Tutorial Shard, which is deferred per Doc #24 §14) | `Period`, `Modern` registers (no NPCs require them in Phase 1) |
+| Registers | `Archaic` and `Casual` registers used (`Archaic` for Highmere NPCs; `Casual` permitted only inside the Phase 2 Tutorial Shard, which is deferred per Doc #24 §14) | `Period`, `Modern` registers (no NPCs require them in Phase 1) |
 | Keywords | `CanonicalKeyword`-based dispatch with single-locale `KeywordRendering`; uniqueness validator runs in CI | Multi-locale keyword renderings |
 | Voice | English VO for the 8 Phase 1 voice lines per Doc #27 §12, addressed via `voice://en-US-archaic/...` | Per-locale VO; TTS |
 | Dynamic assembly | ICU plurals + select for the Phase 1 strings that need them (~12 strings) | Gender-aware grammar (no Phase 1 strings require it); declension tables |
 | RTL | **Not in scope.** UI panels written with hard-coded LTR; `text_direction` property added in Phase 2. | All RTL work |
-| Number/date/time | ICU formatting active; Britannian fictional time renders correctly | Real-world live-event localization |
+| Number/date/time | ICU formatting active; Avermerean fictional time renders correctly | Real-world live-event localization |
 | UGC localization | **Not in scope.** Phase 1 UGC editor (Doc #7 §6) is single-locale (English). | All §8 |
 | Cultural review | Not yet relevant (single locale, internal team is reviewer) | Per-locale reviewers Phase 2+ |
 | Translation memory | TM database scaffold present; only seeded with the `en-US-archaic` source corpus | Multi-locale TM, suggestions UI |
@@ -583,7 +583,7 @@ Per Doc #11. Single-locale; the externalization scaffold and validator deliver t
 
 ### 15.1 Phase 1 success metric
 
-A Phase 1 build passes CI with zero hard-coded player-facing strings in any code file, all ~200 dialogue/UI/journal strings load from catalog, the Britain demo (Doc #11) renders identically to the pre-externalization build, and a deliberate experiment of swapping `en-US-archaic` → a placeholder `xx-pseudo` catalog (each string wrapped in `[XX ... XX]`) produces a visibly pseudo-localized build with no missing strings.
+A Phase 1 build passes CI with zero hard-coded player-facing strings in any code file, all ~200 dialogue/UI/journal strings load from catalog, the Highmere demo (Doc #11) renders identically to the pre-externalization build, and a deliberate experiment of swapping `en-US-archaic` → a placeholder `xx-pseudo` catalog (each string wrapped in `[XX ... XX]`) produces a visibly pseudo-localized build with no missing strings.
 
 ### 15.2 Linter / validator rules
 
@@ -607,12 +607,12 @@ Translator submits via `submit_translation` → ICU-syntax + glossary checks pas
 
 1. `[OPEN]` **Translation Management System (TMS).** Crowdin vs. Lokalise vs. Smartcat. Affects API integration with the catalog, translator UX, glossary import/export format, and cost. Working assumption: Crowdin (broadest community translator base, mature API); decision deferred to localization lead's contract review.
 2. `[OPEN]` **Volunteer translator recruitment model.** Doc #7's UGC revenue-share (70/30) is the obvious analog — should community translators get a share of premium UGC sales for translations they produced? Pro: aligns with Doc #7 ethos; con: introduces revenue accounting per-string. Working alternative: cosmetic-credit-only for community translators, contracted rate for Tier 1/2/3 production translators.
-3. `[OPEN]` **Voice cast across locales.** Different actors per language (regional authenticity, higher cost) vs. single contracted multilingual studio (consistency, lower cost). Working assumption: per-language casting for Tier 1 principals (Lord British, the Companions); studio-block for Tier 2+ named NPCs.
+3. `[OPEN]` **Voice cast across locales.** Different actors per language (regional authenticity, higher cost) vs. single contracted multilingual studio (consistency, lower cost). Working assumption: per-language casting for Tier 1 principals (Lord Avermere, the Companions); studio-block for Tier 2+ named NPCs.
 4. `[OPEN]` **Player-name Unicode handling.** Player names contain characters from one locale played by users in another (e.g., a Cyrillic-named Avatar visible to a `ja-JP` player). Open: Unicode normalization form (NFC vs. NFKC), per-locale profanity filter (`Бля` is profanity in ru but innocuous Latin transliteration in fr), display-font fallback chain. Cross-link Doc #29 moderation.
-5. `[OPEN]` **Britannian unit/coinage localization.** Stones (weight), gold pieces (currency), Britannian months (calendar) are canonical — but should a `de-DE` player see "47 Goldstücke" (translated noun, canonical concept) or have a regional variant ("47 Dukaten") for flavor? Working assumption: translated nouns only, canonical concepts preserved.
+5. `[OPEN]` **Avermerean unit/coinage localization.** Stones (weight), gold pieces (currency), Avermerean months (calendar) are canonical — but should a `de-DE` player see "47 Goldstücke" (translated noun, canonical concept) or have a regional variant ("47 Dukaten") for flavor? Working assumption: translated nouns only, canonical concepts preserved.
 6. `[OPEN]` **Per-locale legal review.** Does Garriott's Doc #1 §5 sign-off requirement apply to every per-locale cultural-edit change, or only to changes that affect canonical principals/Virtues? Recommendation: per-locale changes affecting only flavor text are reviewer-only; anything touching named principals or the Eight Virtues escalates to Garriott. Final call deferred to Doc #1 amendment.
 7. `[OPEN]` **AI-generated UGC translation pipeline.** As Doc #7 grows, AI-assisted UGC authoring is plausible. Open: should AI-generated original UGC content be translated by the same auto-translation pipeline (§8.2), or held to a stricter human-review gate (since the source itself is machine-generated)? Cross-link Doc #29 moderation policy.
-8. `[OPEN]` **Register inference for community-submitted UGC strings.** A community UGC creator writing in `fr-FR` may not know the Britannian register conventions. Should the editor (Doc #7) prompt for register per string, infer from NPC archetype, or default-to-Period and let the creator override? Working assumption: infer from NPC archetype with override.
+8. `[OPEN]` **Register inference for community-submitted UGC strings.** A community UGC creator writing in `fr-FR` may not know the Avermerean register conventions. Should the editor (Doc #7) prompt for register per string, infer from NPC archetype, or default-to-Period and let the creator override? Working assumption: infer from NPC archetype with override.
 9. `[OPEN]` **Re-recording cost when a source string changes.** Editing a translated `en-US-archaic` source line invalidates all per-locale VO clips for that line. Open: budget envelope for re-recording vs. accepting "subtitles updated; voice unchanged" with subtitle-takes-precedence indicator. Cross-link Doc #27 §6.
 
 ---
@@ -630,8 +630,8 @@ Translator submits via `submit_translation` → ICU-syntax + glossary checks pas
 | §7 Voice Per-Locale | Doc #27 §6 (extends `voice://` URI scheme), Doc #27 §6.5 (TTS hooks), Doc #27 §12 (Phase 1 VO scope) |
 | §8 UGC L10n | Doc #7 §3 (publishing pipeline), §4 (creator economy), Doc #28 (popularity signal), Doc #29 (translation moderation) |
 | §9 RTL | Doc #15 §5 (paperdoll), Doc #17 §5 (dialogue panel) |
-| §10 Number/Date/Time | Doc #3 (Britannian calendar), Doc #15 (stones, gold pieces), Doc #28 (live-event scheduling) |
-| §11 Cultural Review | Doc #3 §7 (Alternate Britannia), Doc #1 §5 (Garriott sign-off), Doc #29 (admin tooling) |
+| §10 Number/Date/Time | Doc #3 (Avermerean calendar), Doc #15 (stones, gold pieces), Doc #28 (live-event scheduling) |
+| §11 Cultural Review | Doc #3 §7 (Alternate Avermere), Doc #1 §5 (Garriott sign-off), Doc #29 (admin tooling) |
 | §12 TM & Glossary | Doc #3 (canonical names), Doc #5 (Virtue names) |
 | §13 Accessibility | Doc #34 (in flight); **resolves Doc #27 §9 LocalizedString placeholder** |
 | §14 MCP | Doc #14 §3 (capabilities — adds `translator` tier), §5 (tools), §6 (resources) |

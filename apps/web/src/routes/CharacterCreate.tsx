@@ -42,14 +42,14 @@ interface PortraitsPayload {
 }
 
 const VIRTUES: readonly VirtueAlignment[] = [
-  'compassion',
-  'honesty',
+  'mercy',
+  'truth',
   'honor',
   'humility',
   'justice',
-  'sacrifice',
-  'spirituality',
-  'valor',
+  'devotion',
+  'insight',
+  'courage',
   'balance',
 ];
 

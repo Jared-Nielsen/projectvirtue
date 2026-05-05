@@ -22,7 +22,7 @@ describe('cueForPath', () => {
     expect(cueForPath('/play/inventory')).toBe('modal-open');
     expect(cueForPath('/play/journal')).toBe('modal-open');
     expect(cueForPath('/play/options')).toBe('modal-open');
-    expect(cueForPath('/play/dialog/lord-british')).toBe('modal-open');
+    expect(cueForPath('/play/dialog/lord-avermere')).toBe('modal-open');
     expect(cueForPath('/play/loot/chest-1')).toBe('modal-open');
     expect(cueForPath('/play/levelup')).toBe('modal-open');
     expect(cueForPath('/play/book/the-virtues')).toBe('modal-open');

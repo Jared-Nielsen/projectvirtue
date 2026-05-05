@@ -4,7 +4,7 @@
       "id": "recipe_iron_longsword",
       "name": { "key": "recipe.iron_longsword", "en": "Forge Iron Longsword" },
       "description": "Hammer and hot iron. The pommel is your secret.",
-      "stationId": "station_forge_minoc",
+      "stationId": "station_forge_coldforge",
       "skill": "smithing",
       "difficulty": "standard",
       "inputs": [
@@ -40,17 +40,21 @@
       "iconKey": "icon.recipe.potion_red"
     },
     {
-      "id": "recipe_yew_longbow",
-      "name": { "key": "recipe.yew_longbow", "en": "Carve Yew Longbow" },
-      "description": "Drawn yew, sinew, beeswax. Patience is the reagent.",
-      "stationId": "station_carpentry_yew",
+      "id": "recipe_blackford_longbow",
+      "name": { "key": "recipe.blackford_longbow", "en": "Carve Blackford Longbow" },
+      "description": "Drawn blackford, sinew, beeswax. Patience is the reagent.",
+      "stationId": "station_carpentry_blackford",
       "skill": "carpentry",
       "difficulty": "difficult",
       "inputs": [
-        { "itemId": "item_cat_yew_stave", "itemName": "Yew Stave", "qty": 1 },
+        { "itemId": "item_cat_blackford_stave", "itemName": "Blackford Stave", "qty": 1 },
         { "itemId": "item_cat_sinew", "itemName": "Sinew", "qty": 2 }
       ],
-      "output": { "itemId": "item_cat_yew_longbow", "itemName": "Yew Longbow", "qty": 1 },
+      "output": {
+        "itemId": "item_cat_blackford_longbow",
+        "itemName": "Blackford Longbow",
+        "qty": 1
+      },
       "successChance": 0.65,
       "experience": 100,
       "knownByPlayer": true,
@@ -60,7 +64,7 @@
       "id": "recipe_apprentice_robe",
       "name": { "key": "recipe.apprentice_robe", "en": "Sew Apprentice Robe" },
       "description": "Plain wool dyed in the Lyceum's blue.",
-      "stationId": "station_loom_moonglow",
+      "stationId": "station_loom_lumencove",
       "skill": "tailoring",
       "difficulty": "easy",
       "inputs": [

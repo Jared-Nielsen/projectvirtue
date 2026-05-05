@@ -7,12 +7,12 @@
       "imageUrl": "/assets/loading/marine.webp",
       "thumbUrl": "/assets/loading/thumb/marine.webp",
       "tint": "#1B3A5C",
-      "tagline": "By tide and by tiller, the Vesper bound.",
+      "tagline": "By tide and by tiller, the Eastwall bound.",
       "weight": 25,
       "quotes": [
         {
           "text": "The sea forgives in salt what land forgets in stone.",
-          "attribution": "Iolo, on the way to Vesper"
+          "attribution": "Erevan, on the way to Eastwall"
         },
         {
           "text": "A short voyage is the best voyage. So saith the seasick paladin.",
@@ -29,12 +29,12 @@
       "imageUrl": "/assets/loading/dungeon.webp",
       "thumbUrl": "/assets/loading/thumb/dungeon.webp",
       "tint": "#0E0E14",
-      "tagline": "Despise tasted thee, but did not finish.",
+      "tagline": "Blacktarn tasted thee, but did not finish.",
       "weight": 25,
       "quotes": [
         {
-          "text": "A torch lasts an hour. Despise lasts longer.",
-          "attribution": "Britain Watchman's Manual"
+          "text": "A torch lasts an hour. Blacktarn lasts longer.",
+          "attribution": "Highmere Watchman's Manual"
         },
         {
           "text": "The first rule of a dungeon is light. The second is who is behind thee.",
@@ -51,7 +51,7 @@
       "imageUrl": "/assets/loading/paladin_castle.webp",
       "thumbUrl": "/assets/loading/thumb/paladin_castle.webp",
       "tint": "#5B3A18",
-      "tagline": "Trinsic stands, and so dost thou.",
+      "tagline": "Stonereach stands, and so dost thou.",
       "weight": 25,
       "quotes": [
         {
@@ -75,11 +75,11 @@
       "quotes": [
         {
           "text": "The Codex is real. It is also exactly as far away as it has always been.",
-          "attribution": "Lord British"
+          "attribution": "Lord Avermere"
         },
         {
           "text": "Begin with the lies thou tellest thyself. The rest is bookkeeping.",
-          "attribution": "Lord British, on Honesty"
+          "attribution": "Lord Avermere, on Truth"
         },
         {
           "text": "There are Eight, and they are not in order of importance, but each in service of the others.",

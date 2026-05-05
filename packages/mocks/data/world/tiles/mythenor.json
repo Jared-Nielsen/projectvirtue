@@ -147,7 +147,7 @@
         "type": "plaza",
         "walkable": true,
         "decor": "moongate",
-        "portalTo": "region_yew"
+        "portalTo": "region_blackford"
       },
       {
         "type": "grass",
@@ -3058,7 +3058,7 @@
         "type": "sand",
         "walkable": true,
         "decor": "dock",
-        "portalTo": "region_trinsic"
+        "portalTo": "region_stonereach"
       },
       {
         "type": "water",

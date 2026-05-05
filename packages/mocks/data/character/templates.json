@@ -22,7 +22,7 @@
     {
       "id": "tmpl_paladin_of_honor",
       "displayName": { "key": "tmpl.paladin_of_honor", "en": "Paladin of Honor" },
-      "description": "Sworn to Trinsic. Strong of arm and oath; vulnerable to oathbreaking.",
+      "description": "Sworn to Stonereach. Strong of arm and oath; vulnerable to oathbreaking.",
       "race": "human",
       "class": "paladin",
       "virtueAlignment": "honor",
@@ -39,8 +39,8 @@
       "portraitOptions": ["portrait_human_male_fierce_03", "portrait_human_female_fierce_02"]
     },
     {
-      "id": "tmpl_ranger_of_yew",
-      "displayName": { "key": "tmpl.ranger_of_yew", "en": "Ranger of Yew" },
+      "id": "tmpl_ranger_of_blackford",
+      "displayName": { "key": "tmpl.ranger_of_blackford", "en": "Ranger of Blackford" },
       "description": "Tracker, archer, druid-friendly. The deep wood is your hearth.",
       "race": "elf",
       "class": "ranger",
@@ -53,17 +53,17 @@
         "wisdom": 14,
         "charisma": 11
       },
-      "startingItems": ["item_yew_longbow", "item_quiver_arrows", "item_leather_armor"],
+      "startingItems": ["item_blackford_longbow", "item_quiver_arrows", "item_leather_armor"],
       "startingSpells": [],
       "portraitOptions": ["portrait_elf_male_kind_01", "portrait_elf_female_wise_02"]
     },
     {
-      "id": "tmpl_mage_of_moonglow",
-      "displayName": { "key": "tmpl.mage_of_moonglow", "en": "Mage of Moonglow" },
+      "id": "tmpl_mage_of_lumencove",
+      "displayName": { "key": "tmpl.mage_of_lumencove", "en": "Mage of Lumencove" },
       "description": "Lyceum-trained. The First Circle is yours; the rest awaits study.",
       "race": "elf",
       "class": "mage",
-      "virtueAlignment": "spirituality",
+      "virtueAlignment": "insight",
       "baseStats": {
         "strength": 8,
         "dexterity": 12,
@@ -78,11 +78,11 @@
     },
     {
       "id": "tmpl_bard_of_britain",
-      "displayName": { "key": "tmpl.bard_of_britain", "en": "Bard of Britain" },
+      "displayName": { "key": "tmpl.bard_of_britain", "en": "Bard of Highmere" },
       "description": "Lute and longbow alike. Disarms with words; finishes with arrows.",
       "race": "human",
       "class": "bard",
-      "virtueAlignment": "compassion",
+      "virtueAlignment": "mercy",
       "baseStats": {
         "strength": 11,
         "dexterity": 14,
@@ -96,12 +96,12 @@
       "portraitOptions": ["portrait_human_female_kind_01", "portrait_human_male_mischievous_01"]
     },
     {
-      "id": "tmpl_tinker_of_minoc",
-      "displayName": { "key": "tmpl.tinker_of_minoc", "en": "Tinker of Minoc" },
+      "id": "tmpl_tinker_of_coldforge",
+      "displayName": { "key": "tmpl.tinker_of_coldforge", "en": "Tinker of Coldforge" },
       "description": "Hammers and clockwork. Mining, smithing, and a stubborn streak.",
       "race": "dwarf",
       "class": "tinker",
-      "virtueAlignment": "sacrifice",
+      "virtueAlignment": "devotion",
       "baseStats": {
         "strength": 14,
         "dexterity": 11,

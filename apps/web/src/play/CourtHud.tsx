@@ -26,10 +26,10 @@ const CROWD_CHATTER: readonly string[] = [
   'You see Lord Ethos.',
   'You see a royal guard.',
   'King Ethos: "Welcome to Ardania."',
-  'You: "I bring word from the council of Britain."',
+  'You: "I bring word from the council of Highmere."',
   'King Ethos: "Then please, speak."',
   'A lutist plays softly in the gallery.',
-  'Your virtue has increased: Honesty.',
+  'Your virtue has increased: Truth.',
 ];
 
 export function CourtHud(props: CourtHudProps): JSX.Element {

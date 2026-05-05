@@ -109,7 +109,7 @@ CREATE TABLE player_avatars (
   hits_max             INT          NOT NULL,
   mana                 INT          NOT NULL,
   mana_max             INT          NOT NULL,
-  virtues              JSONB        NOT NULL,                     -- {Honesty: int, Compassion: int, ...} 8 keys
+  virtues              JSONB        NOT NULL,                     -- {Truth: int, Mercy: int, ...} 8 keys
   paperdoll            JSONB        NOT NULL,                     -- Partial<Record<EquipSlot, EntityId>> (Doc #15 §5.1)
   current_region       TEXT         NOT NULL,
   current_position     JSONB        NOT NULL,
@@ -291,7 +291,7 @@ CREATE INDEX idx_market_stalls_owner  ON market_stalls (owner_avatar_id);
 -- story_event_state — PersistenceScope.StoryEvents (Doc #13 §3)
 -- Server-wide phased state for Guardian incursions, Virtue trials, etc.
 CREATE TABLE story_event_state (
-  event_id             TEXT         PRIMARY KEY,                     -- canonical id, e.g. "guardian.incursion.britain.s1"
+  event_id             TEXT         PRIMARY KEY,                     -- canonical id, e.g. "guardian.incursion.highmere.s1"
   shard_id             TEXT         NOT NULL,
   phase                TEXT         NOT NULL,                        -- active phase token
   participants         JSONB        NOT NULL DEFAULT '[]'::jsonb,    -- [avatar_id]
@@ -651,7 +651,7 @@ Single-player skips Redis entirely. Multiplayer shards run Redis between the dis
 
 ### 10.4 Presence & Region Handoff
 
-Player online/offline transitions write to `avatar:{shard}:{avatar_id}:presence`. Region handoff (player walks from Britain to Yew) publishes a message on the destination region's pubsub channel; the destination simulation node subscribes its interest set accordingly. Doc #22 (Territory & Region Handoff) is the load-bearing reference; this doc commits only the storage shape.
+Player online/offline transitions write to `avatar:{shard}:{avatar_id}:presence`. Region handoff (player walks from Highmere to Blackford) publishes a message on the destination region's pubsub channel; the destination simulation node subscribes its interest set accordingly. Doc #22 (Territory & Region Handoff) is the load-bearing reference; this doc commits only the storage shape.
 
 ---
 
@@ -698,7 +698,7 @@ Per Doc #11 and Doc #20 §5 (Phase 1 critical path).
 | Cross-mode import | Single-player only — no shard binding to round-trip yet | Classic-shard ↔ `.fdsave` export/import |
 | Backup | Save-file copy via OS file system | PostgreSQL replication, WAL archiving, GDPR export endpoint |
 
-The Phase 1 success metric (Doc #15 §8) — Avatar walks Britain with Iolo and Shamino, equips a sword, drags a torch, steals a loaf — relies on this scope. The dispatcher's persistence write path (§9) ships in Phase 1 against SQLite; the write-batching window is the same; the failure-handling contract (`ERR_PERSISTENCE` rollback) is the same. Switching to PostgreSQL in Phase 2 is a backend swap behind the same dispatcher contract.
+The Phase 1 success metric (Doc #15 §8) — Avatar walks Highmere with Erevan and Shamino, equips a sword, drags a torch, steals a loaf — relies on this scope. The dispatcher's persistence write path (§9) ships in Phase 1 against SQLite; the write-batching window is the same; the failure-handling contract (`ERR_PERSISTENCE` rollback) is the same. Switching to PostgreSQL in Phase 2 is a backend swap behind the same dispatcher contract.
 
 ---
 

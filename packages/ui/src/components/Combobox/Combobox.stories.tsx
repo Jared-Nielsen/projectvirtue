@@ -2,14 +2,14 @@ import type { Meta, StoryObj } from 'storybook-solidjs';
 import { Combobox } from './Combobox';
 
 const cities = [
-  { value: 'britain', label: 'Britain' },
-  { value: 'trinsic', label: 'Trinsic' },
-  { value: 'magincia', label: 'Magincia' },
-  { value: 'moonglow', label: 'Moonglow' },
-  { value: 'yew', label: 'Yew' },
+  { value: 'highmere', label: 'Highmere' },
+  { value: 'stonereach', label: 'Stonereach' },
+  { value: 'aurelia', label: 'Aurelia' },
+  { value: 'lumencove', label: 'Lumencove' },
+  { value: 'blackford', label: 'Blackford' },
   { value: 'jhelom', label: 'Jhelom' },
-  { value: 'minoc', label: 'Minoc' },
-  { value: 'skara-brae', label: 'Skara Brae' },
+  { value: 'coldforge', label: 'Coldforge' },
+  { value: 'mistwood', label: 'Mistwood' },
 ];
 
 const meta = {
@@ -23,4 +23,4 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 
-export const Preselected: Story = { args: { value: 'trinsic' } };
+export const Preselected: Story = { args: { value: 'stonereach' } };

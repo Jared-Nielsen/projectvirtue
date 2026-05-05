@@ -25,7 +25,7 @@ export const Default: Story = {
         >
           Warning
         </Button>
-        <Button variant="destructive" onClick={() => toast.error('Connection to Britannia lost.')}>
+        <Button variant="destructive" onClick={() => toast.error('Connection to Avermere lost.')}>
           Error
         </Button>
       </div>

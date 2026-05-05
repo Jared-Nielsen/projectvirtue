@@ -6,7 +6,7 @@
   "description": "A long-running Order-shard guild. Pilgrimage hunts, oath-binding ceremonies, weekly council on Fridays.",
   "heraldryUrl": "/assets/heraldry/coa.webp",
   "foundedAt": "2026-03-22T00:00:00.000Z",
-  "homeShard": "shard_britannia_order",
+  "homeShard": "shard_avermere_order",
   "homeRegion": "region_britain",
   "memberCount": 7,
   "publicCharter": true,
@@ -31,9 +31,9 @@
       "contributionPoints": 360
     },
     {
-      "characterId": "char_npc_iolo",
-      "handle": "iolo_bowyer",
-      "displayName": "Iolo",
+      "characterId": "char_npc_erevan",
+      "handle": "erevan_bowyer",
+      "displayName": "Erevan",
       "role": "veteran",
       "joinedAt": "2026-04-23T09:00:00.000Z",
       "lastSeen": "2026-05-04T20:00:00.000Z",
@@ -58,7 +58,7 @@
       "contributionPoints": 142
     },
     {
-      "characterId": "char_smith_minoc",
+      "characterId": "char_smith_coldforge",
       "handle": "toryn_forge",
       "displayName": "Toryn Forge-Daughter",
       "role": "member",
@@ -68,7 +68,7 @@
     },
     {
       "characterId": "char_apprentice_lirael",
-      "handle": "lirael_moonglow",
+      "handle": "lirael_lumencove",
       "displayName": "Lirael",
       "role": "recruit",
       "joinedAt": "2026-05-01T16:00:00.000Z",

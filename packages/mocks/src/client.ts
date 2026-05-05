@@ -31,7 +31,7 @@ export class MockClient {
   #failureMode: FailureMode | null;
 
   constructor(opts: MockClientOptions = {}) {
-    this.#baseUrl = opts.baseUrl ?? 'https://mock.britannia.local';
+    this.#baseUrl = opts.baseUrl ?? 'https://mock.avermere.local';
     this.#failureMode = opts.failureMode ?? null;
     if (opts.latencyMs !== undefined) setLatency(opts.latencyMs);
   }

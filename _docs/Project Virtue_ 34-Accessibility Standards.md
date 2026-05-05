@@ -7,13 +7,13 @@ Status: Living Design Reference — Normative spec for engine-wide accessibility
 
 Depends on: #2 GDD §1 §4 (mouse-driven controls), #10 Art & Audio Style Bible §2 (palette, fonts), #11 Phase 1 Prototype Scope, #13 Core Schema (Entity, Verb, Scope), #14 MCP Server Surface §3 (capabilities), §5 (tools), §6 (resources), #17 Dialogue & NPC Schedule §2 §3 (keyword surface), #19 Quest & UGC Scripting §8 (validator), #24 Onboarding & Tutorial Flow §12 (deferred to this doc), #27 Audio System §9 (subtitles, visual cues), #33 Localization & i18n.
 
-Source heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VII Part Two: Serpent Isle* (1993). `[U4]` = *Ultima IV: Quest of the Avatar* (1985). `[BR]` = original to Project Virtue.
+Source heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VII Part Two: The Iron Marches* (1993). `[U4]` = *Ultima IV: Quest of the Avatar* (1985). `[BR]` = original to Project Virtue.
 
 ---
 
 ## 1. Accessibility Philosophy
 
-Britannia is meant for everyone who wants to walk it. Accessibility is not "added later" — it is a launch-day commitment, scoped into Phase 1 (§14), validated against external standards (§2), and audited by external consultants before public release (§11). Project Virtue targets **WCAG 2.1 AA equivalent** for game UI and meets or exceeds **CVAA** (Communications and Video Accessibility Act) standards for any communications surface (chat, voice, dialogue captioning). The original `[BG]` and `[SI]` predated the modern accessibility frameworks (WCAG 1.0 was published in 1999, the CVAA in 2010, the Game Accessibility Guidelines first appeared in 2012); reviving Britannia in 2026+ means meeting the standards the originals could not. Accessibility settings are per-Avatar persisted (§12), surfaced through the same `VerbDispatcher` and MCP capability model the rest of the simulation uses (§13), and validated for UGC at compile time (§10).
+Avermere is meant for everyone who wants to walk it. Accessibility is not "added later" — it is a launch-day commitment, scoped into Phase 1 (§14), validated against external standards (§2), and audited by external consultants before public release (§11). Project Virtue targets **WCAG 2.1 AA equivalent** for game UI and meets or exceeds **CVAA** (Communications and Video Accessibility Act) standards for any communications surface (chat, voice, dialogue captioning). The original `[BG]` and `[SI]` predated the modern accessibility frameworks (WCAG 1.0 was published in 1999, the CVAA in 2010, the Game Accessibility Guidelines first appeared in 2012); reviving Avermere in 2026+ means meeting the standards the originals could not. Accessibility settings are per-Avatar persisted (§12), surfaced through the same `VerbDispatcher` and MCP capability model the rest of the simulation uses (§13), and validated for UGC at compile time (§10).
 
 **Client-split note (canonical stack — see Doc #41 Engine & Stack ADR).** Project Virtue ships two clients against a single Rust authoritative server: a UE5 production client (desktop + PS5 + Xbox) and a TS / PixiJS web thin-client. Accessibility implementation splits accordingly:
 
@@ -82,7 +82,7 @@ High-contrast mode is independent of color-blind mode; the two compose.
 | Font | Default | Scope |
 |---|---|---|
 | Parchment-style serif (per Doc #10 §2.4) | Yes | All UI text, dialogue, journal |
-| Dyslexia-friendly font (OpenDyslexic or licensed equivalent) | Opt-in | Replaces parchment font globally; preserves the parchment ground texture so style still reads "Britannia" |
+| Dyslexia-friendly font (OpenDyslexic or licensed equivalent) | Opt-in | Replaces parchment font globally; preserves the parchment ground texture so style still reads "Avermere" |
 
 Font choice is independent of text size scaling; the two compose.
 
@@ -105,7 +105,7 @@ See §6.
 | Feature | Default | Detail |
 |---|---|---|
 | **Subtitles** | On | Every voice clip with an associated `Response.text` (always present per Doc #17 §2) is shown synchronized to playback. Per Doc #27 §9. |
-| **Speaker identification** | On | Subtitle prefixed with speaker name (`Iolo: ...`). Color-coded by faction (Companions warm gold; Britain townsfolk neutral; Fellowship muted purple; hostile NPCs red). Color is supplemental — speaker name is always literal text. |
+| **Speaker identification** | On | Subtitle prefixed with speaker name (`Erevan: ...`). Color-coded by faction (Companions warm gold; Highmere townsfolk neutral; Fellowship muted purple; hostile NPCs red). Color is supplemental — speaker name is always literal text. |
 | **Per-channel volume** | All at 100% | Five independent buses per Doc #27 §9: master, music, SFX, voice, ambient. |
 | **Visual SFX cues** | Off (opt-in) | High-importance audio (combat hits, alerts, screams, explosions, schedule interrupts) shows on-screen icon with directional indicator. Per Doc #27 §9. |
 | **Sound propagation hints** | Off (opt-in) | NPC awareness events (Doc #27 §3.4) surface as on-screen hint when relevant to the player: "A guard heard you," "A merchant noticed the broken jar." Reads the `Awareness` message that the simulation already produces. |
@@ -134,7 +134,7 @@ Subtitle and audio-cue text is `LocalizedString` per Doc #27 §9 — intersects 
 
 ## 6. Screen Reader Support
 
-The hard problem. Britannia is keyword-driven (Doc #17), isometric (Doc #2 §1), and click-target-rich. Most isometric games do not target screen readers at all; this section is mostly `[BR]` original design.
+The hard problem. Avermere is keyword-driven (Doc #17), isometric (Doc #2 §1), and click-target-rich. Most isometric games do not target screen readers at all; this section is mostly `[BR]` original design.
 
 ### 6.1 OS integration
 
@@ -160,15 +160,15 @@ Each paperdoll slot carries an accessible name (`right hand: long sword, weight 
 
 ### 6.4 Combat
 
-Each verb result is announced in real time: `Iolo struck the rat for 8 damage; rat health low.` Slowing combat (§5) helps screen-reader users keep up; combat slow mode is recommended (but not forced) when a screen reader is detected.
+Each verb result is announced in real time: `Erevan struck the rat for 8 damage; rat health low.` Slowing combat (§5) helps screen-reader users keep up; combat slow mode is recommended (but not forced) when a screen reader is detected.
 
 ### 6.5 Schedule view
 
-NPC location announced relative to Avatar: `Iolo is at the bakery, north 4 tiles, east 2 tiles.` Useful for finding party members and known NPCs.
+NPC location announced relative to Avatar: `Erevan is at the bakery, north 4 tiles, east 2 tiles.` Useful for finding party members and known NPCs.
 
 ### 6.6 World examination — the "Described View"
 
-A novel `[BR]` mode. Most isometric games offer no screen-reader equivalent for "what do I see?". Britannia provides a **described view** that lists nearby Entities in spoken form by distance and direction:
+A novel `[BR]` mode. Most isometric games offer no screen-reader equivalent for "what do I see?". Avermere provides a **described view** that lists nearby Entities in spoken form by distance and direction:
 
 ```
 Within 5 tiles: a wooden door (north, 2 tiles, closed); a fruit cart (east, 3 tiles); 
@@ -176,7 +176,7 @@ Carlin the beggar (south-east, 4 tiles); a lit torch in a sconce (north-west, 5 
 Within 10 tiles: 7 more entities, say "expand" to list.
 ```
 
-Selection algorithm for dense scenes (a Britain market square may contain 50+ entities) is an `[OPEN]` item — see §15. Phase 1 prototype: nearest-N within 5 tiles, deferred to Phase 2 for full implementation per §14.
+Selection algorithm for dense scenes (a Highmere market square may contain 50+ entities) is an `[OPEN]` item — see §15. Phase 1 prototype: nearest-N within 5 tiles, deferred to Phase 2 for full implementation per §14.
 
 Activated by a single accessible hotkey (default `Tab` while not in dialogue). Refreshes on Avatar movement.
 
@@ -186,7 +186,7 @@ Activated by a single accessible hotkey (default `Tab` while not in dialogue). R
 
 | Feature | Default | Detail |
 |---|---|---|
-| **Quest journal "next step" hint** | Off | Optional hint surfaces the suggested next action for the active quest. Off by default — Britannia is open-ended (Doc #2 design). On for cognitive accessibility, learning differences, returning players. |
+| **Quest journal "next step" hint** | Off | Optional hint surfaces the suggested next action for the active quest. Off by default — Avermere is open-ended (Doc #2 design). On for cognitive accessibility, learning differences, returning players. |
 | **Glossary tooltip** | On | Hovering on archaic words ("ye," "thee," "moongate," "Avatar's Garden") shows modern equivalent in tooltip. Per Doc #33 (vocabulary glossary lives there). |
 | **Combat target indicator** | Off | Outlines currently-targeted enemy with a luminance-distinct ring. Off by default to preserve sprite aesthetic; on for clarity. |
 | **Reduced text density mode** | Off | Strips non-essential lore text from UI panels (item flavor text moved behind a "Read more" affordance; quest journal shows current stage only by default). Combat log truncates to last 10 lines. |
@@ -252,7 +252,7 @@ The badge is a positive incentive, not a punitive lever — non-badged UGC is st
 
 | Phase | Testing |
 |---|---|
-| Per-release internal QA | Accessibility test suite as part of every release branch CI: keyboard-only run-through of Britain Town Opening; screen-reader run-through of Avatar's Garden; combat slow mode regression; subtitle sync regression |
+| Per-release internal QA | Accessibility test suite as part of every release branch CI: keyboard-only run-through of Highmere Town Opening; screen-reader run-through of Avatar's Garden; combat slow mode regression; subtitle sync regression |
 | Beta program | Beta tester pool intentionally includes accessibility-focused testers (sourced via partnerships in §15) |
 | Pre-launch external audit | External accessibility consultancy — AbleGamers Accessible Player Experience review, SpecialEffect consultation, or Game Accessibility Conference reviewer engagement. Vendor selection `[OPEN]` per §15. Audit outcomes published with launch notes per `[BR]` transparency commitment |
 | Post-launch | Bug-tracker accessibility tag with prioritized triage; accessibility issues are P1 by default |
@@ -316,7 +316,7 @@ Errors specific to accessibility tools: `ERR_UNKNOWN_OPTION` (key not recognized
 
 ---
 
-## 14. Phase 1 Prototype Scope (12-Week "Britain Alive")
+## 14. Phase 1 Prototype Scope (12-Week "Highmere Alive")
 
 Per Doc #11. Accessibility is a Phase 1 launch commitment, not a Phase 2 add-on.
 
@@ -324,7 +324,7 @@ Per Doc #11. Accessibility is a Phase 1 launch commitment, not a Phase 2 add-on.
 |---|---|---|
 | Keyboard remap (§5) | **Full.** Every action remappable. | None |
 | Subtitles (§4) | **Enabled by default**, all 8 Phase 1 voice lines (Doc #27 §12) subtitled | Audio-cue captions |
-| Color-blind modes (§3) | 4 modes scaffolded; **Deuteranopia palette tested end-to-end** in Britain | Protanopia, Tritanopia palettes tuned (scaffolded but not playtested) |
+| Color-blind modes (§3) | 4 modes scaffolded; **Deuteranopia palette tested end-to-end** in Highmere | Protanopia, Tritanopia palettes tuned (scaffolded but not playtested) |
 | Text size (§3) | 3 size steps (100/125/150%) | 175%, 200% steps and full UI reflow |
 | Combat slow mode (§5) | Implemented (single-player vertical slice has no PvP — fairness rules trivially hold) | PvP shard enforcement (no PvP exists yet) |
 | Reduced motion (§3) | Implemented — disables screen shake and bloom | Particle disable; camera transition disable |
@@ -340,7 +340,7 @@ Per Doc #11. Accessibility is a Phase 1 launch commitment, not a Phase 2 add-on.
 | MCP surface (§13) | `accessibility_profile` resource present (read-only); `set_accessibility_option` tool present | None |
 | External audit (§11) | Initial review with one consultancy (vendor TBD per §15) before Phase 1 alpha closes | Full audit pre-launch |
 
-**Phase 1 success metric:** a keyboard-only player completes the four Britain milestones (Doc #24 §3.4) without ever touching the mouse; a Deuteranopia-mode player visually distinguishes the Companions from Britain townsfolk and from a hostile rat without confusion; a HoH player completes the same milestones using subtitles only; a screen-reader user navigates the dialogue keyword list and learns one new keyword from Carlin the beggar (Doc #24 §3.3).
+**Phase 1 success metric:** a keyboard-only player completes the four Highmere milestones (Doc #24 §3.4) without ever touching the mouse; a Deuteranopia-mode player visually distinguishes the Companions from Highmere townsfolk and from a hostile rat without confusion; a HoH player completes the same milestones using subtitles only; a screen-reader user navigates the dialogue keyword list and learns one new keyword from Carlin the beggar (Doc #24 §3.3).
 
 ---
 
@@ -348,11 +348,11 @@ Per Doc #11. Accessibility is a Phase 1 launch commitment, not a Phase 2 add-on.
 
 1. `[OPEN]` **External accessibility audit vendor selection.** AbleGamers (US-based, Accessible Player Experience formal review process), SpecialEffect (UK-based, hands-on player testing), or independent Game Accessibility Conference reviewer? Trade-offs: AbleGamers gives a structured rubric and badge; SpecialEffect gives more direct player feedback; an independent reviewer is cheaper. Recommendation: engage AbleGamers for the formal APX review and SpecialEffect for hands-on testing — twin-track pre-launch. Final call deferred to launch budget.
 2. `[OPEN]` **WCAG vs XAG-MS priority where they conflict.** WCAG 2.1 AA and Xbox Accessibility Guidelines occasionally conflict — e.g., WCAG prefers persistent focus indicators on all interactive elements; XAG-MS prefers minimal HUD chrome in immersive modes. Working assumption: §2's tiered conflict resolution rule (XAG for game patterns, WCAG for shared-with-web patterns). Final call deferred until console certification submission.
-3. `[OPEN]` **Console certification accessibility requirements.** PS5 and Xbox have specific platform-mandated accessibility requirements (text size minimums, captions on by default, screen-reader API conformance). When Britannia ships to console, the Phase 2/3 scope must explicitly meet those mandates — possibly including features not yet planned (e.g., haptic-feedback alternatives for audio cues on DualSense controllers). Defer to console-port doc.
-4. `[OPEN]` **Described view (§6.6) selection algorithm for dense scenes.** A Britain town square at noon may contain 50+ entities within 5 tiles (NPCs, items, fixtures). Reading all of them is unusable. Candidate algorithms: nearest-N (simple, may miss important distant entities); priority-weighted (NPCs > containers > items > fixtures, may surprise users with weird ordering); query-mode (player asks "what NPCs?" or "what doors?", limited but predictable). Recommendation: query-mode default with a "list everything" fallback. Needs UX research with screen-reader users; partner with audit vendor (`[OPEN]` 1).
+3. `[OPEN]` **Console certification accessibility requirements.** PS5 and Xbox have specific platform-mandated accessibility requirements (text size minimums, captions on by default, screen-reader API conformance). When Avermere ships to console, the Phase 2/3 scope must explicitly meet those mandates — possibly including features not yet planned (e.g., haptic-feedback alternatives for audio cues on DualSense controllers). Defer to console-port doc.
+4. `[OPEN]` **Described view (§6.6) selection algorithm for dense scenes.** A Highmere town square at noon may contain 50+ entities within 5 tiles (NPCs, items, fixtures). Reading all of them is unusable. Candidate algorithms: nearest-N (simple, may miss important distant entities); priority-weighted (NPCs > containers > items > fixtures, may surprise users with weird ordering); query-mode (player asks "what NPCs?" or "what doors?", limited but predictable). Recommendation: query-mode default with a "list everything" fallback. Needs UX research with screen-reader users; partner with audit vendor (`[OPEN]` 1).
 5. `[OPEN]` **AbleGamers / SpecialEffect partnership form.** Formal sponsorship (badge in credits, joint marketing, structured review at every milestone) vs. arms-length consultation (paid review at milestones only). Sponsorship deepens commitment and credibility; arms-length is cheaper and lower-bandwidth. Recommendation: sponsorship if budget allows, arms-length as fallback. Intersects `[OPEN]` 1.
-6. `[OPEN]` **Phase 1 Tutorial Shard accessibility playtesting.** Doc #24 §14 defers Tutorial Shard (Path B) to Phase 2; Phase 1 only ships Britain Town Opening (Path A). Open: should at least one of the Phase 1 alpha accessibility playtests target Path A (the only path available)? Recommendation: yes — Path A is harder to accessibility-test (no diegetic tutors, learning is by trial), so testing Phase 1 on Path A surfaces real friction. Final call deferred to alpha test plan.
-7. `[OPEN]` **Cognitive accessibility for the Eight Virtues.** The Virtue system (Doc #5) is inherently abstract — Honesty, Compassion, Valor, Justice, Sacrifice, Honor, Spirituality, Humility are concepts learned through dialogue, consequence, and meditation, not explained in a tutorial. For cognitive disabilities (learning differences, abstract-reasoning challenges), the system may be opaque. Open: do we add an in-game Virtue glossary that explains each Virtue in concrete terms, with examples? Risk: makes the system feel "gamified" rather than discovered. Recommendation: yes, accessible via an opt-in cognitive-accessibility toggle in the journal; off by default to preserve the discovery experience. Final call deferred to Doc #5 amendment.
+6. `[OPEN]` **Phase 1 Tutorial Shard accessibility playtesting.** Doc #24 §14 defers Tutorial Shard (Path B) to Phase 2; Phase 1 only ships Highmere Town Opening (Path A). Open: should at least one of the Phase 1 alpha accessibility playtests target Path A (the only path available)? Recommendation: yes — Path A is harder to accessibility-test (no diegetic tutors, learning is by trial), so testing Phase 1 on Path A surfaces real friction. Final call deferred to alpha test plan.
+7. `[OPEN]` **Cognitive accessibility for the Eight Virtues.** The Virtue system (Doc #5) is inherently abstract — Truth, Mercy, Courage, Justice, Devotion, Honor, Insight, Humility are concepts learned through dialogue, consequence, and meditation, not explained in a tutorial. For cognitive disabilities (learning differences, abstract-reasoning challenges), the system may be opaque. Open: do we add an in-game Virtue glossary that explains each Virtue in concrete terms, with examples? Risk: makes the system feel "gamified" rather than discovered. Recommendation: yes, accessible via an opt-in cognitive-accessibility toggle in the journal; off by default to preserve the discovery experience. Final call deferred to Doc #5 amendment.
 8. `[OPEN]` **Economy of accessibility for UGC.** §10 imposes accessibility requirements on UGC creators. For hobby creators (a single dungeon authored on a weekend), meeting all checks may be too much friction and they may abandon publishing. For professional creators, it is reasonable. Open: do we tier the checks (baseline-only for hobby, full for badged), give creators an "I will fix this in v2" grace period, or accept that some hobby UGC will not publish? Recommendation: baseline-only checks at compile; full checks gate the Accessibility badge but not publishing. Final call deferred to Doc #19 §8 amendment.
 9. `[OPEN]` **Voice-chat transcription latency budget (Phase 3+).** §4 lists server-side STT for inbound voice. Latency target unknown; if the captioned text lags voice by > 1.5 s the HoH player loses social presence. Phase 3+ scoping concern.
 10. `[OPEN]` **Dyslexia-friendly font licensing.** §3.4 lists OpenDyslexic (open-license, free) or "licensed equivalent" (e.g., Dyslexie, Sylexiad). OpenDyslexic is free but some users find it visually distracting; commercial alternatives are cleaner but cost per-seat. Recommendation: ship OpenDyslexic in Phase 1, evaluate commercial in Phase 2 based on player feedback.
@@ -376,7 +376,7 @@ Per Doc #11. Accessibility is a Phase 1 launch commitment, not a Phase 2 add-on.
 | §11 Testing | Doc #28 (telemetry for accessibility option uptake) |
 | §12 Persistence | Doc #21 (save format — settings record), Doc #15 §1.5 (per-Avatar persistence) |
 | §13 MCP | Doc #14 §3 (capabilities), §5 (tool envelope), §6 (resources), Doc #15 §7.3 (own-avatar only) |
-| §14 Phase 1 | Doc #11 (vertical slice), Doc #14 §8 (minimal MCP), Doc #24 §14 (Britain milestones), Doc #27 §12 (audio Phase 1 baseline) |
+| §14 Phase 1 | Doc #11 (vertical slice), Doc #14 §8 (minimal MCP), Doc #24 §14 (Highmere milestones), Doc #27 §12 (audio Phase 1 baseline) |
 
 ---
 

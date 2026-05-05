@@ -1,12 +1,12 @@
 {
   "stations": [
     {
-      "id": "station_forge_minoc",
+      "id": "station_forge_coldforge",
       "name": "Toryn's Forge",
       "skill": "smithing",
-      "regionId": "region_minoc",
+      "regionId": "region_coldforge",
       "iconKey": "icon.station.forge",
-      "description": "The largest public forge in Minoc. Heat is included; coal is not.",
+      "description": "The largest public forge in Coldforge. Heat is included; coal is not.",
       "publicAccess": true
     },
     {
@@ -19,16 +19,16 @@
       "publicAccess": true
     },
     {
-      "id": "station_carpentry_yew",
+      "id": "station_carpentry_blackford",
       "name": "Empath Abbey Carpentry",
       "skill": "carpentry",
-      "regionId": "region_yew",
+      "regionId": "region_blackford",
       "iconKey": "icon.station.carpentry",
       "description": "Run by druids. Wood is given freely if your purpose pleases them.",
       "publicAccess": true
     },
     {
-      "id": "station_loom_moonglow",
+      "id": "station_loom_lumencove",
       "name": "Lyceum Loom",
       "skill": "tailoring",
       "regionId": "region_moonshade",
@@ -51,7 +51,7 @@
       "skill": "cooking",
       "regionId": "region_britain",
       "iconKey": "icon.station.kitchen",
-      "description": "Lord British's cooks tolerate amateur visits before noon.",
+      "description": "Lord Avermere's cooks tolerate amateur visits before noon.",
       "publicAccess": false
     }
   ]

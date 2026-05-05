@@ -3,20 +3,20 @@ Document \#7: UGC / Modding & Creation Tools Design Document
 Document Version: 1.0 (Prototype Planning Draft)  
 Date: May 2026  
 Author: \[Your Name / UGC & Modding Lead\]  
-Status: Living Design Reference – The system that turns players into co-creators of Britannia
+Status: Living Design Reference – The system that turns players into co-creators of Avermere
 
 ---
 
 1\. UGC Vision – “Every Avatar Is a World-Builder”
 
-The UGC layer is the Roblox-inspired soul of Project Virtue. It transforms the game from a single beloved RPG into a platform where players can create, share, and monetize their own Ultima-style adventures inside official Britannia.Core Philosophy:  
-Give players the same creative freedom Origin Systems gave modders in the 1990s — but make it accessible to a 12-year-old using simple tools, while still powerful enough for veteran modders to build entire expansions.All UGC must feel like it belongs in Ultima VII. The tools are designed to preserve the isometric simulation fantasy, never break canon unless the creator explicitly chooses “Alternate Britannia” mode.
+The UGC layer is the Roblox-inspired soul of Project Virtue. It transforms the game from a single beloved RPG into a platform where players can create, share, and monetize their own Ultima-style adventures inside official Avermere.Core Philosophy:  
+Give players the same creative freedom Origin Systems gave modders in the 1990s — but make it accessible to a 12-year-old using simple tools, while still powerful enough for veteran modders to build entire expansions.All UGC must feel like it belongs in Ultima VII. The tools are designed to preserve the isometric simulation fantasy, never break canon unless the creator explicitly chooses “Alternate Avermere” mode.
 
 ---
 
 2\. In-Game Creation Tools – “The Avatar’s Studio”
 
-Access: Unlocked after completing the Britain tutorial (or via main menu for experienced players).Core Editor Modes (all in-game, no external software required):
+Access: Unlocked after completing the Highmere tutorial (or via main menu for experienced players).Core Editor Modes (all in-game, no external software required):
 
 * Object Placement Mode — Drag-and-drop any object from the simulation database (barrels, books, NPCs, monsters, furniture). Full physics and interaction rules apply instantly.  
 * Trigger & Dialogue Editor — Visual node-based scripting (click-to-connect). Create quests, conversations, cutscenes, and events.  
@@ -58,7 +58,7 @@ Takedown & Iteration: Creators can update live content; major changes require re
 
 4\. Marketplace & Creator Economy
 
-In-Game Marketplace (housed in Britain’s “Creator’s Guild Hall”):
+In-Game Marketplace (housed in Highmere’s “Creator’s Guild Hall”):
 
 * Free to browse and play any approved creation.  
 * Cosmetic micro-transactions only (no pay-to-win).  
@@ -77,14 +77,14 @@ Monetization Rules (License-Safe):
 * Simulation (\#4): Every placed object obeys full physics, fire, containers, and environmental rules.  
 * Virtues (\#5): Creations are auto-scored; highly virtuous content is promoted.  
 * Persistent World (\#6): Approved public creations become permanent fixtures on shards.  
-* World Bible (\#3): Canon lock enforced — new content cannot retcon Lord British, the Guardian, or the Eight Virtues.  
+* World Bible (\#3): Canon lock enforced — new content cannot retcon Lord Avermere, the Guardian, or the Eight Virtues.  
 * Procedural Expansion (\#8 – next): UGC can be layered onto procedurally generated regions.
 
 ---
 
 6\. Prototype Scope – “First Creation Demo”
 
-Must be fully functional in Britain vertical slice:
+Must be fully functional in Highmere vertical slice:
 
 * Basic Object Placement \+ Trigger Editor.  
 * Ability to create a 1-room dungeon with 3 interactive objects and one simple quest trigger.  
@@ -94,7 +94,7 @@ Must be fully functional in Britain vertical slice:
 
 Stretch Goal for Prototype:
 
-* One pre-made example creation (a small player-built side-quest in Britain) that can be experienced by all playtesters.
+* One pre-made example creation (a small player-built side-quest in Highmere) that can be experienced by all playtesters.
 
 Success Metric:  
 A player who has never modded before can build something fun, publish it, and have a friend play it within the same play session — and it feels like real Ultima content.
@@ -107,4 +107,4 @@ Appendix: Style Guide & Canon Guardrails
 * No modern anachronisms, no breaking the simulation fantasy.  
 * Full creative freedom within those bounds.
 
-This UGC system is what makes Project Virtue more than a remake — it becomes a living platform that can evolve for decades, exactly like Roblox, but forever anchored in Lord British’s Virtues and the soul of Ultima VII.  
+This UGC system is what makes Project Virtue more than a remake — it becomes a living platform that can evolve for decades, exactly like Roblox, but forever anchored in Lord Avermere’s Virtues and the soul of Ultima VII.  

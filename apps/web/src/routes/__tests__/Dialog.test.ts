@@ -63,14 +63,14 @@ const sampleDlg: NpcDialog = {
 };
 
 const baseScores: Readonly<Record<Virtue, number>> = {
-  compassion: 0,
-  honesty: 0,
+  mercy: 0,
+  truth: 0,
   honor: 0,
   humility: 0,
   justice: 0,
-  sacrifice: 0,
-  spirituality: 0,
-  valor: 0,
+  devotion: 0,
+  insight: 0,
+  courage: 0,
 };
 
 describe('dialog.helpers', () => {

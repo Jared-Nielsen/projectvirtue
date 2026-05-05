@@ -9,7 +9,7 @@ Status: Living Technical Reference — Normative spec for the keyword dialogue s
 
 Depends on: #2 GDD §4.6, #3 World Bible §6, #4 Simulation §5, #5 Virtues §3 §4, #13 Core Schema (Entity, Verb, Scope), #14 MCP Server Surface, #15 Character, Party & Inventory, #41 Engine & Stack ADR.
 
-Source heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VII Part Two: Serpent Isle* (1993). `[U4]` = *Ultima IV: Quest of the Avatar* (1985). `[BR]` = original to Project Virtue.
+Source heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VII Part Two: The Iron Marches* (1993). `[U4]` = *Ultima IV: Quest of the Avatar* (1985). `[BR]` = original to Project Virtue.
 
 ---
 
@@ -97,7 +97,7 @@ Injected at session-open time by the dispatcher based on Doc #15 §6.2 witness r
 |---|---|---|---|
 | `thief` | NPC (or any NPC sharing faction via gossip §9) has witnessed an Avatar `steal` event in the past 7 game-days | Doc #15 §6.2 `[BG]` | NPC may override with custom response |
 | `murderer` | NPC's faction has witnessed Avatar killing an `is_innocent = true` NPC | Doc #15 §6.2, Doc #13 §1.7 `[BG]` | Same |
-| `liar` | Avatar has chosen a `ChangeVirtue { virtue: "Honesty", delta: < 0 }` response in this NPC's hearing | `[BR]` (BG only had thief/murderer; BR adds liar to make the Honesty pillar legible) | Same |
+| `liar` | Avatar has chosen a `ChangeVirtue { virtue: "Truth", delta: < 0 }` response in this NPC's hearing | `[BR]` (BG only had thief/murderer; BR adds liar to make the Truth pillar legible) | Same |
 | `fellowship` | Avatar is wearing or carrying a Fellowship medallion (`archetype: item.medallion.fellowship`) | `[BG]` | Fellowship NPCs unlock recruitment branch; non-Fellowship NPCs may react warily |
 | `avatar` | Avatar's public Virtue title (Doc #15 §7.3) is non-empty | `[U4]` `[BG]` | NPC reacts according to title polarity |
 
@@ -125,20 +125,20 @@ Invariants:
 1. Gates are **evaluated at every `talk` invocation, not cached**. A Virtue change between two visits changes what is visible. `[BR]`
 2. Hidden keywords give **no hint that they exist** — the UI does not render them greyed-out, and the response text never references them. True to BG `[BG]`. The player learns of locked content only through other channels (rumors, hints, prior playthroughs).
 3. Gates compose by intersection: a keyword guarded by both a Virtue gate and a state gate requires both to pass.
-4. `ChangeVirtue` side-effects route through the Virtue dispatcher (Doc #5), which means a dialogue response that costs Honesty fires the same Virtue Engine path as a stolen apple.
+4. `ChangeVirtue` side-effects route through the Virtue dispatcher (Doc #5), which means a dialogue response that costs Truth fires the same Virtue Engine path as a stolen apple.
 
 ### 4.1 Worked Example
 
-A paladin at Empath Abbey offers a `join_order` keyword only if Honor ≥ 70 AND Valor ≥ 60:
+A paladin at Empath Abbey offers a `join_order` keyword only if Honor ≥ 70 AND Courage ≥ 60:
 
 ```ts
 virtue_gates: [
   { virtue: "Honor", op: "geq", value: 70, gated_keywords: ["join_order"] },
-  { virtue: "Valor", op: "geq", value: 60, gated_keywords: ["join_order"] },
+  { virtue: "Courage", op: "geq", value: 60, gated_keywords: ["join_order"] },
 ]
 ```
 
-Both gates list `join_order`; both must pass for it to surface. A player at Honor 90, Valor 50 will not see the keyword and will not be told why.
+Both gates list `join_order`; both must pass for it to surface. A player at Honor 90, Courage 50 will not see the keyword and will not be told why.
 
 ---
 
@@ -239,7 +239,7 @@ type ScheduleSlot = {
   location:          TileCoord | { sit_at: EntityId }
   activity:          Activity
   props:             EntityId[]              // chair, bed, forge, lute, etc.
-  interruptible:     bool                    // false = "no-interrupt" (Lord British court session)
+  interruptible:     bool                    // false = "no-interrupt" (Lord Avermere court session)
   dialogue_override: DialogueTreeId | null   // contextual tree while in this slot
 }
 
@@ -339,7 +339,7 @@ Formal rules for what happens when external events disrupt a scheduled slot.
 | `true` | NPC stops, faces player, opens dialogue. On `bye`, resumes the slot from current position (re-issues `move_to` if not yet at `location`). `[BG]` |
 | `false` | Dispatcher returns `ERR_BUSY`; NPC emits a single one-line refusal ("I am busy. Speak to me later."). The refusal text is `dialogue_override.text` if present, else a generic line. `[BG]` |
 
-Examples of `interruptible = false` slots: Lord British holding court, a cleric mid-ritual, a guard mid-patrol-challenge, a sleeping NPC.
+Examples of `interruptible = false` slots: Lord Avermere holding court, a cleric mid-ritual, a guard mid-patrol-challenge, a sleeping NPC.
 
 ### 8.2 Player initiates `attack` on scheduled NPC
 
@@ -466,7 +466,7 @@ type CompanionBanter = {
 ```
 
 Examples from BG/SI:
-- Iolo at Britain music guild: bardic banter about his lute. `[BG]`
+- Erevan at Highmere music guild: bardic banter about his lute. `[BG]`
 - Shamino in any forest region: ranger nostalgia. `[BG]`
 - Dupre on entering any tavern: drinking comment. `[BG]` (graduates to scripted rant on third trigger `[SI]`).
 
@@ -476,7 +476,7 @@ When a companion's `witness_enabled = true` (Doc #15 §3.2 default `true` in BR 
 
 ### 10.3 Companion-vs-companion dialogue `[OPEN]`
 
-Whether companions ever address each other (e.g., Iolo and Shamino bickering in earshot of the Avatar) is `[OPEN]` (§14). The data model supports it (banter triggered by `EnterEntity` matching another companion), but no Phase 1 commitment.
+Whether companions ever address each other (e.g., Erevan and Shamino bickering in earshot of the Avatar) is `[OPEN]` (§14). The data model supports it (banter triggered by `EnterEntity` matching another companion), but no Phase 1 commitment.
 
 ---
 
@@ -587,26 +587,26 @@ Errors specific to dialogue tools: `ERR_SESSION_NOT_FOUND`, `ERR_SESSION_CLOSED`
 
 ---
 
-## 13. Phase 1 Prototype Scope (12-Week "Britain Alive")
+## 13. Phase 1 Prototype Scope (12-Week "Highmere Alive")
 
 Per Doc #11. Deliberately minimal; proves the keyword loop and schedule execution end-to-end on a small NPC roster.
 
 | Subsystem | In Scope | Deferred |
 |---|---|---|
-| Dialogue trees | 15 Britain NPCs (matches Doc #11 milestone, aligns with Doc #4 §8's "20+ NPCs" target as a lower bound); each tree has `name`, `job`, `bye` plus 5–10 contextual keywords | Full `unlocks`/`locks` graph beyond 1 hop; cutscene side-effects |
-| Virtue gates | Active on **3 NPCs** (e.g., Britain guard refuses to talk to low-Honor Avatar; Lord British's chamber paladin gates `join_order` on Honor+Valor; one Fellowship recruiter gates `fellowship` keyword on Humility ≤ 30) | Gates on full NPC roster |
+| Dialogue trees | 15 Highmere NPCs (matches Doc #11 milestone, aligns with Doc #4 §8's "20+ NPCs" target as a lower bound); each tree has `name`, `job`, `bye` plus 5–10 contextual keywords | Full `unlocks`/`locks` graph beyond 1 hop; cutscene side-effects |
+| Virtue gates | Active on **3 NPCs** (e.g., Highmere guard refuses to talk to low-Honor Avatar; Lord Avermere's chamber paladin gates `join_order` on Honor+Courage; one Fellowship recruiter gates `fellowship` keyword on Humility ≤ 30) | Gates on full NPC roster |
 | State gates | Quest-flag gates active on the 3 quest-bearing NPCs of the Phase 1 quest line | Multi-flag composition, time-of-day gates |
 | Reactive keywords | `name`/`job`/`bye` always; `thief`/`murderer` injected from single-NPC LOS witness only (Doc #15 §8 Phase 1 ownership row) | `liar`, `fellowship`, `avatar` injection; faction-level rumor injection |
-| Schedules | 15 Britain NPCs with full daily slots (≥ 4 slots each); `Sleep`/`Eat`/`Work`/`Walk`/`Idle` activities | `Pray`, `Patrol`, `Socialize`, `Custom` script activities |
+| Schedules | 15 Highmere NPCs with full daily slots (≥ 4 slots each); `Sleep`/`Eat`/`Work`/`Walk`/`Idle` activities | `Pray`, `Patrol`, `Socialize`, `Custom` script activities |
 | Schedule execution | Move-to + activity verbs through dispatcher; missing-prop fallback to `Idle` | Override slot installation by external events |
 | Interruption | `talk` interrupts walking NPC (§8.1); `attack` pauses schedule (§8.2) | Prop-theft rescheduling (§8.3) deferred to Phase 2 |
 | Gossip / rumors | **None.** No `RumorStore`, no `Socialize` activity, no rumor-derived keywords | Full system per §9 |
-| Companion dialogue | Iolo and Shamino (the two Phase 1 companions per Doc #15 §8) have dialogue trees with `name`/`job`/`bye` + 3 contextual keywords each; **no banter triggers** | Banter system, companion-witness barbs, companion-vs-companion |
+| Companion dialogue | Erevan and Shamino (the two Phase 1 companions per Doc #15 §8) have dialogue trees with `name`/`job`/`bye` + 3 contextual keywords each; **no banter triggers** | Banter system, companion-witness barbs, companion-vs-companion |
 | Reaction matrix | `Friendly`/`Neutral`/`Wary`/`Hostile` only (no `Fearful`); recomputed on `talk` | `Fearful` state, faction-relation inputs |
 | Multiplayer | **Single-player only** for vertical slice (matches Doc #14 §8 Phase 1 transport scope) | Per-player session instancing, instanced cutscenes |
 | MCP | None of the §12 tools required for the Phase 1 slice (per Doc #14 §8 — only `examine` and `use` ship as mutating-path proofs) | All §12 tools and resources deferred to Phase 2 |
 
-**Phase 1 success metric:** a player can walk into Britain, talk to the baker (`name` → "I am Garritt." → unlock `bread`; `bread` → "Two gold pieces a loaf."), see the baker switch from `Work` (08:00–12:00 at the oven) to `Eat` (12:00–13:00 at the tavern) and have different `job` responses in each slot, then steal a loaf and on the next `talk` see the auto-injected `thief` keyword surface.
+**Phase 1 success metric:** a player can walk into Highmere, talk to the baker (`name` → "I am Garritt." → unlock `bread`; `bread` → "Two gold pieces a loaf."), see the baker switch from `Work` (08:00–12:00 at the oven) to `Eat` (12:00–13:00 at the tavern) and have different `job` responses in each slot, then steal a loaf and on the next `talk` see the auto-injected `thief` keyword surface.
 
 ---
 

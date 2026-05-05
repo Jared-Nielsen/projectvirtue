@@ -186,7 +186,7 @@ Random sample, target sections inspected by hand:
 | #18 §11 cites "Doc #6 §3 (HousingAndCreations + Economy scopes)" | #6 §3 covers both | ✓ |
 | #19 §1 cites "Doc #4 §2 simulation, Doc #5 §4 virtues, Doc #6 §3 persistence" | All three exist with the cited content | ✓ |
 | #19 §6 cites "Doc #13 §4" verb dispatch | ✓ |
-| #19 §8.3 lists canonical NPCs `Lord British, Iolo, Shamino, Spark, Dupre, Jaana, Geoffrey, Julia, Katrina, Sentri, Mariah, Tseramed` | #3 §6 lists "Iolo, Shamino, Dupre, and other classic party members"; full BG roster is implied but #3 is incomplete | ✓ on names but **doc-internal completeness drift**: #3 §6 only names 3 of 12. |
+| #19 §8.3 lists canonical NPCs `Lord Avermere, Erevan, Shamino, Spark, Dupre, Jaana, Geoffrey, Julia, Katrina, Sentri, Mariah, Tseramed` | #3 §6 lists "Erevan, Shamino, Dupre, and other classic party members"; full BG roster is implied but #3 is incomplete | ✓ on names but **doc-internal completeness drift**: #3 §6 only names 3 of 12. |
 | #21 §3.4 footnote "Doc #15 §4.4 redemption" | #15 §4.4 is "Redemption Path" table | ✓ |
 | #21 §13 cites "Doc #20 T-13-15" | T-13-15 exists in #20 §4.1 | ✓ |
 | #21 §16 cites "Doc #22 (territory handoff)" | #22 §7 is region handoff | ✓ |
@@ -231,7 +231,7 @@ Cross-checked the Phase 1 subsections in every doc that has one (#11, #14 §8, #
 
 | Question | Answer |
 |---|---|
-| Does #15 Phase 1 (companions: Iolo + Shamino only) align with #17 Phase 1 (15 NPCs, Iolo+Shamino dialogue trees)? | ✓ |
+| Does #15 Phase 1 (companions: Erevan + Shamino only) align with #17 Phase 1 (15 NPCs, Erevan+Shamino dialogue trees)? | ✓ |
 | Does #15 Phase 1 (no MP combat) align with #16 Phase 1 (single-player pause-on-inventory only; MP combat disabled)? | ✓ |
 | Does #16 Phase 1 (`AttackNearest` + `Manual` only; no `Flank`/`Protect`/`Flee`) align with #23 Phase 1 (no Flank/Protect/Flee path predicates)? | ✓ |
 | Does #17 Phase 1 (no `Pray`/`Patrol`/`Socialize`/`Custom` activities) align with #23 Phase 1 (schedule executes through dispatcher)? | ✓ — the activities not shipped in #17 are simply not exercised. |
@@ -265,7 +265,7 @@ Ordered by leverage (top closes the most downstream issues per edit). Each is an
 15. (**#22**, §16 item 4) — **Mark `qa.harness` and `inspect.bulk` explicitly as "[OPEN] — capability schema deferred to Doc #28."** Tags the open question.
 16. (**#26-SpriteAnimation.md**) — **Delete the empty placeholder file (or rename it `26b-SpriteAnimation.md`); the canonical doc #26 is "Long-range Arcs & Hosted GM Sessions."** Closes the doc-numbering collision.
 17. (**#13**, §5 item 2) — **Mark "partially resolved" with cross-links to #15 §3.7 (companion case) AND a note that non-companion case carries the #20 §4.1 placeholder (300s decay → World).** Closes the partial-resolution discoverability gap.
-18. (**#3**, §6) — **Expand canonical NPC list to match the 12 names enumerated in #19 §8.3 (Lord British, Iolo, Shamino, Spark, Dupre, Jaana, Geoffrey, Julia, Katrina, Sentri, Mariah, Tseramed).** Closes the lore-completeness gap.
+18. (**#3**, §6) — **Expand canonical NPC list to match the 12 names enumerated in #19 §8.3 (Lord Avermere, Erevan, Shamino, Spark, Dupre, Jaana, Geoffrey, Julia, Katrina, Sentri, Mariah, Tseramed).** Closes the lore-completeness gap.
 19. (**#24**, §15 item 5) — **Re-mark as "stale forward reference; Doc #23 does not address; remains open."** Removes a misleading defer.
 20. (**#18**, §13) — **Add cross-link to #25 §T-18-1 explaining copper-internal/gold-surface currency split.** Closes the currency-coherence MINOR.
 

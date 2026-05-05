@@ -129,7 +129,7 @@ export async function mountCanvas(opts: MountOptions): Promise<CanvasRuntime> {
   }
 
   // Tile layer.
-  const tileMap = fixtures.loadTileMapSosaria();
+  const tileMap = fixtures.loadTileMapMythenor();
   const tileLayer = buildTileLayer(tileMap, isoMetrics);
   world.addChild(tileLayer.container);
 

@@ -10,7 +10,7 @@ Status: Living Technical Reference — Normative spec for PlayStation 5 and Xbox
 
 Depends on: #1 Vision §4 (success metrics), #2 GDD §1 (input model), #6 Persistent World §2 (shard types), §3 (cross-shard identity), #7 UGC §3 (publishing pipeline), #11 Prototype Scope & Milestone Roadmap, #14 MCP Server Surface §3 (capabilities), #15 Character/Party/Inventory §1 §5 §7.3, #21 Save Format & Shard DB §3.11 §7, #22 Network Protocol & Replication, #27 Audio System §6 (voice URI scheme), §9 (subtitles), #28 Telemetry §3 §4 §8, #29 Moderation & Admin Tools, #32 Anti-cheat & Security Hardening, #33 Localization & i18n §4 (locale tiers), §11 (cultural review), #34 Accessibility §2 (standards alignment), §13 (MCP surface), #37 Voice Chat (parallel doc), #38 Data Export & GDPR Portability (parallel doc).
 
-Source heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VII Part Two: Serpent Isle* (1993). `[U4]` = *Ultima IV: Quest of the Avatar* (1985). `[BR]` = original to Project Virtue.
+Source heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VII Part Two: The Iron Marches* (1993). `[U4]` = *Ultima IV: Quest of the Avatar* (1985). `[BR]` = original to Project Virtue.
 
 Platform-program acronyms used throughout this doc:
 
@@ -69,7 +69,7 @@ XR severity maps similarly to TRC (Critical / High / Medium / Low / Info).
 
 ### 2.3 Nintendo Switch — Lotcheck
 
-**Nintendo Switch is not in current scope.** Should it become in scope (Phase 4+ or later), Lotcheck is the relevant certification program. Lotcheck differs from TRC/XR in that Nintendo's hardware constraints are tighter (memory, storage, CPU) and the simulation density of Britannia (Doc #6 §2 region-loading) requires explicit profiling against Switch SKUs. Lotcheck content guidelines are stricter on dismemberment, blood, and certain religious imagery — cross-link Doc #33 §11 (cultural review). A separate console-port doc would be required; this doc only flags the dependency.
+**Nintendo Switch is not in current scope.** Should it become in scope (Phase 4+ or later), Lotcheck is the relevant certification program. Lotcheck differs from TRC/XR in that Nintendo's hardware constraints are tighter (memory, storage, CPU) and the simulation density of Avermere (Doc #6 §2 region-loading) requires explicit profiling against Switch SKUs. Lotcheck content guidelines are stricter on dismemberment, blood, and certain religious imagery — cross-link Doc #33 §11 (cultural review). A separate console-port doc would be required; this doc only flags the dependency.
 
 ### 2.4 PC console-equivalents (mention only)
 
@@ -88,20 +88,20 @@ Per Doc #41, the TS / PixiJS web client is a browser-only prototype for web play
 A Project Virtue account is a first-party identity (email + password, see Doc #38 §3 for portability) that links one or more platform identities. The link is bidirectional and platform-mandated:
 
 ```
-   Britannia Account (br_account_id)
+   Avermere Account (br_account_id)
    ├── PSN account (psn_id, gamertag, country)
    ├── Xbox Live account (xuid, gamertag, country)
    └── PC account (steam_id_64 | epic_id | direct)
 ```
 
-Each platform identity may link to **at most one** Britannia account. A second link attempt from the same platform identity returns a clear error (the existing link must be unlinked first via the account portal).
+Each platform identity may link to **at most one** Avermere account. A second link attempt from the same platform identity returns a clear error (the existing link must be unlinked first via the account portal).
 
 ### 3.2 Sign-in flow on console
 
 | Platform | Sign-in flow |
 |---|---|
-| PS5 | Player must be signed into PSN. Title launches → Britannia auth handshake uses the PSN auth ticket → Britannia account resolved via prior link or creates new account on first launch. |
-| Xbox Series X|S | Player must be signed into Xbox Live. Title launches → Britannia auth handshake uses the Xbox auth ticket (XSAPI) → Britannia account resolved as above. |
+| PS5 | Player must be signed into PSN. Title launches → Avermere auth handshake uses the PSN auth ticket → Avermere account resolved via prior link or creates new account on first launch. |
+| Xbox Series X|S | Player must be signed into Xbox Live. Title launches → Avermere auth handshake uses the Xbox auth ticket (XSAPI) → Avermere account resolved as above. |
 
 First-launch on console with no prior link prompts an **in-game account-link flow** rather than a web redirect (TRC and XR both prefer in-game flows; deep web redirects are graded down).
 
@@ -109,32 +109,32 @@ First-launch on console with no prior link prompts an **in-game account-link flo
 
 | Surface | Display name source |
 |---|---|
-| Avatar nameplate (in-world) | Britannia Avatar name (the in-fiction character name, per Doc #15 §1) |
+| Avatar nameplate (in-world) | Avermere Avatar name (the in-fiction character name, per Doc #15 §1) |
 | Friends list, party UI | Platform gamertag (PSN ID or Xbox gamertag) |
 | Voice chat overlay (Doc #37) | Platform gamertag |
-| In-fiction dialogue, journal, NPC speech | Britannia Avatar name only |
+| In-fiction dialogue, journal, NPC speech | Avermere Avatar name only |
 | Trophy/achievement notification | Platform gamertag (platform-rendered overlay; not engine-controlled) |
 
-This dual-name model resolves the otherwise-irreconcilable tension between platform display rules ("the player must always see the gamertag they signed in as") and Britannia's diegesis ("Iolo addresses you as `Avatar`, never as `xX_PvPGod_Xx`"). Both names display side-by-side in friends list and party panels; the in-world world is name-only Avatar.
+This dual-name model resolves the otherwise-irreconcilable tension between platform display rules ("the player must always see the gamertag they signed in as") and Avermere's diegesis ("Erevan addresses you as `Avatar`, never as `xX_PvPGod_Xx`"). Both names display side-by-side in friends list and party panels; the in-world world is name-only Avatar.
 
 ### 3.4 Parental controls
 
 Both PSN and Xbox Live expose per-account parental control settings the title **must** honor. The platform reports these settings in the auth ticket.
 
-| Parental Control | Britannia behavior when restricted |
+| Parental Control | Avermere behavior when restricted |
 |---|---|
 | Online play disabled | Persistent shards (Virtue, Chaos) refused; only Classic Shard (Doc #6 §2) and Avatar's Garden (Doc #24 §4) accessible. In-fiction prompt at moongate: "Thy guardians have not yet permitted thee to walk these wider lands." No retry, no nag. |
 | Voice chat disabled | Doc #37 voice chat fully disabled — neither send nor receive. Text chat falls back per Doc #37 §6. |
 | Text chat with strangers disabled | Text chat restricted to friends-list-only counterparties. Trade-chat (Doc #18) restricted similarly. |
 | User-generated content disabled | UGC editor (Doc #7) hidden in main menu; UGC content browser ("Hall of Wonders") shows only first-party content. |
 | Cross-platform play disabled | §5.3 enforces — player sees only same-platform players in party / shard browser. |
-| Age-restricted content | Mature themes (Doc #2 GDD §3 — moral choice depictions, violence) not gated by age in current scope; if jurisdictional rating raises issues, the Doc #33 §11.3 Alternate Britannia mechanism applies. |
+| Age-restricted content | Mature themes (Doc #2 GDD §3 — moral choice depictions, violence) not gated by age in current scope; if jurisdictional rating raises issues, the Doc #33 §11.3 Alternate Avermere mechanism applies. |
 
 Parental control state is **read-only on the client**; no in-game UI offers to override. Changes require the parent / guardian to use the platform's account management UI.
 
 ### 3.5 Cross-progression
 
-A single Britannia Avatar is reachable from any linked platform — that is the design promise. The Avatar lives on a Britannia shard (Doc #6 §3); platform identity controls *which Britannia account the session is signed in as*, not *which Avatar exists*. Concretely:
+A single Avermere Avatar is reachable from any linked platform — that is the design promise. The Avatar lives on a Avermere shard (Doc #6 §3); platform identity controls *which Avermere account the session is signed in as*, not *which Avatar exists*. Concretely:
 
 | Action | Source platform | Destination platform | Behavior |
 |---|---|---|---|
@@ -182,11 +182,11 @@ The model:
 
 | Concept | Storage | Notes |
 |---|---|---|
-| **Premium currency balance** | Britannia account (server-authoritative) | Account-wide; reachable from any platform. |
-| **Earned in-game currency** (gold pieces, Doc #18) | Britannia Avatar | As §3.5; cross-progression by default. |
-| **Purchase of premium currency** | Platform-of-purchase (PSN, Microsoft Store, Steam, Epic) | Platform handles payment, refund, dispute resolution. Britannia receives a server-side webhook from the platform's commerce backend confirming purchase; the balance is then granted account-wide. |
-| **Entitlements** (cosmetics, named items, season passes) | Britannia account | Granted on purchase. **Never revoked** unless platform-level refund is processed (§4.4). |
-| **Refund** | Platform-of-purchase | Platform processes; webhook tells Britannia to revoke the entitlement and decrement the granted balance. |
+| **Premium currency balance** | Avermere account (server-authoritative) | Account-wide; reachable from any platform. |
+| **Earned in-game currency** (gold pieces, Doc #18) | Avermere Avatar | As §3.5; cross-progression by default. |
+| **Purchase of premium currency** | Platform-of-purchase (PSN, Microsoft Store, Steam, Epic) | Platform handles payment, refund, dispute resolution. Avermere receives a server-side webhook from the platform's commerce backend confirming purchase; the balance is then granted account-wide. |
+| **Entitlements** (cosmetics, named items, season passes) | Avermere account | Granted on purchase. **Never revoked** unless platform-level refund is processed (§4.4). |
+| **Refund** | Platform-of-purchase | Platform processes; webhook tells Avermere to revoke the entitlement and decrement the granted balance. |
 
 This model is platform-acceptable on PS5 and Xbox provided two conditions: (1) the platform's own purchase flow is the only purchase path on that platform (no in-game web redirect to a third-party store, which both Sony and Microsoft prohibit for paid content under their TRC/XR), and (2) the entitlement is granted **only after** the platform's commerce backend confirms purchase (no optimistic grants).
 
@@ -194,9 +194,9 @@ This model is platform-acceptable on PS5 and Xbox provided two conditions: (1) t
 
 | Trigger | Behavior |
 |---|---|
-| Platform refund issued | Platform sends refund webhook → Britannia revokes the entitlement; if balance has already been spent, the account goes negative until earned via gameplay or further purchase. Negative balances do not block play; they simply cap further purchases. |
+| Platform refund issued | Platform sends refund webhook → Avermere revokes the entitlement; if balance has already been spent, the account goes negative until earned via gameplay or further purchase. Negative balances do not block play; they simply cap further purchases. |
 | Chargeback | Platform sends chargeback webhook → as refund, plus account is flagged for manual review (Doc #29). |
-| Player disputes purchase in-game | Title directs the player to the platform's purchase history UI. **Britannia does not refund directly**; both platforms reserve refunds to themselves. |
+| Player disputes purchase in-game | Title directs the player to the platform's purchase history UI. **Avermere does not refund directly**; both platforms reserve refunds to themselves. |
 
 ---
 
@@ -204,7 +204,7 @@ This model is platform-acceptable on PS5 and Xbox provided two conditions: (1) t
 
 ### 5.1 Network model
 
-Project Virtue uses authoritative servers (Doc #22). The console client connects out to Britannia's region servers; there is no peer-to-peer matchmaking, no listen server, no console-hosted shard. This simplifies cert significantly:
+Project Virtue uses authoritative servers (Doc #22). The console client connects out to Avermere's region servers; there is no peer-to-peer matchmaking, no listen server, no console-hosted shard. This simplifies cert significantly:
 
 | Cert concern | Why it's mitigated |
 |---|---|
@@ -220,7 +220,7 @@ Project Virtue uses authoritative servers (Doc #22). The console client connects
 | WSS (TCP 443) | 443 | Persistent connection to region server (Doc #22 protocol); WebSocket-over-TLS. |
 | QUIC (UDP 443) | 443 | Optional: replication channel where Doc #22's QUIC profile is enabled. Falls back to WSS if blocked. |
 
-All traffic on port 443 is the deliberate design — corporate firewalls, hotel networks, and consumer ISPs allow 443 by default. The title's connection-troubleshooting screen lists exactly two endpoints (`auth.britanniareborn.com` and `region-{us,eu,ap}.britanniareborn.com`) and the single port `443`.
+All traffic on port 443 is the deliberate design — corporate firewalls, hotel networks, and consumer ISPs allow 443 by default. The title's connection-troubleshooting screen lists exactly two endpoints (`auth.avermere.com` and `region-{us,eu,ap}.avermere.com`) and the single port `443`.
 
 ### 5.3 Crossplay enforcement at the protocol layer
 
@@ -228,13 +228,13 @@ The matchmaker tags every session with its platform family. Region servers honor
 
 ### 5.4 Server outage messaging
 
-TRC and XR both require graceful messaging when online services are unavailable. Britannia's outage states and player-facing messages:
+TRC and XR both require graceful messaging when online services are unavailable. Avermere's outage states and player-facing messages:
 
 | State | UI surface | Localized [Doc #33] |
 |---|---|---|
 | Routine maintenance (planned) | Pre-launched: in-fiction Royal Herald NPC announcement on shard with maintenance window. At maintenance start: title-screen banner. | Yes |
-| Authoritative server unreachable (this client) | Login flow shows: "Britannia is dreaming. Try again in a moment." Auto-retry with exponential backoff. | Yes |
-| Service-wide outage (all clients) | Title-screen banner with status URL: "Britannia rests. See {status_url} for tidings." The status URL is a static page on a separate CDN that does not depend on the game server. | Yes |
+| Authoritative server unreachable (this client) | Login flow shows: "Avermere is dreaming. Try again in a moment." Auto-retry with exponential backoff. | Yes |
+| Service-wide outage (all clients) | Title-screen banner with status URL: "Avermere rests. See {status_url} for tidings." The status URL is a static page on a separate CDN that does not depend on the game server. | Yes |
 | Single-player Classic Shard available offline (Doc #21 §2.1) | When online services unreachable AND player has a Classic Shard Avatar: option offered to play offline. | Yes |
 | Title update available | "A new chapter awaits. Restart to install." Mandatory if version skew with server exceeds the configured tolerance. | Yes |
 
@@ -242,11 +242,11 @@ All outage strings live in `i18n://strings/{locale}/system.outage.*` per Doc #33
 
 ### 5.5 Online-service certification specifics
 
-| Cert item | Britannia behavior |
+| Cert item | Avermere behavior |
 |---|---|
 | Title must handle PSN / Xbox Live sign-out gracefully | Sign-out triggers a server disconnect notice with auto-resume on sign-in. Saves are flushed before disconnect. |
 | Title must handle network change (WiFi to mobile hotspot) | TCP/UDP reconnection logic per Doc #22; player sees a "Reconnecting..." overlay; if reconnection succeeds within 60s, session resumes; else returned to title with a clear reason. |
-| Title must not present the user with Sony / Microsoft service errors verbatim | All platform errors are translated into Britannia's in-fiction messaging via the §5.4 table. The platform error code is logged (Doc #28) for QA / support but never shown raw. |
+| Title must not present the user with Sony / Microsoft service errors verbatim | All platform errors are translated into Avermere's in-fiction messaging via the §5.4 table. The platform error code is logged (Doc #28) for QA / support but never shown raw. |
 | Online play available without a paid subscription where platform allows free online for free-to-play (Xbox does) | Project Virtue's monetization model (Doc #11 §16 candidate) is `[OPEN]`; if free-to-play, Xbox Live Gold / Game Pass Core not required. If paid title, platform's standard subscription requirement applies. |
 
 ---
@@ -255,7 +255,7 @@ All outage strings live in `i18n://strings/{locale}/system.outage.*` per Doc #33
 
 ### 6.1 Save model recap
 
-Britannia's save model is split (Doc #21):
+Avermere's save model is split (Doc #21):
 
 | Category | Storage | Console relevance |
 |---|---|---|
@@ -280,7 +280,7 @@ Both platforms require the title to register save sets with the platform cloud-s
 | Slot | Quota | Notes |
 |---|---|---|
 | Settings blob | 256 KB | Hard cap; ICU-MessageFormat catalog references not inlined. |
-| Classic Shard save (one per Avatar) | 16 MB | Sufficient for a fully-explored Britannia per Doc #21 size estimates; warns at 14 MB; fails write at quota with a clear "Britain's chronicles are full" message and a save-slot-management UI. |
+| Classic Shard save (one per Avatar) | 16 MB | Sufficient for a fully-explored Avermere per Doc #21 size estimates; warns at 14 MB; fails write at quota with a clear "Highmere's chronicles are full" message and a save-slot-management UI. |
 | Per-account total | 256 MB | Hard cap matching both platforms' default quota. |
 
 Persistent shard Avatars consume **zero** local save quota — they live on the server.
@@ -306,7 +306,7 @@ Both PS5 and Xbox suspend the title to RAM when the user presses the home button
 |---|---|
 | Single-player Classic Shard | Sim pauses (already true per Doc #34 §5 "Pause on focus loss"). On resume, sim resumes. No save required. |
 | Persistent shard | Sim does **not** pause (the world keeps running for everyone else). On suspend, the client gracefully holds the network connection if possible (Doc #22 connection state); if the platform terminates the connection, on resume the client reconnects to the same Avatar at the same shard. |
-| Long suspend (> 30 min) on persistent shard | Server-side disconnect timeout per Doc #22 has fired. On resume, the client lands on the title screen with a clear "Welcome back to Britannia" message and reconnects. |
+| Long suspend (> 30 min) on persistent shard | Server-side disconnect timeout per Doc #22 has fired. On resume, the client lands on the title screen with a clear "Welcome back to Avermere" message and reconnects. |
 
 ### 6.6 Save data not stored on platform
 
@@ -316,7 +316,7 @@ Per cert policy, sensitive data must not be saved to platform cloud storage:
 |---|---|
 | Email address | PII — stored in operational DB only, not save (Doc #28 §4). |
 | Password hash | Authentication is server-side only; no credential lives in save. |
-| Payment tokens | Payment is platform-mediated; no Britannia-side payment artifacts in save. |
+| Payment tokens | Payment is platform-mediated; no Avermere-side payment artifacts in save. |
 | Friends list | Platform-managed; we read it via API at runtime. |
 
 ---
@@ -325,11 +325,11 @@ Per cert policy, sensitive data must not be saved to platform cloud storage:
 
 ### 7.1 Design principles
 
-Trophies (PS5) and achievements (Xbox) celebrate player accomplishment. Britannia's design constraints (Doc #2 — open-world, no hand-holding, virtue-driven) shape the slate:
+Trophies (PS5) and achievements (Xbox) celebrate player accomplishment. Avermere's design constraints (Doc #2 — open-world, no hand-holding, virtue-driven) shape the slate:
 
 | Principle | Application |
 |---|---|
-| Reward exploration over completion | A trophy for "speak to 50 named NPCs" trumps a trophy for "complete the main quest" because Britannia rewards talking to people (Doc #17). |
+| Reward exploration over completion | A trophy for "speak to 50 named NPCs" trumps a trophy for "complete the main quest" because Avermere rewards talking to people (Doc #17). |
 | Reward Virtue, not its absence | Trophies for high Virtue exist; trophies for committing all Eight Sins do **not** (would incentivize anti-Virtue play purely for trophy farming). However, **Redemption** trophies exist (cross from severe-drop to neutral, per Doc #28 §5.3) — these celebrate the arc, not the sin. |
 | Avoid grind trophies | Trophies that require N hours of repetition without further design depth are forbidden. The slate is curated, not metric-driven. |
 | Spoiler safety | Late-game trophies are **secret** (TRC and XR support this) — title and description hidden until earned, to preserve story moments. |
@@ -344,7 +344,7 @@ Target: **50 trophies / achievements** (Sony's standard mid-range count; Xbox us
 | Platinum | Platinum | n/a (Xbox has no platinum equivalent) | 1 | "True Avatar" — earn all other trophies. |
 | Gold | Gold | 90G | 4 | "Codex Bearer" — speak the eight Words of Power; "Restorer" — complete main story; "Ascendant" — reach maximum Virtue in all eight; "Archmage" — cast every Linear Magic spell at least once. |
 | Silver | Silver | 30G | 12 | "Friend of the Companions" — recruit all eight Companions; "Master Smith" — craft a Legendary item; "Cartographer" — visit every named region; etc. |
-| Bronze | Bronze | 15G | 33 | Story milestones, virtue thresholds, exploration discoveries, social moments (e.g., "Alms" — give a coin to Carlin the beggar in the Britain Town Opening). |
+| Bronze | Bronze | 15G | 33 | Story milestones, virtue thresholds, exploration discoveries, social moments (e.g., "Alms" — give a coin to Carlin the beggar in the Highmere Town Opening). |
 
 Total Xbox gamerscore: 1000G (4×90 + 12×30 + 33×15 = 360 + 360 + 495 = 1215; we tune to land at exactly **1000G**, the standard launch budget — Xbox's expectation is 1000G base + DLC).
 
@@ -355,14 +355,14 @@ Secret items hide their title and description until earned. Used for:
 | Reason | Example |
 |---|---|
 | Late-game story spoiler | "Through the Black Gate" — finish the main story. Title hidden because the Black Gate's role is the central twist. |
-| Surprise discovery | "What lies beneath" — find the hidden chamber under Lord British's castle. Hidden because surprise is the reward. |
+| Surprise discovery | "What lies beneath" — find the hidden chamber under Lord Avermere's castle. Hidden because surprise is the reward. |
 | Anti-griefing | "Redemption" arc trophies are visible only after Avatar enters the redemption arc (i.e., severe drop already occurred). Hidden before to avoid signaling "drop your virtue then recover for a trophy". |
 
 Roughly **8 of 50 trophies are secret** in the launch slate.
 
 ### 7.4 Platinum requirements
 
-PS5 Platinum requires earning all other 49 trophies. Britannia's policy:
+PS5 Platinum requires earning all other 49 trophies. Avermere's policy:
 
 | Constraint | Impact on Platinum |
 |---|---|
@@ -404,9 +404,9 @@ The predicate is evaluated server-side (no client-side trophy logic — Doc #32 
 
 ### 8.1 Activities & Game Help
 
-PS5's Activities surface lets players jump directly into a game from the home screen ("Continue main quest", "Find Iolo", "Visit Trinsic"). Game Help offers in-context hints. Both are TRC-recommended (not strictly required) but expected for premium titles.
+PS5's Activities surface lets players jump directly into a game from the home screen ("Continue main quest", "Find Erevan", "Visit Stonereach"). Game Help offers in-context hints. Both are TRC-recommended (not strictly required) but expected for premium titles.
 
-| Britannia integration | Detail |
+| Avermere integration | Detail |
 |---|---|
 | Activities | Active main-quest stage and active side-quest stages exposed as Activities. Each Activity carries a region anchor (the moongate or NPC the player should walk to next). Activated Activities deep-link into the running game session, fast-traveling the Avatar to the moongate gate of the relevant region (subject to player confirmation — TRC requires the player consent to fast-travel from outside the game). |
 | Game Help | Context-sensitive hints (≤ 30s video clips with captions) for tutorial-equivalent moments: "How to open dialogue with an NPC", "How to combine items", "How to enter a moongate". The hints overlap with Doc #34 §7 cognitive accessibility's "next step hint" — Game Help is the platform-mandated surface; the in-engine hint setting toggles whether the hint also appears in-engine. |
@@ -416,30 +416,30 @@ PS5's Activities surface lets players jump directly into a game from the home sc
 
 DualSense's distinctive features are leveraged where they add to immersion without violating the period-correct audio/visual identity:
 
-| Feature | Britannia usage |
+| Feature | Avermere usage |
 |---|---|
 | Haptic feedback (high-fidelity rumble) | Combat hits (per weapon type — sword has a different haptic curve than mace); spell cast (per spell circle — minor circle = light pulse, major circle = sustained vibration); environmental events (earthquakes during certain late-game story beats, rain pattering as ambient background haptics). |
 | Adaptive triggers | Drawing a bow (L2 trigger gains tension as the bow is drawn, releases on shot); blocking with a shield (L2 firms when shield is raised); spell channeling (L2 holds spell mid-cast with increasing tension until release). |
-| Speaker (controller speaker) | Optional NPC-voice routing — when a Companion speaks (Iolo, Shamino) and the player has DualSense as audio output, the voice plays on the controller speaker for added presence. Falls back to TV speakers if controller-speaker output is disabled in player settings. |
+| Speaker (controller speaker) | Optional NPC-voice routing — when a Companion speaks (Erevan, Shamino) and the player has DualSense as audio output, the voice plays on the controller speaker for added presence. Falls back to TV speakers if controller-speaker output is disabled in player settings. |
 | Light bar | Reflects party leader's selected Virtue alignment (subtle hue shift). Off by default; opt-in. |
 
 Haptic profiles are versioned and live in an asset manifest; UGC creators (Doc #7) **do not** get to define haptic profiles in launch scope (limits cert surface; Phase 4 candidate).
 
 ### 8.3 3D Audio (Tempest)
 
-PS5's Tempest 3D audio engine is supported via the platform's audio API. Britannia's audio system (Doc #27 §6) routes through it on PS5. The §4.1 Doc #34 mono audio mode (single-ear hearing) collapses 3D to mono per platform-supported behavior.
+PS5's Tempest 3D audio engine is supported via the platform's audio API. Avermere's audio system (Doc #27 §6) routes through it on PS5. The §4.1 Doc #34 mono audio mode (single-ear hearing) collapses 3D to mono per platform-supported behavior.
 
 ### 8.4 PS5 storage
 
-| Concern | Britannia behavior |
+| Concern | Avermere behavior |
 |---|---|
 | Install size | Targeting **≤ 60 GB** at Phase 3 launch (TRC has no hard cap; player expectation drives this — modern AAA averages 60–100 GB). |
-| External SSD playable | Yes — Britannia is loaded from any SSD the platform allows; no SSD-specific assets. |
+| External SSD playable | Yes — Avermere is loaded from any SSD the platform allows; no SSD-specific assets. |
 | Selective install (e.g., language packs, single-player vs. multiplayer) | Locale voice packs (Doc #33 §7) shipped as separate selective-install bundles. Player downloads only their language by default. |
 
 ### 8.5 PS5 / PS4 generation policy
 
-PS4 is **out of current scope.** Britannia's simulation density (Doc #6 region loading, Doc #16 combat, Doc #23 pathfinding) targets PS5 hardware. A PS4 backport would require a separate doc and significant per-region budget cuts.
+PS4 is **out of current scope.** Avermere's simulation density (Doc #6 region loading, Doc #16 combat, Doc #23 pathfinding) targets PS5 hardware. A PS4 backport would require a separate doc and significant per-region budget cuts.
 
 ---
 
@@ -447,7 +447,7 @@ PS4 is **out of current scope.** Britannia's simulation density (Doc #6 region l
 
 ### 9.1 Quick Resume
 
-Xbox Series X|S retains multiple titles in a suspended state, allowing rapid switching. Britannia's responsibility: handle restoration from any duration of suspension, including system reboot (Quick Resume survives reboot).
+Xbox Series X|S retains multiple titles in a suspended state, allowing rapid switching. Avermere's responsibility: handle restoration from any duration of suspension, including system reboot (Quick Resume survives reboot).
 
 | Suspend duration | Behavior on resume |
 |---|---|
@@ -458,7 +458,7 @@ Xbox Series X|S retains multiple titles in a suspended state, allowing rapid swi
 
 ### 9.2 Smart Delivery
 
-Xbox Smart Delivery delivers the optimal version of the title for each console (Series X = full-feature; Series S = scaled). Britannia's implementation:
+Xbox Smart Delivery delivers the optimal version of the title for each console (Series X = full-feature; Series S = scaled). Avermere's implementation:
 
 | Variant | Target | Differences |
 |---|---|---|
@@ -469,7 +469,7 @@ A single title package ships both variants; the platform delivers the right one 
 
 ### 9.3 Game Pass
 
-If Britannia ships on Xbox Game Pass (negotiation, `[OPEN]` §18.1), platform-required surface includes:
+If Avermere ships on Xbox Game Pass (negotiation, `[OPEN]` §18.1), platform-required surface includes:
 
 | Concern | Behavior |
 |---|---|
@@ -479,20 +479,20 @@ If Britannia ships on Xbox Game Pass (negotiation, `[OPEN]` §18.1), platform-re
 
 ### 9.4 Auto HDR
 
-Xbox's Auto HDR will apply to Britannia automatically (it's an SDR title rendered with HDR mapping). We test against Auto HDR; if the result clashes with the period palette (Doc #10 §2), we ship a native HDR profile (§11.1) that supersedes Auto HDR.
+Xbox's Auto HDR will apply to Avermere automatically (it's an SDR title rendered with HDR mapping). We test against Auto HDR; if the result clashes with the period palette (Doc #10 §2), we ship a native HDR profile (§11.1) that supersedes Auto HDR.
 
 ### 9.5 Xbox Live features
 
-| Feature | Britannia usage |
+| Feature | Avermere usage |
 |---|---|
 | Friends, parties, party chat | Doc #37 voice chat hooks into Xbox party chat (§14). |
-| Looking For Group (LFG) | Britannia publishes shard recruitment posts (Virtue Shard "looking for shop owner", Chaos Shard "duel circle scheduled") to LFG. Capability extension to Doc #29 moderation: posts are moderated like UGC. |
+| Looking For Group (LFG) | Avermere publishes shard recruitment posts (Virtue Shard "looking for shop owner", Chaos Shard "duel circle scheduled") to LFG. Capability extension to Doc #29 moderation: posts are moderated like UGC. |
 | Game DVR / Captures | Standard platform capture; engine respects DRM-protected scenes (very rare; one or two narrative cutscenes flagged) per platform API. |
 | Achievements (§7) | Same accomplishment manifest as PS5. |
 
 ### 9.6 Xbox storage
 
-| Concern | Britannia behavior |
+| Concern | Avermere behavior |
 |---|---|
 | Install size | ≤ 60 GB target (parity with PS5 §8.4). |
 | Xbox SSD vs. expansion card | Performance parity with internal SSD on official expansion card; no asset variant. |
@@ -511,7 +511,7 @@ Xbox's Auto HDR will apply to Britannia automatically (it's an SDR title rendere
 | Xbox Series S | 60 FPS | 50 FPS p99 | 1440p (dynamic, 1080p–1440p) |
 | PC | uncapped | n/a | per user setting |
 
-Britannia is a 2D-rendered isometric title (Doc #2 §1) with a 60 FPS sim tick; hitting 60 FPS render is well within hardware capability. The interest is in **stability** — a tile-based renderer should never frame-drop on hardware this powerful, and frame drops are flagged per Doc #28 §8.3.
+Avermere is a 2D-rendered isometric title (Doc #2 §1) with a 60 FPS sim tick; hitting 60 FPS render is well within hardware capability. The interest is in **stability** — a tile-based renderer should never frame-drop on hardware this powerful, and frame drops are flagged per Doc #28 §8.3.
 
 ### 10.2 Dynamic resolution
 
@@ -523,7 +523,7 @@ The renderer does not need to scale resolution under load (the GPU is over-provi
 |---|---|---|
 | Cold launch to title screen | ≤ 8 s | TRC and XR both expect ≤ 10 s; we target tighter. |
 | Title screen to playable Avatar | ≤ 10 s | Includes auth handshake. |
-| Region transition (within Britannia, e.g., Britain → Trinsic) | ≤ 3 s | A persistent world can't afford long region loads — players walk between regions freely. |
+| Region transition (within Avermere, e.g., Highmere → Stonereach) | ≤ 3 s | A persistent world can't afford long region loads — players walk between regions freely. |
 | UGC content load (a community dungeon, Doc #7) | ≤ 5 s | Includes content download from CDN if not cached. |
 | Moongate transition (special-cased, animated) | ≤ 4 s | Animation masks the region load. |
 
@@ -561,7 +561,7 @@ Per §6.5: suspend is graceful, sim pauses on single-player, persistent-shard si
 
 ### 11.1 HDR
 
-Britannia ships an HDR10 profile (PS5, Xbox Series X|S, and HDR-capable PCs):
+Avermere ships an HDR10 profile (PS5, Xbox Series X|S, and HDR-capable PCs):
 
 | Concern | Behavior |
 |---|---|
@@ -572,7 +572,7 @@ Britannia ships an HDR10 profile (PS5, Xbox Series X|S, and HDR-capable PCs):
 
 ### 11.2 VRR (Variable Refresh Rate)
 
-Both PS5 and Xbox Series X|S support VRR on compatible displays. Britannia enables VRR by default; the 60 FPS target with VRR results in a smoother-feeling image even when frame time varies slightly. No code-level work is required beyond ensuring frame pacing is monotonic and not vsync-locked.
+Both PS5 and Xbox Series X|S support VRR on compatible displays. Avermere enables VRR by default; the 60 FPS target with VRR results in a smoother-feeling image even when frame time varies slightly. No code-level work is required beyond ensuring frame pacing is monotonic and not vsync-locked.
 
 ### 11.3 120 Hz
 
@@ -586,7 +586,7 @@ Sim tick remains at 60 Hz regardless (Doc #22 protocol is 60 Hz authoritative); 
 
 ### 11.4 Platform-mandated accessibility (resolves Doc #34 §15-3)
 
-Both platforms specify accessibility requirements that Britannia's accessibility spec (Doc #34) must explicitly meet:
+Both platforms specify accessibility requirements that Avermere's accessibility spec (Doc #34) must explicitly meet:
 
 | Mandate | Source | Doc #34 reference | Cert behavior |
 |---|---|---|---|
@@ -610,7 +610,7 @@ Console builds ship Doc #34 settings with **slightly different defaults** from P
 
 | SKU | Platforms | Description |
 |---|---|---|
-| Project Virtue — Standard Edition | PS5, Xbox Series X|S, PC | Base game; full Britannia content; access to all persistent shards; UGC editor. |
+| Project Virtue — Standard Edition | PS5, Xbox Series X|S, PC | Base game; full Avermere content; access to all persistent shards; UGC editor. |
 | Project Virtue — Avatar's Edition | PS5, Xbox Series X|S, PC | Standard + soundtrack + lore book + Companion-themed cosmetics (period-appropriate, non-mechanical). |
 | Project Virtue — Steward's Edition (digital only) | PS5, Xbox Series X|S, PC | Avatar's Edition + first-year season pass + exclusive in-fiction title ("Steward of the Codex") shown on Avatar nameplate to other players. |
 
@@ -631,13 +631,13 @@ Cross-platform parity per §4.2: the same SKUs available on the same platforms s
 | Item type | Sold | Constraint |
 |---|---|---|
 | Cosmetics | Yes | No mechanical advantage. Period-appropriate (Doc #10 §5.3). |
-| Consumables (potions, scrolls) | **No.** | Britannia's economy (Doc #18) is closed; selling consumables would inflate gold supply. |
+| Consumables (potions, scrolls) | **No.** | Avermere's economy (Doc #18) is closed; selling consumables would inflate gold supply. |
 | Premium currency ("Sovereigns") | Yes | Direct purchase or via cosmetic bundles. Account-wide balance per §4.3. |
-| Loot boxes / gachas | **No.** | Forbidden by design. Cert and regional regulators (Belgium, Netherlands) increasingly hostile; Britannia avoids the entire category. |
+| Loot boxes / gachas | **No.** | Forbidden by design. Cert and regional regulators (Belgium, Netherlands) increasingly hostile; Avermere avoids the entire category. |
 | Battle pass | Phase 4 candidate | If shipped, a paid pass that unlocks cosmetic tiers as the player plays — not a paid pass that unlocks gameplay or speeds progression. |
 | Pay-to-win | **Forbidden.** | A Virtue-driven game cannot sell shortcuts. Hard rule. |
 
-Both TRC and XR require microtransactions to be disclosed in-game (the listing screen carries the platform's standard "in-game purchases" indicator). Britannia goes further — every premium item shows its price in local currency at point of view (no "100 Sovereigns" without "= $X.XX displayed" on the item card).
+Both TRC and XR require microtransactions to be disclosed in-game (the listing screen carries the platform's standard "in-game purchases" indicator). Avermere goes further — every premium item shows its price in local currency at point of view (no "100 Sovereigns" without "= $X.XX displayed" on the item card).
 
 ### 12.3 Age ratings
 
@@ -646,7 +646,7 @@ Both TRC and XR require microtransactions to be disclosed in-game (the listing s
 | North America | ESRB | T (Teen) — fantasy violence, mild language, mild blood. |
 | Europe | PEGI | 12 — same dimensions; PEGI uses different age boundaries. |
 | Japan | CERO | C (15+) — CERO assesses violence stricter than ESRB. |
-| Germany | USK | 12 — German body separate from PEGI; alternate Britannia mode (Doc #33 §11.3) may apply for symbol-related content. |
+| Germany | USK | 12 — German body separate from PEGI; alternate Avermere mode (Doc #33 §11.3) may apply for symbol-related content. |
 | Brazil | DJCTQ | 14 — alignment with PEGI. |
 | Korea | GRAC | 15+ — alignment with CERO. |
 | Australia | ACB | M — alignment with PEGI 12 / ESRB T. |
@@ -654,7 +654,7 @@ Both TRC and XR require microtransactions to be disclosed in-game (the listing s
 | Concern | Behavior |
 |---|---|
 | Rating descriptors | Fantasy Violence, Mild Blood, Mild Language, Use of Alcohol (NPC-tavern depiction), Suggestive Themes (none currently planned), Crude Humor (none). |
-| Per-region content variants | Where a regional body imposes a constraint (e.g., USK on Nazi-symbol-adjacent imagery — irrelevant to Britannia but example), the Doc #33 §11.3 Alternate Britannia mode is the mechanism. No region-specific code changes; only catalog and asset-variant swaps. |
+| Per-region content variants | Where a regional body imposes a constraint (e.g., USK on Nazi-symbol-adjacent imagery — irrelevant to Avermere but example), the Doc #33 §11.3 Alternate Avermere mode is the mechanism. No region-specific code changes; only catalog and asset-variant swaps. |
 | Pre-cert rating submission | The content is reviewed by each rating body separately; the cert window (§16) reserves time for rating turnaround (typically 4–8 weeks pre-launch). |
 
 ### 12.4 Regional restrictions
@@ -663,9 +663,9 @@ Where a region's rating body, censorship law, or platform-policy bars launch:
 
 | Restriction case | Behavior |
 |---|---|
-| Region banned outright (rare) | Title not listed on platform store in region. Persistent-shard players with Avatars from that region see an in-fiction farewell on next sign-in: "Britannia must rest from thy land for a season." Avatar data retained per Doc #38 (data export available via portal). |
-| Region requires content variant | Doc #33 §11.3 Alternate Britannia mode applies. |
-| Region requires age verification (e.g., South Korea adult-content laws) | Platform-mediated (PSN / Xbox Live perform age verification per regional KYC); Britannia honors the result. |
+| Region banned outright (rare) | Title not listed on platform store in region. Persistent-shard players with Avatars from that region see an in-fiction farewell on next sign-in: "Avermere must rest from thy land for a season." Avatar data retained per Doc #38 (data export available via portal). |
+| Region requires content variant | Doc #33 §11.3 Alternate Avermere mode applies. |
+| Region requires age verification (e.g., South Korea adult-content laws) | Platform-mediated (PSN / Xbox Live perform age verification per regional KYC); Avermere honors the result. |
 
 ---
 
@@ -677,7 +677,7 @@ UGC is the most cert-sensitive surface on a console because it bypasses the publ
 
 PS5 and Xbox both require UGC platforms (any title that lets players publish content other players can consume) to provide:
 
-| Requirement | Britannia mechanism |
+| Requirement | Avermere mechanism |
 |---|---|
 | Pre-publication moderation pipeline | Doc #29 moderation queue. UGC published on console enters the queue with a **stricter pre-publication review** than PC (PS5 TRC is hard on this; Xbox slightly lighter). All UGC accessible to console players is human-reviewed before going public. |
 | Reporting tools available within ≤ 2 clicks from any UGC content | In-game "Report Creation" button on every UGC content card and in-context within played UGC. |
@@ -746,7 +746,7 @@ A reporter's identity is **not disclosed** to the reportee. Both platforms requi
 
 Sony's UGC TRCs (revised post-Dreams) include:
 
-| Item | Britannia compliance |
+| Item | Avermere compliance |
 |---|---|
 | All player-authored text reviewable | Yes — UGC strings flow through the i18n catalog (Doc #33), and authored strings are mod-queued. |
 | All player-authored images reviewable | UGC editor (Doc #7) does not allow free image upload — only placement of authored sprite assets (a curated palette). Removes the open-ended-image problem entirely. |
@@ -761,7 +761,7 @@ When moderation removes a UGC item:
 | Player state | Behavior |
 |---|---|
 | Has the UGC item bookmarked | Bookmark fades to "Unavailable — removed by moderation"; gentle, no further detail. |
-| Currently playing the UGC item | Session ends gracefully with a "Britannia has called thee back" message; Avatar returns to a safe town. |
+| Currently playing the UGC item | Session ends gracefully with a "Avermere has called thee back" message; Avatar returns to a safe town. |
 | Has spent earned currency in the UGC item (Doc #18 economy on UGC quests) | Currency refunded to Avatar. |
 
 The takedown reason is not disclosed to consumers (preserves moderator independence) but **is** disclosed to the creator via creator dashboard with platform-mandated appeals path (Doc #29).
@@ -772,24 +772,24 @@ The takedown reason is not disclosed to consumers (preserves moderator independe
 
 Doc #37 owns the voice chat system. This section enumerates the platform integration layer.
 
-> **Voice cert hooks live on the UE5 client (per Doc #41).** Sony's PSN party-chat integration and Microsoft's Game Chat / Xbox party-chat integration are platform-mandated certification surfaces; both are implemented **on the UE5 client only** (the TS web client does not ship to console and therefore has no party-chat cert obligation). The in-game (Britannia channel) voice path is **LiveKit** per Doc #41, with the Rust server handling signaling/permissions/moderation. **Both must be supported on console**: a player can be in a Sony / Microsoft party (platform-managed audio) and in a Britannia LiveKit room (in-game proximity / party / raid voice) simultaneously, with the Voice Mode selector (§14.1, §14.3) routing between them. The UE5 client owns the audio I/O for both paths; LiveKit is the SFU for the in-game path; Sony/Microsoft own their party path end-to-end.
+> **Voice cert hooks live on the UE5 client (per Doc #41).** Sony's PSN party-chat integration and Microsoft's Game Chat / Xbox party-chat integration are platform-mandated certification surfaces; both are implemented **on the UE5 client only** (the TS web client does not ship to console and therefore has no party-chat cert obligation). The in-game (Avermere channel) voice path is **LiveKit** per Doc #41, with the Rust server handling signaling/permissions/moderation. **Both must be supported on console**: a player can be in a Sony / Microsoft party (platform-managed audio) and in a Avermere LiveKit room (in-game proximity / party / raid voice) simultaneously, with the Voice Mode selector (§14.1, §14.3) routing between them. The UE5 client owns the audio I/O for both paths; LiveKit is the SFU for the in-game path; Sony/Microsoft own their party path end-to-end.
 
 ### 14.1 PSN Party Chat hooks
 
 | Hook | Behavior |
 |---|---|
 | Party detection | Title detects an active PSN party at sign-in via PSN API. |
-| In-game voice routing | If the player joins a Britannia in-game proximity voice channel (Doc #37) and is also in a PSN party, the player's voice routes to whichever channel they last spoke in (or, if simultaneous routing is platform-supported, to both). The setting is exposed as "Voice Mode: Britannia / Party / Both" in the in-game audio menu. |
-| Party chat captioning | Britannia's live transcription (Doc #34 §4) does not access PSN party chat audio (PSN-managed); platform-side party chat captions are a future PSN feature outside our control. |
-| Block propagation | Avatar block in Britannia → also blocks the underlying PSN identity from reaching any in-game voice; PSN block of an account → blocks the corresponding Avatar. |
+| In-game voice routing | If the player joins a Avermere in-game proximity voice channel (Doc #37) and is also in a PSN party, the player's voice routes to whichever channel they last spoke in (or, if simultaneous routing is platform-supported, to both). The setting is exposed as "Voice Mode: Avermere / Party / Both" in the in-game audio menu. |
+| Party chat captioning | Avermere's live transcription (Doc #34 §4) does not access PSN party chat audio (PSN-managed); platform-side party chat captions are a future PSN feature outside our control. |
+| Block propagation | Avatar block in Avermere → also blocks the underlying PSN identity from reaching any in-game voice; PSN block of an account → blocks the corresponding Avatar. |
 
 ### 14.2 Xbox Party Chat hooks
 
 | Hook | Behavior |
 |---|---|
 | Party detection | Via Xbox party API. |
-| In-game voice routing | Same modes as PSN: Britannia / Party / Both. |
-| Game DVR audio capture rules | Xbox party chat audio is not captured in Game DVR clips per platform rule; Britannia in-game proximity voice **is** captured if the player's Game DVR settings allow voice capture. The audio capture indicator (Doc #37) reflects the active mode. |
+| In-game voice routing | Same modes as PSN: Avermere / Party / Both. |
+| Game DVR audio capture rules | Xbox party chat audio is not captured in Game DVR clips per platform rule; Avermere in-game proximity voice **is** captured if the player's Game DVR settings allow voice capture. The audio capture indicator (Doc #37) reflects the active mode. |
 | Block propagation | Same as PSN. |
 
 ### 14.3 Push-to-talk vs. open mic
@@ -803,7 +803,7 @@ Doc #37 owns the voice chat system. This section enumerates the platform integra
 
 ### 14.4 Live transcription for accessibility
 
-Per Doc #34 §4 and §11.4 of this doc: Phase 3 launch ships live captions for in-game voice (Britannia-channel only; not PSN/Xbox party chat) enabled by default on console. The captions are local-only and not transmitted; speech-to-text happens on a server-side worker per Doc #28 §3 telemetry pipeline.
+Per Doc #34 §4 and §11.4 of this doc: Phase 3 launch ships live captions for in-game voice (Avermere-channel only; not PSN/Xbox party chat) enabled by default on console. The captions are local-only and not transmitted; speech-to-text happens on a server-side worker per Doc #28 §3 telemetry pipeline.
 
 ---
 
@@ -826,9 +826,9 @@ Both PS5 and Xbox provide a path to the title's privacy policy and data export r
 
 | Surface | Behavior |
 |---|---|
-| First-launch consent prompt | At first sign-in, before any non-essential telemetry, the player sees a clear prompt: "Wouldst thou allow Britannia to record thy play sessions to improve the realm?" Clear Yes/No with explanation. Default No. |
+| First-launch consent prompt | At first sign-in, before any non-essential telemetry, the player sees a clear prompt: "Wouldst thou allow Avermere to record thy play sessions to improve the realm?" Clear Yes/No with explanation. Default No. |
 | Per-session reminder | Not shown — once consented, the choice persists per Doc #28 §4.3. Player may revoke in Privacy menu at any time. |
-| Console-platform telemetry | Platform's own telemetry (PSN and Xbox each collect platform-side play stats) operates under platform's own privacy regime; Britannia is not the controller. |
+| Console-platform telemetry | Platform's own telemetry (PSN and Xbox each collect platform-side play stats) operates under platform's own privacy regime; Avermere is not the controller. |
 
 ### 15.3 Personal data on console saves
 
@@ -878,15 +878,15 @@ For Should / Yellow flags that the design intentionally does not address:
 | 4. Platform reviews and accepts / rejects. |
 | 5. Accepted dispensations recorded in cert ticket; carry forward to subsequent submissions until the underlying item is addressed. |
 
-Britannia's posture: dispensations are rare. Better to address than negotiate.
+Avermere's posture: dispensations are rare. Better to address than negotiate.
 
 ---
 
 ## 17. Cert Checklist — Top 50 Most-Failed Items
 
-Based on platform-published cert-failure analytics (PS5 publisher portal, Xbox Partner Center), this is the curated top 50 items most-failed across the industry — cross-referenced with how Britannia's design avoids them.
+Based on platform-published cert-failure analytics (PS5 publisher portal, Xbox Partner Center), this is the curated top 50 items most-failed across the industry — cross-referenced with how Avermere's design avoids them.
 
-| # | Cert item (paraphrased; canonical text in TRC/XR) | Platform | Severity | Britannia mitigation |
+| # | Cert item (paraphrased; canonical text in TRC/XR) | Platform | Severity | Avermere mitigation |
 |---|---|---|---|---|
 | 1 | Title hangs on sign-out from PSN / Xbox Live | Both | Must | §5.5 — graceful handler with auto-resume on sign-in. |
 | 2 | Title fails to handle a network change (cable unplug, WiFi switch) | Both | Must | §5.5; Doc #22 reconnection logic. |
@@ -939,7 +939,7 @@ Based on platform-published cert-failure analytics (PS5 publisher portal, Xbox P
 | 49 | Title does not respond to system shutdown signal | Both | Must | Engine handles platform-shutdown signal: flush save, disconnect, exit cleanly within 5s budget. |
 | 50 | Trophy data not retained on title reinstall | PS5 | Must | Trophies are PSN-stored; reinstall does not lose them. Verified via reinstall test. |
 
-This list is the canonical Britannia cert-prep checklist. CI for console-targeted branches runs an automated subset (items 1, 2, 5, 8, 18, 20, 21, 24, 27, 29, 30, 42, 45, 47); the rest are QA-tested manually each cert pass.
+This list is the canonical Avermere cert-prep checklist. CI for console-targeted branches runs an automated subset (items 1, 2, 5, 8, 18, 20, 21, 24, 27, 29, 30, 42, 45, 47); the rest are QA-tested manually each cert pass.
 
 ---
 
@@ -952,7 +952,7 @@ Amendments to Doc #14 §3 (capabilities), §5 (tools) and §6 (resources).
 | Resource URI | Returns | Capability |
 |---|---|---|
 | `forge://meta/cert/platforms` | `{ ps5: PlatformStatus, xbox_xs: PlatformStatus, xbox_s: PlatformStatus, pc: PlatformStatus }` where `PlatformStatus = { last_cert_pass: Date | null, current_build_version: string, dispensations: DispensationRef[] }` | `inspect.read` |
-| `forge://meta/cert/checklist` | The Top 50 cert checklist (§17) with current Britannia-mitigation status per item | `inspect.read` |
+| `forge://meta/cert/checklist` | The Top 50 cert checklist (§17) with current Avermere-mitigation status per item | `inspect.read` |
 | `forge://shard/{s}/avatar/{id}/platform_identity` | `{ platform_family: "ps5" | "xbox" | "pc", parental_controls: ParentalFlags, crossplay_enabled: bool, gamertag: string }` for **OWN avatar only** | `inspect.read` (own-avatar gating per Doc #15 §7.3) |
 
 ### 18.2 New Tools
@@ -960,7 +960,7 @@ Amendments to Doc #14 §3 (capabilities), §5 (tools) and §6 (resources).
 | Tool | Capability | Envelope Inputs | Returns | Mutates |
 |---|---|---|---|---|
 | `set_crossplay_pref` | `avatar.basic` | `enabled: bool` | `{ ok: true, applied_at: ServerTick }` | Updates the per-account crossplay opt-in. Subject to parental-control override (§4.1). |
-| `link_platform_identity` | `avatar.full` (account-level operation) | `platform: "ps5" | "xbox" | "pc"`, `platform_token: string` | `{ ok: true, linked_account: BritanniaAccountId }` | Links a platform identity to the calling Britannia account. Verifies the platform token via platform's auth API. |
+| `link_platform_identity` | `avatar.full` (account-level operation) | `platform: "ps5" | "xbox" | "pc"`, `platform_token: string` | `{ ok: true, linked_account: AvermereAccountId }` | Links a platform identity to the calling Avermere account. Verifies the platform token via platform's auth API. |
 | `unlink_platform_identity` | `avatar.full` | `platform: "ps5" | "xbox" | "pc"` | `{ ok: true, unlinked_at: Timestamp }` | Reverses §3.1 link. |
 
 ```json
@@ -1004,7 +1004,7 @@ The console-platform tools (`link_platform_identity`, `unlink_platform_identity`
 
 ### 19.1 Phase 1 (12-week vertical slice, Doc #11)
 
-**Console certification is out of scope for Phase 1.** Phase 1 is PC-only (Britain Town Opening, single shard, 8-player co-op). Cert-relevant pieces present in Phase 1 architecture but not exercised:
+**Console certification is out of scope for Phase 1.** Phase 1 is PC-only (Highmere Town Opening, single shard, 8-player co-op). Cert-relevant pieces present in Phase 1 architecture but not exercised:
 
 | Area | Phase 1 state |
 |---|---|
@@ -1023,7 +1023,7 @@ Phase 2 expands to the full Black Gate campaign and adds shard infrastructure (V
 
 | Area | Phase 2 work |
 |---|---|
-| Account + identity | Britannia account schema finalized; portal built. |
+| Account + identity | Avermere account schema finalized; portal built. |
 | Cross-progression | Server side complete for PC accounts (single-platform but architected for multi-platform). |
 | Save | Cloud-save abstraction layer in place (PC-side stub; console adapters added in Phase 3). |
 | Achievements | Steam achievements complete; manifest pattern proven. |
@@ -1054,14 +1054,14 @@ Phase 2 expands to the full Black Gate campaign and adds shard infrastructure (V
 
 1. `[OPEN]` **Free-to-play vs. premium business model on console.** Free-to-play unlocks Xbox Live free online (no Game Pass Core required) and lowers the entry barrier; premium ($60 launch) gives a cleaner SKU and avoids loot-box-adjacent monetization scrutiny. Decision drives §5.5 (online subscription requirement), §12.1 (SKU layout), §12.2 (microtransaction policy). Cross-link Doc #11 monetization decision pending.
 2. `[OPEN]` **Game Pass deal.** Is Project Virtue included in Xbox Game Pass at launch (Microsoft funds development partially in exchange) or post-launch (added 6–12 months in)? Affects §9.3, marketing budget, and Phase 3 timeline.
-3. `[OPEN]` **PS Plus tier requirement for persistent shards.** Sony's PS Plus tiers (Essential, Extra, Premium) determine which players can access which features. PS Plus Essential is required for online multiplayer on most titles; if Britannia is free-to-play, PS Plus is **not** required (Sony exempts F2P MMOs). Cross-references `[OPEN]` 1.
-4. `[OPEN]` **Cross-platform party chat policy detail.** §14.1 / §14.2 specify hooks but don't decide whether Britannia's in-game proximity voice can route alongside platform party chat by default. Working assumption: Britannia channel is opt-in; party chat is the default voice when in a party. Final call deferred to Doc #37 voice-chat lead.
+3. `[OPEN]` **PS Plus tier requirement for persistent shards.** Sony's PS Plus tiers (Essential, Extra, Premium) determine which players can access which features. PS Plus Essential is required for online multiplayer on most titles; if Avermere is free-to-play, PS Plus is **not** required (Sony exempts F2P MMOs). Cross-references `[OPEN]` 1.
+4. `[OPEN]` **Cross-platform party chat policy detail.** §14.1 / §14.2 specify hooks but don't decide whether Avermere's in-game proximity voice can route alongside platform party chat by default. Working assumption: Avermere channel is opt-in; party chat is the default voice when in a party. Final call deferred to Doc #37 voice-chat lead.
 5. `[OPEN]` **Trophy / achievement count for live-event participation.** §7.4 excludes time-limited content from Platinum-counting trophies, but commemorative trophies (non-Platinum-counting) for participating in live events would be a strong engagement signal. Open: do we ship 2–4 such commemorative trophies at launch or accumulate them through DLC slates?
-6. `[OPEN]` **Console-specific UGC features.** PS5's Dreams-style "play in editor" instant playtest and Xbox's Game Bar-driven creative tools are console-specific UGC paradigms. Britannia's UGC editor (Doc #7) is unified across platforms by design — but should console-specific creator surface (e.g., DualSense haptic authoring, since haptics are console-only per §8.2) be permitted as cosmetic-only authoring? Recommendation: defer to Phase 4. Cross-link Doc #7 §6.
+6. `[OPEN]` **Console-specific UGC features.** PS5's Dreams-style "play in editor" instant playtest and Xbox's Game Bar-driven creative tools are console-specific UGC paradigms. Avermere's UGC editor (Doc #7) is unified across platforms by design — but should console-specific creator surface (e.g., DualSense haptic authoring, since haptics are console-only per §8.2) be permitted as cosmetic-only authoring? Recommendation: defer to Phase 4. Cross-link Doc #7 §6.
 7. `[OPEN]` **Submission cadence for live ops vs. cert.** §16.1 distinguishes server-side from client-side changes, but a balance change that moves a Virtue scoring coefficient (Doc #5) is server-side **and** changes player perception. Open: do we treat such a change as cert-relevant for transparency, or only for client-side changes? Recommendation: server-side balance changes are not cert-relevant; transparency is provided via patch notes on the title's news blog. Final call deferred to Doc #28 §11 dashboard team.
-8. `[OPEN]` **Nintendo Switch port viability.** §1.4 explicitly out of scope, but the question recurs as Britannia's pixel-art aesthetic and turn-based-adjacent combat (Doc #16) are Switch-friendly. A Switch port would require Lotcheck and a separate region-loading budget pass; doc TBD. Decision deferred to post-launch.
+8. `[OPEN]` **Nintendo Switch port viability.** §1.4 explicitly out of scope, but the question recurs as Avermere's pixel-art aesthetic and turn-based-adjacent combat (Doc #16) are Switch-friendly. A Switch port would require Lotcheck and a separate region-loading budget pass; doc TBD. Decision deferred to post-launch.
 9. `[OPEN]` **Steam Deck Verified vs. Playable rating.** Phase 3 PC build runs on Steam Deck; verified rating requires gamepad-only UI parity with console. Working assumption: Verified at Phase 3 launch (gamepad UI is shared with console). Final verification depends on Steam Deck Verified test pass.
-10. `[OPEN]` **PSVR2 / Xbox Cloud-only modes.** Britannia is not a VR title; PSVR2 is not in scope. Xbox Cloud Gaming (xCloud) is in scope per §9.3. Open: do we author a Britannia-specific cloud-streaming-optimized profile (lower bandwidth, larger UI elements for variable display sizes), or rely on the platform's default cloud rendering? Recommendation: light platform-specific tuning — UI scale 125% default in cloud sessions.
+10. `[OPEN]` **PSVR2 / Xbox Cloud-only modes.** Avermere is not a VR title; PSVR2 is not in scope. Xbox Cloud Gaming (xCloud) is in scope per §9.3. Open: do we author a Avermere-specific cloud-streaming-optimized profile (lower bandwidth, larger UI elements for variable display sizes), or rely on the platform's default cloud rendering? Recommendation: light platform-specific tuning — UI scale 125% default in cloud sessions.
 11. `[OPEN]` **Console-only QA staffing.** Cert is QA-heavy work. Phase 3 staffing budget allocates a dedicated Console QA team of 4 (one lead + three testers, one per platform plus one floater). Is this enough for two-platform parallel cert? Working assumption: yes for major cert; expedited and patch certs may stretch the team. Recommendation: budget for one additional contracted tester per cert window.
 12. `[OPEN]` **Pre-launch closed beta on console.** Sony and Microsoft both support pre-launch closed beta programs (a separate cert-light path for invited testers). Open: do we run a console closed beta as part of Phase 2→3 transition, or go straight to public launch after cert? Recommendation: closed beta on each platform 4 weeks pre-launch; gives real-hardware feedback that the internal QA team cannot replicate. Final call deferred to launch plan.
 13. `[OPEN]` **Microtransaction price tier alignment across platforms.** Both platforms enforce price tiers (Sony's price tiers, Microsoft's price tiers); the same USD price may map to a slightly different GBP / EUR / JPY tier on each. Open: do we round to the nearer tier for cross-platform price parity (preferred for fairness perception), or accept platform-native tiers (saves accounting complexity)? Recommendation: nearer-tier rounding with the absolute closest match on USD anchor.

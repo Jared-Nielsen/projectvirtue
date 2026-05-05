@@ -254,8 +254,8 @@ on DialogueUpdate(response):
 
 | NPC tier | Voice scope | Selection criteria |
 |---|---|---|
-| Lord British, primary companions, principal antagonists | Full VO across all responses | Named in original story |
-| Major Britain NPCs (Iolo, Shamino, Dupre, Mariah, Gwenno, etc.) | Full VO across all responses | Named, recurring |
+| Lord Avermere, primary companions, principal antagonists | Full VO across all responses | Named in original story |
+| Major Highmere NPCs (Erevan, Shamino, Dupre, Mariah, Gwenno, etc.) | Full VO across all responses | Named, recurring |
 | Quest-bearing named NPCs | Opening response VO + critical-branch VO; remainder text-only | Has at least one `StartQuest` or `UpdateQuest` `DialogueEffect` |
 | Background named NPCs (shopkeepers, guards) | Greeting line VO only | One-line VO budget per NPC |
 | Anonymous crowd NPCs | Text-only | No `npc_id` stable identity |
@@ -278,7 +278,7 @@ type NpcVoiceProfile = {
 type VoiceStyle = {
   age:                "child" | "young" | "adult" | "elder"
   gender_timbre:      "feminine" | "masculine" | "androgynous"
-  accent_hint:        string                // e.g., "british_rp", "rural_yew"
+  accent_hint:        string                // e.g., "avermere_rp", "rural_blackford"
   affect:             "neutral" | "warm" | "stern" | "wary" | "manic"
 }
 ```
@@ -290,7 +290,7 @@ TTS is **out of scope for Phase 1**. UGC NPCs in Phase 1 are silent (text-only) 
 ## 7. Voice for the Player Avatar
 
 - **Avatar is silent.** Doc #10 §5.3 silent-protagonist tradition is preserved; no Avatar VO is recorded or generated for any response.
-- **Canonical companions** (Iolo, Shamino, Dupre — the Phase 1 set per Doc #15 §8 lists Iolo and Shamino) have full VO for their barks, banter, and dialogue trees.
+- **Canonical companions** (Erevan, Shamino, Dupre — the Phase 1 set per Doc #15 §8 lists Erevan and Shamino) have full VO for their barks, banter, and dialogue trees.
 - **Player-to-player voice chat** is a separate Phase 3+ system, out of this doc's scope; preliminary notes in Doc #22 §16 (P2P NAT traversal [OPEN]). See Doc #37 for full voice spec, and Doc #41 §6 for the boundary — Rust signaling + LiveKit SFU + UE5/TS audio I/O.
 
 ---
@@ -435,13 +435,13 @@ Subscriptions on `music_state` deliver a `MusicStateChanged` event on every tran
 
 ## 12. Phase 1 Prototype Scope
 
-Per Doc #11 §3 audio row and Doc #10 §5/§7. Deliberately minimal; proves the propagation loop and dynamic-music skeleton end-to-end on the Britain vertical slice.
+Per Doc #11 §3 audio row and Doc #10 §5/§7. Deliberately minimal; proves the propagation loop and dynamic-music skeleton end-to-end on the Highmere vertical slice.
 
 | Subsystem | In Scope | Deferred |
 |---|---|---|
-| Music | Original Ultima VII soundtrack loop integrated (per Doc #11); 2-stem dynamic mix (ambient + combat) | Tension stem, virtue_tone stem, story_arc_stage inputs, region-specific profiles beyond Britain |
+| Music | Original Ultima VII soundtrack loop integrated (per Doc #11); 2-stem dynamic mix (ambient + combat) | Tension stem, virtue_tone stem, story_arc_stage inputs, region-specific profiles beyond Highmere |
 | SFX library | 20+ contextual SFX (matches Doc #10 §7); covers door, footstep (4 surfaces), drop, attack (sword + axe + flesh + wood + stone variants), spell cast (Circle 1–3), fire crackle, water splash | Full verb-coverage matrix; magic Circle 4–8 SFX |
-| Voice acting | 8 NPC voice lines for opening dialogue (matches Doc #11 §3 success proof "Meet Lord British, Iolo, and several classic NPCs"); covers Lord British greeting + 7 other principal openings | Full per-Response VO across the 15 Britain NPCs (Doc #17 §13); companion banter VO; TTS for UGC |
+| Voice acting | 8 NPC voice lines for opening dialogue (matches Doc #11 §3 success proof "Meet Lord Avermere, Erevan, and several classic NPCs"); covers Lord Avermere greeting + 7 other principal openings | Full per-Response VO across the 15 Highmere NPCs (Doc #17 §13); companion banter VO; TTS for UGC |
 | Sound propagation | Footstep + ObjectDrop + CombatClash only; full §3.1 audibility math but only these three event types emit | Door sounds emitting to NPCs (rendered to player only Phase 1); spell-cast as awareness input; full §3.2 terrain attenuation table (Phase 1 = open-air only or full-block walls; no muffle math) |
 | NPC awareness response | Curiosity + alert thresholds active for guards only (3 NPCs); other NPCs receive `Awareness` but no behavior wiring | Faction-wide alert propagation; investigate-then-search behavior |
 | Stealth modifier | Active with DEX + footwear inputs only | Stealth skill, encumbrance, load_penalty |

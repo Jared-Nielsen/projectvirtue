@@ -1,6 +1,6 @@
 {
   "encounterId": "enc_dragon_dustspire",
-  "regionId": "region_dungeon_despise",
+  "regionId": "region_dungeon_blacktarn",
   "tick": 1399812,
   "inCombat": true,
   "turnIndex": 1,
@@ -52,7 +52,7 @@
     },
     {
       "entityId": "ent_dragon_dustspire",
-      "name": "Dustspire, Old Wyrm of Despise",
+      "name": "Dustspire, Old Wyrm of Blacktarn",
       "faction": "enemy",
       "hp": { "current": 480, "max": 720 },
       "mana": { "current": 80, "max": 120 },
