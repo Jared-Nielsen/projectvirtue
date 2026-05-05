@@ -1,0 +1,241 @@
+/* CharacterCreate — multi-step "Create Your Hero" wizard (10-1-AvatarCreation.png).
+ *
+ * Layout: full-width title bar of step tabs at the top, two-column body
+ * (preview / portrait left, controls right) and footer with Back/Next.
+ * Adapts to a single column under 880px. */
+
+.shell {
+  --portrait-aspect: 4 / 5;
+  display: flex;
+  flex-direction: column;
+  gap: var(--br-space-4, 1rem);
+  padding: var(--br-space-4, 1rem);
+}
+
+.headline {
+  text-align: center;
+  font-family: var(--br-typography-font-family-display, serif);
+  font-size: clamp(1.6rem, 3vw, 2.5rem);
+  letter-spacing: 0.18em;
+  color: var(--br-color-sigil-200, #f4cc66);
+  margin: 0;
+}
+
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+  gap: var(--br-space-5, 1.25rem);
+}
+
+@media (max-width: 880px) {
+  .body {
+    grid-template-columns: 1fr;
+  }
+}
+
+.portrait {
+  aspect-ratio: var(--portrait-aspect);
+  background: radial-gradient(circle at 50% 30%, rgba(244, 204, 102, 0.18), rgba(0, 0, 0, 0) 65%),
+    linear-gradient(180deg, #2a3140 0%, #14110c 100%);
+  border: 1px solid rgba(244, 204, 102, 0.3);
+  border-radius: var(--br-radius-md, 6px);
+  display: grid;
+  place-items: center;
+  position: relative;
+  overflow: hidden;
+  color: var(--br-color-parchment-200, #ebd6a3);
+}
+
+.portraitGlyph {
+  font-family: var(--br-typography-font-family-display, serif);
+  font-size: 3rem;
+  letter-spacing: 0.1em;
+  color: var(--br-color-sigil-300, #e6b246);
+  opacity: 0.9;
+}
+
+.portraitName {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  color: var(--br-color-parchment-100, #f5e7c6);
+}
+
+.portraitGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: var(--br-space-2, 0.5rem);
+}
+
+.portraitTile {
+  appearance: none;
+  background: rgba(8, 6, 4, 0.5);
+  border: 1px solid rgba(244, 204, 102, 0.2);
+  color: var(--br-color-parchment-100, #f5e7c6);
+  font-size: 0.7rem;
+  padding: var(--br-space-2, 0.5rem);
+  cursor: pointer;
+  aspect-ratio: 1;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.portraitTile:hover,
+.portraitTile:focus-visible {
+  border-color: rgba(244, 204, 102, 0.7);
+  outline: none;
+}
+
+.portraitTile.active {
+  border-color: var(--br-color-sigil-300, #e6b246);
+  box-shadow: var(--br-shadow-glow-gold, 0 0 12px rgba(207, 150, 47, 0.45));
+}
+
+.optionList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--br-space-2, 0.5rem);
+}
+
+.optionCard {
+  appearance: none;
+  text-align: left;
+  background: rgba(8, 6, 4, 0.45);
+  border: 1px solid rgba(244, 204, 102, 0.18);
+  color: var(--br-color-parchment-100, #f5e7c6);
+  padding: var(--br-space-3, 0.75rem);
+  cursor: pointer;
+  border-radius: var(--br-radius-md, 6px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--br-space-1, 0.25rem);
+}
+
+.optionCard:hover,
+.optionCard:focus-visible {
+  border-color: rgba(244, 204, 102, 0.6);
+  outline: none;
+}
+
+.optionCard.active {
+  border-color: var(--br-color-sigil-300, #e6b246);
+  background: rgba(20, 14, 6, 0.85);
+  box-shadow: var(--br-shadow-glow-gold, 0 0 12px rgba(207, 150, 47, 0.4));
+}
+
+.optionTitle {
+  font-family: var(--br-typography-font-family-display, serif);
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  color: var(--br-color-sigil-200, #f4cc66);
+}
+
+.optionDesc {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  line-height: 1.4;
+}
+
+.statRow {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: var(--br-space-3, 0.75rem);
+  padding: var(--br-space-2, 0.5rem) 0;
+  border-bottom: 1px dashed rgba(244, 204, 102, 0.15);
+}
+
+.statName {
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  color: var(--br-color-parchment-100, #f5e7c6);
+}
+
+.statValue {
+  font-family: var(--br-typography-font-family-hud-mono, monospace);
+  font-size: 1rem;
+  color: var(--br-color-sigil-200, #f4cc66);
+  min-width: 2.5ch;
+  text-align: right;
+}
+
+.statBonus {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  min-width: 5ch;
+  text-align: right;
+}
+
+.virtuePips {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--br-space-2, 0.5rem);
+}
+
+.virtuePip {
+  appearance: none;
+  background: rgba(8, 6, 4, 0.5);
+  border: 1px solid rgba(244, 204, 102, 0.2);
+  color: var(--br-color-parchment-100, #f5e7c6);
+  padding: var(--br-space-2, 0.5rem);
+  cursor: pointer;
+  border-radius: var(--br-radius-md, 6px);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: capitalize;
+}
+
+.virtuePip:hover,
+.virtuePip:focus-visible {
+  border-color: rgba(244, 204, 102, 0.7);
+  outline: none;
+}
+
+.virtuePip.active {
+  border-color: var(--br-color-sigil-300, #e6b246);
+  background: rgba(20, 14, 6, 0.85);
+  color: var(--br-color-sigil-200, #f4cc66);
+  box-shadow: var(--br-shadow-glow-gold, 0 0 12px rgba(207, 150, 47, 0.4));
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: var(--br-space-2, 0.5rem) var(--br-space-4, 1rem);
+  font-size: 0.9rem;
+}
+
+.summaryGrid dt {
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  opacity: 0.7;
+  align-self: center;
+}
+
+.summaryGrid dd {
+  margin: 0;
+  color: var(--br-color-parchment-100, #f5e7c6);
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--br-space-4, 1rem);
+  border-top: 1px solid rgba(244, 204, 102, 0.18);
+}
+
+.stepProgress {
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  opacity: 0.75;
+  text-transform: uppercase;
+}

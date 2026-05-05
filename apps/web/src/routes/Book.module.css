@@ -1,0 +1,226 @@
+/* Book — page-turn reader (9-5-ReadBook.png).
+ *
+ * Layout: contents/notes rail on the left, two-page parchment spread in
+ * the centre, page-turn controls below. The art shows side ribbons on the
+ * right with chapter shortcuts; we collapse those into the chapter list. */
+
+.shell {
+  display: grid;
+  grid-template-columns: minmax(220px, 260px) minmax(0, 1fr);
+  gap: var(--br-space-4, 1rem);
+  padding: var(--br-space-3, 0.75rem);
+}
+
+@media (max-width: 880px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+}
+
+.headline {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-family: var(--br-typography-font-family-display, serif);
+  font-size: clamp(1.4rem, 2.6vw, 2rem);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--br-color-sigil-200, #f4cc66);
+  margin: 0;
+}
+
+.aside {
+  background: rgba(8, 6, 4, 0.55);
+  border: 1px solid rgba(244, 204, 102, 0.18);
+  border-radius: var(--br-radius-md, 6px);
+  padding: var(--br-space-3, 0.75rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--br-space-2, 0.5rem);
+  max-height: 70vh;
+  overflow: auto;
+}
+
+.asideHead {
+  font-family: var(--br-typography-font-family-display, serif);
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--br-color-sigil-300, #e6b246);
+  margin: 0;
+  padding-bottom: var(--br-space-2, 0.5rem);
+  border-bottom: 1px solid rgba(244, 204, 102, 0.18);
+}
+
+.chapter {
+  appearance: none;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--br-color-parchment-100, #f5e7c6);
+  text-align: left;
+  padding: var(--br-space-2, 0.5rem);
+  cursor: pointer;
+  font: inherit;
+  border-radius: var(--br-radius-sm, 2px);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.chapter:hover,
+.chapter:focus-visible {
+  border-color: rgba(244, 204, 102, 0.5);
+  outline: none;
+}
+
+.chapter.active {
+  border-color: var(--br-color-sigil-300, #e6b246);
+  background: rgba(20, 14, 6, 0.85);
+  color: var(--br-color-sigil-200, #f4cc66);
+}
+
+.chapterIndex {
+  font-family: var(--br-typography-font-family-display, serif);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.chapterTitle {
+  font-size: 0.95rem;
+}
+
+.bookFrame {
+  display: flex;
+  flex-direction: column;
+  gap: var(--br-space-3, 0.75rem);
+}
+
+.spread {
+  background: radial-gradient(ellipse at 50% 50%, rgba(244, 204, 102, 0.06), rgba(0, 0, 0, 0) 70%),
+    linear-gradient(
+      90deg,
+      var(--br-color-parchment-100, #f5e7c6) 0%,
+      var(--br-color-parchment-200, #ebd6a3) 50%,
+      var(--br-color-parchment-100, #f5e7c6) 100%
+    );
+  color: var(--br-color-ink-500, #251f12);
+  border: 1px solid rgba(207, 150, 47, 0.3);
+  border-radius: var(--br-radius-md, 6px);
+  padding: var(--br-space-6, 1.5rem);
+  position: relative;
+  min-height: 480px;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  box-shadow: var(--br-shadow-parchment-emboss, 0 2px 6px rgba(0, 0, 0, 0.35));
+}
+
+.spread::after {
+  /* gutter shadow */
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 28px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(60, 40, 18, 0.18) 50%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  pointer-events: none;
+}
+
+.pages {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--br-space-8, 2rem);
+}
+
+@media (max-width: 720px) {
+  .pages {
+    grid-template-columns: 1fr;
+  }
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--br-space-3, 0.75rem);
+}
+
+.pageHeading {
+  font-family: var(--br-typography-font-family-display, serif);
+  font-size: 1.4rem;
+  color: var(--br-color-ink-500, #251f12);
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+
+.pageBody {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--br-color-ink-500, #251f12);
+  margin: 0;
+}
+
+.pageBody.dropCap::first-letter {
+  font-family: var(--br-typography-font-family-display, serif);
+  font-size: 3rem;
+  float: left;
+  line-height: 1;
+  padding-right: 8px;
+  padding-top: 4px;
+  color: var(--br-color-virtue-700, #142f4a);
+}
+
+.illustrationFrame {
+  border: 1px solid rgba(60, 40, 18, 0.2);
+  background: rgba(207, 150, 47, 0.08);
+  padding: var(--br-space-4, 1rem);
+  text-align: center;
+  font-style: italic;
+  color: rgba(60, 40, 18, 0.7);
+  display: grid;
+  place-items: center;
+  min-height: 200px;
+  border-radius: var(--br-radius-sm, 2px);
+}
+
+.pageNumber {
+  text-align: center;
+  font-family: var(--br-typography-font-family-display, serif);
+  font-size: 0.85rem;
+  color: rgba(60, 40, 18, 0.55);
+  letter-spacing: 0.2em;
+  margin-top: var(--br-space-3, 0.75rem);
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--br-space-3, 0.75rem);
+}
+
+.citationPanel {
+  background: rgba(20, 14, 6, 0.7);
+  border: 1px solid rgba(74, 160, 232, 0.4);
+  border-radius: var(--br-radius-md, 6px);
+  padding: var(--br-space-3, 0.75rem);
+  font-size: 0.85rem;
+  color: var(--br-color-mana-100, #b3dcfc);
+  font-style: italic;
+}
+
+.citationLabel {
+  font-style: normal;
+  font-family: var(--br-typography-font-family-display, serif);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--br-color-mana-200, #7ec0f6);
+  display: block;
+  margin-bottom: 4px;
+}

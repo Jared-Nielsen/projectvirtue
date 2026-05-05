@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port 5174",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview --port 4174",
+    "build": "tsc -b && vite build && vite build --ssr src/entry-server.tsx --outDir dist/server && node --import tsx scripts/prerender.ts",
+    "preview": "vite preview --port 4174 --outDir dist",
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
     "test": "vitest --passWithNoTests"
@@ -22,6 +22,7 @@
   "devDependencies": {
     "@types/node": "22.10.1",
     "jsdom": "25.0.1",
+    "tsx": "4.19.2",
     "typescript": "5.6.3",
     "vite": "5.4.11",
     "vite-plugin-solid": "2.10.2",

@@ -1,0 +1,148 @@
+/* Shared HUD layer + anchor utilities used by every play-overlay component.
+ *
+ * Layering contract (z-index):
+ *   0   canvas (the Pixi <canvas> mounted under /play)
+ *   100 hud root wrapper (this layer)
+ *   110 anchored panels (target frame, ability bar, quest list, damage feed)
+ *   120 banners (region banner) and floating world labels
+ *   200 spell ring overlay (radial menu blocks input below)
+ *   300 portal travel modal
+ *   1000 system modals owned by @br/ui (above us by design)
+ *
+ * Pointer-events: the wrapper itself is `none` so canvas drag/click flows
+ * through; every interactive panel re-enables `auto`. */
+
+.hudLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  font-family: var(--br-font-ui, system-ui, sans-serif);
+  color: var(--br-color-ink-50, #e8e2d2);
+}
+
+.canvasShell {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 480px;
+  display: block;
+  background: #101418;
+  border-radius: var(--br-radius-md, 6px);
+  overflow: hidden;
+}
+
+.canvasMount {
+  position: absolute;
+  inset: 0;
+}
+
+.anchor {
+  position: absolute;
+  pointer-events: auto;
+}
+
+.topLeft {
+  top: 12px;
+  left: 12px;
+}
+
+.topRight {
+  top: 12px;
+  right: 12px;
+}
+
+.topCenter {
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.bottomLeft {
+  bottom: 12px;
+  left: 12px;
+}
+
+.bottomRight {
+  bottom: 12px;
+  right: 12px;
+}
+
+.bottomCenter {
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.panel {
+  background: rgba(11, 9, 4, 0.78);
+  border: 1px solid var(--br-color-border, #3a3328);
+  border-radius: var(--br-radius-md, 6px);
+  padding: 8px 10px;
+  backdrop-filter: blur(2px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+}
+
+.banner {
+  font-family: var(--br-font-display, serif);
+  font-size: 1.5rem;
+  letter-spacing: 0.08em;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.85);
+  color: var(--br-color-sigil-100, #fae29a);
+}
+
+.bannerSub {
+  font-family: var(--br-font-ui, system-ui);
+  font-size: 0.8rem;
+  opacity: 0.75;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.feed {
+  width: 280px;
+  max-height: 200px;
+  overflow: hidden;
+  font-family: var(--br-font-ui-mono, monospace);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.feedItem {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.feedCrit {
+  color: var(--br-color-sigil-200, #f4cc66);
+  font-weight: 600;
+}
+
+.feedDanger {
+  color: var(--br-color-blood-200, #e98678);
+}
+
+.feedFire {
+  color: var(--br-color-blood-200, #e98678);
+}
+
+.feedCold {
+  color: var(--br-color-mana-200, #7ec0f6);
+}
+
+.feedHoly {
+  color: var(--br-color-sigil-100, #fae29a);
+}

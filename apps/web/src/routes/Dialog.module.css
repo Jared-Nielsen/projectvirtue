@@ -1,0 +1,168 @@
+/* Dialog modal — branching dialog tree (9-1-DialogModals.png).
+ *
+ * Two-column inside a Card: NPC bust + name on the left, NPC text + numbered
+ * response chips on the right. Reputation/disposition pip lives below the
+ * portrait. */
+
+.shell {
+  display: grid;
+  grid-template-columns: minmax(140px, 200px) 1fr;
+  gap: var(--br-space-5, 1.25rem);
+  padding: var(--br-space-2, 0.5rem);
+}
+
+@media (max-width: 640px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bust {
+  aspect-ratio: 4 / 5;
+  background: radial-gradient(circle at 50% 28%, rgba(244, 204, 102, 0.25), rgba(0, 0, 0, 0) 60%),
+    linear-gradient(180deg, #1d2330 0%, #0a0807 100%);
+  border: 1px solid rgba(244, 204, 102, 0.32);
+  border-radius: var(--br-radius-md, 6px);
+  display: grid;
+  place-items: center;
+  position: relative;
+  color: var(--br-color-sigil-300, #e6b246);
+}
+
+.bustGlyph {
+  font-family: var(--br-typography-font-family-display, serif);
+  font-size: 3.5rem;
+  letter-spacing: 0.05em;
+  text-shadow: var(--br-shadow-glow-gold, 0 0 18px rgba(207, 150, 47, 0.55));
+}
+
+.bustName {
+  position: absolute;
+  bottom: 8px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  color: var(--br-color-parchment-100, #f5e7c6);
+  text-transform: uppercase;
+}
+
+.bustMeta {
+  margin-top: var(--br-space-2, 0.5rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--br-space-1, 0.25rem);
+}
+
+.bustLabel {
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.repBar {
+  height: 6px;
+  background: rgba(244, 204, 102, 0.18);
+  border-radius: var(--br-radius-full, 9999px);
+  overflow: hidden;
+}
+
+.repFill {
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--br-color-sigil-400, #cf962f) 0%,
+    var(--br-color-sigil-200, #f4cc66) 100%
+  );
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--br-space-4, 1rem);
+}
+
+.npcName {
+  font-family: var(--br-typography-font-family-display, serif);
+  font-size: 1.5rem;
+  letter-spacing: 0.12em;
+  color: var(--br-color-sigil-200, #f4cc66);
+  margin: 0;
+}
+
+.npcKeeper {
+  margin: 0;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.npcText {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--br-color-parchment-100, #f5e7c6);
+  font-style: italic;
+}
+
+.choiceList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--br-space-2, 0.5rem);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.choice {
+  appearance: none;
+  background: rgba(8, 6, 4, 0.55);
+  border: 1px solid rgba(244, 204, 102, 0.22);
+  color: var(--br-color-parchment-100, #f5e7c6);
+  padding: var(--br-space-3, 0.75rem) var(--br-space-4, 1rem);
+  cursor: pointer;
+  border-radius: var(--br-radius-md, 6px);
+  text-align: left;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--br-space-3, 0.75rem);
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+.choice:hover:not(:disabled),
+.choice:focus-visible {
+  border-color: var(--br-color-sigil-300, #e6b246);
+  outline: none;
+  background: rgba(20, 14, 6, 0.85);
+}
+
+.choice:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.choiceNum {
+  font-family: var(--br-typography-font-family-hud-mono, monospace);
+  color: var(--br-color-sigil-300, #e6b246);
+  min-width: 1.4ch;
+}
+
+.choiceLock {
+  font-size: 0.75rem;
+  opacity: 0.65;
+  letter-spacing: 0.06em;
+}
+
+.endNote {
+  margin-top: var(--br-space-3, 0.75rem);
+  text-align: center;
+  font-size: 0.85rem;
+  opacity: 0.7;
+  font-style: italic;
+}
