@@ -27,6 +27,9 @@ export interface CameraOptions {
   readonly bounds: CameraBounds;
   readonly minZoom?: number;
   readonly maxZoom?: number;
+  /** Initial zoom — defaults to 1. Scale mode pre-sets a comfortable zoom
+   *  for the active art pack. */
+  readonly initialZoom?: number;
 }
 
 const KEY_PAN_SPEED = 480; // px/sec at zoom 1
@@ -37,10 +40,10 @@ const SMOOTH_TAU = 0.1; // seconds
 export class Camera {
   private targetX = 0;
   private targetY = 0;
-  private targetZoom = 1;
+  private targetZoom: number;
   private actualX = 0;
   private actualY = 0;
-  private actualZoom = 1;
+  private actualZoom: number;
   private readonly minZoom: number;
   private readonly maxZoom: number;
   private readonly keysHeld = new Set<string>();
@@ -56,6 +59,9 @@ export class Camera {
   constructor(private readonly opts: CameraOptions) {
     this.minZoom = opts.minZoom ?? 0.5;
     this.maxZoom = opts.maxZoom ?? 2.5;
+    const initial = Math.max(this.minZoom, Math.min(this.maxZoom, opts.initialZoom ?? 1));
+    this.targetZoom = initial;
+    this.actualZoom = initial;
     this.attachInput();
   }
 

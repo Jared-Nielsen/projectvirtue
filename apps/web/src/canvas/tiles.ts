@@ -15,13 +15,17 @@
 
 import type { Tile, TileMap, TileType } from '@br/types';
 import { Container, Graphics } from 'pixi.js';
+import { DEFAULT_SCALE_MODE, SCALE_MODES, isoMetricsFor } from './scale';
 
 export interface IsoMetrics {
   readonly tileW: number;
   readonly tileH: number;
 }
 
-export const DEFAULT_ISO: IsoMetrics = { tileW: 64, tileH: 32 };
+/** Iso metrics for the default scale mode. Most callers should pass the
+ *  metrics derived from the active `ScaleMode` in `app.ts`; this constant
+ *  exists for tests and standalone tile-layer construction. */
+export const DEFAULT_ISO: IsoMetrics = isoMetricsFor(SCALE_MODES[DEFAULT_SCALE_MODE]);
 
 export interface TileWorldRect {
   readonly minX: number;
