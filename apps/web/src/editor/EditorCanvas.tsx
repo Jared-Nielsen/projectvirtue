@@ -28,6 +28,7 @@ import {
   Container,
   type FederatedPointerEvent,
   Graphics,
+  Polygon,
   Sprite,
   type Texture,
 } from 'pixi.js';
@@ -120,6 +121,18 @@ export const EditorCanvas: Component<EditorCanvasProps> = (props) => {
     const project = makeIsoProjector(metrics);
     const size = state.gridSize;
     const tex = textures();
+
+    // Hit area covering the full iso grid diamond so pointer events fire on
+    // EVERY cell — including empty ones. Without this, Pixi v8 hit-tests
+    // each Graphics by its fill, and the empty-cell outline diamonds have
+    // no fill, so clicks on unpainted cells silently miss. Polygon corners
+    // are the four projected grid corners; worldToGrid filters
+    // out-of-bounds clicks.
+    const c0 = project(0, 0);
+    const c1 = project(size, 0);
+    const c2 = project(size, size);
+    const c3 = project(0, size);
+    tilesContainer.hitArea = new Polygon([c0.sx, c0.sy, c1.sx, c1.sy, c2.sx, c2.sy, c3.sx, c3.sy]);
 
     for (let y = 0; y < size; y++) {
       for (let x = 0; x < size; x++) {
