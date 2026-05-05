@@ -24,6 +24,9 @@ export interface PlayerOptions {
   readonly project: IsoToScreen;
   readonly start: GridPoint;
   readonly speedTilesPerSec?: number;
+  /** Render scale applied to the character sprite. Defaults to 0.55
+   *  (Kenney-miniature feel); scale mode picks the appropriate value. */
+  readonly spriteScale?: number;
   readonly archetype?: 'lord' | 'mage';
 }
 
@@ -56,12 +59,13 @@ export class Player {
     this.container = new Container();
     this.container.label = 'player';
 
+    const renderScale = opts.spriteScale ?? 0.55;
     if (this.idleFrames.length > 0) {
       const anim = new AnimatedSprite([...this.idleFrames]);
       anim.animationSpeed = 0.08;
       anim.play();
       anim.anchor.set(0.5, 0.85);
-      anim.scale.set(0.55);
+      anim.scale.set(renderScale);
       this.sprite = anim;
     } else {
       // Last-ditch fallback: a coloured pawn so the player is still visible

@@ -1,0 +1,12 @@
+.feed {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.count {
+  margin-left: 4px;
+  opacity: 0.7;
+  font-weight: 600;
+}

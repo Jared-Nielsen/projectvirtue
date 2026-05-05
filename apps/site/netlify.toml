@@ -7,10 +7,8 @@
   NODE_VERSION = "24"
   PNPM_VERSION = "10"
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
+# No SPA fallback redirect: Astro emits a real HTML file per route, plus a
+# top-level dist/404.html that Netlify serves automatically for unknown paths.
 
 [[headers]]
   for = "/*"

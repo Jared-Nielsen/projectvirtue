@@ -1,0 +1,66 @@
+.bar {
+  display: flex;
+  gap: 6px;
+  padding: 6px;
+}
+
+.slot {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(180deg, rgba(50, 38, 16, 0.6), rgba(20, 15, 5, 0.85));
+  border: 1px solid var(--br-color-border, #3a3328);
+  border-radius: var(--br-radius-md, 6px);
+  color: var(--br-color-ink-50, #e8e2d2);
+  font-family: var(--br-font-display, serif);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 4px;
+  transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+}
+
+.slot:hover {
+  border-color: var(--br-color-sigil-400, #cf962f);
+  transform: translateY(-1px);
+  box-shadow: 0 0 12px rgba(207, 150, 47, 0.35);
+}
+
+.slot:focus-visible {
+  outline: 2px solid var(--br-color-sigil-300, #e6b246);
+  outline-offset: 2px;
+}
+
+.slot.active {
+  border-color: var(--br-color-sigil-300, #e6b246);
+  box-shadow: 0 0 14px rgba(244, 204, 102, 0.55);
+}
+
+.glyph {
+  font-size: 1.25rem;
+  letter-spacing: 0.04em;
+  color: var(--br-color-sigil-200, #f4cc66);
+}
+
+.label {
+  font-size: 0.6rem;
+  font-family: var(--br-font-ui, system-ui);
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 48px;
+}
+
+.key {
+  position: absolute;
+  top: 2px;
+  right: 4px;
+  font-size: 0.65rem;
+  opacity: 0.7;
+  font-family: var(--br-font-ui-mono, monospace);
+}

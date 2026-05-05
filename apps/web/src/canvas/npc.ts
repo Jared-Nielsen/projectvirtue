@@ -19,6 +19,12 @@ export interface NpcOptions {
   readonly metrics: IsoMetrics;
   readonly project: IsoToScreen;
   readonly grid: Walkable;
+  /** Tiles per second for wander pathing. Defaults match the legacy NPC
+   *  speed; scale mode tunes per art pack. */
+  readonly speedTilesPerSec?: number;
+  /** Render scale applied to the NPC sprite. Defaults to 0.5; scale mode
+   *  picks the appropriate value. */
+  readonly spriteScale?: number;
   readonly onClick?: (npc: Npc) => void;
 }
 
@@ -59,7 +65,11 @@ export class NpcEntity {
     this.targetX = start.sx;
     this.targetY = start.sy;
     this.idleTimer = randInt(MIN_IDLE_MS, MAX_IDLE_MS);
-    this.speedPxPerSec = 1.5 * (this.metrics.tileW / 2 + this.metrics.tileH / 2);
+    // Wander speed is a function of tiles/sec mapped through the iso projection
+    // (so it stays visually consistent across scale modes — 1.5 t/s in Kenney
+    // mode and 1.5 t/s in Ultima VII mode both look like a casual stroll).
+    const tilesPerSec = opts.speedTilesPerSec ?? 1.5;
+    this.speedPxPerSec = tilesPerSec * (this.metrics.tileW / 2 + this.metrics.tileH / 2);
 
     this.container = new Container();
     this.container.label = `npc:${opts.npc.id}`;
@@ -70,12 +80,13 @@ export class NpcEntity {
     // mage idle; hostile ones use the lord idle so they look distinct.
     const trackKey = opts.npc.disposition === 'hostile' ? 'lord.idle' : 'mage.idle';
     const frames = getAnimation(opts.registry, trackKey);
+    const renderScale = opts.spriteScale ?? 0.5;
     if (frames.length > 0) {
       const anim = new AnimatedSprite([...frames]);
       anim.animationSpeed = 0.06;
       anim.play();
       anim.anchor.set(0.5, 0.85);
-      anim.scale.set(0.5);
+      anim.scale.set(renderScale);
       this.sprite = anim;
     } else {
       const fallbackKey = opts.npc.disposition === 'hostile' ? 'dir.s' : 'dir.s';

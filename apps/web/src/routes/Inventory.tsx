@@ -1,16 +1,11 @@
-// `/play/inventory` — overlay placeholder (InterfaceInventory.png).
+// `/play/inventory` — overlay route that mounts the inventory screen. The
+// real layout, drag/drop, and tooltip wiring live in the dedicated module
+// under `../inventory/InventoryScreen` so the same component is reachable
+// from in-world hotkeys (Wave 4) without re-routing.
 
 import type { JSX } from 'solid-js';
-import { mockClient } from '../state/mockClient';
-import { Placeholder } from './_Placeholder';
+import { InventoryScreen } from '../inventory/InventoryScreen';
 
 export function Inventory(): JSX.Element {
-  return (
-    <Placeholder
-      title="Inventory"
-      description="Equipment, bag grid, weight bar, paperdoll preview."
-      endpoint="GET /v1/inventory/items"
-      load={() => mockClient.get('/v1/inventory/items')}
-    />
-  );
+  return <InventoryScreen />;
 }

@@ -215,3 +215,43 @@ p:last-child {
   color: var(--br-parchment-200);
   margin-bottom: 40px;
 }
+
+/* Reusable CTA pills (primary on dark, ghost on parchment). Used across
+ * pages — kept here rather than scoped per-component for stable specificity. */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  font-family: var(--br-font-ui);
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  border-radius: 2px;
+  text-decoration: none;
+  transition: background 200ms, color 200ms, border-color 200ms;
+}
+.cta--primary {
+  background: var(--br-sigil-500);
+  color: var(--br-ink-900);
+  border: 1px solid var(--br-sigil-400);
+}
+.cta--primary:hover,
+.cta--primary:focus-visible {
+  background: var(--br-sigil-400);
+  color: var(--br-ink-900);
+  text-decoration: none;
+}
+.cta--ghost {
+  background: transparent;
+  color: var(--br-sigil-200);
+  border: 1px solid var(--br-sigil-500);
+}
+.cta--ghost:hover,
+.cta--ghost:focus-visible {
+  background: rgba(207, 150, 47, 0.12);
+  color: var(--br-sigil-100);
+  border-color: var(--br-sigil-400);
+  text-decoration: none;
+}

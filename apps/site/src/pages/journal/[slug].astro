@@ -1,0 +1,110 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('journal');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+interface Props {
+  readonly post: CollectionEntry<'journal'>;
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+const data = post.data;
+const formattedDate = new Date(data.date).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const description = data.excerpt;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: data.title,
+  description,
+  datePublished: data.date,
+  author: {
+    '@type': 'Person',
+    name: data.author,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Project Virtue',
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': `https://virtu3.com/journal/${post.slug}`,
+  },
+  keywords: data.tags.join(', '),
+};
+---
+
+<BaseLayout title={data.title} description={description} jsonLd={jsonLd}>
+  <article class="journal-post">
+    <header class="journal-post__hero">
+      <div class="container">
+        <p>
+          <a href="/journal">← Journal</a>
+        </p>
+        <p class="eyebrow journal-post__category">{data.category.replace('-', ' ')}</p>
+        <h1>{data.title}</h1>
+        <p class="journal-post__meta">
+          <time datetime={data.date}>{formattedDate}</time>
+          <span aria-hidden="true">·</span>
+          <span>By {data.author}</span>
+        </p>
+      </div>
+    </header>
+    <div class="container">
+      <div class="surface journal-post__body">
+        <p class="lede journal-post__excerpt">{data.excerpt}</p>
+        <Content />
+        <p class="journal-post__tags">
+          Tags: {data.tags.map((t) => `#${t}`).join(' ')}
+        </p>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .journal-post__hero {
+    padding: 56px 0 24px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(207, 150, 47, 0.08) 0%, transparent 60%);
+  }
+  .journal-post__category { color: var(--br-sigil-400); }
+  .journal-post__meta {
+    color: var(--br-parchment-300);
+    font-size: 0.875rem;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .journal-post__body {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 32px;
+  }
+  .journal-post__excerpt {
+    color: var(--br-parchment-100);
+    margin-bottom: 24px;
+    padding-left: 14px;
+    border-left: 2px solid var(--br-sigil-500);
+  }
+  .journal-post__tags {
+    color: var(--br-parchment-300);
+    font-size: 0.875rem;
+    margin-top: 32px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(207, 150, 47, 0.18);
+  }
+</style>

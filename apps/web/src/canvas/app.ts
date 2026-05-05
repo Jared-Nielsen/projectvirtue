@@ -20,19 +20,21 @@ import { NpcEntity } from './npc';
 import { type Walkable, findPath } from './pathfinding';
 import { PerfOverlay } from './perfOverlay';
 import { Player } from './player';
-import { type SpriteRegistry, loadSpriteRegistry } from './sprites';
 import {
-  DEFAULT_ISO,
-  type TileLayer,
-  buildTileLayer,
-  makeIsoProjector,
-  tileAtWorldPoint,
-} from './tiles';
+  type ScaleMode,
+  type ScaleModeId,
+  getActiveScaleMode,
+  getScaleMode,
+  isoMetricsFor,
+} from './scale';
+import { type SpriteRegistry, loadSpriteRegistry } from './sprites';
+import { type TileLayer, buildTileLayer, makeIsoProjector, tileAtWorldPoint } from './tiles';
 import { type TileTrigger, TriggerHost } from './triggers';
 
 export interface CanvasRuntime {
   readonly app: Application;
   readonly events: EventTarget;
+  readonly scaleMode: ScaleMode;
   destroy(): Promise<void>;
 }
 
@@ -42,6 +44,9 @@ export interface MountOptions {
   readonly events?: EventTarget;
   /** Force a specific GL preference for testing. */
   readonly preference?: 'webgl' | 'webgpu';
+  /** Override the active scale mode. Defaults to the URL/storage/default
+   *  resolution chain in `scale.ts`. */
+  readonly scaleMode?: ScaleModeId;
 }
 
 function detectWebGL(): 'webgl2' | 'webgl1' | 'none' {
@@ -59,6 +64,10 @@ function detectWebGL(): 'webgl2' | 'webgl1' | 'none' {
 
 export async function mountCanvas(opts: MountOptions): Promise<CanvasRuntime> {
   const events = opts.events ?? new EventTarget();
+  const scaleMode = opts.scaleMode ? getScaleMode(opts.scaleMode) : getActiveScaleMode();
+  const isoMetrics = isoMetricsFor(scaleMode);
+  // eslint-disable-next-line no-console
+  console.info(`[canvas] scale mode: ${scaleMode.label}`);
   const gl = detectWebGL();
   if (gl === 'none') {
     // eslint-disable-next-line no-console
@@ -99,7 +108,7 @@ export async function mountCanvas(opts: MountOptions): Promise<CanvasRuntime> {
   // Load assets.
   let registry: SpriteRegistry;
   try {
-    registry = await loadSpriteRegistry();
+    registry = await loadSpriteRegistry(scaleMode.atlasManifest);
   } catch (err) {
     // eslint-disable-next-line no-console
     console.error('[canvas] sprite registry load failed; continuing with primitives only.', err);
@@ -109,7 +118,7 @@ export async function mountCanvas(opts: MountOptions): Promise<CanvasRuntime> {
       manifest: {
         image: '',
         size: { width: 0, height: 0 },
-        tile: { isoWidth: DEFAULT_ISO.tileW, isoHeight: DEFAULT_ISO.tileH },
+        tile: { isoWidth: isoMetrics.tileW, isoHeight: isoMetrics.tileH },
         frames: {},
         animations: {},
       },
@@ -121,10 +130,10 @@ export async function mountCanvas(opts: MountOptions): Promise<CanvasRuntime> {
 
   // Tile layer.
   const tileMap = fixtures.loadTileMapSosaria();
-  const tileLayer = buildTileLayer(tileMap, DEFAULT_ISO);
+  const tileLayer = buildTileLayer(tileMap, isoMetrics);
   world.addChild(tileLayer.container);
 
-  const project = makeIsoProjector(DEFAULT_ISO);
+  const project = makeIsoProjector(isoMetrics);
   const grid: Walkable = {
     width: tileLayer.map.width,
     height: tileLayer.map.height,
@@ -135,10 +144,11 @@ export async function mountCanvas(opts: MountOptions): Promise<CanvasRuntime> {
   const playerStart = findOpenStart(tileLayer);
   const player = new Player({
     registry,
-    metrics: DEFAULT_ISO,
+    metrics: isoMetrics,
     project,
     start: playerStart,
-    speedTilesPerSec: 4,
+    speedTilesPerSec: scaleMode.walk.playerTilesPerSec,
+    spriteScale: scaleMode.spriteScale.player,
     archetype: 'lord',
   });
   world.addChild(player.container);
@@ -152,9 +162,11 @@ export async function mountCanvas(opts: MountOptions): Promise<CanvasRuntime> {
     const entity = new NpcEntity({
       npc,
       registry,
-      metrics: DEFAULT_ISO,
+      metrics: isoMetrics,
       project,
       grid,
+      speedTilesPerSec: scaleMode.walk.npcTilesPerSec,
+      spriteScale: scaleMode.spriteScale.npc,
       onClick: (clicked) => triggerHost.fireDialog(clicked.id),
     });
     world.addChild(entity.container);
@@ -184,12 +196,16 @@ export async function mountCanvas(opts: MountOptions): Promise<CanvasRuntime> {
     npcs: allNpcs as unknown as Npc[],
   });
 
-  // Camera.
+  // Camera — zoom band scales with the active mode so different art styles
+  // get the same on-screen "comfortable zoom range" feel.
   const camera = new Camera({
     stage: app.stage,
     app,
     world,
     bounds: tileLayer.bounds,
+    minZoom: scaleMode.camera.minZoom,
+    maxZoom: scaleMode.camera.maxZoom,
+    initialZoom: scaleMode.camera.initialZoom,
   });
   camera.setFollow(player.worldPosition);
   camera.centerOn(player.worldPosition.x, player.worldPosition.y);
@@ -201,7 +217,7 @@ export async function mountCanvas(opts: MountOptions): Promise<CanvasRuntime> {
     id: 'player-torch',
     x: player.worldPosition.x,
     y: player.worldPosition.y,
-    radius: 140,
+    radius: scaleMode.lighting.torchRadius,
     intensity: 0.7,
     color: 0xffd28a,
   });
@@ -270,6 +286,7 @@ export async function mountCanvas(opts: MountOptions): Promise<CanvasRuntime> {
   return {
     app,
     events,
+    scaleMode,
     async destroy() {
       app.ticker.stop();
       camera.destroy();

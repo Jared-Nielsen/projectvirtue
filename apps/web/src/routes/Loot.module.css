@@ -1,0 +1,194 @@
+/* Loot — chest grid (9-2-LootChest.png).
+ *
+ * Two-pane layout: chest contents on the left, mock player inventory on
+ * the right. Header bar shows weight bar + capacity. */
+
+.shell {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--br-space-4, 1rem);
+}
+
+.panes {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--br-space-4, 1rem);
+}
+
+@media (max-width: 720px) {
+  .panes {
+    grid-template-columns: 1fr;
+  }
+}
+
+.pane {
+  display: flex;
+  flex-direction: column;
+  gap: var(--br-space-3, 0.75rem);
+  padding: var(--br-space-3, 0.75rem);
+  background: rgba(8, 6, 4, 0.55);
+  border: 1px solid rgba(244, 204, 102, 0.18);
+  border-radius: var(--br-radius-md, 6px);
+}
+
+.paneHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--br-space-2, 0.5rem);
+}
+
+.paneTitle {
+  margin: 0;
+  font-family: var(--br-typography-font-family-display, serif);
+  font-size: 1.1rem;
+  letter-spacing: 0.16em;
+  color: var(--br-color-sigil-200, #f4cc66);
+  text-transform: uppercase;
+}
+
+.paneMeta {
+  font-size: 0.85rem;
+  opacity: 0.75;
+  font-family: var(--br-typography-font-family-hud-mono, monospace);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(64px, 1fr));
+  gap: 6px;
+}
+
+.slot {
+  appearance: none;
+  background: rgba(20, 14, 6, 0.65);
+  border: 1px solid rgba(244, 204, 102, 0.2);
+  color: var(--br-color-parchment-100, #f5e7c6);
+  cursor: pointer;
+  border-radius: var(--br-radius-sm, 2px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  position: relative;
+  font-size: 0.7rem;
+  text-align: center;
+  padding: 2px;
+}
+
+.slot:hover,
+.slot:focus-visible {
+  border-color: var(--br-color-sigil-300, #e6b246);
+  outline: none;
+}
+
+.slot[data-rarity="uncommon"] {
+  border-color: rgba(94, 138, 58, 0.55);
+}
+
+.slot[data-rarity="rare"] {
+  border-color: rgba(74, 160, 232, 0.55);
+}
+
+.slot[data-rarity="epic"] {
+  border-color: rgba(187, 140, 232, 0.6);
+}
+
+.slot[data-rarity="legendary"] {
+  border-color: rgba(244, 204, 102, 0.8);
+  box-shadow: var(--br-shadow-glow-gold, 0 0 12px rgba(207, 150, 47, 0.45));
+}
+
+.slotEmpty {
+  background: rgba(8, 6, 4, 0.4);
+  border-style: dashed;
+  cursor: default;
+}
+
+.slotGlyph {
+  font-family: var(--br-typography-font-family-display, serif);
+  font-size: 1.5rem;
+  color: var(--br-color-sigil-300, #e6b246);
+  line-height: 1;
+}
+
+.slotStack {
+  position: absolute;
+  bottom: 2px;
+  right: 4px;
+  font-family: var(--br-typography-font-family-hud-mono, monospace);
+  font-size: 0.7rem;
+  color: var(--br-color-parchment-100, #f5e7c6);
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.6);
+}
+
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background: rgba(20, 14, 6, 0.96);
+  border: 1px solid rgba(244, 204, 102, 0.5);
+  padding: var(--br-space-2, 0.5rem);
+  border-radius: var(--br-radius-md, 6px);
+  width: max-content;
+  max-width: 220px;
+  pointer-events: none;
+  font-size: 0.8rem;
+  color: var(--br-color-parchment-100, #f5e7c6);
+  text-align: left;
+  display: none;
+}
+
+.slot:hover .tooltip,
+.slot:focus-visible .tooltip {
+  display: block;
+}
+
+.tooltipName {
+  font-weight: 600;
+  color: var(--br-color-sigil-200, #f4cc66);
+  display: block;
+  margin-bottom: 2px;
+}
+
+.tooltipDesc {
+  display: block;
+  opacity: 0.85;
+  line-height: 1.4;
+  font-style: italic;
+}
+
+.tooltipMeta {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--br-typography-font-family-hud-mono, monospace);
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+.weightBar {
+  width: 100%;
+}
+
+.weightTrack {
+  height: 8px;
+  background: rgba(244, 204, 102, 0.16);
+  border-radius: var(--br-radius-full, 9999px);
+  overflow: hidden;
+  border: 1px solid rgba(244, 204, 102, 0.18);
+}
+
+.weightFill {
+  height: 100%;
+  background: linear-gradient(90deg, #5e8a3a 0%, #cf962f 70%, #962b1e 100%);
+  transition: width 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(244, 204, 102, 0.18);
+  padding-top: var(--br-space-3, 0.75rem);
+}

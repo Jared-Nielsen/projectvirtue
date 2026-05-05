@@ -1,0 +1,244 @@
+/* Shared chrome for every loading-screen variant.
+ * Each variant supplies its own `--bg-*` custom properties so the same
+ * skeleton renders four distinct moods without duplicating layout.
+ *
+ * Reduced-motion: animations collapse to 0s via `--br-dur-*`; the static
+ * gradient remains for theming.
+ */
+
+.frame {
+  position: relative;
+  inline-size: 100%;
+  block-size: 100%;
+  min-block-size: 100vh;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-items: end;
+  overflow: hidden;
+  isolation: isolate;
+  background: radial-gradient(ellipse at 50% 30%, var(--bg-glow, transparent) 0%, transparent 55%),
+    linear-gradient(
+      180deg,
+      var(--bg-top, #0b1326) 0%,
+      var(--bg-mid, #0a1a2c) 55%,
+      var(--bg-bottom, #050a14) 100%
+    );
+  color: var(--br-parchment-50);
+  font-family: var(--br-font-display);
+  padding: var(--br-space-8);
+}
+
+/* Backdrop scenery — variant-specific SVG composition lives in :before/:after.
+ * The art is a stylised silhouette built from CSS gradients, not bitmap
+ * concept art (which lives in /_conceptart for hand-off). */
+.frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image: var(--bg-art, none);
+  background-position: var(--bg-art-pos, center bottom);
+  background-repeat: no-repeat;
+  background-size: var(--bg-art-size, cover);
+  opacity: var(--bg-art-opacity, 0.85);
+}
+
+/* Atmospheric particles — drift, flicker, or sparkle per variant. */
+.frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--bg-fx, none);
+  mix-blend-mode: var(--bg-fx-blend, screen);
+  opacity: var(--bg-fx-opacity, 0.5);
+  animation: var(--bg-fx-anim, none);
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+.banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--br-space-3);
+  align-self: start;
+  margin-block-start: var(--br-space-12);
+}
+
+.sigil {
+  inline-size: 56px;
+  block-size: 56px;
+  color: var(--br-sigil-300);
+  filter: drop-shadow(0 0 12px rgba(207, 150, 47, 0.6));
+}
+
+.sigilPulse {
+  animation: sigilPulse 4s ease-in-out infinite;
+}
+
+.title {
+  margin: 0;
+  font-family: var(--br-font-display);
+  font-size: clamp(2.25rem, 6vw, 4rem);
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  color: var(--br-sigil-200);
+  text-shadow: 0 0 24px rgba(207, 150, 47, 0.45), 0 2px 4px rgba(0, 0, 0, 0.55);
+  text-align: center;
+}
+
+.tagline {
+  margin: 0;
+  text-align: center;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  font-size: var(--br-fs-label);
+  color: var(--br-parchment-200);
+  opacity: 0.85;
+}
+
+.subtitle {
+  margin: 0;
+  text-align: center;
+  letter-spacing: 0.12em;
+  font-family: var(--br-font-heading);
+  font-size: var(--br-fs-h4);
+  color: var(--br-sigil-100);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+}
+
+.bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--br-space-3);
+  padding-block-end: var(--br-space-6);
+}
+
+.quote {
+  margin: 0;
+  max-inline-size: 56ch;
+  text-align: center;
+  font-family: var(--br-font-body);
+  font-style: italic;
+  color: var(--br-parchment-100);
+  font-size: var(--br-fs-body);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+}
+
+.attribution {
+  margin-block-start: var(--br-space-1_5);
+  font-family: var(--br-font-ui);
+  font-style: normal;
+  font-size: var(--br-fs-body-sm);
+  letter-spacing: 0.08em;
+  color: var(--br-parchment-300);
+  opacity: 0.85;
+}
+
+.bar {
+  inline-size: min(560px, 80%);
+  block-size: 14px;
+  border-radius: var(--br-radius-full);
+  border: 1px solid rgba(207, 150, 47, 0.45);
+  background: rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.7), 0 0 12px rgba(0, 0, 0, 0.5);
+}
+
+.barFill {
+  block-size: 100%;
+  background: linear-gradient(
+    90deg,
+    var(--br-mana-300) 0%,
+    var(--br-mana-100) 50%,
+    var(--br-sigil-200) 100%
+  );
+  transform-origin: left center;
+  animation: barCrawl 2.6s var(--br-ease-emphasized) infinite;
+}
+
+.loadingLabel {
+  font-family: var(--br-font-display);
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--br-parchment-200);
+  font-size: var(--br-fs-label);
+}
+
+@keyframes sigilPulse {
+  0%,
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 12px rgba(207, 150, 47, 0.55));
+  }
+  50% {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 22px rgba(244, 204, 102, 0.85));
+  }
+}
+
+@keyframes barCrawl {
+  0% {
+    inline-size: 5%;
+  }
+  60% {
+    inline-size: 85%;
+  }
+  100% {
+    inline-size: 95%;
+  }
+}
+
+@keyframes drift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-4%, -6%, 0);
+  }
+}
+
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.85;
+  }
+  72% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-12%) translateY(0);
+  }
+  50% {
+    transform: translateX(0) translateY(-2%);
+  }
+  100% {
+    transform: translateX(12%) translateY(0);
+  }
+}
+
+/* Respect prefers-reduced-motion — drop animations to static frames. */
+@media (prefers-reduced-motion: reduce) {
+  .frame::after,
+  .barFill,
+  .sigilPulse {
+    animation: none !important;
+  }
+  .barFill {
+    inline-size: 50%;
+  }
+}

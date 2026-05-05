@@ -1,17 +1,11 @@
-import solid from 'vite-plugin-solid';
 import { defineConfig } from 'vitest/config';
 
+// Vitest config for unit tests in src/lib/. Astro's build/test orbit handles
+// component testing; this stays jsdom + plain TS for the lib/ utilities.
 export default defineConfig({
-  plugins: [solid()],
   test: {
     environment: 'jsdom',
     globals: true,
-    include: ['src/**/*.test.{ts,tsx}'],
-    // vite-plugin-solid auto-injects @testing-library/jest-dom/vitest as a
-    // setupFile when running vitest. The package is a transitive peer of the
-    // plugin and is not directly resolvable from apps/site, which breaks the
-    // test runner. Setting a setupFile whose path includes the substring
-    // "jest-dom" short-circuits the auto-injection branch in the plugin.
-    setupFiles: ['./vitest.jest-dom.noop.ts'],
+    include: ['src/lib/**/*.test.{ts,tsx}'],
   },
 });

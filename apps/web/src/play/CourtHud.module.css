@@ -1,0 +1,61 @@
+.roster {
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.head {
+  margin: 0;
+  font-family: var(--br-font-display, serif);
+  font-size: 0.85rem;
+  color: var(--br-color-sigil-200, #f4cc66);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.78rem;
+}
+
+.list li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 4px;
+  padding: 4px 6px;
+  border: 1px solid var(--br-color-virtue-800, #0c1d31);
+  border-radius: 4px;
+  background: rgba(20, 47, 74, 0.25);
+}
+
+.name {
+  font-weight: 600;
+}
+
+.title {
+  grid-column: 1 / -1;
+  font-style: italic;
+  opacity: 0.75;
+}
+
+.activity {
+  font-family: var(--br-font-ui-mono, monospace);
+  font-size: 0.6rem;
+  opacity: 0.65;
+}
+
+.empty {
+  opacity: 0.6;
+  font-style: italic;
+}
+
+.line {
+  font-size: 0.78rem;
+}

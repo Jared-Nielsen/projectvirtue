@@ -1,0 +1,193 @@
+/* LevelUp — celebration modal (9-3-ModalGainedALevel.png).
+ *
+ * Hero number, two side-by-side allocation columns: Attribute Increase vs
+ * New Ability. Continue button anchored to the bottom. */
+
+.shell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--br-space-5, 1.25rem);
+  padding: var(--br-space-2, 0.5rem);
+}
+
+.hero {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--br-space-2, 0.5rem);
+}
+
+.heroLabel {
+  font-family: var(--br-typography-font-family-display, serif);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  letter-spacing: 0.32em;
+  color: var(--br-color-sigil-200, #f4cc66);
+  margin: 0;
+  text-shadow: 0 0 18px rgba(244, 204, 102, 0.25);
+}
+
+.levelBadge {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(circle at 50% 40%, rgba(244, 204, 102, 0.32), rgba(0, 0, 0, 0) 70%),
+    rgba(20, 14, 6, 0.85);
+  border: 2px solid var(--br-color-sigil-300, #e6b246);
+  box-shadow: var(--br-shadow-glow-gold, 0 0 18px rgba(207, 150, 47, 0.55));
+  margin: var(--br-space-3, 0.75rem) auto;
+}
+
+.levelText {
+  font-family: var(--br-typography-font-family-display, serif);
+  font-size: 0.7rem;
+  letter-spacing: 0.32em;
+  color: var(--br-color-parchment-100, #f5e7c6);
+  text-transform: uppercase;
+  margin: 0;
+  text-align: center;
+  line-height: 1;
+}
+
+.levelNumber {
+  font-family: var(--br-typography-font-family-display, serif);
+  font-size: 3rem;
+  color: var(--br-color-sigil-200, #f4cc66);
+  margin: 0;
+  text-align: center;
+  line-height: 1;
+}
+
+.subtitle {
+  margin: 0;
+  text-align: center;
+  font-size: 0.95rem;
+  opacity: 0.85;
+  font-style: italic;
+  color: var(--br-color-parchment-100, #f5e7c6);
+}
+
+.lore {
+  text-align: center;
+  font-size: 0.85rem;
+  opacity: 0.75;
+  margin: 0;
+  font-style: italic;
+  border-top: 1px solid rgba(244, 204, 102, 0.18);
+  padding-top: var(--br-space-3, 0.75rem);
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--br-space-4, 1rem);
+}
+
+@media (max-width: 720px) {
+  .columns {
+    grid-template-columns: 1fr;
+  }
+}
+
+.column {
+  background: rgba(8, 6, 4, 0.5);
+  border: 1px solid rgba(244, 204, 102, 0.18);
+  border-radius: var(--br-radius-md, 6px);
+  padding: var(--br-space-3, 0.75rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--br-space-2, 0.5rem);
+}
+
+.columnHead {
+  font-family: var(--br-typography-font-family-display, serif);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.85rem;
+  color: var(--br-color-sigil-200, #f4cc66);
+  margin: 0;
+}
+
+.statRow {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  align-items: center;
+  gap: var(--br-space-2, 0.5rem);
+  padding: var(--br-space-2, 0.5rem) 0;
+  border-bottom: 1px dashed rgba(244, 204, 102, 0.12);
+}
+
+.statName {
+  text-transform: capitalize;
+  font-size: 0.9rem;
+  color: var(--br-color-parchment-100, #f5e7c6);
+}
+
+.statCount {
+  font-family: var(--br-typography-font-family-hud-mono, monospace);
+  color: var(--br-color-sigil-200, #f4cc66);
+  min-width: 2ch;
+  text-align: right;
+}
+
+.allocBtn {
+  appearance: none;
+  background: rgba(20, 14, 6, 0.85);
+  border: 1px solid rgba(244, 204, 102, 0.32);
+  color: var(--br-color-sigil-200, #f4cc66);
+  width: 28px;
+  height: 28px;
+  border-radius: var(--br-radius-sm, 2px);
+  cursor: pointer;
+  font-family: var(--br-typography-font-family-hud-mono, monospace);
+  font-size: 0.95rem;
+}
+
+.allocBtn:hover:not(:disabled),
+.allocBtn:focus-visible {
+  border-color: var(--br-color-sigil-200, #f4cc66);
+  outline: none;
+}
+
+.allocBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.budget {
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.75;
+  text-align: center;
+}
+
+.abilityRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  padding: var(--br-space-2, 0.5rem) 0;
+  border-bottom: 1px dashed rgba(244, 204, 102, 0.12);
+  gap: var(--br-space-2, 0.5rem);
+}
+
+.abilityName {
+  font-size: 0.95rem;
+  color: var(--br-color-parchment-100, #f5e7c6);
+}
+
+.abilityDesc {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  grid-column: 1 / -1;
+  font-style: italic;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  padding-top: var(--br-space-3, 0.75rem);
+  border-top: 1px solid rgba(244, 204, 102, 0.18);
+}

@@ -2,7 +2,6 @@
 // the user has not granted consent (lib/consent.ts) — Doc #38 §2.3 requires
 // analytics to be opt-in (lawful basis: consent).
 
-import { isServer } from 'solid-js/web';
 import { hasAnalyticsConsent } from './consent';
 
 export interface AnalyticsEvent {
@@ -11,10 +10,12 @@ export interface AnalyticsEvent {
   readonly path?: string;
 }
 
+const isBrowser = (): boolean => typeof window !== 'undefined' && typeof document !== 'undefined';
+
 const DEV = typeof import.meta !== 'undefined' && import.meta.env?.DEV === true;
 
 function debug(...args: unknown[]): void {
-  if (DEV && !isServer) {
+  if (DEV && isBrowser()) {
     // eslint-disable-next-line no-console
     console.debug('[analytics]', ...args);
   }
@@ -22,7 +23,7 @@ function debug(...args: unknown[]): void {
 
 /** Plausible-shaped event dispatcher. No-op until consent is granted. */
 export function track(event: AnalyticsEvent): void {
-  if (isServer) return;
+  if (!isBrowser()) return;
   if (!hasAnalyticsConsent()) {
     debug('blocked (no consent):', event.name);
     return;

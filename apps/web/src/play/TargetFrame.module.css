@@ -1,0 +1,76 @@
+.frame {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 220px;
+}
+
+.compact {
+  width: 240px;
+}
+
+.boss {
+  width: min(560px, 60vw);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.name {
+  font-family: var(--br-font-display, serif);
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+}
+
+.boss .name {
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.85);
+}
+
+.tick {
+  font-family: var(--br-font-ui-mono, monospace);
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+.status {
+  display: flex;
+  gap: 4px;
+  margin: 2px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.statusChip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 14px;
+  line-height: 1;
+}
+
+.empty {
+  opacity: 0.55;
+  font-style: italic;
+}
+
+[data-faction="enemy"].frame {
+  border-color: var(--br-color-blood-700, #56150e);
+}
+[data-faction="ally"].frame {
+  border-color: var(--br-color-virtue-700, #142f4a);
+}
+[data-faction="player"].frame {
+  border-color: var(--br-color-sigil-700, #65430e);
+}

@@ -1,0 +1,15 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const description = 'The page you are seeking has wandered off the road.';
+---
+
+<BaseLayout title="Page Not Found" description={description}>
+  <section class="section">
+    <div class="container surface" style="text-align: center; padding: 40px;">
+      <h1>You have wandered from the path.</h1>
+      <p>The road you sought leads nowhere on the map of Sosaria.</p>
+      <a href="/" class="cta cta--primary">Return Home</a>
+    </div>
+  </section>
+</BaseLayout>

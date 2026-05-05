@@ -1,0 +1,115 @@
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 200;
+  background: radial-gradient(circle at center, rgba(20, 6, 46, 0.55), rgba(0, 0, 0, 0.78));
+  pointer-events: auto;
+  display: grid;
+  place-items: center;
+  animation: fadeIn 160ms ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.ringRoot {
+  position: relative;
+  width: 360px;
+  height: 360px;
+}
+
+.center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: rgba(30, 12, 60, 0.72);
+  border-color: var(--br-color-mana-600, #134a82);
+  box-shadow: 0 0 24px rgba(74, 160, 232, 0.35);
+}
+
+.centerLabel {
+  margin: 0;
+  font-family: var(--br-font-display, serif);
+  letter-spacing: 0.18em;
+  color: var(--br-color-mana-200, #7ec0f6);
+  font-size: 0.85rem;
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.65rem;
+  opacity: 0.6;
+  letter-spacing: 0.04em;
+}
+
+.slot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 25%, rgba(120, 90, 200, 0.85), rgba(40, 10, 70, 0.95));
+  border: 1px solid rgba(180, 140, 255, 0.45);
+  color: var(--br-color-ink-50, #efeada);
+  font-family: var(--br-font-display, serif);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  padding: 4px;
+  transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+}
+
+.slot:hover {
+  border-color: rgba(244, 204, 102, 0.85);
+  box-shadow: 0 0 18px rgba(244, 204, 102, 0.45);
+}
+
+.slot:focus-visible {
+  outline: 2px solid var(--br-color-sigil-300, #e6b246);
+  outline-offset: 2px;
+}
+
+.slot.focused {
+  border-color: var(--br-color-sigil-200, #f4cc66);
+  box-shadow: 0 0 22px rgba(244, 204, 102, 0.6);
+}
+
+.slot.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.glyph {
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--br-color-sigil-100, #fae29a);
+}
+
+.name {
+  font-size: 0.6rem;
+  text-align: center;
+  font-family: var(--br-font-ui, system-ui);
+  letter-spacing: 0.04em;
+}
+
+.cost {
+  font-size: 0.65rem;
+  font-family: var(--br-font-ui-mono, monospace);
+  color: var(--br-color-mana-200, #7ec0f6);
+}
