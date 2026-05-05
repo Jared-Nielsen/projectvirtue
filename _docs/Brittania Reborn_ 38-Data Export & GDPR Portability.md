@@ -193,6 +193,9 @@ Always asynchronous — full Avatar history can run hundreds of MB; synchronous 
 | Re-id service raw `(anon_id, player_id)` mappings | Internal; the subject already has both anchors implicitly via their account |
 | Aggregate analytics rows | Not personal data once aggregated below k-anonymity threshold |
 | UGC by *other* creators that the subject merely played | Other creator's data |
+| Discord conversations and Discord-side data (messages, voice activity, server membership, presence history, reactions, voice-channel logs) | Discord is a third-party community-augmentation platform (Doc #37 §Discord-interop, Doc #41); not in our perimeter, not our controllership. Players exercising data rights against Discord must do so directly with Discord. **Our export DOES include the player's `discord_id` linkage record** (so the subject can see what we stored about the link itself: the linked Discord user ID, link timestamp, scopes granted, link state) but NOT message contents or any Discord-side data. |
+
+This Discord-side gap MUST be explicitly disclosed in the customer-facing privacy policy (`_docs/legal/privacy.md`, drafting owner per §19): players linking a Discord account need to understand that (a) we store only the link record, (b) Discord conversations are outside our export and outside our deletion authority, and (c) data rights against Discord are exercised through Discord's own privacy machinery. Cross-reference: Doc #37 §Discord-interop (interop spec), Doc #41 (Engine & Stack ADR — Discord bot process placement).
 
 ### 4.4 Human-Readable HTML
 

@@ -345,6 +345,26 @@ Standard error codes: `ERR_SHARD_BINDING`, `ERR_CAPABILITY`, `ERR_VIRTUE_REJECTE
 * Virtues movable: none directly. Trespass into private/owned regions during movement may emit Honesty/Justice events the same way mouse movement does.
 * Errors: `ERR_OUT_OF_RANGE`, `ERR_PHYSICS` (unreachable), `ERR_BUSY` (already moving and `mode` mismatch).
 
+### 5.12 discord.post\_to\_guild\_channel
+
+```json
+{
+  "name": "discord.post_to_guild_channel",
+  "input": {
+    "envelope": "VerbEnvelope",
+    "guild_id": "GuildId",
+    "message": "string"
+  }
+}
+```
+
+* Description: Posts a message to a guild's linked Discord channel via the Britannia Discord bot. Used for in-game-originated announcements (raid calls, market events, guild-bulletin echoes).
+* Authorization: guild-leader only, and only for guilds that have explicitly opted in to the Discord interop link. Calls from non-leader sessions or against non-linked guilds return `ERR_CAPABILITY`.
+* Rate limits: outbound calls are rate-limited per Discord's API (per-channel + global bucket); excess returns `ERR_RATE_LIMIT`.
+* OUTBOUND ONLY. Inbound Discord commands and Discord-side messages are NOT exposed via MCP. Discord is a community-augmentation surface only; it is never authoritative, never required, and never inside the in-game chat path (Doc #37 §Discord-interop is the canonical spec; see also Doc #41 Engine & Stack ADR for the Discord bot's process placement).
+* Mutates: nothing in the simulation. The verb does not move Virtues, does not write to `replication_log`, and does not generate replication traffic.
+* Errors: `ERR_CAPABILITY` (not guild leader, or guild not linked), `ERR_RATE_LIMIT`, `ERR_INVALID_TARGET` (unknown guild_id).
+
 ---
 
 ## 6. Resource Definitions (Read-Only)
@@ -424,6 +444,7 @@ Phase 1 success metric: a non-engine client process can, via stdio MCP, enumerat
 * **\#9 Tooling:** UE5 is primary; Roblox is alt only, with the caveats in section 7.
 * **\#13 Core Schema:** Entity, Verb, and Scope definitions are canonical there. This document does not redefine them; it binds tools to them.
 * **\#41 Engine & Stack ADR:** canonical engine/stack decision. The MCP server is Rust; UE5 and TS clients are dumb views consuming Protobuf wire messages and never host the dispatcher or MCP transport.
+* **\#37 §Discord-interop:** canonical spec for the Discord community-augmentation layer (Rich Presence, OAuth link, guild bot). The `discord.post_to_guild_channel` verb in §5.12 is the only MCP egress into Discord; inbound Discord commands are not on the MCP surface. Discord is never authoritative, never required, and never replaces in-game chat.
 
 ---
 

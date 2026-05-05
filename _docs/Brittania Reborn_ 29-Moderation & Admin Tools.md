@@ -13,6 +13,12 @@ Depends on: #6 Persistent World §5 (Virtue Watch + live GMs), #7 UGC Modding §
 
 Staff admins (paid moderators, community managers, live-ops engineers) hold powers above any player, including player GMs (Doc #26). All admin actions are audit-logged (§9) and reversible where the underlying state model permits. Admins do not bypass the dispatcher invariants of Doc #14 §4: every admin verb still flows through `PlayerInputDispatcher` → `VerbDispatcher`, with `Caller = Admin(staff_id, session_id, capability_tier)`. What changes for admins is the capability surface — they are advertised privileged tools and resources unavailable to any player tier. Reversibility, audit, and dispatcher conformance are the three non-negotiables.
 
+### 1.1 Out of scope: guild Discord servers
+
+Guild-owned Discord servers are **outside our moderation jurisdiction**. We do not operate them, we do not have admin access to them, and we do not enforce against Discord-side behavior. Discord is a third-party community-augmentation layer (Doc #37 §Discord-interop) and is never authoritative, never required, and never inside the game perimeter.
+
+We DO provide a **reporting bridge**: a player who experiences harassment that originated in a guild Discord and was carried into the game (chat, in-game stalking, retaliatory griefing) can flag the in-game manifestation via the normal `PlayerReport` flow (§3.2), and may attach Discord-side context (screenshots, message links) as evidence. Our moderators act on the in-game behavior; they do not act on the Discord-side speech. Discord-only conduct (no in-game manifestation) is a "report to Discord, report to the guild leader" matter, not a Britannia Reborn moderation matter. See Doc #37 §Discord-interop for the full policy context.
+
 ---
 
 ## 2. Admin Capability Tiers
@@ -444,6 +450,7 @@ The Phase 1 audit-log file is a stop-gap; the schema and hash-chain logic ship i
 6. `[OPEN]` **Restoring `avatar_reset` from snapshot.** §12.2 says "only restorable if within RPO." The mechanism (hand-extracted SQL from a snapshot vs. a first-class `avatar_restore` admin verb) is not specified. Engineering owner.
 7. `[OPEN]` **Cross-shard ban semantics for account-wide actions.** `permanent_ban` is account-wide, but `admin_audit_log` lives per-shard in the multi-shard deployment. Whether the audit row is replicated to all shards or kept on the originating shard with only the ban flag replicated is `[OPEN]`; affects forensics joinability.
 8. `[OPEN]` **Hash-chain rotation on partition.** `replication_log` is partitioned daily (Doc #21 §3.11). `admin_audit_log` is unpartitioned and indefinite-retention; chain length grows monotonically. At what point (size, time) does the chain get a checkpoint with a rotation key? Cryptographic-engineering call.
+9. `[OPEN]` **Community-guidelines doc for guild Discord servers.** Per §1.1, guild Discord servers are out of our moderation jurisdiction. Should we maintain a non-binding "Britannia Community Guidelines" document that guild leaders are *encouraged* (not required) to adopt for their own Discord servers, modeled on the in-game virtues taxonomy? Trade-off: gives a shared cultural floor and a reference for our reporting-bridge moderators, but creates an implicit expectation that we enforce it (we don't, and won't). Owner: Trust-and-Safety + Community Lead.
 
 ---
 

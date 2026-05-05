@@ -6,6 +6,8 @@ Status: Normative resolutions for the 7 true `BLOCK-P1` items in Doc #20 §2 plu
 
 Depends on: #4 Simulation, #4.1 Crafting, #5 Virtues, #11 Roadmap, #13 Core Schema, #14 MCP Server Surface, #15 Character/Party/Inventory, #17 Dialogue/Schedule, #18 Economy/Crafting/Trade, #20 Phase 1 OPEN Triage, #21 Save Format & Shard DB.
 
+> See Doc #41 (Engine & Stack ADR) for the canonical engine boundary.
+
 Status legend per resolution:
 - **RESOLVED** — full new spec authored here.
 - **RATIFIED** — answer already existed in another doc; this section binds it and lists the cross-link cleanup.

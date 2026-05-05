@@ -307,4 +307,87 @@ There are zero CRITICAL findings — no two docs declare incompatible schemas un
 
 ---
 
+## Wave 5 + ADR Reconciliation Audit (2026-05-04)
+
+This pass audits the doc set against Doc #41 (Engine & Stack ADR) and the recent Wave 5 reconciliation edits. Triggered by Doc #41's hard split between Rust authoritative server (bevy_ecs + Tokio) and UE5/TS as "dumb view" clients, plus its forbidden list (UE5 native replication, GAS, NavMesh, Behavior Trees). Method: targeted greps for forbidden-tech terms, stale serialization formats, and missing #41 cross-refs, plus spot-checks on Docs #11, #20, and #25 (not in the recent edit batch). Scope: docs #1–#41; no doc #42 exists.
+
+### Findings
+
+- **Doc #11 (Prototype Scope & Milestone Roadmap)** — throughout — No reference to Doc #41 and no UE5/MessagePack/GAS hits at all on quick grep. Doc is engine-agnostic enough to survive the ADR; **no fix required**, but a one-line "engine stack per Doc #41" footer would help future readers.
+- **Doc #20 (Phase 1 OPEN Triage)** — line 135 — Pathfinder triage row references "Navmesh authoring tooling (Doc #9) parallel work" as a placeholder; Doc #41 §4 forbids UE5 NavMesh for NPCs and Doc #23 §4.6 rejects navmesh for Phase 1. **Fix:** strike the navmesh-tooling parallel-work clause; the resolution is now A* on tile graph per Doc #23, full stop.
+- **Doc #20 (Phase 1 OPEN Triage)** — file-level — Lacks a Doc #41 cross-ref; as a triage doc covering technical OPENs it should anchor to the ADR. **Fix:** add a one-line header note "Updated 2026-05-04: technical resolutions defer to Doc #41 (Engine & Stack ADR)."
+- **Doc #25 (BLOCK-P1 Resolutions)** — file-level — No Doc #41 reference. As a resolution doc closing technical BLOCK-P1 items, several of which touched netcode/replication/AI, it should pin those resolutions against the ADR. **Fix:** add an ADR-supersession note in the doc header.
+- **Doc #22 (Network Protocol & Replication)** — line 454 — Phase 1 server row still reads "UE5 dedicated server binary on a single machine, in-process; no real cluster." Direct contradiction with Doc #41 (UE5 dedicated server forbidden; server is Rust). **Fix:** replace with "Single Rust binary (bevy_ecs + Tokio) on one machine; no cluster."
+- **Doc #22 (Network Protocol & Replication)** — line 460 — Phase 1 wire format still listed as "MessagePack" without annotation; superseded by Protobuf per Doc #41 (already noted at §4.5 line 85, but the Phase 1 table row is stale). **Fix:** change to "Protobuf (envelope per Doc #41); MessagePack permitted only on inner high-rate channels per Doc #40."
+- **Doc #22 (Network Protocol & Replication)** — line 461 — "Reliable TCP (UE5 default)" — UE5 default is irrelevant now; we run our own TCP/WebSocket transport. **Fix:** drop the "(UE5 default)" parenthetical.
+- **Doc #22 (Network Protocol & Replication)** — line 494 — Open Question #2 "MessagePack vs FlatBuffers vs Cap'n Proto" is partially superseded; Protobuf is now canonical for the envelope per Doc #41 §10 #41-OQ-1. **Fix:** narrow OQ#2 to "MessagePack vs FlatBuffers for inner-channel encoding (envelope is Protobuf, see Doc #41 §10 #41-OQ-1)."
+- **Doc #27 (Audio System)** — line 322 — `SoundEvent` row claims MessagePack encoding; should align with Doc #41's Protobuf envelope (or be explicitly called out as an inner-channel exception). **Fix:** annotate "MessagePack inner-channel per Doc #40 §wire-encoding; envelope still Protobuf per Doc #41."
+- **Doc #27 (Audio System)** — line 315 — "UE5 audio volume" used as authoritative ReverbZone mechanism. UE5 audio volume is fine as a renderer feature, but the ReverbZone *tag* must be server-emitted to keep TS web client parity. **Fix:** add one line: "ReverbZone tag is server-side data per Doc #41; UE5 audio volume is one of two presentation paths (TS web client uses Web Audio convolution)."
+- **Doc #9 (Tooling)** — line 41 — Already annotated with the Doc #41 supersession note for dedicated server. **Clean** for the highlighted line; but the doc is titled "Tooling" and recommends UE5-specific tooling (GAS, Behavior Trees, NavMesh authoring) elsewhere. **Fix:** sweep the rest of #9 to confirm those recommendations carry "presentation-only / forbidden for authoritative use" annotations consistent with §41 §4.
+- **Doc #40 (Implementation Scaffolding)** — lines 137, 188, 279, 292, 743, 1019 — Multiple residual MessagePack references in ASCII diagrams and the ADR-ledger row 0005 ("MessagePack on the wire, protobuf for handshake — Accepted"). The ledger row is now historically inaccurate post-Doc #41 (envelope is now Protobuf). **Fix:** add ADR-ledger row 0006 superseding 0005 ("Protobuf for envelope per Doc #41; MessagePack retained only on high-rate inner channels"); update diagrams to read "Protobuf envelope / MessagePack inner."
+- **Doc #14 (MCP Server Surface)** — Discord references at lines 348–364 and 447 — Consistent with policy: outbound-only, never authoritative, never required, GDPR perimeter exclusion noted via Doc #38 cross-ref. **Clean.**
+- **Doc #28 (Telemetry, Analytics & Live Ops)** — lines 228, 230 — Discord link surface treated as community-health metric only; no Discord chat content captured; explicit GDPR perimeter exclusion. **Clean.**
+- **Doc #29 (Moderation & Admin Tools)** — lines 16–20 — Guild Discord servers correctly out-of-jurisdiction; reporting-bridge model documented. **Clean.**
+- **Doc #38 (Data Export & GDPR Portability)** — lines 196–198 — Discord-side data correctly excluded from GDPR perimeter; only the link record is exported. **Clean.**
+- **Doc #37 (Voice Chat)** — §15 (lines 845–942) — Comprehensive Discord interop spec; outbound-biased; never authoritative; GDPR carve-out present. **Clean.**
+- **Doc #16 (Combat & Magic Systems)** — header + §2 + §15 — Already annotated 2026-05-04 per Doc #41 (GAS forbidden, Rust-authoritative). **Clean.**
+- **Doc #17 (Dialogue & NPC Schedule)** — header + §7 (line 280) — Already annotated 2026-05-04 per Doc #41 (NavMesh and Behavior Trees forbidden, Rust-authoritative AI). One residual at line 617 references "navmesh authoring tooling" as parallel work; duplicate of Doc #20 issue above. **Fix:** strike the navmesh-tooling parallel-work clause.
+- **Doc #23 (Pathfinding & Spatial Systems)** — header + §4 + §15 — Already annotated 2026-05-04 per Doc #41 (UE5 NavMesh forbidden); §15 OPEN item 4 leaves navmesh open for Phase 3+ outdoor regions, which is fine. **Clean.**
+- **Doc #41 (Engine & Stack ADR)** — full doc — Self-consistent; the canonical reference; appropriately cites itself. **Clean.**
+- **Docs without a #41 reference** — Vision/lore docs (#3, #5, #7, #8, #10, #13, #15, #18, #24, #26, #4, #4_1, #33) are legitimately engine-agnostic and need no ADR pointer. Technical/process docs that should add one: #11, #20, #25, #28, #29, #30 (this doc).
+
+### Status Summary (Docs #1–#42)
+
+| Doc # | Status | Note |
+|---|---|---|
+| #1 (Vision Statement) | clean | Vision-tier; #41 ref present |
+| #2 (GDD) | clean | #41 ref present |
+| #3 (World Bible) | clean | Lore doc; ADR-ref not needed |
+| #4 (Simulation & Interaction) | minor | Engine-agnostic but technical; consider one-line ADR pointer |
+| #4_1 (Crafting & Alchemy) | clean | Mechanics-only |
+| #5 (Virtues & Morality) | clean | Lore doc |
+| #6 (Persistent World) | clean | #41 ref present |
+| #7 (UGC Modding) | minor | Touches scripting surface; could use ADR pointer |
+| #8 (Procedural Generation) | clean | World-design doc |
+| #9 (Tooling) | minor | Has #41 ref at line 41; sweep remaining UE5-tooling recommendations for "presentation-only" annotations |
+| #10 (Art & Audio Style) | clean | Style doc |
+| #11 (Prototype Scope) | minor | No UE5/MessagePack hits but lacks #41 pointer; add one-line header note |
+| #12 (Slide Deck) | clean | #41 ref present |
+| #13 (Core Schema) | clean | Schema is engine-agnostic |
+| #14 (MCP Server Surface) | clean | #41 + Discord refs all consistent |
+| #15 (Character, Party & Inventory) | clean | Mechanics-only |
+| #16 (Combat & Magic) | clean | Header annotated 2026-05-04 per #41 |
+| #17 (Dialogue & NPC Schedule) | minor | Annotated; line 617 has stale navmesh-tooling parallel-work clause |
+| #18 (Economy, Crafting & Trade) | clean | Mechanics-only |
+| #19 (Quest & UGC Scripting) | clean | #41 ref present |
+| #20 (Phase 1 OPEN Triage) | major | Lacks #41 ref; line 135 has stale navmesh-tooling clause; needs header supersession note |
+| #21 (Save Format & Shard DB) | clean | #41 ref present |
+| #22 (Network Protocol & Replication) | major | Header reconciled (line 10); but Phase 1 table (lines 454, 460, 461) and OQ#2 (line 494) still reference UE5 dedicated server / unannotated MessagePack |
+| #23 (Pathfinding & Spatial) | clean | Header annotated 2026-05-04 per #41 |
+| #24 (Onboarding & Tutorial) | clean | Flow doc |
+| #25 (BLOCK-P1 Resolutions) | minor | Lacks #41 ref; closes technical BLOCK-P1 items that should anchor to ADR |
+| #26 (Long-range Arcs & Hosted GM) | clean | Design doc |
+| #27 (Audio System) | minor | Has #41 ref; line 322 SoundEvent still reads "MessagePack-encoded" without inner-channel annotation |
+| #28 (Telemetry, Analytics & Live Ops) | minor | Discord refs clean; lacks #41 ref but is a process doc — add ADR pointer |
+| #29 (Moderation & Admin Tools) | clean | Discord boundary correct; ADR-ref optional for policy doc |
+| #30 (Cross-Doc Consistency Audit) | clean | This doc |
+| #31 (Sprite Animation Pipeline) | clean | #41 ref present |
+| #32 (Anti-cheat & Security Hardening) | clean | #41 ref present |
+| #33 (Localization & i18n) | clean | Process doc; ADR-ref optional |
+| #34 (Accessibility Standards) | clean | #41 ref present |
+| #35 (PvP Design & Chaos Shard Rules) | clean | #41 ref present |
+| #36 (Procedural Quest Skeletons) | clean | #41 ref present |
+| #37 (Voice Chat) | clean | §15 Discord interop spec is canonical |
+| #38 (Data Export & GDPR Portability) | clean | Discord perimeter correct |
+| #39 (Console Certification) | clean | #41 ref present |
+| #40 (Implementation Scaffolding) | major | Multiple residual MessagePack diagrams; ADR-ledger row 0005 historically inaccurate post-#41 |
+| #41 (Engine & Stack ADR) | clean | Self-consistent canonical reference |
+| #42 | N/A | Does not exist |
+
+### Conclusion
+
+The doc set is in **net-good shape** post-Doc #41 reconciliation. The Wave 5 edits successfully updated the headers and §1–§4 of every directly-impacted technical doc (#16, #17, #22, #23, #27, #32, #34, #35) with explicit "per Doc #41" annotations. Three docs carry **major** stale content: #22 Phase 1 deployment table, #40 Implementation Scaffolding ADR-ledger and diagrams, and #20 Phase 1 OPEN Triage. These are mechanical edits, not design rethinks — a single focused editorial pass closes them. Discord interop is consistent across all five touchpoints (#14, #28, #29, #37, #38): outbound-biased, never authoritative, GDPR-perimeter excluded. No two docs declare contradictory architectural commitments; the contradictions that remain are stale-text artifacts of pre-ADR drafts, not live disagreements. After the cleanup pass, the doc set will be **net-clean** against Doc #41.
+
+---
+
 End of Document #30.

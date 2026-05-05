@@ -4,6 +4,8 @@ Document Version: 1.0
 Date: May 2026
 Status: Triage of all `[OPEN]` markers across Docs #13–#19 against the Doc #11 12-week "Britain Alive" vertical slice. Self-contained: a project lead can run a kickoff meeting from this document alone.
 
+> See Doc #41 (Engine & Stack ADR) for the canonical engine boundary.
+
 ---
 
 ## 0. Method
@@ -132,7 +134,7 @@ Notable cascade: **T-13-13 alone touches 5 downstream docs**; resolve first.
 |---|---|---|---|---|
 | T-17-1 | Voice acting trigger logic | [#17§14.1] | **DEFER-P2** | Audio production budget is a Doc #10 question; Phase 1 may ship without VO entirely. |
 | T-17-2 | Localization layer | [#17§14.2] | **BLOCK-P1-MINOR** | **Placeholder: simple key/locale lookup (`LocalizedString = { en: string, ...optional }`); ICU MessageFormat deferred. English-only ships in Phase 1.** Schema stable enough that UGC dialogue authoring (Doc #19) won't break. |
-| T-17-3 | Pathfinder algorithm | [#17§14.3] | **BLOCK-P1-MINOR** | **Placeholder: A\* with dynamic obstacle re-plan on tick (the working assumption in source). Navmesh authoring tooling (Doc #9) parallel work.** Required for #17 schedule execution success metric. |
+| T-17-3 | Pathfinder algorithm | [#17§14.3] | **BLOCK-P1-MINOR** | **Placeholder: A\* with dynamic obstacle re-plan on tick (the working assumption in source). Grid-pathfinding tooling per Doc #23 (NavMesh forbidden per Doc #41 §4; grid pathfinding per Doc #23 §4.6) parallel work.** Required for #17 schedule execution success metric. |
 | T-17-4 | Companion-vs-companion dialogue | [#17§14.4] | **DEFER-P2** | Per #17§13: "no banter triggers" in Phase 1. |
 | T-17-5 | Malformed `say_keyword` MCP validation | [#17§14.5] | **DEFER-P2** | MCP `talk` not in Phase 1 surface (per #14§8 only `examine`/`use` mutate; `talk` is not in scope). Resolve when MCP `talk` ships. |
 | T-17-6 | Rumor severity formula | [#17§14.6] | **DEFER-P2** | "No `RumorStore`" in Phase 1 per #17§13. |

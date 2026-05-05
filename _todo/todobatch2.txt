@@ -1,0 +1,405 @@
+================================================================================
+PROJECT: Britannia Reborn — Frontend Scaffold (TS + PixiJS + Solid.js)
+DATE:    2026-05-04
+SCOPE:   Frontend ONLY. Static JSON stubs for every backend interface. No real
+         backend code. No Rust. No protobuf wire — the codegen target gets
+         mocked with hand-written TS types that match the eventual schemas.
+================================================================================
+
+REFERENCES
+----------
+  Doc #40 — Implementation Scaffolding (canonical engineering plan)
+  Doc #41 — Engine & Stack ADR (boundary contract; web client is permanent)
+  Doc #42 — Game Modes & GM Campaign Mode
+  /_conceptart/Interfaces/*    (18 game UI screens)
+  /_conceptart/Website/*       (8 marketing site screens + WorldMap)
+  /_conceptart/Marketplaces/*  (external presence — Discord/Steam/etc.)
+  /_conceptart/_Branding/      (logo)
+  /_conceptart/_Sprites/       (SpriteSheet.png)
+
+DEFERRED BACKEND ITEMS (parked here, not part of this scaffold)
+---------------------------------------------------------------
+  [ ] Switch replay file format from MessagePack to Protobuf for full
+      wire-format consistency (per Doc #30 Wave-5 audit, line 743 of Doc #40)
+  [ ] Confirm @solidjs/router vs solid-app-router final pick before code
+  [ ] Confirm Tailwind vs CSS Modules vs Panda CSS as styling approach
+  [ ] Confirm Biome vs ESLint+Prettier as the lint/format toolchain
+  [ ] Decide Storybook vs Histoire for component dev environment
+
+================================================================================
+PHASE 0 — FOUNDATIONS (repo, tooling, CI)
+================================================================================
+  [ ] pnpm workspaces, monorepo layout per Doc #40 §3
+        /apps/web              (game client — Solid + PixiJS)
+        /apps/site             (marketing website — Solid SSG)
+        /packages/ui           (shared design system)
+        /packages/types        (TS types — eventual protobuf codegen target)
+        /packages/mocks        (static JSON + MockClient)
+        /packages/icons        (icon set)
+        /tools/                (build/codegen scripts)
+  [ ] TypeScript strict mode in tsconfig base; project references between packages
+  [ ] Build: Vite for both apps; vitest for unit
+  [ ] Lint/format: choose Biome OR ESLint+Prettier (see deferred); apply
+  [ ] Pre-commit: husky + lint-staged (skip if Biome already gates)
+  [ ] CI: GitHub Actions matrix — lint, typecheck, unit, build, preview deploy
+  [ ] README at repo root: dev/build/test/preview commands
+  [ ] /apps/web README: what's mocked, how the swap to real backend works
+  [ ] .editorconfig + .nvmrc + .node-version
+  [ ] Conventional commits + commitlint (optional)
+  [ ] Devcontainer: skip; document `pnpm i && pnpm dev` locally
+  [ ] Storybook (or Histoire) installed in /packages/ui
+
+================================================================================
+PHASE 1 — DESIGN SYSTEM & DESIGN TOKENS
+================================================================================
+  Tokens (in /packages/ui/tokens.ts):
+  [ ] Color palette extracted from /_conceptart (parchment, ink, sigil-gold,
+      virtue-blue, blood-red, mana-azure, dungeon-black, etc.)
+  [ ] Typography scale (display, h1-h6, body, ui, label, HUD-monospace)
+  [ ] Spacing scale (4px base)
+  [ ] Border-radius, shadow, blur tokens
+  [ ] Z-index map (canvas, hud, modal, toast, debug)
+  [ ] Motion tokens (durations + easings; reduced-motion aware)
+
+  Primitive components (Storybook story per component):
+  [ ] Button (primary, secondary, destructive, ghost, icon)
+  [ ] IconButton + Icon registry
+  [ ] Input (text, number, password, search)
+  [ ] Select / Dropdown / Combobox
+  [ ] Toggle / Checkbox / Radio / RadioGroup
+  [ ] Slider (used heavily in Options)
+  [ ] Tabs / TabPanel
+  [ ] Tooltip / Popover
+  [ ] Toast / Notification stack
+  [ ] Loading / Skeleton / Spinner
+  [ ] Modal / Dialog / Confirm / Drawer
+  [ ] Card / Panel / Window-frame (parchment-styled)
+  [ ] HUD primitives (HealthBar, ManaBar, StatGauge, MinimapPlaceholder)
+  [ ] FocusTrap + Portal + Escape-handler hook
+  [ ] Layout helpers (Stack, Cluster, Grid)
+
+================================================================================
+PHASE 2 — STATIC JSON STUBS + TYPE DEFINITIONS
+================================================================================
+  Convention: every JSON stub mirrors what a future protobuf-derived TS type
+  would look like. One file per request/response. Types live in /packages/types,
+  JSON in /packages/mocks. The MockClient maps URL → JSON file → typed object.
+
+  Auth + account
+  [ ] /mocks/auth/login.json
+  [ ] /mocks/auth/me.json
+  [ ] /mocks/auth/logout.json
+  [ ] /mocks/account/profile.json
+  [ ] /mocks/account/preferences.json
+
+  Shard + world
+  [ ] /mocks/shards/list.json                (Order shards + Chaos shards + GM)
+  [ ] /mocks/shards/status.json              (per-shard population, health)
+  [ ] /mocks/world/regions.json
+  [ ] /mocks/world/tiles/sosaria.json        (sample region grid)
+  [ ] /mocks/world/npcs.json
+  [ ] /mocks/world/landmarks.json
+
+  Character
+  [ ] /mocks/character/list.json
+  [ ] /mocks/character/templates.json        (race, class, virtue starter packs)
+  [ ] /mocks/character/portraits.json        (manifest of portrait assets)
+  [ ] /mocks/character/create.response.json
+
+  Inventory + items
+  [ ] /mocks/inventory/items.json
+  [ ] /mocks/inventory/equipment.json
+  [ ] /mocks/inventory/loot/sample-chest.json
+  [ ] /mocks/items/catalog.json              (full item catalog for tooltips)
+
+  Quests + journal + books
+  [ ] /mocks/quests/active.json
+  [ ] /mocks/quests/log.json
+  [ ] /mocks/quests/templates.json           (per Doc #36 skeleton schema shape)
+  [ ] /mocks/journal/entries.json
+  [ ] /mocks/books/codex.json                (book index)
+  [ ] /mocks/books/the-virtues.json          (sample readable book)
+
+  Dialog + NPCs
+  [ ] /mocks/dialog/lord-british.json
+  [ ] /mocks/dialog/iolo.json
+  [ ] /mocks/dialog/branch.json              (sample branch tree)
+
+  Combat + abilities + magic
+  [ ] /mocks/combat/state.json               (active encounter snapshot)
+  [ ] /mocks/combat/abilities.json
+  [ ] /mocks/combat/spellbook.json
+  [ ] /mocks/combat/dragon-encounter.json    (boss demo data)
+
+  Economy + crafting
+  [ ] /mocks/economy/market-listings.json
+  [ ] /mocks/crafting/recipes.json
+  [ ] /mocks/crafting/stations.json
+
+  Social + chat + voice
+  [ ] /mocks/social/friends.json
+  [ ] /mocks/social/guild.json
+  [ ] /mocks/social/chat-history.json
+  [ ] /mocks/voice/channels.json
+
+  Options + system
+  [ ] /mocks/options/keybindings.json
+  [ ] /mocks/options/audio.json
+  [ ] /mocks/options/video.json
+  [ ] /mocks/options/accessibility.json
+  [ ] /mocks/options/gameplay.json
+
+  Misc
+  [ ] /mocks/levelup/sample.json
+  [ ] /mocks/loadingscreens/index.json       (4 variants from concept art)
+  [ ] /mocks/discord/presence.json
+  [ ] /mocks/gm/campaign-list.json           (per Doc #42)
+  [ ] /mocks/telemetry/event.response.json
+
+  MockClient infrastructure
+  [ ] /packages/mocks/src/client.ts          (fetch-shaped client; URL → JSON)
+  [ ] /packages/mocks/src/handlers/*.ts      (one per domain)
+  [ ] MSW (Mock Service Worker) wired in dev mode
+  [ ] Latency simulator (configurable artificial delay)
+  [ ] Failure-injection toggles (network error, 401, 500, timeout)
+  [ ] /packages/types/src/*                  (TS types per domain — eventual
+      protobuf codegen target; document the parity expectation in README)
+
+================================================================================
+PHASE 3 — APP SHELL & ROUTING (game client /apps/web)
+================================================================================
+  [ ] Entry point (src/main.tsx) with Solid root
+  [ ] Router setup (@solidjs/router or chosen alternative)
+  [ ] Route map:
+        /                          → LandingShell (decides login vs home)
+        /login                     → Login screen
+        /home                      → HomeScreen (1-HomeScreen.png)
+        /character                 → CharacterList
+        /character/create          → CharacterCreation (10-1)
+        /play                      → GameWorld (canvas mount)
+        /play/inventory            → Inventory overlay
+        /play/journal              → Journal (9-4)
+        /play/options              → Options (9-9)
+        /play/dialog/:npcId        → DialogModal (9-1)
+        /play/loot/:lootId         → LootChest (9-2)
+        /play/levelup              → LevelUp (9-3)
+        /play/book/:bookId         → ReadBook (9-5)
+        /play/combat               → CombatHUD overlay
+        /loading/:variant          → LoadingScreen (8-1, 8-2, 8-4 + default)
+  [ ] Protected-route guard (mock auth state)
+  [ ] App-shell layout: top bar + side panels + main canvas + bottom HUD
+  [ ] Modal portal root + toast root
+  [ ] Global keyboard handler (Esc, Tab cycling)
+  [ ] Suspense boundaries + error boundaries on each route
+  [ ] Loading-screen dispatcher (random variant + lore quote)
+  [ ] Sound-on-route-change stub (audio router placeholder)
+
+================================================================================
+PHASE 4 — MARKETING WEBSITE (separate app /apps/site)
+================================================================================
+  References: /_conceptart/Website/*
+
+  [ ] Site framework: Solid Start (SSG) or Astro+Solid; pick one
+  [ ] Shared header (logo, nav, "Join a World" CTA)
+  [ ] Shared footer (Discord, X, Steam, Kickstarter, GameFound, press)
+  [ ] Page: Home          (Website-0-Home.png — hero, trailer, features grid)
+  [ ] Page: About         (Website-2-About.png — lore, world story, team)
+  [ ] Page: Features      (Website-3-Features.png — virtue system, persistent
+                           world, UGC, GM mode, voice, crossplay)
+  [ ] Page: Worlds        (Website-4-Worlds.png — shard list with state)
+  [ ] Page: Journal       (Website-5-Journal.png — dev blog index + post)
+  [ ] Page: Media         (Website-6-Media.png — gallery + press kit)
+  [ ] Page: Join a World  (Website-7-JoinAWorld.png — signup CTA flow)
+  [ ] Component: WorldMap (WorldMap.png — interactive Sosaria map; SVG zoom)
+  [ ] Newsletter signup form (mocked POST)
+  [ ] Cookie / privacy banner (per Doc #38 GDPR)
+  [ ] OG/meta tags + sitemap.xml + robots.txt
+  [ ] Plausible-compatible analytics stub
+  [ ] Lighthouse target: 95+ across the board
+  [ ] Deploy: Vercel/Netlify (preview per PR)
+
+================================================================================
+PHASE 5 — GAME CLIENT SCREENS (in /apps/web)
+================================================================================
+  Each screen: Solid component + mock data wiring + Storybook story + a11y
+  pass + unit test for any branching logic. Image refs in /_conceptart/Interfaces.
+
+  Batch A — Menus & Modals (low-canvas, mostly DOM/UI)
+  [ ] 1-HomeScreen          → main menu (Continue / New / Join Shard /
+                               Host Campaign / Options / Quit)
+  [ ] 10-1-AvatarCreation   → race, class, name, virtue alignment, stat roll,
+                               portrait selection, summary review
+  [ ] 9-1-DialogModals      → branching dialog tree, response chips, NPC bust
+  [ ] 9-2-LootChest         → grid-style loot UI, take-all, take-one, weight
+  [ ] 9-3-ModalGainedALevel → level-up celebration modal with stat allocation
+  [ ] 9-4-Journal           → quest log, lore tabs, codex links
+  [ ] 9-5-ReadBook          → book reader with page-turn, lore citations
+  [ ] 9-9-Options           → tabs (audio, video, controls, gameplay,
+                               accessibility); slider/toggle heavy
+
+  Batch B — In-World HUD + Combat
+  [ ] 2-1-ScreenConcept     → reference HUD layout (anchor for B-batch)
+  [ ] 2-2-CombatForest      → combat HUD over forest tiles
+  [ ] 2-3-CombatMagic       → spell selection ring + mana
+  [ ] 2-4-HoldingCourt      → throne-room dialog + crowd ambient
+  [ ] 2-5-PortCity          → city overview with NPC labels
+  [ ] 2-6-DragonCombat      → boss encounter with phase indicator
+  [ ] 2-7-MoonPortal        → travel modal with destination map
+  [ ] 2-99-PlatformerCombatIn3D → exploratory; render placeholder + flag as
+                                  "design-in-flight"
+
+  Batch C — Inventory & Loading
+  [ ] InterfaceInventory    → full inventory: equipment slots, bag grid,
+                               weight bar, stats panel, paperdoll preview
+  [ ] 8-1-LoadingScreenMarine
+  [ ] 8-2-LoadingScreenDungeon
+  [ ] 8-4-LoadingScreenPaladinCastle
+  [ ] Default loading screen (catch-all)
+  [ ] Loading-screen rotation logic + lore-quote pool
+
+================================================================================
+PHASE 6 — IN-WORLD CANVAS (PixiJS)
+================================================================================
+  [ ] PixiJS application boot + Solid integration (mount + lifecycle)
+  [ ] Sprite atlas loader (consume /_conceptart/_Sprites/SpriteSheet.png)
+  [ ] Tile renderer for isometric grid; consume /mocks/world/tiles/*.json
+  [ ] Camera (pan, zoom, follow player)
+  [ ] Player sprite + idle/walk animations
+  [ ] NPC sprites with idle behavior
+  [ ] Click-to-move (mock pathfinding — A* in TS for now, replaced by server
+      validation later per Doc #23)
+  [ ] Trigger zones (dialog, loot, transitions)
+  [ ] Day/night tint overlay (Doc #17 hook)
+  [ ] Lighting layer placeholder
+  [ ] Combat visualization placeholder (target ring, damage numbers)
+  [ ] Performance overlay (FPS, draw calls, tick time) — dev-only
+  [ ] Determinism harness placeholder (no-op in TS; documents the future
+      Rust authority per Doc #41 §3)
+  [ ] WebGL2 fallback to WebGL1 graceful degrade
+
+================================================================================
+PHASE 7 — POLISH, A11Y, I18N, TELEMETRY
+================================================================================
+  Accessibility (Doc #34)
+  [ ] Keyboard navigation: every interactive element reachable, visible focus
+  [ ] ARIA roles + labels on custom components
+  [ ] Reduced-motion variant for all animations
+  [ ] Color-blind mode token swap (deuteranopia, protanopia, tritanopia)
+  [ ] Font scaling (90%, 100%, 125%, 150%)
+  [ ] Subtitle / caption layer for dialog
+  [ ] Screen-reader live regions for combat events
+  [ ] Lighthouse a11y target ≥ 95
+
+  Internationalization (Doc #33)
+  [ ] i18next + lingui-style extraction
+  [ ] English baseline locale
+  [ ] Pluralization & ICU MessageFormat
+  [ ] RTL stubs (no RTL language yet; layout audited)
+  [ ] Date/number formatting via Intl
+
+  Telemetry (Doc #28)
+  [ ] Event interface (typed) — page_view, action, error, perf
+  [ ] OTel-compatible event shape; queued in browser, dispatched to mock
+  [ ] PII scrubber pass before send
+  [ ] Consent gate (GDPR/CCPA, Doc #38)
+
+  Crash + error reporting
+  [ ] Sentry-compatible interface (mocked; no real DSN)
+  [ ] Error boundary on every route, with lore-flavored fallback UI
+
+  Discord interop stub (Doc #37)
+  [ ] Rich Presence object generator (no SDK call yet)
+  [ ] OAuth-link mock flow (UI only)
+
+================================================================================
+PHASE 8 — DOCS, DEMO, HANDOFF
+================================================================================
+  [ ] /apps/web/README.md — what's mocked, the swap path to real backend
+  [ ] /docs/frontend-architecture.md — diagrams: mock layer, package graph,
+      data flow
+  [ ] /docs/screen-mapping.md — table: concept-art file → component → route
+  [ ] /docs/mocks-catalog.md — every JSON stub with shape preview
+  [ ] /docs/styleguide.md — link to Storybook + token reference
+  [ ] Preview deploy URLs in repo README
+  [ ] Loom walkthrough (optional)
+
+================================================================================
+ACCEPTANCE CRITERIA — "DONE"
+================================================================================
+  [ ] All 18 game UI screens render with mock data and basic interactivity
+  [ ] All 8 website pages render and pass Lighthouse 95+
+  [ ] Mock-to-real swap path documented (MockClient → eventual ProtobufClient)
+  [ ] CI green: lint, typecheck, unit, build, preview deploy
+  [ ] Storybook published with story per primitive component + per screen
+  [ ] No real backend code anywhere; no UE5; no Rust
+
+================================================================================
+EXPLICIT OUT OF SCOPE FOR THIS BATCH
+================================================================================
+  - UE5 client (Phase 6 of Doc #40)
+  - Real Rust backend / shard server
+  - Real LiveKit voice integration
+  - Real Discord SDK calls (only the Rich Presence object shape is stubbed)
+  - Real Stripe payments
+  - Real authentication (mock JWT + mock session only)
+  - Console builds
+  - Localization beyond English (extraction infrastructure only)
+  - Real protobuf codegen (TS types are hand-written for now and document
+    the future codegen target)
+  - GM Campaign Mode (Doc #42) — UI placeholder only; full feature is Phase 2
+
+================================================================================
+SUBAGENT SEGMENTATION (recommended split — each batch ~independent)
+================================================================================
+  AGENT 1 — Foundations + Design System
+            Phase 0 + Phase 1
+            Deliverable: monorepo skeleton, CI green, design tokens, primitive
+            components in Storybook
+
+  AGENT 2 — Mock data + types
+            Phase 2 (all JSON stubs + /packages/types + MockClient + MSW)
+            Deliverable: complete /packages/mocks + /packages/types
+
+  AGENT 3 — App shell + routing (game client)
+            Phase 3
+            Deliverable: routable shell with placeholder screens; mock auth
+            guard; modal/toast roots
+
+  AGENT 4 — Marketing website
+            Phase 4 (all 8 website pages + WorldMap + footer)
+            Deliverable: /apps/site deployable preview
+
+  AGENT 5 — Game screens BATCH A (menus & modals)
+            Phase 5 batch A (8 screens: 1, 10-1, 9-1, 9-2, 9-3, 9-4, 9-5, 9-9)
+            Deliverable: 8 components wired to mocks + Storybook stories
+
+  AGENT 6 — Game screens BATCH B (in-world HUD + combat)
+            Phase 5 batch B (8 screens: 2-1 through 2-99)
+            Deliverable: 8 components wired to mocks + Storybook stories
+
+  AGENT 7 — Game screens BATCH C (inventory + loading)
+            Phase 5 batch C (4 loading variants + InterfaceInventory)
+            Deliverable: inventory screen + loading-screen rotator
+
+  AGENT 8 — PixiJS canvas
+            Phase 6 (canvas, sprites, tiles, camera, click-to-move)
+            Deliverable: playable in-world canvas with mock world data
+
+  AGENT 9 — Polish (a11y + i18n + telemetry + Discord stub)
+            Phase 7
+            Deliverable: a11y/i18n hooks across the app; mock telemetry
+
+  AGENT 10 — Docs, demo, handoff
+            Phase 8
+            Deliverable: README + arch doc + screen-mapping + preview links
+
+  EXECUTION ORDER:
+    Wave 1 (parallel): Agent 1, Agent 2
+    Wave 2 (parallel, after Wave 1): Agent 3, Agent 4, Agent 8
+    Wave 3 (parallel, after Wave 2): Agent 5, Agent 6, Agent 7
+    Wave 4 (parallel, after Wave 3): Agent 9, Agent 10
+
+  Reason: Agents 5/6/7 depend on the design system (Agent 1) and mocks
+  (Agent 2). The website (Agent 4) and shell (Agent 3) and canvas (Agent 8)
+  can run alongside the screen batches once foundations exist.
+================================================================================

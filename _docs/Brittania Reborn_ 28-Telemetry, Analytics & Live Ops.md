@@ -7,6 +7,8 @@ Status: Living Design Reference — Normative spec for telemetry pipeline, analy
 
 Depends on: #1 Vision §4 (success metrics), #5 Virtues §2–§4, #6 Persistent World §3 (PersistenceScope), #6 §5 (Virtue Watch System, live GMs), #7 UGC §2, #8 Procedural Generation §5 (live service roadmap), #11 Prototype Scope, #13 Core Schema §4 (verb dispatcher), #14 MCP Server Surface §10, #16 Combat & Magic, #21 Save Format & Shard DB §3.11 (`replication_log`), #22 Network Protocol & Replication, #23 Pathfinding & Spatial Systems, #26 Long-range Arcs & Hosted GM Sessions, #29 Moderation & Admin Tools.
 
+> See Doc #41 (Engine & Stack ADR) for the canonical engine boundary.
+
 ---
 
 ## 1. Telemetry Philosophy
@@ -225,6 +227,9 @@ Cross-link to Doc #1 §4 success metrics (500k active players, 10k+ UGC creation
 | Session length distribution | p50 / p90 / p99 of `session_end.duration_s` per day | `session_end` |
 | Retention curves | D1 / D7 / D30 / D365 cohort retention from `avatar_create` | `avatar_create`, `session_start` |
 | Tutorial funnel | `avatar_create` → `tutorial_britain_complete` flag (Doc #24 §1) | derived from quest events |
+| Discord link conversion rate | % of active players (DAU window) who have linked a Discord account via the Doc #37 §Discord-interop OAuth flow. Tracked as a **community-health** metric, NOT a monetization metric, and never gated on. | `account_consents` (Discord-link state) joined to `session_start` |
+
+Telemetry does NOT capture Discord chat content, Discord message metadata, Discord voice activity, or any Discord-side behavior. Discord is outside the in-game perimeter (and outside our GDPR perimeter — see Doc #38); the only Discord-related datum the analytics pipeline observes is the presence/absence of a link record per account. See Doc #37 §Discord-interop.
 
 ### 5.2 Economy
 
