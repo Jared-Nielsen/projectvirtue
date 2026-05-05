@@ -3,7 +3,7 @@
   deferred), Data export & GDPR portability (#28 mentioned but never     
   specced), Console certification (PS5/Xbox specifics).                
   2. Documentation polish: render the full doc set to PDF as the
-  "Britannia Reborn Prototype Bible" called out in Doc #11 §closing.
+  "Project Virtue Prototype Bible" called out in Doc #11 §closing.
   3. Implementation scaffolding: with all BLOCK-P1 items resolved (Doc   
   #25), the 12-week prototype can technically begin — want a Doc #35 that
    lays out repo structure, monorepo vs polyrepo, language/framework     

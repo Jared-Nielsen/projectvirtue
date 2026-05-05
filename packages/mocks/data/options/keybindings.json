@@ -1,0 +1,144 @@
+{
+  "version": 1,
+  "bindings": [
+    {
+      "action": "move_forward",
+      "label": "Move Forward",
+      "primary": "W",
+      "secondary": "ArrowUp",
+      "group": "movement",
+      "rebindable": true
+    },
+    {
+      "action": "move_backward",
+      "label": "Move Backward",
+      "primary": "S",
+      "secondary": "ArrowDown",
+      "group": "movement",
+      "rebindable": true
+    },
+    {
+      "action": "strafe_left",
+      "label": "Strafe Left",
+      "primary": "A",
+      "secondary": "ArrowLeft",
+      "group": "movement",
+      "rebindable": true
+    },
+    {
+      "action": "strafe_right",
+      "label": "Strafe Right",
+      "primary": "D",
+      "secondary": "ArrowRight",
+      "group": "movement",
+      "rebindable": true
+    },
+    {
+      "action": "run",
+      "label": "Run / Sprint",
+      "primary": "Shift",
+      "group": "movement",
+      "rebindable": true
+    },
+    {
+      "action": "interact",
+      "label": "Interact",
+      "primary": "E",
+      "group": "movement",
+      "rebindable": true
+    },
+    {
+      "action": "attack",
+      "label": "Attack",
+      "primary": "Mouse1",
+      "group": "combat",
+      "rebindable": true
+    },
+    {
+      "action": "guard",
+      "label": "Guard / Block",
+      "primary": "Mouse2",
+      "group": "combat",
+      "rebindable": true
+    },
+    {
+      "action": "ability_1",
+      "label": "Ability 1",
+      "primary": "1",
+      "group": "combat",
+      "rebindable": true
+    },
+    {
+      "action": "ability_2",
+      "label": "Ability 2",
+      "primary": "2",
+      "group": "combat",
+      "rebindable": true
+    },
+    {
+      "action": "ability_3",
+      "label": "Ability 3",
+      "primary": "3",
+      "group": "combat",
+      "rebindable": true
+    },
+    {
+      "action": "ability_4",
+      "label": "Ability 4",
+      "primary": "4",
+      "group": "combat",
+      "rebindable": true
+    },
+    {
+      "action": "spell_quick",
+      "label": "Quick Cast",
+      "primary": "Q",
+      "group": "combat",
+      "rebindable": true
+    },
+    {
+      "action": "inventory",
+      "label": "Inventory",
+      "primary": "I",
+      "group": "ui",
+      "rebindable": true
+    },
+    { "action": "journal", "label": "Journal", "primary": "J", "group": "ui", "rebindable": true },
+    {
+      "action": "spellbook",
+      "label": "Spellbook",
+      "primary": "K",
+      "group": "ui",
+      "rebindable": true
+    },
+    {
+      "action": "options",
+      "label": "Options",
+      "primary": "Escape",
+      "group": "ui",
+      "rebindable": false
+    },
+    { "action": "map", "label": "World Map", "primary": "M", "group": "ui", "rebindable": true },
+    {
+      "action": "chat_local",
+      "label": "Local Chat",
+      "primary": "Enter",
+      "group": "social",
+      "rebindable": false
+    },
+    {
+      "action": "voice_ptt",
+      "label": "Voice Push-to-Talk",
+      "primary": "V",
+      "group": "social",
+      "rebindable": true
+    },
+    {
+      "action": "screenshot",
+      "label": "Screenshot",
+      "primary": "F12",
+      "group": "system",
+      "rebindable": false
+    }
+  ]
+}

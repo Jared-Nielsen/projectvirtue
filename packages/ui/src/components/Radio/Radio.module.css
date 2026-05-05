@@ -1,0 +1,66 @@
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--br-space-2);
+  font-family: var(--br-font-ui);
+  color: var(--br-text);
+}
+
+.legend {
+  font-size: var(--br-fs-label);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--br-text-muted);
+}
+
+.field {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--br-space-2);
+  cursor: pointer;
+  user-select: none;
+  font-size: var(--br-fs-ui);
+  color: var(--br-text);
+}
+
+.input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 0;
+  height: 0;
+}
+
+.dot {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background: var(--br-surface);
+  border: 1px solid var(--br-border-strong);
+  border-radius: var(--br-radius-full);
+  box-shadow: var(--br-shadow-parchment-emboss);
+  position: relative;
+}
+
+.dot::after {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: var(--br-radius-full);
+  background: var(--br-sigil-400);
+  transform: scale(0);
+  transition: transform var(--br-dur-fast) var(--br-ease-standard);
+}
+
+.input:checked + .dot::after {
+  transform: scale(1);
+}
+
+.input:focus-visible + .dot {
+  box-shadow: var(--br-focus-ring);
+}
+
+.input:disabled + .dot {
+  opacity: 0.5;
+}

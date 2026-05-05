@@ -1,0 +1,37 @@
+{
+  "name": "@br/ui",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./tokens.css": "./src/tokens.css"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc -p tsconfig.stories.json --noEmit",
+    "lint": "biome check .",
+    "test": "vitest --passWithNoTests",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
+  },
+  "dependencies": {
+    "@br/icons": "workspace:*",
+    "@br/types": "workspace:*",
+    "solid-js": "1.9.12"
+  },
+  "devDependencies": {
+    "@storybook/addon-a11y": "8.4.7",
+    "@storybook/addon-essentials": "8.4.7",
+    "@storybook/test": "8.4.7",
+    "storybook": "8.4.7",
+    "storybook-solidjs": "1.0.0-beta.7",
+    "storybook-solidjs-vite": "1.0.0-beta.7",
+    "typescript": "5.6.3",
+    "vite": "5.4.11",
+    "vite-plugin-solid": "2.10.2",
+    "vitest": "2.1.5"
+  }
+}

@@ -1,0 +1,41 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build output
+dist
+build
+.vite
+.histoire
+.turbo
+.astro
+storybook-static
+*.tsbuildinfo
+
+# Test coverage
+coverage
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor / OS
+.DS_Store
+.idea
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+Thumbs.db
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Reference art kits (Kenney etc.) — kept dev-local; production art moves to
+# Cloudflare R2 with a sync script when real assets land. Re-download from
+# kenney.nl while developing.
+_tileart

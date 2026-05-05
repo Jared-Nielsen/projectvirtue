@@ -1,0 +1,70 @@
+---
+import JoinForm from '../islands/JoinForm.tsx';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { loadShards } from '../lib/mock-client';
+
+const description =
+  'Embark on a journey with other adventurers. Browse current worlds and join the wherever your story begins.';
+
+// Build-time fetch: the shard list is part of the SSR'd HTML and is also
+// passed to the JoinForm island so the <select> options render server-side
+// (good SEO + no flash on hydration).
+const shards = loadShards();
+---
+
+<BaseLayout title="Join a World" description={description}>
+  <section class="join-hero">
+    <div class="container join-hero__inner">
+      <h1>Join a World</h1>
+      <p class="lede">
+        Embark on a journey with other adventurers. Browse current worlds and join the one that
+        fits your story.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-label="Join form">
+    <div class="container join-layout">
+      <JoinForm client:visible shards={shards} />
+
+      <aside class="join-side">
+        <div class="surface join-side__block">
+          <h3>Play together</h3>
+          <p>
+            Every shard is a complete world. Order shards enforce the virtue ruleset; Chaos shards
+            are open PvP; GM campaigns are invite-only stories run by a player-DM.
+          </p>
+        </div>
+        <div class="surface join-side__block">
+          <h3>Cross-region awareness</h3>
+          <p>
+            Voice and trade cross regions; we surface the consent flow at the right moment so you
+            stay in control of your data.
+          </p>
+        </div>
+        <div class="surface join-side__block">
+          <h3>Your character is yours</h3>
+          <p>
+            Once a shard opens, your character carries between sessions and — when the native
+            client lands — between platforms.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .join-hero { padding: 56px 0 24px; }
+  .join-hero__inner { max-width: 720px; }
+  .join-layout {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  @media (max-width: 880px) { .join-layout { grid-template-columns: 1fr; } }
+  .join-side__block { margin-bottom: 16px; padding: 20px; }
+  .join-side__block h3 { margin: 0 0 8px; font-size: 1rem; }
+  .join-side__block p { margin: 0; font-size: 0.875rem; color: var(--br-parchment-200); }
+</style>

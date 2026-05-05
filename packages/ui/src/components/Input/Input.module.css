@@ -1,0 +1,83 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--br-space-1);
+  font-family: var(--br-font-ui);
+  color: var(--br-text);
+}
+
+.label {
+  font-size: var(--br-fs-label);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--br-text-muted);
+}
+
+.required {
+  color: var(--br-blood-400);
+  margin-left: 2px;
+}
+
+.controlWrap {
+  display: inline-flex;
+  align-items: stretch;
+  background: var(--br-surface);
+  border: 1px solid var(--br-border);
+  border-radius: var(--br-radius-md);
+  box-shadow: var(--br-shadow-parchment-emboss);
+  transition: border-color var(--br-dur-fast) var(--br-ease-standard), box-shadow var(--br-dur-fast)
+    var(--br-ease-standard);
+}
+
+.controlWrap:focus-within {
+  border-color: var(--br-sigil-400);
+  box-shadow: var(--br-focus-ring);
+}
+
+.error.controlWrap {
+  border-color: var(--br-blood-500);
+}
+
+.error.controlWrap:focus-within {
+  box-shadow: 0 0 0 2px var(--br-surface), 0 0 0 4px var(--br-blood-400);
+}
+
+.disabled.controlWrap {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: var(--br-space-2) var(--br-space-3);
+  font: inherit;
+  color: inherit;
+  font-size: var(--br-fs-ui);
+}
+
+.input::placeholder {
+  color: var(--br-text-muted);
+}
+
+.addon {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 var(--br-space-2);
+  color: var(--br-text-muted);
+  background: transparent;
+}
+
+.helper {
+  font-size: var(--br-fs-label);
+  color: var(--br-text-muted);
+  letter-spacing: 0.02em;
+}
+
+.helperError {
+  color: var(--br-blood-400);
+}

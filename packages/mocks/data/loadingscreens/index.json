@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "default": "default",
+  "variants": [
+    {
+      "variant": "marine",
+      "imageUrl": "/assets/loading/marine.webp",
+      "thumbUrl": "/assets/loading/thumb/marine.webp",
+      "tint": "#1B3A5C",
+      "tagline": "By tide and by tiller, the Vesper bound.",
+      "weight": 25,
+      "quotes": [
+        {
+          "text": "The sea forgives in salt what land forgets in stone.",
+          "attribution": "Iolo, on the way to Vesper"
+        },
+        {
+          "text": "A short voyage is the best voyage. So saith the seasick paladin.",
+          "attribution": "Dupre"
+        },
+        {
+          "text": "The compass is a courteous fiction. The wind is the rule.",
+          "attribution": "Captain Hawkins"
+        }
+      ]
+    },
+    {
+      "variant": "dungeon",
+      "imageUrl": "/assets/loading/dungeon.webp",
+      "thumbUrl": "/assets/loading/thumb/dungeon.webp",
+      "tint": "#0E0E14",
+      "tagline": "Despise tasted thee, but did not finish.",
+      "weight": 25,
+      "quotes": [
+        {
+          "text": "A torch lasts an hour. Despise lasts longer.",
+          "attribution": "Britain Watchman's Manual"
+        },
+        {
+          "text": "The first rule of a dungeon is light. The second is who is behind thee.",
+          "attribution": "Shamino"
+        },
+        {
+          "text": "Goblins are not stupid. They are merely fewer than thou. Adjust accordingly.",
+          "attribution": "Mariah"
+        }
+      ]
+    },
+    {
+      "variant": "paladin-castle",
+      "imageUrl": "/assets/loading/paladin_castle.webp",
+      "thumbUrl": "/assets/loading/thumb/paladin_castle.webp",
+      "tint": "#5B3A18",
+      "tagline": "Trinsic stands, and so dost thou.",
+      "weight": 25,
+      "quotes": [
+        {
+          "text": "Honor is what you do when no one watches.",
+          "attribution": "Of the Eight Virtues"
+        },
+        { "text": "An oath sworn in haste is still an oath.", "attribution": "Dupre" },
+        {
+          "text": "The Shrine of Honor was here before the city. The city is the Shrine's idea.",
+          "attribution": "Brother Antos"
+        }
+      ]
+    },
+    {
+      "variant": "default",
+      "imageUrl": "/assets/loading/default.webp",
+      "thumbUrl": "/assets/loading/thumb/default.webp",
+      "tint": "#2D2A24",
+      "tagline": "Walk in the Eight.",
+      "weight": 25,
+      "quotes": [
+        {
+          "text": "The Codex is real. It is also exactly as far away as it has always been.",
+          "attribution": "Lord British"
+        },
+        {
+          "text": "Begin with the lies thou tellest thyself. The rest is bookkeeping.",
+          "attribution": "Lord British, on Honesty"
+        },
+        {
+          "text": "There are Eight, and they are not in order of importance, but each in service of the others.",
+          "attribution": "Brother Antos"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "id": "guild_companions_of_the_avatar",
+  "name": "Companions of the Avatar",
+  "tag": "[CoA]",
+  "motto": "Eight, in service to one.",
+  "description": "A long-running Order-shard guild. Pilgrimage hunts, oath-binding ceremonies, weekly council on Fridays.",
+  "heraldryUrl": "/assets/heraldry/coa.webp",
+  "foundedAt": "2026-03-22T00:00:00.000Z",
+  "homeShard": "shard_britannia_order",
+  "homeRegion": "region_britain",
+  "memberCount": 7,
+  "publicCharter": true,
+  "discordLinked": true,
+  "members": [
+    {
+      "characterId": "char_avatar_of_virtue",
+      "handle": "thestranger",
+      "displayName": "Aramis the Stranger",
+      "role": "leader",
+      "joinedAt": "2026-04-21T13:30:00.000Z",
+      "lastSeen": "2026-05-04T20:31:00.000Z",
+      "contributionPoints": 482
+    },
+    {
+      "characterId": "char_paladin_dupre",
+      "handle": "duprealt",
+      "displayName": "Sir Cedric",
+      "role": "officer",
+      "joinedAt": "2026-04-22T11:00:00.000Z",
+      "lastSeen": "2026-05-03T22:11:00.000Z",
+      "contributionPoints": 360
+    },
+    {
+      "characterId": "char_npc_iolo",
+      "handle": "iolo_bowyer",
+      "displayName": "Iolo",
+      "role": "veteran",
+      "joinedAt": "2026-04-23T09:00:00.000Z",
+      "lastSeen": "2026-05-04T20:00:00.000Z",
+      "contributionPoints": 278
+    },
+    {
+      "characterId": "char_npc_shamino",
+      "handle": "shamino_ranger",
+      "displayName": "Shamino",
+      "role": "veteran",
+      "joinedAt": "2026-04-24T17:30:00.000Z",
+      "lastSeen": "2026-05-04T19:54:00.000Z",
+      "contributionPoints": 244
+    },
+    {
+      "characterId": "char_npc_mariah",
+      "handle": "mariah_lyceum",
+      "displayName": "Mariah",
+      "role": "member",
+      "joinedAt": "2026-04-26T12:00:00.000Z",
+      "lastSeen": "2026-05-04T18:30:00.000Z",
+      "contributionPoints": 142
+    },
+    {
+      "characterId": "char_smith_minoc",
+      "handle": "toryn_forge",
+      "displayName": "Toryn Forge-Daughter",
+      "role": "member",
+      "joinedAt": "2026-04-29T15:00:00.000Z",
+      "lastSeen": "2026-05-04T11:30:00.000Z",
+      "contributionPoints": 98
+    },
+    {
+      "characterId": "char_apprentice_lirael",
+      "handle": "lirael_moonglow",
+      "displayName": "Lirael",
+      "role": "recruit",
+      "joinedAt": "2026-05-01T16:00:00.000Z",
+      "lastSeen": "2026-05-04T20:31:00.000Z",
+      "contributionPoints": 12
+    }
+  ]
+}

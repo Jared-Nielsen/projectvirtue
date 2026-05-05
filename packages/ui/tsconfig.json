@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "tsBuildInfoFile": "./dist/.tsbuildinfo",
+    "types": ["vite/client"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.stories.tsx"],
+  "references": [{ "path": "../types" }, { "path": "../icons" }]
+}

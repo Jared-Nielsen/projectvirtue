@@ -1,0 +1,106 @@
+{
+  "characterId": "char_avatar_of_virtue",
+  "memorizedSlots": 6,
+  "spells": [
+    {
+      "id": "spell_in_lor",
+      "name": { "key": "spell.in_lor", "en": "In Lor (Light)" },
+      "circle": 1,
+      "school": "utility",
+      "description": "A small magical light. Useful in dungeons; useless in combat.",
+      "reagents": [{ "itemId": "item_cat_reagent_garlic", "qty": 1 }],
+      "manaCost": 4,
+      "castSeconds": 1.0,
+      "rangeTiles": 0,
+      "basePower": 0,
+      "iconKey": "icon.spell.light",
+      "known": true,
+      "memorized": true
+    },
+    {
+      "id": "spell_an_zu",
+      "name": { "key": "spell.an_zu", "en": "An Zu (Sleep)" },
+      "circle": 2,
+      "school": "illusion",
+      "description": "Lulls a single foe into magical sleep. Resisted by high Will.",
+      "reagents": [
+        { "itemId": "item_cat_reagent_ginseng", "qty": 1 },
+        { "itemId": "item_cat_reagent_garlic", "qty": 1 }
+      ],
+      "manaCost": 8,
+      "castSeconds": 1.5,
+      "rangeTiles": 6,
+      "basePower": 0,
+      "iconKey": "icon.spell.sleep",
+      "known": true,
+      "memorized": true
+    },
+    {
+      "id": "spell_in_flam_grav",
+      "name": { "key": "spell.in_flam_grav", "en": "In Flam Grav (Fireball)" },
+      "circle": 3,
+      "school": "attack",
+      "description": "Hurls a fist-sized fireball. Ignites flammable terrain.",
+      "reagents": [
+        { "itemId": "item_cat_reagent_mandrake", "qty": 1 },
+        { "itemId": "item_cat_reagent_garlic", "qty": 1 }
+      ],
+      "manaCost": 14,
+      "castSeconds": 2.0,
+      "rangeTiles": 8,
+      "damageType": "fire",
+      "basePower": 28,
+      "iconKey": "icon.spell.fireball",
+      "known": true,
+      "memorized": true
+    },
+    {
+      "id": "spell_in_mani",
+      "name": { "key": "spell.in_mani", "en": "In Mani (Heal)" },
+      "circle": 2,
+      "school": "restoration",
+      "description": "Restores 18 HP to a single ally within touch.",
+      "reagents": [{ "itemId": "item_cat_reagent_ginseng", "qty": 1 }],
+      "manaCost": 10,
+      "castSeconds": 1.5,
+      "rangeTiles": 1,
+      "basePower": 18,
+      "iconKey": "icon.spell.heal",
+      "known": true,
+      "memorized": true
+    },
+    {
+      "id": "spell_kal_xen",
+      "name": { "key": "spell.kal_xen", "en": "Kal Xen (Summon Beast)" },
+      "circle": 4,
+      "school": "summon",
+      "description": "Summons a forest beast to fight at your side for one minute.",
+      "reagents": [
+        { "itemId": "item_cat_reagent_mandrake", "qty": 1 },
+        { "itemId": "item_cat_reagent_ginseng", "qty": 1 }
+      ],
+      "manaCost": 22,
+      "castSeconds": 3.0,
+      "rangeTiles": 4,
+      "basePower": 0,
+      "iconKey": "icon.spell.summon_beast",
+      "known": true,
+      "memorized": false
+    },
+    {
+      "id": "spell_vas_lor",
+      "name": { "key": "spell.vas_lor", "en": "Vas Lor (Great Light)" },
+      "circle": 3,
+      "school": "utility",
+      "description": "Floods the area in daylight; blinds undead.",
+      "reagents": [{ "itemId": "item_cat_reagent_mandrake", "qty": 1 }],
+      "manaCost": 12,
+      "castSeconds": 2.0,
+      "rangeTiles": 0,
+      "basePower": 0,
+      "iconKey": "icon.spell.great_light",
+      "known": false,
+      "memorized": false
+    }
+  ]
+}

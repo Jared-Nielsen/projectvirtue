@@ -1,0 +1,144 @@
+.btn {
+  --btn-bg: var(--br-sigil-400);
+  --btn-bg-hover: var(--br-sigil-300);
+  --btn-bg-active: var(--br-sigil-500);
+  --btn-fg: var(--br-ink-700);
+  --btn-border: var(--br-sigil-600);
+  --btn-shadow: var(--br-shadow-parchment-emboss);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--br-space-2);
+  position: relative;
+
+  font-family: var(--br-font-display);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  text-align: center;
+
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  border: 1px solid var(--btn-border);
+  border-radius: var(--br-radius-md);
+  box-shadow: var(--btn-shadow);
+
+  cursor: pointer;
+  user-select: none;
+  appearance: none;
+
+  transition: background var(--br-dur-fast) var(--br-ease-standard), transform var(--br-dur-fast)
+    var(--br-ease-standard), box-shadow var(--br-dur-fast) var(--br-ease-standard);
+}
+
+.btn:hover:not(:disabled) {
+  background: var(--btn-bg-hover);
+}
+
+.btn:active:not(:disabled) {
+  background: var(--btn-bg-active);
+  transform: translateY(1px);
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: var(--br-focus-ring), var(--btn-shadow);
+}
+
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  filter: saturate(0.4);
+}
+
+/* Sizes */
+.sm {
+  font-size: var(--br-fs-label);
+  padding: var(--br-space-1) var(--br-space-3);
+  min-height: 28px;
+}
+.md {
+  font-size: var(--br-fs-ui);
+  padding: var(--br-space-2) var(--br-space-4);
+  min-height: 36px;
+}
+.lg {
+  font-size: var(--br-fs-h6);
+  padding: var(--br-space-3) var(--br-space-6);
+  min-height: 44px;
+}
+
+/* Variants */
+.primary {
+  --btn-bg: var(--br-sigil-400);
+  --btn-bg-hover: var(--br-sigil-300);
+  --btn-bg-active: var(--br-sigil-500);
+  --btn-fg: var(--br-ink-700);
+  --btn-border: var(--br-sigil-600);
+}
+
+.secondary {
+  --btn-bg: var(--br-virtue-700);
+  --btn-bg-hover: var(--br-virtue-600);
+  --btn-bg-active: var(--br-virtue-800);
+  --btn-fg: var(--br-parchment-50);
+  --btn-border: var(--br-virtue-800);
+}
+
+.destructive {
+  --btn-bg: var(--br-blood-500);
+  --btn-bg-hover: var(--br-blood-400);
+  --btn-bg-active: var(--br-blood-600);
+  --btn-fg: var(--br-parchment-50);
+  --btn-border: var(--br-blood-700);
+}
+
+.ghost {
+  --btn-bg: transparent;
+  --btn-bg-hover: rgba(207, 150, 47, 0.12);
+  --btn-bg-active: rgba(207, 150, 47, 0.2);
+  --btn-fg: var(--br-text);
+  --btn-border: transparent;
+  --btn-shadow: none;
+}
+
+.icon {
+  --btn-bg: transparent;
+  --btn-bg-hover: rgba(207, 150, 47, 0.12);
+  --btn-bg-active: rgba(207, 150, 47, 0.2);
+  --btn-fg: var(--br-text);
+  --btn-border: transparent;
+  --btn-shadow: none;
+  padding: var(--br-space-2);
+  min-height: 0;
+  aspect-ratio: 1;
+  border-radius: var(--br-radius-full);
+}
+
+.loading {
+  cursor: wait;
+}
+
+.spinner {
+  display: inline-flex;
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+}
+
+.hideLabel {
+  visibility: hidden;
+}
+
+.spinnerOverlay {
+  position: absolute;
+  inset: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}

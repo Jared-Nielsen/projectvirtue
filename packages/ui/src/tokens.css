@@ -1,0 +1,243 @@
+/* Project Virtue — design tokens (CSS custom properties).
+ * Mirror of /src/tokens.ts so apps can theme at runtime via [data-theme].
+ *
+ *   Default theme: parchment-light (warm scroll look).
+ *   Dark theme:    dungeon-dark (apply data-theme="dark" on <html>).
+ */
+
+:root,
+:root[data-theme="light"] {
+  /* Parchment */
+  --br-parchment-50: #fbf3e2;
+  --br-parchment-100: #f5e7c6;
+  --br-parchment-200: #ebd6a3;
+  --br-parchment-300: #dcc080;
+  --br-parchment-400: #c8a763;
+  --br-parchment-500: #a8854a;
+  --br-parchment-600: #856738;
+  --br-parchment-700: #624c2a;
+  --br-parchment-800: #42331c;
+  --br-parchment-900: #251c10;
+
+  /* Ink */
+  --br-ink-50: #e6e1d4;
+  --br-ink-100: #bdb4a0;
+  --br-ink-200: #8d8266;
+  --br-ink-300: #5e5440;
+  --br-ink-400: #3d3526;
+  --br-ink-500: #251f12;
+  --br-ink-600: #1a160c;
+  --br-ink-700: #120e07;
+  --br-ink-800: #0b0904;
+  --br-ink-900: #050402;
+
+  /* Sigil */
+  --br-sigil-50: #fdf4d3;
+  --br-sigil-100: #fae29a;
+  --br-sigil-200: #f4cc66;
+  --br-sigil-300: #e6b246;
+  --br-sigil-400: #cf962f;
+  --br-sigil-500: #b07a1f;
+  --br-sigil-600: #8a5d15;
+  --br-sigil-700: #65430e;
+  --br-sigil-800: #412b08;
+  --br-sigil-900: #221603;
+
+  /* Virtue */
+  --br-virtue-50: #e6eef6;
+  --br-virtue-100: #c1d3e6;
+  --br-virtue-200: #94b1cf;
+  --br-virtue-300: #6890b6;
+  --br-virtue-400: #42729b;
+  --br-virtue-500: #2a587e;
+  --br-virtue-600: #1d4264;
+  --br-virtue-700: #142f4a;
+  --br-virtue-800: #0c1d31;
+  --br-virtue-900: #070f1c;
+
+  /* Blood */
+  --br-blood-50: #fbe1de;
+  --br-blood-100: #f4b5ad;
+  --br-blood-200: #e98678;
+  --br-blood-300: #d85a48;
+  --br-blood-400: #bb3c2b;
+  --br-blood-500: #962b1e;
+  --br-blood-600: #751f15;
+  --br-blood-700: #56150e;
+  --br-blood-800: #380c08;
+  --br-blood-900: #1c0503;
+
+  /* Mana */
+  --br-mana-50: #dff1ff;
+  --br-mana-100: #b3dcfc;
+  --br-mana-200: #7ec0f6;
+  --br-mana-300: #4aa0e8;
+  --br-mana-400: #2a7fcb;
+  --br-mana-500: #1c63a8;
+  --br-mana-600: #134a82;
+  --br-mana-700: #0d345d;
+  --br-mana-800: #08213c;
+  --br-mana-900: #04111f;
+
+  /* Dungeon */
+  --br-dungeon-50: #9aa0a8;
+  --br-dungeon-100: #6c727a;
+  --br-dungeon-200: #494d54;
+  --br-dungeon-300: #2f3239;
+  --br-dungeon-400: #1f2127;
+  --br-dungeon-500: #13151a;
+  --br-dungeon-600: #0c0d11;
+  --br-dungeon-700: #070809;
+  --br-dungeon-800: #040405;
+  --br-dungeon-900: #020203;
+
+  /* Functional */
+  --br-success: #5e8a3a;
+  --br-success-on: #0d1808;
+  --br-warning: #cf962f;
+  --br-warning-on: #1f1502;
+  --br-danger: #962b1e;
+  --br-danger-on: #1c0503;
+  --br-info: #2a7fcb;
+  --br-info-on: #04111f;
+
+  /* Semantic surface tokens — light/parchment */
+  --br-bg: var(--br-parchment-100);
+  --br-bg-elevated: var(--br-parchment-50);
+  --br-bg-subtle: var(--br-parchment-200);
+  --br-surface: var(--br-parchment-50);
+  --br-surface-muted: var(--br-parchment-100);
+  --br-overlay: rgba(37, 28, 16, 0.55);
+
+  --br-text: var(--br-ink-500);
+  --br-text-muted: var(--br-ink-300);
+  --br-text-on-dark: var(--br-parchment-50);
+  --br-text-on-accent: var(--br-parchment-50);
+
+  --br-border: var(--br-parchment-500);
+  --br-border-strong: var(--br-parchment-700);
+  --br-border-subtle: var(--br-parchment-300);
+
+  --br-accent: var(--br-sigil-400);
+  --br-accent-hover: var(--br-sigil-300);
+  --br-accent-active: var(--br-sigil-500);
+  --br-accent-on: var(--br-ink-700);
+
+  --br-link: var(--br-virtue-600);
+  --br-link-hover: var(--br-virtue-500);
+
+  --br-focus-ring: 0 0 0 2px var(--br-parchment-50), 0 0 0 4px var(--br-sigil-400);
+
+  /* Typography */
+  --br-font-display: "Cinzel", "Trajan Pro", "Cormorant Garamond", Georgia, serif;
+  --br-font-heading: "Cinzel", "Trajan Pro", Georgia, "Times New Roman", serif;
+  --br-font-body: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --br-font-ui: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --br-font-hud-mono: "JetBrains Mono", "Fira Code", "SFMono-Regular", Menlo, monospace;
+
+  --br-fs-display: 4rem;
+  --br-fs-h1: 3rem;
+  --br-fs-h2: 2.25rem;
+  --br-fs-h3: 1.75rem;
+  --br-fs-h4: 1.375rem;
+  --br-fs-h5: 1.125rem;
+  --br-fs-h6: 1rem;
+  --br-fs-body: 1rem;
+  --br-fs-body-sm: 0.875rem;
+  --br-fs-ui: 0.9375rem;
+  --br-fs-label: 0.75rem;
+  --br-fs-hud-mono: 0.875rem;
+
+  /* Spacing */
+  --br-space-0: 0px;
+  --br-space-0_5: 2px;
+  --br-space-1: 4px;
+  --br-space-1_5: 6px;
+  --br-space-2: 8px;
+  --br-space-3: 12px;
+  --br-space-4: 16px;
+  --br-space-5: 20px;
+  --br-space-6: 24px;
+  --br-space-8: 32px;
+  --br-space-10: 40px;
+  --br-space-12: 48px;
+  --br-space-16: 64px;
+  --br-space-20: 80px;
+  --br-space-24: 96px;
+
+  /* Radii */
+  --br-radius-none: 0px;
+  --br-radius-sm: 2px;
+  --br-radius-md: 4px;
+  --br-radius-lg: 8px;
+  --br-radius-xl: 14px;
+  --br-radius-full: 9999px;
+
+  /* Shadows */
+  --br-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --br-shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
+  --br-shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.5);
+  --br-shadow-glow-gold: 0 0 12px rgba(207, 150, 47, 0.55), 0 0 2px rgba(244, 204, 102, 0.8);
+  --br-shadow-glow-blue: 0 0 12px rgba(74, 160, 232, 0.55), 0 0 2px rgba(126, 192, 246, 0.8);
+  --br-shadow-parchment-emboss: inset 0 1px 0 rgba(255, 240, 210, 0.55), inset 0 -1px 0
+    rgba(0, 0, 0, 0.25), 0 2px 6px rgba(0, 0, 0, 0.35);
+
+  /* Blur */
+  --br-blur-sm: 4px;
+  --br-blur-md: 10px;
+  --br-blur-lg: 24px;
+
+  /* Z-index */
+  --br-z-canvas: 0;
+  --br-z-hud: 100;
+  --br-z-modal: 1000;
+  --br-z-toast: 2000;
+  --br-z-debug: 9000;
+
+  /* Motion */
+  --br-dur-instant: 0ms;
+  --br-dur-fast: 120ms;
+  --br-dur-base: 200ms;
+  --br-dur-slow: 360ms;
+  --br-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --br-ease-accelerate: cubic-bezier(0.4, 0, 1, 1);
+  --br-ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  --br-ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Dark theme — dungeon-dark */
+:root[data-theme="dark"] {
+  --br-bg: var(--br-dungeon-600);
+  --br-bg-elevated: var(--br-dungeon-500);
+  --br-bg-subtle: var(--br-dungeon-700);
+  --br-surface: var(--br-dungeon-400);
+  --br-surface-muted: var(--br-dungeon-500);
+  --br-overlay: rgba(2, 2, 3, 0.7);
+
+  --br-text: var(--br-parchment-100);
+  --br-text-muted: var(--br-parchment-400);
+  --br-text-on-dark: var(--br-parchment-50);
+  --br-text-on-accent: var(--br-ink-700);
+
+  --br-border: var(--br-virtue-700);
+  --br-border-strong: var(--br-sigil-600);
+  --br-border-subtle: var(--br-dungeon-300);
+
+  --br-accent: var(--br-sigil-300);
+  --br-accent-hover: var(--br-sigil-200);
+  --br-accent-active: var(--br-sigil-400);
+  --br-accent-on: var(--br-ink-700);
+
+  --br-link: var(--br-mana-200);
+  --br-link-hover: var(--br-mana-100);
+
+  --br-focus-ring: 0 0 0 2px var(--br-dungeon-700), 0 0 0 4px var(--br-sigil-300);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --br-dur-fast: 0ms;
+    --br-dur-base: 0ms;
+    --br-dur-slow: 0ms;
+  }
+}

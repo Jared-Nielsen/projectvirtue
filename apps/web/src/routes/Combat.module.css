@@ -1,0 +1,7 @@
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 60%, rgba(150, 43, 30, 0.5), transparent 60%),
+    radial-gradient(ellipse at 50% 100%, rgba(207, 150, 47, 0.25), transparent 70%),
+    linear-gradient(180deg, #0e0a05 0%, #1c0e07 60%, #0a0503 100%);
+}

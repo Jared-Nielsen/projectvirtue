@@ -1,0 +1,22 @@
+{
+  "characterId": "char_avatar_of_virtue",
+  "fromLevel": 7,
+  "toLevel": 8,
+  "hpDelta": 8,
+  "manaDelta": 4,
+  "staminaDelta": 6,
+  "statPointsAvailable": 3,
+  "statSuggested": {
+    "strength": 1,
+    "dexterity": 0,
+    "intelligence": 1,
+    "constitution": 1,
+    "wisdom": 0,
+    "charisma": 0
+  },
+  "newAbilities": ["ability_rally"],
+  "newSpells": ["spell_in_mani"],
+  "title": "Pilgrim of the Eight",
+  "occurredAt": "2026-05-04T20:32:00.000Z",
+  "loreFlavor": "A breeze stirs that should not, and you remember a stanza from the Codex you had not yet read."
+}

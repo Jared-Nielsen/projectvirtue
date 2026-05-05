@@ -1,0 +1,17 @@
+{
+  "applicationId": "1118000000000000000",
+  "state": "Patrolling Yew",
+  "details": "Aramis the Stranger — Lvl 7 Avatar",
+  "startTimestamp": "2026-05-04T19:55:00.000Z",
+  "largeImageKey": "ankh_full",
+  "largeImageText": "Britannia (Order)",
+  "smallImageKey": "class_avatar",
+  "smallImageText": "Avatar of the Eight",
+  "partySize": { "current": 2, "max": 6 },
+  "partyId": "party_yew_patrol",
+  "joinSecret": "join_secret_mock_only",
+  "buttons": [
+    { "label": "Join a World", "url": "https://britanniareborn.example/play" },
+    { "label": "Codex of Virtues", "url": "https://britanniareborn.example/codex" }
+  ]
+}

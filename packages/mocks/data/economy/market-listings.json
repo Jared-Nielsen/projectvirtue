@@ -1,0 +1,88 @@
+{
+  "listings": [
+    {
+      "id": "listing_001",
+      "seller": { "characterId": "char_paladin_dupre", "name": "Sir Cedric" },
+      "itemId": "item_cat_chainmail",
+      "itemName": "Chainmail Hauberk",
+      "itemRarity": "mundane",
+      "quantity": 1,
+      "price": { "gold": 95, "silver": 0, "copper": 0 },
+      "regionId": "region_trinsic",
+      "listedAt": "2026-05-04T10:00:00.000Z",
+      "expiresAt": "2026-05-11T10:00:00.000Z",
+      "status": "open",
+      "description": "Lightly mended. One previous owner; he's fine."
+    },
+    {
+      "id": "listing_002",
+      "seller": { "characterId": "char_npc_iolo_market", "name": "Iolo" },
+      "itemId": "item_cat_yew_longbow",
+      "itemName": "Yew Longbow",
+      "itemRarity": "uncommon",
+      "quantity": 2,
+      "price": { "gold": 110, "silver": 0, "copper": 0 },
+      "regionId": "region_britain",
+      "listedAt": "2026-05-04T08:30:00.000Z",
+      "expiresAt": "2026-05-08T08:30:00.000Z",
+      "status": "open",
+      "description": "Hand-strung. Tested at the butts. Each."
+    },
+    {
+      "id": "listing_003",
+      "seller": { "characterId": "char_alchemist_karis", "name": "Karis the Alchemist" },
+      "itemId": "item_cat_potion_healing",
+      "itemName": "Lesser Healing Potion",
+      "itemRarity": "uncommon",
+      "quantity": 6,
+      "price": { "gold": 16, "silver": 0, "copper": 0 },
+      "regionId": "region_britain",
+      "listedAt": "2026-05-03T17:00:00.000Z",
+      "expiresAt": "2026-05-10T17:00:00.000Z",
+      "status": "open",
+      "description": "Bulk pricing. Bring your own bottle and I'll knock off two coppers."
+    },
+    {
+      "id": "listing_004",
+      "seller": { "characterId": "char_apprentice_lirael", "name": "Lirael of Moonglow" },
+      "itemId": "item_cat_reagent_mandrake",
+      "itemName": "Mandrake Root",
+      "itemRarity": "rare",
+      "quantity": 4,
+      "price": { "gold": 14, "silver": 0, "copper": 0 },
+      "regionId": "region_moonshade",
+      "listedAt": "2026-05-04T13:00:00.000Z",
+      "expiresAt": "2026-05-07T13:00:00.000Z",
+      "status": "open",
+      "description": "Lyceum-grown. Discreetly."
+    },
+    {
+      "id": "listing_005",
+      "seller": { "characterId": "char_smith_minoc", "name": "Toryn Forge-Daughter" },
+      "itemId": "item_cat_longsword_iron",
+      "itemName": "Iron Longsword",
+      "itemRarity": "mundane",
+      "quantity": 3,
+      "price": { "gold": 55, "silver": 0, "copper": 0 },
+      "regionId": "region_minoc",
+      "listedAt": "2026-04-30T11:30:00.000Z",
+      "expiresAt": "2026-05-07T11:30:00.000Z",
+      "status": "open",
+      "description": "Forged this week. Edge held against a goblin trial run."
+    },
+    {
+      "id": "listing_006",
+      "seller": { "characterId": "char_traveler", "name": "Anonymous" },
+      "itemId": "item_cat_ankh_pendant",
+      "itemName": "Ankh Pendant",
+      "itemRarity": "uncommon",
+      "quantity": 1,
+      "price": { "gold": 240, "silver": 0, "copper": 0 },
+      "regionId": "region_britain",
+      "listedAt": "2026-04-22T09:00:00.000Z",
+      "expiresAt": "2026-04-29T09:00:00.000Z",
+      "status": "expired",
+      "description": "(Expired listing.)"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+.icon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  fill: currentColor;
+  flex-shrink: 0;
+}
+
+.spin {
+  animation: br-spin 1s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes br-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spin {
+    animation: none;
+  }
+}

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a160c"/>
+      <stop offset="40%" stop-color="#42331c"/>
+      <stop offset="80%" stop-color="#0c0d11"/>
+      <stop offset="100%" stop-color="#040405"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="78%" cy="55%" r="20%">
+      <stop offset="0%" stop-color="#f4cc66" stop-opacity="0.95"/>
+      <stop offset="40%" stop-color="#cf962f" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+    <linearGradient id="mist" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(207,150,47,0.12)"/>
+      <stop offset="100%" stop-color="rgba(7,8,9,0.85)"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <ellipse cx="1248" cy="495" rx="320" ry="320" fill="url(#sun)"/>
+  <!-- Far mountains -->
+  <path d="M0,560 L120,520 L260,540 L380,500 L520,540 L660,510 L820,540 L1000,500 L1160,520 L1320,490 L1460,520 L1600,500 L1600,900 L0,900 Z" fill="#1a160c" opacity="0.85"/>
+  <!-- Mid silhouettes -->
+  <path d="M0,640 L80,600 L200,640 L340,610 L460,640 L600,610 L760,640 L920,610 L1080,640 L1260,610 L1420,640 L1600,620 L1600,900 L0,900 Z" fill="#0c0d11"/>
+  <!-- Castle silhouette -->
+  <g fill="#0c0d11" opacity="0.95">
+    <rect x="1200" y="540" width="120" height="90"/>
+    <rect x="1190" y="510" width="20" height="120"/>
+    <rect x="1310" y="500" width="18" height="130"/>
+    <rect x="1248" y="480" width="24" height="150"/>
+    <polygon points="1244,480 1260,460 1276,480"/>
+    <polygon points="1186,510 1200,490 1214,510"/>
+    <polygon points="1306,500 1319,480 1332,500"/>
+  </g>
+  <!-- Foreground silhouette / pine fringe -->
+  <path d="M0,720 L40,690 L80,720 L120,680 L160,720 L200,690 L260,720 L320,680 L380,720 L460,690 L540,720 L640,680 L740,720 L860,690 L980,720 L1100,680 L1240,720 L1380,690 L1500,720 L1600,700 L1600,900 L0,900 Z" fill="#040405"/>
+  <!-- Mist veil -->
+  <rect width="1600" height="900" fill="url(#mist)" opacity="0.5"/>
+</svg>

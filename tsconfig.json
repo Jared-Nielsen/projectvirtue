@@ -1,0 +1,11 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./apps/web" },
+    { "path": "./apps/site" },
+    { "path": "./packages/ui" },
+    { "path": "./packages/types" },
+    { "path": "./packages/mocks" },
+    { "path": "./packages/icons" }
+  ]
+}

@@ -1,0 +1,43 @@
+.spinner {
+  display: inline-block;
+  color: var(--br-sigil-300);
+}
+
+.skeleton {
+  display: block;
+  background: linear-gradient(
+    90deg,
+    var(--br-parchment-200) 0%,
+    var(--br-parchment-100) 50%,
+    var(--br-parchment-200) 100%
+  );
+  background-size: 200% 100%;
+  border-radius: var(--br-radius-md);
+  animation: br-skel-shimmer 1.6s ease-in-out infinite;
+  min-height: 1em;
+}
+
+:root[data-theme="dark"] .skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--br-dungeon-500) 0%,
+    var(--br-dungeon-400) 50%,
+    var(--br-dungeon-500) 100%
+  );
+  background-size: 200% 100%;
+}
+
+@keyframes br-skel-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}

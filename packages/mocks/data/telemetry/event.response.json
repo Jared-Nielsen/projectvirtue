@@ -1,0 +1,11 @@
+{
+  "accepted": 4,
+  "rejected": 1,
+  "receivedAt": "2026-05-04T20:34:12.000Z",
+  "rejectedReasons": [
+    {
+      "eventId": "00000000-0000-0000-0000-deadbeef0000",
+      "reason": "schema_version 0 not accepted; minimum is 1"
+    }
+  ]
+}

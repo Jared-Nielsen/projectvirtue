@@ -1,0 +1,64 @@
+{
+  "landmarks": [
+    {
+      "id": "lm_castle_britannia",
+      "name": "castle_britannia",
+      "displayName": { "key": "lm.castle_britannia", "en": "Castle Britannia" },
+      "regionId": "region_britain",
+      "position": { "x": 16, "y": 2, "z": 0 },
+      "category": "castle",
+      "description": "Lord British's seat. The throne room is the heart of Order on this shard.",
+      "discovered": true
+    },
+    {
+      "id": "lm_shrine_of_compassion",
+      "name": "shrine_of_compassion",
+      "displayName": { "key": "lm.shrine_of_compassion", "en": "Shrine of Compassion" },
+      "regionId": "region_britain",
+      "position": { "x": 26, "y": 12, "z": 0 },
+      "category": "shrine",
+      "description": "Where pilgrims meditate upon the suffering of others.",
+      "discovered": true
+    },
+    {
+      "id": "lm_shrine_of_honor",
+      "name": "shrine_of_honor",
+      "displayName": { "key": "lm.shrine_of_honor", "en": "Shrine of Honor" },
+      "regionId": "region_trinsic",
+      "position": { "x": 44, "y": 14, "z": 0 },
+      "category": "shrine",
+      "description": "The Paladin's stone. To touch it falsely is to forfeit one's word.",
+      "discovered": true
+    },
+    {
+      "id": "lm_empath_abbey",
+      "name": "empath_abbey",
+      "displayName": { "key": "lm.empath_abbey", "en": "Empath Abbey" },
+      "regionId": "region_yew",
+      "position": { "x": 6, "y": 32, "z": 0 },
+      "category": "wonder",
+      "description": "Bell tower of Yew. The bells are tolled by hand by druids in rotation.",
+      "discovered": true
+    },
+    {
+      "id": "lm_moongate_britain",
+      "name": "moongate_britain",
+      "displayName": { "key": "lm.moongate_britain", "en": "Moongate of Britain" },
+      "regionId": "region_britain",
+      "position": { "x": 1, "y": 1, "z": 0 },
+      "category": "moongate",
+      "description": "An eight-faced standing stone that wakes at moonrise.",
+      "discovered": true
+    },
+    {
+      "id": "lm_dungeon_despise_entrance",
+      "name": "dungeon_despise_entrance",
+      "displayName": { "key": "lm.despise_entrance", "en": "Despise's Maw" },
+      "regionId": "region_dungeon_despise",
+      "position": { "x": 4, "y": 50, "z": 0 },
+      "category": "dungeon",
+      "description": "A jagged stone mouth in a hill. The wind from inside smells of rust and goblin.",
+      "discovered": false
+    }
+  ]
+}

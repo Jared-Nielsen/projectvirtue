@@ -1,0 +1,125 @@
+{
+  "quests": [
+    {
+      "id": "quest_first_dawn",
+      "title": { "key": "quest.first_dawn", "en": "First Dawn" },
+      "summary": {
+        "key": "quest.first_dawn.summary",
+        "en": "Speak with Lord British in the throne room."
+      },
+      "state": "active",
+      "giver": "Lord British",
+      "regionId": "region_britain",
+      "recommendedLevel": 1,
+      "virtueTags": ["honesty", "humility"],
+      "objectives": [
+        {
+          "id": "obj_first_dawn_2",
+          "questId": "quest_first_dawn",
+          "description": { "key": "obj.first_dawn.2", "en": "Speak with Lord British." },
+          "status": "in-progress",
+          "progress": 0,
+          "target": 1,
+          "hidden": false,
+          "optional": false
+        }
+      ],
+      "rewards": {
+        "experience": 200,
+        "gold": 25,
+        "items": ["item_codex_primer"],
+        "virtueDeltas": { "humility": 4 }
+      },
+      "acceptedAt": "2026-05-04T19:00:00.000Z"
+    },
+    {
+      "id": "quest_pilgrimage_compassion",
+      "title": {
+        "key": "quest.pilgrimage_compassion",
+        "en": "Pilgrimage to the Shrine of Compassion"
+      },
+      "summary": {
+        "key": "quest.pilgrimage_compassion.summary",
+        "en": "Bring offerings to the Shrine of Compassion outside Britain."
+      },
+      "state": "completed",
+      "giver": "Hierophant Antos",
+      "regionId": "region_britain",
+      "recommendedLevel": 3,
+      "virtueTags": ["compassion", "spirituality"],
+      "objectives": [
+        {
+          "id": "obj_pilgrimage_compassion_1",
+          "questId": "quest_pilgrimage_compassion",
+          "description": {
+            "key": "obj.pilgrimage_compassion.1",
+            "en": "Place an offering at the Shrine of Compassion."
+          },
+          "status": "completed",
+          "progress": 1,
+          "target": 1,
+          "hidden": false,
+          "optional": false
+        }
+      ],
+      "rewards": {
+        "experience": 350,
+        "gold": 0,
+        "items": ["item_silver_ring"],
+        "virtueDeltas": { "compassion": 8, "spirituality": 4 }
+      },
+      "acceptedAt": "2026-04-29T13:00:00.000Z",
+      "completedAt": "2026-04-30T20:14:00.000Z"
+    },
+    {
+      "id": "quest_brigand_hunt",
+      "title": { "key": "quest.brigand_hunt", "en": "The Despise Brigands" },
+      "summary": {
+        "key": "quest.brigand_hunt.summary",
+        "en": "Drive Ratticus's brigands from the Despise approach."
+      },
+      "state": "failed",
+      "giver": "Captain of the Britain Watch",
+      "regionId": "region_britain",
+      "recommendedLevel": 6,
+      "virtueTags": ["valor", "justice"],
+      "objectives": [
+        {
+          "id": "obj_brigand_hunt_1",
+          "questId": "quest_brigand_hunt",
+          "description": { "key": "obj.brigand_hunt.1", "en": "Defeat Ratticus." },
+          "status": "failed",
+          "progress": 0,
+          "target": 1,
+          "hidden": false,
+          "optional": false
+        }
+      ],
+      "rewards": {
+        "experience": 800,
+        "gold": 200,
+        "items": [],
+        "virtueDeltas": { "valor": 6, "justice": 4 }
+      },
+      "acceptedAt": "2026-04-28T09:00:00.000Z"
+    },
+    {
+      "id": "quest_lost_lambs",
+      "title": { "key": "quest.lost_lambs", "en": "The Lost Lambs of Britain" },
+      "summary": { "key": "quest.lost_lambs.summary", "en": "Iolo's flock has wandered." },
+      "state": "active",
+      "giver": "Iolo",
+      "regionId": "region_britain",
+      "recommendedLevel": 2,
+      "virtueTags": ["compassion"],
+      "objectives": [],
+      "rewards": {
+        "experience": 150,
+        "gold": 18,
+        "items": ["item_lute_oak"],
+        "virtueDeltas": { "compassion": 6 }
+      },
+      "acceptedAt": "2026-05-03T11:30:00.000Z"
+    }
+  ]
+}

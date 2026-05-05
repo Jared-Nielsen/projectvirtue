@@ -1,0 +1,14 @@
+/* Default body styling for the Storybook preview iframe.
+ * Components themselves rely solely on tokens.css custom properties. */
+body {
+  font-family: var(--br-font-body);
+  color: var(--br-text);
+  background: var(--br-bg);
+  margin: 0;
+  padding: 24px;
+}
+
+#storybook-root {
+  font-family: var(--br-font-body);
+  color: var(--br-text);
+}

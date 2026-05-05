@@ -1,0 +1,51 @@
+{
+  "campaigns": [
+    {
+      "id": "campaign_lord_british_banquet",
+      "name": "Lord British's Banquet",
+      "state": "RUNNING",
+      "gmHandle": "wisesage_gm",
+      "playerCount": 5,
+      "maxPlayers": 6,
+      "tags": ["mystery", "court-intrigue", "low-combat"],
+      "nextSessionAt": "2026-05-07T01:00:00.000Z"
+    },
+    {
+      "id": "campaign_dark_tower",
+      "name": "The Dark Tower of Despise",
+      "state": "INVITED",
+      "gmHandle": "umbra_gm",
+      "playerCount": 3,
+      "maxPlayers": 6,
+      "tags": ["dungeon-crawl", "horror", "high-combat"],
+      "nextSessionAt": "2026-05-09T02:00:00.000Z"
+    },
+    {
+      "id": "campaign_first_voyage",
+      "name": "First Voyage to the Serpent Isle",
+      "state": "DRAFT",
+      "gmHandle": "captain_hawkins_gm",
+      "playerCount": 1,
+      "maxPlayers": 4,
+      "tags": ["voyage", "exploration"]
+    },
+    {
+      "id": "campaign_yew_assize",
+      "name": "Yew Assize: The Bell Murders",
+      "state": "SUSPENDED",
+      "gmHandle": "barrister_quill_gm",
+      "playerCount": 4,
+      "maxPlayers": 5,
+      "tags": ["mystery", "courtroom", "investigation"]
+    },
+    {
+      "id": "campaign_long_shadow",
+      "name": "The Long Shadow of Mondain",
+      "state": "ARCHIVED",
+      "gmHandle": "wisesage_gm",
+      "playerCount": 6,
+      "maxPlayers": 6,
+      "tags": ["epic", "lore", "completed"]
+    }
+  ]
+}

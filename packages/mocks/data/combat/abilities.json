@@ -1,0 +1,81 @@
+{
+  "abilities": [
+    {
+      "id": "ability_strike",
+      "name": { "key": "ability.strike", "en": "Strike" },
+      "description": "A basic melee strike with the equipped weapon.",
+      "cooldownSeconds": 0,
+      "costStamina": 4,
+      "costMana": 0,
+      "damageType": "physical",
+      "basePower": 10,
+      "rangeTiles": 1,
+      "iconKey": "icon.ability.strike",
+      "hotkey": "1"
+    },
+    {
+      "id": "ability_power_attack",
+      "name": { "key": "ability.power_attack", "en": "Power Attack" },
+      "description": "A heavy two-handed strike. Slow but devastating; cannot crit.",
+      "cooldownSeconds": 6,
+      "costStamina": 14,
+      "costMana": 0,
+      "damageType": "physical",
+      "basePower": 22,
+      "rangeTiles": 1,
+      "iconKey": "icon.ability.power_attack",
+      "hotkey": "2"
+    },
+    {
+      "id": "ability_shield_bash",
+      "name": { "key": "ability.shield_bash", "en": "Shield Bash" },
+      "description": "Bash with the off-hand shield; brief stagger.",
+      "cooldownSeconds": 8,
+      "costStamina": 10,
+      "costMana": 0,
+      "damageType": "physical",
+      "basePower": 6,
+      "rangeTiles": 1,
+      "iconKey": "icon.ability.shield_bash",
+      "hotkey": "3"
+    },
+    {
+      "id": "ability_aimed_shot",
+      "name": { "key": "ability.aimed_shot", "en": "Aimed Shot" },
+      "description": "A slow, precise ranged shot. High crit chance.",
+      "cooldownSeconds": 10,
+      "costStamina": 12,
+      "costMana": 0,
+      "damageType": "physical",
+      "basePower": 18,
+      "rangeTiles": 8,
+      "iconKey": "icon.ability.aimed_shot",
+      "hotkey": "4"
+    },
+    {
+      "id": "ability_kick",
+      "name": { "key": "ability.kick", "en": "Kick" },
+      "description": "Interrupt a casting enemy.",
+      "cooldownSeconds": 12,
+      "costStamina": 8,
+      "costMana": 0,
+      "damageType": "physical",
+      "basePower": 4,
+      "rangeTiles": 1,
+      "iconKey": "icon.ability.kick",
+      "hotkey": "5"
+    },
+    {
+      "id": "ability_rally",
+      "name": { "key": "ability.rally", "en": "Rally" },
+      "description": "Restore 10 stamina to all allies in a 3-tile radius.",
+      "cooldownSeconds": 30,
+      "costStamina": 0,
+      "costMana": 8,
+      "basePower": 0,
+      "rangeTiles": 3,
+      "iconKey": "icon.ability.rally",
+      "hotkey": "6"
+    }
+  ]
+}

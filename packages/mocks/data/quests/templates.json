@@ -1,0 +1,125 @@
+{
+  "templates": [
+    {
+      "id": "tmpl_quest_fetch_lost_property",
+      "skeleton": "fetch",
+      "title": { "key": "qtmpl.fetch_lost_property", "en": "Lost Property" },
+      "virtueTags": ["compassion", "honesty"],
+      "minLevel": 1,
+      "maxLevel": 4,
+      "objectives": [
+        {
+          "id": "obj_tmpl_fetch_1",
+          "description": {
+            "key": "obj.tmpl.fetch.1",
+            "en": "Recover {{itemCount}} lost {{itemName}}."
+          },
+          "target": 3,
+          "hidden": false,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "id": "tmpl_quest_clear_dungeon",
+      "skeleton": "kill",
+      "title": { "key": "qtmpl.clear_dungeon", "en": "Clear the Dungeon" },
+      "virtueTags": ["valor", "justice"],
+      "minLevel": 4,
+      "maxLevel": 10,
+      "objectives": [
+        {
+          "id": "obj_tmpl_clear_1",
+          "description": {
+            "key": "obj.tmpl.clear.1",
+            "en": "Defeat {{enemyCount}} {{enemyType}}."
+          },
+          "target": 6,
+          "hidden": false,
+          "optional": false
+        },
+        {
+          "id": "obj_tmpl_clear_2",
+          "description": { "key": "obj.tmpl.clear.2", "en": "Defeat the dungeon's keeper." },
+          "target": 1,
+          "hidden": false,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "id": "tmpl_quest_escort_pilgrim",
+      "skeleton": "escort",
+      "title": { "key": "qtmpl.escort_pilgrim", "en": "Escort the Pilgrim" },
+      "virtueTags": ["compassion", "honor", "valor"],
+      "minLevel": 2,
+      "maxLevel": 6,
+      "objectives": [
+        {
+          "id": "obj_tmpl_escort_1",
+          "description": {
+            "key": "obj.tmpl.escort.1",
+            "en": "Escort {{npcName}} to {{destination}}."
+          },
+          "target": 1,
+          "hidden": false,
+          "optional": false
+        }
+      ]
+    },
+    {
+      "id": "tmpl_quest_deliver_letter",
+      "skeleton": "deliver",
+      "title": { "key": "qtmpl.deliver_letter", "en": "Deliver the Sealed Letter" },
+      "virtueTags": ["honesty"],
+      "minLevel": 1,
+      "maxLevel": 4,
+      "objectives": [
+        {
+          "id": "obj_tmpl_deliver_1",
+          "description": {
+            "key": "obj.tmpl.deliver.1",
+            "en": "Deliver the letter to {{recipient}}."
+          },
+          "target": 1,
+          "hidden": false,
+          "optional": false
+        },
+        {
+          "id": "obj_tmpl_deliver_2",
+          "description": { "key": "obj.tmpl.deliver.2", "en": "Do not break the seal." },
+          "target": 1,
+          "hidden": false,
+          "optional": true
+        }
+      ]
+    },
+    {
+      "id": "tmpl_quest_investigate",
+      "skeleton": "investigate",
+      "title": { "key": "qtmpl.investigate", "en": "Strange Tidings" },
+      "virtueTags": ["honesty", "spirituality"],
+      "minLevel": 3,
+      "maxLevel": 8,
+      "objectives": [
+        {
+          "id": "obj_tmpl_investigate_1",
+          "description": {
+            "key": "obj.tmpl.investigate.1",
+            "en": "Speak with {{witnessCount}} witnesses."
+          },
+          "target": 3,
+          "hidden": false,
+          "optional": false
+        },
+        {
+          "id": "obj_tmpl_investigate_2",
+          "description": { "key": "obj.tmpl.investigate.2", "en": "Examine the scene." },
+          "target": 1,
+          "hidden": false,
+          "optional": false
+        }
+      ]
+    }
+  ]
+}

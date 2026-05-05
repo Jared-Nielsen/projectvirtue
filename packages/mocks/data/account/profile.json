@@ -1,0 +1,12 @@
+{
+  "accountId": "acct_01HXYZ_avatar",
+  "handle": "thestranger",
+  "displayName": "The Stranger",
+  "bio": "Drawn through the moongate from another world, sworn to the Eight Virtues.",
+  "avatarUrl": "/assets/portraits/stranger.webp",
+  "bannerUrl": "/assets/banners/codex.webp",
+  "joinedAt": "2026-04-21T13:00:00.000Z",
+  "title": "Pilgrim of the Shrines",
+  "badges": ["founders_cloak", "first_dawn", "shrine_of_compassion_pilgrim"],
+  "publicVirtueTitle": "Avatar-Aspirant"
+}

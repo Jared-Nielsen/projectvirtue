@@ -1,0 +1,51 @@
+.questPanel {
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.panelHead {
+  margin: 0;
+  font-family: var(--br-font-display, serif);
+  font-size: 0.85rem;
+  color: var(--br-color-sigil-200, #f4cc66);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.questList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.78rem;
+}
+
+.questList li {
+  border-left: 2px solid var(--br-color-sigil-700, #65430e);
+  padding-left: 6px;
+}
+
+.dim {
+  opacity: 0.65;
+  font-weight: 400;
+}
+
+.minimap {
+  width: 168px;
+}
+
+.castNotice {
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 14px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: var(--br-radius-md, 6px);
+  border: 1px solid var(--br-color-sigil-700, #65430e);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+}

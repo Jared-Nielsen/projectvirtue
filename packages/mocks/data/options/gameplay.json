@@ -1,0 +1,11 @@
+{
+  "autoLootEnabled": true,
+  "tooltipDelayMs": 250,
+  "preferredCombatStyle": "realtime",
+  "showTutorialHints": true,
+  "damageNumbers": true,
+  "cameraFollow": "smart",
+  "mouseLook": false,
+  "pickupConfirmation": false,
+  "profanityFilter": false
+}

@@ -1,0 +1,89 @@
+{
+  "encounterId": "enc_forest_skirmish_01",
+  "regionId": "region_yew",
+  "tick": 1284567,
+  "inCombat": true,
+  "turnIndex": 3,
+  "bossEncounter": false,
+  "participants": [
+    {
+      "entityId": "ent_avatar_aramis",
+      "name": "Aramis the Stranger",
+      "faction": "player",
+      "hp": { "current": 78, "max": 96 },
+      "mana": { "current": 38, "max": 60 },
+      "stamina": { "current": 62, "max": 80 },
+      "stance": "aggressive",
+      "armorRating": 18,
+      "statusEffects": [],
+      "portrait": "/assets/portraits/stranger.webp",
+      "initiative": 14
+    },
+    {
+      "entityId": "ent_iolo_companion",
+      "name": "Iolo",
+      "faction": "ally",
+      "hp": { "current": 60, "max": 72 },
+      "mana": { "current": 18, "max": 24 },
+      "stamina": { "current": 50, "max": 64 },
+      "stance": "defensive",
+      "armorRating": 12,
+      "statusEffects": [],
+      "portrait": "/assets/portraits/iolo.webp",
+      "initiative": 12
+    },
+    {
+      "entityId": "ent_goblin_archer_a",
+      "name": "Goblin Archer",
+      "faction": "enemy",
+      "hp": { "current": 22, "max": 28 },
+      "mana": { "current": 0, "max": 0 },
+      "stamina": { "current": 30, "max": 30 },
+      "stance": "aggressive",
+      "armorRating": 4,
+      "statusEffects": ["bleeding"],
+      "initiative": 11
+    },
+    {
+      "entityId": "ent_goblin_brute_b",
+      "name": "Goblin Brute",
+      "faction": "enemy",
+      "hp": { "current": 38, "max": 48 },
+      "mana": { "current": 0, "max": 0 },
+      "stamina": { "current": 36, "max": 40 },
+      "stance": "aggressive",
+      "armorRating": 6,
+      "statusEffects": ["on-fire"],
+      "initiative": 9
+    }
+  ],
+  "recentDamage": [
+    {
+      "source": "ent_avatar_aramis",
+      "target": "ent_goblin_archer_a",
+      "amount": 12,
+      "type": "physical",
+      "crit": true,
+      "mitigated": 2,
+      "tick": 1284563
+    },
+    {
+      "source": "ent_goblin_brute_b",
+      "target": "ent_avatar_aramis",
+      "amount": 14,
+      "type": "physical",
+      "crit": false,
+      "mitigated": 4,
+      "tick": 1284564
+    },
+    {
+      "source": "ent_iolo_companion",
+      "target": "ent_goblin_brute_b",
+      "amount": 6,
+      "type": "fire",
+      "crit": false,
+      "mitigated": 0,
+      "tick": 1284566
+    }
+  ]
+}

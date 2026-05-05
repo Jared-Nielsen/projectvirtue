@@ -1,0 +1,78 @@
+{
+  "friends": [
+    {
+      "id": "friend_iolo",
+      "characterId": "char_npc_iolo",
+      "handle": "iolo_bowyer",
+      "displayName": "Iolo",
+      "avatarUrl": "/assets/portraits/iolo.webp",
+      "status": "online",
+      "note": "Owes me three coppers.",
+      "favorite": true,
+      "lastSeen": "2026-05-04T20:00:00.000Z",
+      "currentShard": "shard_britannia_order",
+      "currentRegion": "region_britain"
+    },
+    {
+      "id": "friend_shamino",
+      "characterId": "char_npc_shamino",
+      "handle": "shamino_ranger",
+      "displayName": "Shamino",
+      "avatarUrl": "/assets/portraits/shamino.webp",
+      "status": "online",
+      "note": "Yew patrol partner.",
+      "favorite": true,
+      "lastSeen": "2026-05-04T19:54:00.000Z",
+      "currentShard": "shard_britannia_order",
+      "currentRegion": "region_yew"
+    },
+    {
+      "id": "friend_dupre",
+      "characterId": "char_npc_dupre",
+      "handle": "dupre_paladin",
+      "displayName": "Dupre",
+      "avatarUrl": "/assets/portraits/dupre.webp",
+      "status": "away",
+      "note": "Probably at the tavern.",
+      "favorite": false,
+      "lastSeen": "2026-05-04T16:12:00.000Z",
+      "currentShard": "shard_britannia_order",
+      "currentRegion": "region_trinsic"
+    },
+    {
+      "id": "friend_mariah",
+      "characterId": "char_npc_mariah",
+      "handle": "mariah_lyceum",
+      "displayName": "Mariah",
+      "avatarUrl": "/assets/portraits/mariah.webp",
+      "status": "busy",
+      "note": "Researching. Do not interrupt.",
+      "favorite": false,
+      "lastSeen": "2026-05-04T18:30:00.000Z"
+    },
+    {
+      "id": "friend_geoffrey",
+      "characterId": "char_npc_geoffrey",
+      "handle": "geoffrey_capt",
+      "displayName": "Geoffrey",
+      "avatarUrl": "/assets/portraits/geoffrey.webp",
+      "status": "offline",
+      "note": "",
+      "favorite": false,
+      "lastSeen": "2026-05-02T11:00:00.000Z"
+    },
+    {
+      "id": "friend_lirael",
+      "characterId": "char_apprentice_lirael",
+      "handle": "lirael_moonglow",
+      "displayName": "Lirael",
+      "avatarUrl": "/assets/portraits/lirael.webp",
+      "status": "online",
+      "note": "My alt.",
+      "favorite": true,
+      "lastSeen": "2026-05-04T20:31:00.000Z",
+      "currentShard": "shard_serpent_isle",
+      "currentRegion": "region_moonshade"
+    }
+  ]
+}
