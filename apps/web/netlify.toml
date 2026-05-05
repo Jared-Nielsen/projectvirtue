@@ -6,6 +6,13 @@
 [build.environment]
   NODE_VERSION = "24"
   PNPM_VERSION = "10"
+  # Anything prefixed VITE_ or PUBLIC_ is intentionally inlined into the
+  # browser bundle (and may also appear in tracked docs that explain the
+  # values). They are not secrets — opt these names out of Netlify's
+  # secrets scanner so the build passes when the value also lives in
+  # repo code/docs. Real server-side secrets (Cloudflare/Netlify/etc.
+  # access keys) stay scanned.
+  SECRETS_SCAN_OMIT_KEYS = "VITE_R2_BASE_URL,VITE_SITE_BASE_URL,VITE_API_BASE_URL,VITE_PLAUSIBLE_DOMAIN,VITE_SENTRY_DSN,PUBLIC_R2_BASE_URL,PUBLIC_GAME_BASE_URL,PUBLIC_PLAUSIBLE_DOMAIN,PUBLIC_PLAUSIBLE_API_HOST,PUBLIC_NEWSLETTER_FORM_ID"
 
 # SPA fallback — the game client is a Vite SPA with @solidjs/router doing
 # client-side routing for /play/*, /character, /character/create, /home,
