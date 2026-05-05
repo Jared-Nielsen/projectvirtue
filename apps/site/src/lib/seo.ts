@@ -14,7 +14,7 @@ export interface MetaProps {
 }
 
 const SITE_NAME = 'Project Virtue';
-const SITE_BASE = 'https://projectvirtue.example';
+const SITE_BASE = 'https://virtu3.com';
 
 function applyMeta(props: MetaProps): void {
   if (isServer || typeof document === 'undefined') return;

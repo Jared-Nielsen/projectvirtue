@@ -35,7 +35,7 @@ We evaluated `@solidjs/start@1.3.2` and chose to fall back deliberately:
   Router to `StaticRouter` automatically) is left in place so a future
   prerender step can be bolted on without rewriting routes — see "Future SSG"
   below.
-- Vercel/Netlify-style SPA fallback (`/(.*)` → `/index.html`) handles deep
+- Netlify SPA fallback (`/*` → `/index.html`, status 200) handles deep
   links cleanly until prerender is added.
 
 The trade-offs we accept:
@@ -105,26 +105,22 @@ preferences" link clears the record.
 
 ## Deploy
 
-Default target: **Vercel** (see `vercel.json`). The SPA fallback rewrite is
-configured. To deploy:
+Target: **Netlify** (see `netlify.toml`). Build command, publish dir, SPA
+redirect, security headers, and long-cache asset rules are configured. To
+deploy:
 
 ```bash
-vercel link
-vercel --prod
+netlify link            # one-time: associate this dir with a Netlify site
+netlify deploy --prod   # publish the latest local build
 ```
 
-**Netlify alternative** — equivalent config (drop into `netlify.toml`):
+CI typically runs `pnpm --filter @br/site build` and Netlify picks up the
+result; the `netlify.toml` keys to:
 
-```toml
-[build]
-  command = "pnpm --filter @br/site build"
-  publish = "apps/site/dist"
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-```
+- `base = "."` — repo root, so pnpm workspaces resolve from one place.
+- `publish = "apps/site/dist"` — Vite output dir.
+- `NODE_VERSION = "24"` + `PNPM_VERSION = "10"` so Netlify's build image
+  matches `.nvmrc` / `package.json` engines.
 
 ## Lighthouse goal
 

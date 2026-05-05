@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://projectvirtue.example/sitemap.xml
+Sitemap: https://virtu3.com/sitemap.xml

@@ -41,7 +41,7 @@ const COLUMNS: readonly FooterColumn[] = [
     links: [
       { label: 'FAQ', href: '/journal' },
       { label: 'Roadmap', href: '/journal' },
-      { label: 'Press Contact', href: 'mailto:press@projectvirtue.example', external: true },
+      { label: 'Press Contact', href: 'mailto:press@virtu3.com', external: true },
     ],
   },
 ];

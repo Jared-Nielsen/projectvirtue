@@ -64,7 +64,7 @@ export const Media: Component = () => {
               </a>
               <p class="media-side__contact">
                 Press inquiries:{' '}
-                <a href="mailto:press@projectvirtue.example">press@projectvirtue.example</a>
+                <a href="mailto:press@virtu3.com">press@virtu3.com</a>
               </p>
             </div>
           </aside>
