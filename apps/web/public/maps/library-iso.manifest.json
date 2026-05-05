@@ -1,0 +1,250 @@
+{
+  "version": 1,
+  "kit": "kenney-isometric-miniature-library",
+  "tilesetSource": "https://media.gamecodex.com/tile/library/iso/library.tsj",
+  "tile": { "w": 256, "h": 128 },
+  "image": { "w": 256, "h": 512 },
+  "note": "Hand-listed Mythenor Highmere library sprites confirmed on R2 (curl -sI). Each tile id matches its `firstgid + tile id` slot in the eventual library.tsj — keep the order stable so existing exports stay valid. Floors are walkable ground; the rest are decor.",
+  "tiles": [
+    {
+      "id": 1,
+      "label": "Carpet floor (S)",
+      "category": "floor",
+      "src": "https://media.gamecodex.com/tile/library/iso/floorCarpet_S.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 2,
+      "label": "Carpet floor (E)",
+      "category": "floor",
+      "src": "https://media.gamecodex.com/tile/library/iso/floorCarpet_E.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 3,
+      "label": "Carpet floor (W)",
+      "category": "floor",
+      "src": "https://media.gamecodex.com/tile/library/iso/floorCarpet_W.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 4,
+      "label": "Carpet floor (N)",
+      "category": "floor",
+      "src": "https://media.gamecodex.com/tile/library/iso/floorCarpet_N.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 5,
+      "label": "Bookcase, full (S)",
+      "category": "shelf",
+      "src": "https://media.gamecodex.com/tile/library/iso/bookcaseBooks_S.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 6,
+      "label": "Bookcase, full (E)",
+      "category": "shelf",
+      "src": "https://media.gamecodex.com/tile/library/iso/bookcaseBooks_E.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 7,
+      "label": "Bookcase, full (W)",
+      "category": "shelf",
+      "src": "https://media.gamecodex.com/tile/library/iso/bookcaseBooks_W.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 8,
+      "label": "Bookcase, full (N)",
+      "category": "shelf",
+      "src": "https://media.gamecodex.com/tile/library/iso/bookcaseBooks_N.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 9,
+      "label": "Bookcase, empty (S)",
+      "category": "shelf",
+      "src": "https://media.gamecodex.com/tile/library/iso/bookcaseEmpty_S.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 10,
+      "label": "Bookcase, empty (E)",
+      "category": "shelf",
+      "src": "https://media.gamecodex.com/tile/library/iso/bookcaseEmpty_E.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 11,
+      "label": "Bookcase, empty (W)",
+      "category": "shelf",
+      "src": "https://media.gamecodex.com/tile/library/iso/bookcaseEmpty_W.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 12,
+      "label": "Bookcase, empty (N)",
+      "category": "shelf",
+      "src": "https://media.gamecodex.com/tile/library/iso/bookcaseEmpty_N.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 13,
+      "label": "Long table with chairs (S)",
+      "category": "furniture",
+      "src": "https://media.gamecodex.com/tile/library/iso/longTableChairs_S.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 14,
+      "label": "Long table with chairs (E)",
+      "category": "furniture",
+      "src": "https://media.gamecodex.com/tile/library/iso/longTableChairs_E.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 15,
+      "label": "Long table with chairs (W)",
+      "category": "furniture",
+      "src": "https://media.gamecodex.com/tile/library/iso/longTableChairs_W.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 16,
+      "label": "Long table with chairs (N)",
+      "category": "furniture",
+      "src": "https://media.gamecodex.com/tile/library/iso/longTableChairs_N.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 17,
+      "label": "Library chair (S)",
+      "category": "furniture",
+      "src": "https://media.gamecodex.com/tile/library/iso/libraryChair_S.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 18,
+      "label": "Library chair (E)",
+      "category": "furniture",
+      "src": "https://media.gamecodex.com/tile/library/iso/libraryChair_E.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 19,
+      "label": "Library chair (W)",
+      "category": "furniture",
+      "src": "https://media.gamecodex.com/tile/library/iso/libraryChair_W.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 20,
+      "label": "Library chair (N)",
+      "category": "furniture",
+      "src": "https://media.gamecodex.com/tile/library/iso/libraryChair_N.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 21,
+      "label": "Candle stand (S)",
+      "category": "light",
+      "src": "https://media.gamecodex.com/tile/library/iso/candleStand_S.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 22,
+      "label": "Candle stand (E)",
+      "category": "light",
+      "src": "https://media.gamecodex.com/tile/library/iso/candleStand_E.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 23,
+      "label": "Candle stand (W)",
+      "category": "light",
+      "src": "https://media.gamecodex.com/tile/library/iso/candleStand_W.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 24,
+      "label": "Candle stand (N)",
+      "category": "light",
+      "src": "https://media.gamecodex.com/tile/library/iso/candleStand_N.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 25,
+      "label": "Display case, books (S)",
+      "category": "display",
+      "src": "https://media.gamecodex.com/tile/library/iso/displayCaseBooks_S.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 26,
+      "label": "Display case, books (E)",
+      "category": "display",
+      "src": "https://media.gamecodex.com/tile/library/iso/displayCaseBooks_E.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 27,
+      "label": "Display case, books (W)",
+      "category": "display",
+      "src": "https://media.gamecodex.com/tile/library/iso/displayCaseBooks_W.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 28,
+      "label": "Display case, books (N)",
+      "category": "display",
+      "src": "https://media.gamecodex.com/tile/library/iso/displayCaseBooks_N.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 29,
+      "label": "Display case (S)",
+      "category": "display",
+      "src": "https://media.gamecodex.com/tile/library/iso/displayCase_S.png",
+      "w": 256,
+      "h": 512
+    },
+    {
+      "id": 30,
+      "label": "Display case (E)",
+      "category": "display",
+      "src": "https://media.gamecodex.com/tile/library/iso/displayCase_E.png",
+      "w": 256,
+      "h": 512
+    }
+  ]
+}
