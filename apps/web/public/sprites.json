@@ -1,0 +1,41 @@
+{
+  "$schema": "./sprites.schema.json",
+  "comment": "Sprite atlas manifest for SpriteSheet.png (1536x1024). The sheet is a stylized concept-art reference rather than a strict tile grid; rectangles below approximate visible sprite regions. The tile renderer draws isometric tiles via Graphics primitives (no tile art in the sheet) and the character animations are sampled from the strips listed here. Tile sprite-key fallbacks are 'tile.<type>' which the renderer fills with a programmatic graphic when the texture is missing.",
+  "image": "/spritesheet.png",
+  "size": { "width": 1536, "height": 1024 },
+  "tile": {
+    "isoWidth": 64,
+    "isoHeight": 32,
+    "comment": "Isometric diamond tile dimensions (2:1 ratio). Drawn programmatically; not present in source sheet."
+  },
+  "frames": {
+    "lord.idle.south.0": { "x": 8, "y": 24, "w": 96, "h": 168 },
+    "lord.idle.south.1": { "x": 110, "y": 60, "w": 80, "h": 132 },
+    "lord.idle.south.2": { "x": 196, "y": 60, "w": 80, "h": 132 },
+    "lord.run.south.0": { "x": 280, "y": 60, "w": 80, "h": 132 },
+    "lord.run.south.1": { "x": 366, "y": 60, "w": 80, "h": 132 },
+    "lord.run.south.2": { "x": 452, "y": 60, "w": 80, "h": 132 },
+    "lord.run.south.3": { "x": 538, "y": 60, "w": 80, "h": 132 },
+    "mage.idle.south.0": { "x": 8, "y": 472, "w": 96, "h": 168 },
+    "mage.idle.south.1": { "x": 110, "y": 504, "w": 80, "h": 132 },
+    "mage.idle.south.2": { "x": 196, "y": 504, "w": 80, "h": 132 },
+    "mage.run.south.0": { "x": 280, "y": 504, "w": 80, "h": 132 },
+    "mage.run.south.1": { "x": 366, "y": 504, "w": 80, "h": 132 },
+    "mage.run.south.2": { "x": 452, "y": 504, "w": 80, "h": 132 },
+    "mage.run.south.3": { "x": 538, "y": 504, "w": 80, "h": 132 },
+    "dir.n": { "x": 24, "y": 920, "w": 32, "h": 56 },
+    "dir.ne": { "x": 64, "y": 920, "w": 32, "h": 56 },
+    "dir.e": { "x": 104, "y": 920, "w": 32, "h": 56 },
+    "dir.se": { "x": 144, "y": 920, "w": 32, "h": 56 },
+    "dir.s": { "x": 184, "y": 920, "w": 32, "h": 56 },
+    "dir.sw": { "x": 224, "y": 920, "w": 32, "h": 56 },
+    "dir.w": { "x": 264, "y": 920, "w": 32, "h": 56 },
+    "dir.nw": { "x": 304, "y": 920, "w": 32, "h": 56 }
+  },
+  "animations": {
+    "lord.idle": ["lord.idle.south.0", "lord.idle.south.1", "lord.idle.south.2"],
+    "lord.walk": ["lord.run.south.0", "lord.run.south.1", "lord.run.south.2", "lord.run.south.3"],
+    "mage.idle": ["mage.idle.south.0", "mage.idle.south.1", "mage.idle.south.2"],
+    "mage.walk": ["mage.run.south.0", "mage.run.south.1", "mage.run.south.2", "mage.run.south.3"]
+  }
+}

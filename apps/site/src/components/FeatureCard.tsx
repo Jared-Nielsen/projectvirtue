@@ -1,0 +1,109 @@
+import { type Component, For } from 'solid-js';
+import type { Feature } from '../data/features';
+
+export interface FeatureCardProps {
+  readonly feature: Feature;
+  readonly layout?: 'compact' | 'detailed';
+}
+
+export const FeatureCard: Component<FeatureCardProps> = (props) => {
+  const layout = (): 'compact' | 'detailed' => props.layout ?? 'compact';
+  return (
+    <article
+      class={`feature-card feature-card--${layout()}`}
+      aria-labelledby={`feature-${props.feature.id}-title`}
+    >
+      <span class="feature-card__icon" aria-hidden="true">
+        {props.feature.icon}
+      </span>
+      <div class="feature-card__body">
+        <h3 id={`feature-${props.feature.id}-title`} class="feature-card__title">
+          {props.feature.title}
+        </h3>
+        <p class="feature-card__subtitle">{props.feature.subtitle}</p>
+        {layout() === 'detailed' && (
+          <>
+            <p class="feature-card__description">{props.feature.description}</p>
+            <ul class="feature-card__bullets">
+              <For each={props.feature.bullets}>{(b) => <li>{b}</li>}</For>
+            </ul>
+          </>
+        )}
+      </div>
+      <style>{FEATURE_CARD_CSS}</style>
+    </article>
+  );
+};
+
+const FEATURE_CARD_CSS = `
+.feature-card {
+  display: flex;
+  gap: 20px;
+  padding: 24px;
+  background: linear-gradient(180deg, rgba(20, 17, 12, 0.7) 0%, rgba(8, 7, 5, 0.85) 100%);
+  border: 1px solid rgba(207, 150, 47, 0.2);
+  border-radius: 4px;
+  transition: border-color 200ms, transform 200ms;
+}
+.feature-card:hover {
+  border-color: rgba(207, 150, 47, 0.4);
+  transform: translateY(-2px);
+}
+.feature-card--compact {
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+}
+.feature-card--compact .feature-card__icon {
+  font-size: 2rem;
+  width: 56px;
+  height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--br-sigil-500);
+  color: var(--br-sigil-300);
+  border-radius: 50%;
+  margin-bottom: 12px;
+}
+.feature-card--detailed .feature-card__icon {
+  font-size: 1.75rem;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--br-sigil-500);
+  color: var(--br-sigil-300);
+  border-radius: 50%;
+  align-self: flex-start;
+}
+.feature-card__title {
+  margin: 0 0 4px;
+  color: var(--br-sigil-200);
+  font-size: 1.25rem;
+}
+.feature-card__subtitle {
+  margin: 0 0 12px;
+  font-size: 0.8125rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--br-parchment-300);
+}
+.feature-card__description {
+  color: var(--br-parchment-100);
+  margin-bottom: 12px;
+}
+.feature-card__bullets {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--br-parchment-200);
+  font-size: 0.9375rem;
+}
+.feature-card__bullets li { margin-bottom: 4px; }
+
+@media (max-width: 640px) {
+  .feature-card--detailed { flex-direction: column; }
+}
+`;

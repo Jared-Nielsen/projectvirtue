@@ -8,5 +8,10 @@
     "noEmit": true
   },
   "include": ["src/**/*"],
-  "references": [{ "path": "../../packages/ui" }]
+  "references": [
+    { "path": "../../packages/ui" },
+    { "path": "../../packages/types" },
+    { "path": "../../packages/mocks" },
+    { "path": "../../packages/icons" }
+  ]
 }

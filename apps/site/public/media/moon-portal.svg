@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a160c"/>
+      <stop offset="100%" stop-color="#040405"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="60%" cy="40%" r="50%">
+      <stop offset="0%" stop-color="#cf962f" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#g)"/>
+  <rect width="600" height="400" fill="url(#glow)"/>
+  <rect x="0.5" y="0.5" width="599" height="399" fill="none" stroke="#cf962f" stroke-opacity="0.4"/>
+  <text x="300" y="210" text-anchor="middle" font-family="Cinzel, Georgia, serif" font-size="22" fill="#cf962f" letter-spacing="6">PROJECT VIRTUE</text>
+</svg>

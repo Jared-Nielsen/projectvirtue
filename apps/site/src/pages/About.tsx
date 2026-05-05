@@ -1,0 +1,284 @@
+import { A } from '@solidjs/router';
+import { type Component, For } from 'solid-js';
+import { useMeta } from '../lib/seo';
+
+interface Pillar {
+  readonly id: string;
+  readonly title: string;
+  readonly description: string;
+  readonly icon: string;
+}
+
+const PILLARS: readonly Pillar[] = [
+  {
+    id: 'choice',
+    title: 'Choice Has Weight',
+    description:
+      'Every decision shapes your story and the world around you. Align with factions, earn trust or betray, and there is never a right answer — only your answers.',
+    icon: '⚖',
+  },
+  {
+    id: 'world',
+    title: 'A Living World',
+    description:
+      'The world evolves with or without you. Towns prosper. Factions rise and fall. Your actions matter.',
+    icon: '◉',
+  },
+  {
+    id: 'community',
+    title: 'Built for Community',
+    description:
+      'Adventure is better together. Forge alliances, build strongholds, and shape the world as one.',
+    icon: '◐',
+  },
+  {
+    id: 'virtue',
+    title: 'Virtue Guides All',
+    description:
+      'Five powerful virtues — honesty, compassion, justice, valor, sacrifice — guide who you can become.',
+    icon: '◇',
+  },
+];
+
+interface Creator {
+  readonly id: string;
+  readonly name: string;
+  readonly role: string;
+  readonly inGame: string;
+  readonly quote: string;
+  readonly bio: readonly string[];
+}
+
+const CREATORS: readonly Creator[] = [
+  {
+    id: 'josh',
+    name: 'Josh',
+    role: 'Co-Creator & Lead Designer',
+    inGame: 'Lord of the Kingdom',
+    quote: 'Every world begins with a choice.',
+    bio: [
+      'Josh leads the vision, world design, and system architecture of Project Virtue.',
+      "He's obsessed with making believable, lived-in fantasy worlds where every action has consequence and every player has a voice.",
+      "When he's not building Sosaria, you'll find him playing strategy games, reading fantasy, or restoring tin soldiers.",
+    ],
+  },
+  {
+    id: 'jared',
+    name: 'Jared',
+    role: 'Co-Creator & Lead Developer',
+    inGame: 'Mage of the Realm',
+    quote: 'We build the code. You write the story.',
+    bio: [
+      'Jared brings the world to life through code, systems, and gameplay.',
+      'He loves deep mechanics, elegant tools, and crafting complex things that feel seamless.',
+      "When he's not coding, you'll find him brewstorming new systems, illustrating mountains, or lost in a good book.",
+    ],
+  },
+];
+
+export const About: Component = () => {
+  useMeta({
+    title: 'About',
+    description:
+      'Project Virtue is a passion project from a lifelong love of RPGs, meaningful choice, and living worlds. We are building more than a game.',
+    path: '/about',
+  });
+
+  return (
+    <>
+      <section class="about-hero" aria-labelledby="about-title">
+        <div class="container about-hero__inner">
+          <h1 id="about-title">About Project Virtue</h1>
+          <p class="lede">
+            Project Virtue is a passion project born from a lifelong love of RPGs, meaningful
+            choice, and living worlds. We are building more than a game — we are building a world
+            where your actions matter, your story is yours, and the virtue you choose defines your
+            legacy.
+          </p>
+          <p>
+            We created Project Virtue to bring players together in a shared world that rewards
+            courage, compassion, wisdom, and integrity.
+          </p>
+          <p class="about-hero__tag">This is our world. Now, it's yours.</p>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="creators-title">
+        <div class="container">
+          <h2 id="creators-title" class="section-title">
+            The Creators
+          </h2>
+          <p class="section-subtitle">
+            Two lifelong friends, RPG fans, and dreamers who believe in the power of story,
+            community, and choice.
+          </p>
+          <div class="creators-grid">
+            <For each={CREATORS}>
+              {(c) => (
+                <article class="creator-card" aria-labelledby={`creator-${c.id}-name`}>
+                  <div class="creator-card__portrait" aria-hidden="true">
+                    <span class="creator-card__sigil">{c.id === 'josh' ? '♔' : '✶'}</span>
+                  </div>
+                  <header>
+                    <h3 id={`creator-${c.id}-name`}>{c.name}</h3>
+                    <p class="creator-card__role">{c.role}</p>
+                  </header>
+                  <blockquote class="creator-card__quote">"{c.quote}"</blockquote>
+                  <For each={c.bio}>{(p) => <p>{p}</p>}</For>
+                  <p class="creator-card__ingame">
+                    In-game: <strong>{c.inGame}</strong>
+                  </p>
+                </article>
+              )}
+            </For>
+          </div>
+        </div>
+      </section>
+
+      <section class="section about-pillars" aria-labelledby="pillars-title">
+        <div class="container">
+          <h2 id="pillars-title" class="section-title">
+            Our Philosophy
+          </h2>
+          <div class="pillar-grid">
+            <For each={PILLARS}>
+              {(p) => (
+                <div class="pillar">
+                  <span class="pillar__icon" aria-hidden="true">
+                    {p.icon}
+                  </span>
+                  <h3>{p.title}</h3>
+                  <p>{p.description}</p>
+                </div>
+              )}
+            </For>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="thanks-title">
+        <div class="container surface about-thanks">
+          <h2 id="thanks-title">Thank You</h2>
+          <p>
+            We're incredibly grateful for every player who joins us on this journey. Project Virtue
+            is for you — and because of you. The story is just beginning.
+          </p>
+          <A href="/join" class="cta cta--primary">
+            Join the Journey
+          </A>
+        </div>
+      </section>
+
+      <style>{ABOUT_CSS}</style>
+    </>
+  );
+};
+
+const ABOUT_CSS = `
+.about-hero {
+  padding: 80px 0 56px;
+  text-align: center;
+  background: radial-gradient(ellipse at 50% 0%, rgba(207, 150, 47, 0.08) 0%, transparent 60%);
+}
+.about-hero__inner {
+  max-width: 760px;
+  margin: 0 auto;
+}
+.about-hero h1 { text-align: center; }
+.about-hero .lede { margin-left: auto; margin-right: auto; }
+.about-hero__tag {
+  font-family: var(--br-font-heading);
+  font-size: 1.125rem;
+  letter-spacing: 0.18em;
+  color: var(--br-sigil-300);
+  margin-top: 16px;
+}
+.creators-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+.creator-card {
+  background: linear-gradient(180deg, rgba(20, 17, 12, 0.78) 0%, rgba(8, 7, 5, 0.85) 100%);
+  border: 1px solid rgba(207, 150, 47, 0.25);
+  border-radius: 4px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.creator-card__portrait {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(207, 150, 47, 0.3), rgba(8, 7, 5, 0.9));
+  border: 1px solid var(--br-sigil-500);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+.creator-card__sigil {
+  font-size: 2rem;
+  color: var(--br-sigil-200);
+}
+.creator-card__role {
+  font-size: 0.75rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--br-parchment-300);
+  margin: 0;
+}
+.creator-card__quote {
+  font-style: italic;
+  color: var(--br-sigil-200);
+  margin: 8px 0 16px;
+  padding-left: 12px;
+  border-left: 2px solid var(--br-sigil-500);
+}
+.creator-card__ingame {
+  margin-top: auto;
+  font-size: 0.8125rem;
+  color: var(--br-parchment-300);
+  letter-spacing: 0.04em;
+}
+.about-pillars {
+  background: linear-gradient(180deg, transparent 0%, rgba(20, 17, 12, 0.4) 100%);
+}
+.pillar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+.pillar {
+  text-align: center;
+  padding: 16px;
+}
+.pillar__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border: 1px solid var(--br-sigil-500);
+  color: var(--br-sigil-300);
+  border-radius: 50%;
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+}
+.pillar h3 {
+  margin: 0 0 8px;
+  font-size: 1.0625rem;
+}
+.pillar p {
+  font-size: 0.875rem;
+  color: var(--br-parchment-200);
+}
+.about-thanks {
+  text-align: center;
+  padding: 40px 24px;
+}
+.about-thanks h2 { text-align: center; }
+.about-thanks p { max-width: 60ch; margin-left: auto; margin-right: auto; }
+.about-thanks .cta { margin-top: 16px; }
+`;

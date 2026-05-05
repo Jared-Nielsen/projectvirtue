@@ -16,9 +16,12 @@
     "@br/mocks": "workspace:*",
     "@br/types": "workspace:*",
     "@br/ui": "workspace:*",
+    "@solidjs/router": "0.16.1",
+    "pixi.js": "8.18.1",
     "solid-js": "1.9.12"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "6.5.0",
     "@types/node": "22.10.1",
     "@vitest/ui": "2.1.5",
     "jsdom": "25.0.1",
