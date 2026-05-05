@@ -1,6 +1,6 @@
 # @br/web — Game Client
 
-Solid + Vite + (eventually) PixiJS client for Britannia Reborn.
+Solid + Vite + (eventually) PixiJS client for Project Virtue.
 
 This is the **Phase 0 scaffold**. The mock-to-real backend swap, full route map,
 PixiJS canvas, and game screens are all out of scope here.

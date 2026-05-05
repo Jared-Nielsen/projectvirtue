@@ -42,7 +42,7 @@ const Scale = (props: { name: string; values: Record<string, string> }) => (
 const Tokens = () => (
   <div style={{ 'font-family': 'var(--br-font-body)', color: 'var(--br-text)' }}>
     <h2 style={{ 'font-family': 'var(--br-font-display)', margin: '0 0 16px 0' }}>
-      Britannia Reborn — design tokens
+      Project Virtue — design tokens
     </h2>
 
     <Scale name="parchment" values={colors.parchment} />

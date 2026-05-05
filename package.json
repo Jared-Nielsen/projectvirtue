@@ -1,8 +1,8 @@
 {
-  "name": "britannia-reborn",
+  "name": "project-virtue",
   "version": "0.0.0",
   "private": true,
-  "description": "Britannia Reborn frontend monorepo (UO-inspired MMORPG).",
+  "description": "Project Virtue frontend monorepo (UO-inspired MMORPG).",
   "type": "module",
   "packageManager": "pnpm@10.33.3",
   "engines": {

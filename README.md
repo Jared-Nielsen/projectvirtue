@@ -1,8 +1,8 @@
-# Britannia Reborn — Frontend Monorepo
+# Project Virtue — Frontend Monorepo
 
 UO-inspired MMORPG. Frontend-only repo (Solid + Vite + PixiJS). Backend is mocked
-with static JSON via a future `MockClient`. See `_docs/Brittania Reborn_ 40-*` for
-the canonical engineering plan and `_todo/todobatch2.txt` for the phased TODO list.
+with static JSON via a future `MockClient`. See `_docs/` Doc #40 for the canonical
+engineering plan and `_todo/todobatch2.txt` for the phased TODO list.
 
 ## Layout
 
@@ -57,5 +57,5 @@ Subsequent phases (2 onward) are tracked in `_todo/todobatch2.txt`.
 ## Roadmap
 
 See `_todo/todobatch2.txt` for the full Phase 0–8 plan and agent split. The
-canonical engineering plan lives in `_docs/Brittania Reborn_ 40-Implementation
-Scaffolding & 12-Week Engineering Plan.md`.
+canonical engineering plan lives in `_docs/` Doc #40 (Implementation Scaffolding
+& 12-Week Engineering Plan).

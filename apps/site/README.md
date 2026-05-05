@@ -1,7 +1,7 @@
 # @br/site — Project Virtue marketing website
 
-The public-facing site for Britannia Reborn / Project Virtue. Drives signups,
-hosts the dev journal, and shows shard status.
+The public-facing site for Project Virtue. Drives signups, hosts the dev journal,
+and shows shard status.
 
 ## Stack
 

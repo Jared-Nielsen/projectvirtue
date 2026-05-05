@@ -1,4 +1,4 @@
-// Britannia Reborn — design tokens.
+// Project Virtue — design tokens.
 // Single source of truth for color, type, space, motion, etc.
 // Mirrored as CSS custom properties in tokens.css for runtime theming.
 //

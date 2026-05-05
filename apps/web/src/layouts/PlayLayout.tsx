@@ -54,7 +54,7 @@ export function PlayLayout(props: PlayLayoutProps): JSX.Element {
       >
         <Cluster justify="space-between" gap="4">
           <Cluster gap="3" align="center">
-            <strong style={{ 'letter-spacing': '0.08em' }}>BRITANNIA REBORN</strong>
+            <strong style={{ 'letter-spacing': '0.08em' }}>PROJECT VIRTUE</strong>
             <Show when={active()}>
               {(c) => (
                 <span style={{ opacity: 0.85 }}>

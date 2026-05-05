@@ -25,7 +25,7 @@ export const POSTS: readonly JournalPost[] = [
     body: [
       "When we set out to rebuild Britannia, we kept asking: what made the original feel different? It wasn't the graphics. It wasn't the loot tables. It was the moment you realized the game was watching how you played, not just whether you won.",
       "The Eight Virtues were Richard Garriott's answer to a moral panic that the original Ultima series had triggered. They were also a quiet bet that role-playing games could be about character — about the kind of person you choose to become inside a fiction.",
-      'In Britannia Reborn the virtues are tracked but never displayed. There is no alignment meter. No popup that says "+3 Compassion." Instead, NPCs remember. Guards greet you differently. Merchants trust you with rare goods. The world tells you who you are by how it treats you.',
+      'In Project Virtue the virtues are tracked but never displayed. There is no alignment meter. No popup that says "+3 Compassion." Instead, NPCs remember. Guards greet you differently. Merchants trust you with rare goods. The world tells you who you are by how it treats you.',
       "It's slower. It's less satisfying than a number going up. We think it's also why people will still talk about their playthroughs ten years from now.",
     ],
   },
@@ -56,7 +56,7 @@ export const POSTS: readonly JournalPost[] = [
     category: 'dev-update',
     body: [
       "The auction house killed two MMOs we loved. So we're not shipping one.",
-      "Britannia Reborn's economy is regional and physical. A sword forged in Trinsic has to travel — by player, by caravan — to the buyer in Yew. Goods have provenance: who crafted them, who carried them, who fenced them.",
+      "Project Virtue's economy is regional and physical. A sword forged in Trinsic has to travel — by player, by caravan — to the buyer in Yew. Goods have provenance: who crafted them, who carried them, who fenced them.",
       "This means the marketplace is real. Logistics is a profession. Smuggling is possible. Highway robbery is possible. We don't expect everyone to love this — we expect the people who love it to love it intensely.",
     ],
   },

@@ -1,5 +1,5 @@
 ================================================================================
-PROJECT: Britannia Reborn — Frontend Scaffold (TS + PixiJS + Solid.js)
+PROJECT: Project Virtue — Frontend Scaffold (TS + PixiJS + Solid.js)
 DATE:    2026-05-04
 SCOPE:   Frontend ONLY. Static JSON stubs for every backend interface. No real
          backend code. No Rust. No protobuf wire — the codegen target gets

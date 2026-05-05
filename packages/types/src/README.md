@@ -1,6 +1,6 @@
 # @br/types
 
-Shared TypeScript types for Britannia Reborn. **This is the eventual protobuf
+Shared TypeScript types for Project Virtue. **This is the eventual protobuf
 codegen target** (see Doc #22 §4.5).
 
 ## Status

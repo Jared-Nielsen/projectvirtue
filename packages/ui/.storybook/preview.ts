@@ -28,7 +28,7 @@ const preview: Preview = {
   globalTypes: {
     theme: {
       name: 'Theme',
-      description: 'Britannia Reborn theme',
+      description: 'Project Virtue theme',
       defaultValue: 'light',
       toolbar: {
         icon: 'circlehollow',

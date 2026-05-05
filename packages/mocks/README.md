@@ -1,7 +1,7 @@
 # @br/mocks
 
 Static JSON stubs, an in-process `MockClient`, and an MSW handler set for the
-Britannia Reborn frontend. Phase 2 deliverable; lives under
+Project Virtue frontend. Phase 2 deliverable; lives under
 `/packages/mocks` of the monorepo.
 
 ## What's mocked

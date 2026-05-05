@@ -1,4 +1,4 @@
-// @br/ui — Britannia Reborn shared design system.
+// @br/ui — Project Virtue shared design system.
 //
 // Apps consume tokens via two paths:
 //   import { tokens } from '@br/ui';     // typed JS access

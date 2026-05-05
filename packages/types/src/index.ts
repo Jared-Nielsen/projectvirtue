@@ -1,5 +1,5 @@
 /**
- * @br/types — shared TypeScript types for Britannia Reborn.
+ * @br/types — shared TypeScript types for Project Virtue.
  *
  * This package is the **eventual protobuf codegen target**. Every type here is
  * hand-written for the Phase 2 mock layer, but each file is structured to

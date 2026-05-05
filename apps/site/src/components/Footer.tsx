@@ -117,7 +117,7 @@ export const Footer: Component = () => {
 
       <div class="site-footer__legal">
         <div class="container site-footer__legal-row">
-          <span>© {year} Project Virtue / Britannia Reborn. All rights reserved.</span>
+          <span>© {year} Project Virtue. All rights reserved.</span>
           <span class="site-footer__legal-links">
             <A href="/journal">Privacy Policy</A>
             <span aria-hidden="true">·</span>
