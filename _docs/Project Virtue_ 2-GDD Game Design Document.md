@@ -1,5 +1,5 @@
 Document \#2: Core Game Design Document (GDD)  
-“The Avatar’s Britannia”Project Title: Ultima VII: Project Virtue  
+“The Avatar’s Avermere”Project Title: Ultima VII: Project Virtue  
 Document Version: 1.0 (Prototype Planning Draft)  
 Date: May 2026  
 Author: \[Your Name / Design Lead\]  
@@ -10,7 +10,7 @@ Status: Living Document – Updated as Prototype Evolves
 1\. Introduction & Design Philosophy
 
 Ultima VII: Project Virtue is a faithful isometric simulation RPG that recreates the 1992 classic while expanding it into a persistent, player-shaped world. Core Design Mantra:  
-“Every object matters. Every choice echoes. Britannia belongs to the Avatar — and to the community that walks beside them.”The game must feel exactly like stepping back into Ultima VII on day one, then gradually reveal its modern depth without ever breaking the original fantasy. No hand-holding tutorials that insult veteran players. No genre shifts. No platformer mechanics.Key Non-Negotiables (from License Alignment Doc \#1):
+“Every object matters. Every choice echoes. Avermere belongs to the Avatar — and to the community that walks beside them.”The game must feel exactly like stepping back into Ultima VII on day one, then gradually reveal its modern depth without ever breaking the original fantasy. No hand-holding tutorials that insult veteran players. No genre shifts. No platformer mechanics.Key Non-Negotiables (from License Alignment Doc \#1):
 
 * Locked isometric perspective  
 * Full-screen, mouse-driven interaction  
@@ -25,24 +25,24 @@ Ultima VII: Project Virtue is a faithful isometric simulation RPG that recreates
 1. Simulation First  
    The world is a physics-and-logic sandbox. Players can pick up, stack, ignite, poison, or combine virtually any object. Environmental interactions (fire spreading, barrels rolling, doors slamming) are fully simulated.  
 2. Virtue-Driven Morality  
-   Player actions are permanently tracked against the Eight Virtues (Honesty, Compassion, Valor, Justice, Sacrifice, Honor, Spirituality, Humility). Reputation affects NPC dialogue, world events, and long-term story branches.  
+   Player actions are permanently tracked against the Eight Virtues (Truth, Mercy, Courage, Justice, Devotion, Honor, Insight, Humility). Reputation affects NPC dialogue, world events, and long-term story branches.  
 3. Open-Ended Freedom  
    Non-linear campaign \+ endless side content. Players can ignore the main quest for dozens of hours and still feel they are “playing Ultima VII.”  
 4. Community Creation  
    Every player is a potential world-builder. In-game tools let anyone create and publish quests, dungeons, and stories that become official canon if approved.  
 5. Persistent Living World  
-   A shared online Britannia where thousands of Avatars coexist, trade, form guilds, and influence global events.
+   A shared online Avermere where thousands of Avatars coexist, trade, form guilds, and influence global events.
 
 ---
 
 3\. World & Setting
 
-* Primary Setting: Classic Britannia (exact 1992 map recreated at launch).  
-* Starting Location: Britain (fully interactive town as the vertical-slice prototype hub).  
+* Primary Setting: Classic Avermere (exact 1992 map recreated at launch).  
+* Starting Location: Highmere (fully interactive town as the vertical-slice prototype hub).  
 * Scale at Launch: Original The Black Gate map \+ 3–4 procedurally generated “frontier” regions unlocked via live service.  
 * Tone & Atmosphere: Dark fantasy with dry British humor, moral complexity, and Garriott’s signature social commentary. Day/night cycle, dynamic weather, and ambient sound design reinforce immersion.
 
-Lore Integration Rule: All player-created content must respect established canon unless explicitly labeled “Alternate Britannia” mode.
+Lore Integration Rule: All player-created content must respect established canon unless explicitly labeled “Alternate Avermere” mode.
 
 ---
 
@@ -116,11 +116,11 @@ Lore Integration Rule: All player-created content must respect established canon
 
 ---
 
-8\. Prototype Scope (Vertical Slice – “Britain Alive”)
+8\. Prototype Scope (Vertical Slice – “Highmere Alive”)
 
 Deliverable for First Playable Demo (Target: 3–4 months from green-light):
 
-* Fully interactive town of Britain (every object, NPC, and building functional).  
+* Fully interactive town of Highmere (every object, NPC, and building functional).  
 * Complete original opening sequence \+ first major quest.  
 * 4-party-member combat system.  
 * Basic Virtue tracking visible in real time.  
@@ -143,7 +143,7 @@ Appendix C: Engine & Stack (canonical)
 
 The finalized stack is: a Rust authoritative server (all simulation, persistence, and rules), a UE5 production client (desktop + PS5 + Xbox), and a TS / PixiJS web thin-client (early prototype + permanent web client). Wire format is Protobuf with codegen for Rust, C++, and TS. The UE5 client is a "dumb view" — it renders state and forwards verbs; it never simulates authoritatively. See Doc \#41 — Engine & Stack ADR for the full decision record.
 
-Appendix B: Open Questions for Lord British  
+Appendix B: Open Questions for Lord Avermere  
 (Reserved section for Garriott’s direct input on Virtue edge cases, favorite NPCs, etc.)
 
 ---

@@ -17,6 +17,7 @@
     "@br/types": "workspace:*",
     "@br/ui": "workspace:*",
     "@solidjs/router": "0.16.1",
+    "pixi-tiledmap": "^2.4.0",
     "pixi.js": "8.18.1",
     "solid-js": "1.9.12"
   },

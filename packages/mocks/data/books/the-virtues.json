@@ -2,8 +2,8 @@
   "id": "book_the_virtues",
   "title": "Of the Eight Virtues",
   "author": "Brother Antos of Empath Abbey",
-  "era": "Year 142 of Lord British's Reign",
-  "summary": "A primer on the Eight Virtues of Britannia, copied for novitiates of the Codex.",
+  "era": "Year 142 of Lord Avermere's Reign",
+  "summary": "A primer on the Eight Virtues of Avermere, copied for novitiates of the Codex.",
   "tags": ["virtue", "lore", "primer"],
   "readable": true,
   "publishedAt": "2026-04-21T00:00:00.000Z",
@@ -11,18 +11,18 @@
     {
       "index": 0,
       "heading": "On the Eight",
-      "body": "There are Eight, and they are not in order of importance, but each in service of the others. Compassion and Honesty are the parents; Honor and Humility are the brothers; Justice and Sacrifice are the friends; Spirituality and Valor are the witnesses.",
+      "body": "There are Eight, and they are not in order of importance, but each in service of the others. Mercy and Truth are the parents; Honor and Humility are the brothers; Justice and Devotion are the friends; Insight and Courage are the witnesses.",
       "illustration": "illum.ankh"
     },
     {
       "index": 1,
-      "heading": "Of Compassion",
-      "body": "Compassion is the first because without it the rest are merely orderly. To know another's hurt and to lessen it without thought of profit is the work of Compassion. The shrine stands east of Britain, beyond the orchard."
+      "heading": "Of Mercy",
+      "body": "Mercy is the first because without it the rest are merely orderly. To know another's hurt and to lessen it without thought of profit is the work of Mercy. The shrine stands east of Highmere, beyond the orchard."
     },
     {
       "index": 2,
-      "heading": "Of Honesty",
-      "body": "Honesty is what you say to yourself in private. It is not pretty, and it is not for the listening of others, and yet without it Honor cannot stand."
+      "heading": "Of Truth",
+      "body": "Truth is what you say to yourself in private. It is not pretty, and it is not for the listening of others, and yet without it Honor cannot stand."
     },
     {
       "index": 3,
@@ -36,7 +36,7 @@
     },
     {
       "index": 5,
-      "heading": "Of Justice, Sacrifice, Spirituality, and Valor",
+      "heading": "Of Justice, Devotion, Insight, and Courage",
       "body": "These the novitiate may read in the second volume. They are the Virtues of the cloister and the field, of those who give and those who hold."
     },
     {

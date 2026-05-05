@@ -48,9 +48,9 @@ export const routeTable: readonly RouteEntry[] = [
     method: 'GET',
     pattern: '/v1/world/tiles/:regionId',
     handler: (ctx) => {
-      // Phase 2 only ships sosaria; other regions resolve to the same map.
+      // Phase 2 only ships mythenor; other regions resolve to the same map.
       void ctx;
-      return data.loadTileMapSosaria();
+      return data.loadTileMapMythenor();
     },
   },
   { method: 'GET', pattern: '/v1/world/npcs', handler: () => data.loadNpcs() },
@@ -97,10 +97,10 @@ export const routeTable: readonly RouteEntry[] = [
   // ---------- Dialog ----------
   {
     method: 'GET',
-    pattern: '/v1/dialog/lord-british',
+    pattern: '/v1/dialog/lord-avermere',
     handler: () => data.loadDialogLordBritish(),
   },
-  { method: 'GET', pattern: '/v1/dialog/iolo', handler: () => data.loadDialogIolo() },
+  { method: 'GET', pattern: '/v1/dialog/erevan', handler: () => data.loadDialogIolo() },
   { method: 'GET', pattern: '/v1/dialog/branch', handler: () => data.loadDialogBranch() },
 
   // ---------- Combat ----------

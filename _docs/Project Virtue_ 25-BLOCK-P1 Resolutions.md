@@ -199,14 +199,14 @@ Failures: `ERR_UNKNOWN_ACTION` (id not in archetype), `ERR_CAPABILITY`, `ERR_INV
 
 Each question presents a binary moral dilemma between two of the Eight Virtues. The player's pick adds +1 to the chosen Virtue's tally and -0.5 to the rejected Virtue's tally (per Doc #15 §1.2). After 3 questions the highest-tallied Virtue determines class skew (mapped per Doc #15 §1.2 table). Per-question copy is in U4 second-person ("Thou hast…", "Dost thou…").
 
-### Phase 1 Question 1 — Compassion vs Honesty
+### Phase 1 Question 1 — Mercy vs Truth
 
 > *Thou dost stand at the crossroads, weary from the road. Two beggars sit in the dust. The first, gaunt and silent, asks for thy last loaf of bread. The second, an old soothsayer, offers to read thy fate truthfully — be it dark or fair — but only if thou wilt swear to repeat his words to all whom thou meetest, however terrible. Dost thou:*
 >
 > *(a) Give thy last loaf to the silent beggar, that he may eat one more day? — COMPASSION*
 > *(b) Swear the soothsayer's oath, that the truth of his vision shall pass through thee unaltered? — HONESTY*
 
-### Phase 1 Question 2 — Valor vs Sacrifice
+### Phase 1 Question 2 — Courage vs Devotion
 
 > *Thy ship is wrecked upon a rocky shore. The last skiff can carry but one more soul to safety. Beside thee stands a wounded knight, sword broken, who begs to be left behind that thou mayst live to fight the corsairs that doomed thy ship. Dost thou:*
 >
@@ -224,8 +224,8 @@ Each question presents a binary moral dilemma between two of the Eight Virtues. 
 
 | Player pick | Virtue tallies after |
 |---|---|
-| Q1=a, Q2=a, Q3=a | Compassion +1, Valor +1, Justice +1; Honesty -0.5, Sacrifice -0.5, Humility -0.5 |
-| Q1=b, Q2=b, Q3=b | Honesty +1, Sacrifice +1, Humility +1; Compassion -0.5, Valor -0.5, Justice -0.5 |
+| Q1=a, Q2=a, Q3=a | Mercy +1, Courage +1, Justice +1; Truth -0.5, Devotion -0.5, Humility -0.5 |
+| Q1=b, Q2=b, Q3=b | Truth +1, Devotion +1, Humility +1; Mercy -0.5, Courage -0.5, Justice -0.5 |
 
 Tie-break: alphabetical by Virtue name. With only 3 questions there will frequently be three-way ties; this is acceptable for Phase 1 character-gen testing because (a) the alphabetical rule deterministically picks a class, and (b) the full 7 questions in the post-prototype pass dissolves the ambiguity by design.
 
@@ -233,10 +233,10 @@ Tie-break: alphabetical by Virtue name. With only 3 questions there will frequen
 
 To be authored in the same format. Each must touch a Virtue not yet covered to ensure the full 7 collectively touch all 8 Virtues:
 
-- Q4 — **Honor vs Spirituality** — an oath sworn to a Lord vs a vision from the gods.
-- Q5 — **Compassion vs Justice** — a guilty man begging mercy.
-- Q6 — **Valor vs Honesty** — a battle won by a lie.
-- Q7 — **Sacrifice vs Spirituality** — give thy gold to a dying stranger or to the shrine.
+- Q4 — **Honor vs Insight** — an oath sworn to a Lord vs a vision from the gods.
+- Q5 — **Mercy vs Justice** — a guilty man begging mercy.
+- Q6 — **Courage vs Truth** — a battle won by a lie.
+- Q7 — **Devotion vs Insight** — give thy gold to a dying stranger or to the shrine.
 
 These are blocking items for the Phase 2 character-gen completion pass, not Phase 1.
 
@@ -287,7 +287,7 @@ contents = [
   { archetype = "item.reagent.sulfurous_ash",  qty = 5 },
 ]
 
-# ---------------- Mage (Honesty skew) ----------------
+# ---------------- Mage (Truth skew) ----------------
 [class.mage]
 stat_skew_primary   = "int"
 stat_skew_secondary = "magic"
@@ -305,7 +305,7 @@ qty       = 1
 archetype = "item.scroll.in_lor.cantrip"   # Magic Light cantrip
 qty       = 1
 
-# ---------------- Bard (Compassion skew) ----------------
+# ---------------- Bard (Mercy skew) ----------------
 [class.bard]
 stat_skew_primary   = "dex"
 stat_skew_secondary = "int"
@@ -320,7 +320,7 @@ back        = "container.backpack.linen"
 archetype = "item.tool.lute.wood.basic"
 qty       = 1
 
-# ---------------- Fighter (Valor skew) ----------------
+# ---------------- Fighter (Courage skew) ----------------
 [class.fighter]
 stat_skew_primary   = "str"
 stat_skew_secondary = "combat"
@@ -349,7 +349,7 @@ back        = "container.backpack.linen"
 archetype = "item.tool.sickle.iron.basic"
 qty       = 1
 
-# ---------------- Tinker (Sacrifice skew) ----------------
+# ---------------- Tinker (Devotion skew) ----------------
 [class.tinker]
 stat_skew_primary   = "dex"
 stat_skew_secondary = "int"
@@ -386,7 +386,7 @@ right_hand  = "armor.shield.iron.kite"
 neck        = "item.jewelry.amulet.ankh.silver"
 back        = "container.backpack.canvas"
 
-# ---------------- Ranger (Spirituality skew) ----------------
+# ---------------- Ranger (Insight skew) ----------------
 [class.ranger]
 stat_skew_primary   = "dex"
 stat_skew_secondary = "combat"
@@ -396,8 +396,8 @@ torso       = "armor.tunic.leather.green"
 cloak       = "armor.cloak.wool.green"
 legs        = "armor.leggings.leather.basic"
 feet        = "armor.boot.leather.basic"
-left_hand   = "weapon.bow.yew.basic"
-right_hand  = "weapon.bow.yew.basic"               # two-handed
+left_hand   = "weapon.bow.blackford.basic"
+right_hand  = "weapon.bow.blackford.basic"               # two-handed
 back        = "container.backpack.canvas"
 quiver      = "item.ammo.arrow.wood.basic"
 [[class.ranger.backpack]]
@@ -460,7 +460,7 @@ steal(actor, item):
   6. Virtue Engine applies:
        - score_delta = item.steal_delta              # ALWAYS applied (option c)
        - if witnessed:
-           push WitnessReport to Justice/Honesty engines
+           push WitnessReport to Justice/Truth engines
            may flag actor as Wanted (Doc #6 §5)
            guard NPCs may auto-engage on next schedule tick
   7. dispatcher records OwnershipComponent.acquired_via = Stolen
@@ -484,7 +484,7 @@ This makes blind/deaf NPC archetypes a meaningful gameplay variable.
 
 NPCs with `State.sleeping = true` (set by their schedule's `Sleep` slot per Doc #17 §7.1) **do not witness anything** — neither sight nor sound. This is the canonical Phase 1 "steal bread from the baker at 3 AM" exploit and it is **intended**: it is the success metric's negative-witness branch.
 
-The score delta is still applied (item.steal_delta still hits Honesty/Justice in step 6 first sub-bullet); the player just escapes the legal consequence. If the player later wakes the NPC, retroactive witness does **not** fire — the witness query is at the moment of theft, not after the fact.
+The score delta is still applied (item.steal_delta still hits Truth/Justice in step 6 first sub-bullet); the player just escapes the legal consequence. If the player later wakes the NPC, retroactive witness does **not** fire — the witness query is at the moment of theft, not after the fact.
 
 #### (c) Corpse NPCs
 
@@ -494,7 +494,7 @@ This means looting in private (no other awake observers) is mechanically free of
 
 #### (d) Witness killed before guards arrive
 
-Once the witness is added to the `WitnessEvent` payload in step 5, the Virtue Engine has already evaluated it. The score delta in step 6 sub-bullet 1 is applied **at the moment of theft**, not at the moment of guard response. Killing the witness afterwards does **not** retroactively erase the Honesty/Justice deltas — the Virtue Engine's audit log (Doc #21 §3.4) records the event with `score_applied_at = <theft tick>`.
+Once the witness is added to the `WitnessEvent` payload in step 5, the Virtue Engine has already evaluated it. The score delta in step 6 sub-bullet 1 is applied **at the moment of theft**, not at the moment of guard response. Killing the witness afterwards does **not** retroactively erase the Truth/Justice deltas — the Virtue Engine's audit log (Doc #21 §3.4) records the event with `score_applied_at = <theft tick>`.
 
 The guard auto-engagement, however, is downstream. If the only witness dies before the guard schedule tick fires, the `WitnessReport` is **dropped from the Justice queue** with the rationale "no extant witness can identify the thief". This means killing a witness *can* prevent the Wanted flag from being raised — but the Virtue cost of the murder itself is itself enormous (Doc #5 §4) and the score deltas from the original theft are already on the books.
 
@@ -597,7 +597,7 @@ base_price_cp     = 30
 weight_stones     = 2.0
 stackable         = false
 
-[item."weapon.bow.yew.basic"]
+[item."weapon.bow.blackford.basic"]
 base_price_cp     = 250
 weight_stones     = 2.0
 stackable         = false
@@ -1042,10 +1042,10 @@ inherits_owner = true
 [recipes."cooking.bread.basic".outputs.0.quality_formula]
 base          = 50
 skill_weight  = 1.0    # cooking skill not yet a stat in Phase 1; falls through to dex
-virtue_weight = 0.5    # high Compassion bakes better bread (BR flavor; cite Doc #5 §4)
+virtue_weight = 0.5    # high Mercy bakes better bread (BR flavor; cite Doc #5 §4)
 tool_weight   = 1.0
 [recipes."cooking.bread.basic".virtue_modifier]
-virtue        = "Compassion"
+virtue        = "Mercy"
 weight        = 0.5
 [recipes."cooking.bread.basic".skill_required]
 stat          = "dex"
@@ -1199,7 +1199,7 @@ tool_weight   = 1.0
 stat          = "magic"
 min           = 8
 [recipes."alchemy.healing_potion.basic".virtue_modifier]
-virtue        = "Compassion"
+virtue        = "Mercy"
 weight        = 1.0
 [recipes."alchemy.healing_potion.basic".failure]
 damage           = { amount = 6, type = "fire" }      # Doc #18 §4.1 alchemy explosion precedent
@@ -1300,7 +1300,7 @@ skill_weight  = 0.5
 virtue_weight = 1.5
 tool_weight   = 0.0
 [recipes."magical.bread.blessed".virtue_modifier]
-virtue        = "Spirituality"
+virtue        = "Insight"
 weight        = 1.5
 ```
 

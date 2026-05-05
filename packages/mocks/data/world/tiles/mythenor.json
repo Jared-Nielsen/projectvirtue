@@ -1,0 +1,433 @@
+{
+  "regionId": "region_highmere",
+  "width": 10,
+  "height": 10,
+  "tileSize": 256,
+  "origin": {
+    "x": 0,
+    "y": 0
+  },
+  "rows": [
+    [
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      }
+    ],
+    [
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      }
+    ],
+    [
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      }
+    ],
+    [
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      }
+    ],
+    [
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      }
+    ],
+    [
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      }
+    ],
+    [
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      }
+    ],
+    [
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      }
+    ],
+    [
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      }
+    ],
+    [
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "plaza",
+        "walkable": true,
+        "portalTo": "region_blackford"
+      }
+    ]
+  ]
+}

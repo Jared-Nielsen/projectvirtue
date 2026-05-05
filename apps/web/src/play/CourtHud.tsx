@@ -13,7 +13,7 @@ import styles from './CourtHud.module.css';
 import shared from './hud-shared.module.css';
 
 export interface CourtHudProps {
-  /** Region whose NPCs constitute the court (default: region_britain). */
+  /** Region whose NPCs constitute the court (default: region_highmere). */
   readonly regionId?: string;
 }
 
@@ -26,14 +26,14 @@ const CROWD_CHATTER: readonly string[] = [
   'You see Lord Ethos.',
   'You see a royal guard.',
   'King Ethos: "Welcome to Ardania."',
-  'You: "I bring word from the council of Britain."',
+  'You: "I bring word from the council of Highmere."',
   'King Ethos: "Then please, speak."',
   'A lutist plays softly in the gallery.',
-  'Your virtue has increased: Honesty.',
+  'Your virtue has increased: Truth.',
 ];
 
 export function CourtHud(props: CourtHudProps): JSX.Element {
-  const region = (): string => props.regionId ?? 'region_britain';
+  const region = (): string => props.regionId ?? 'region_highmere';
   const [npcs] = createResource(() => mockClient.get<NpcsPayload>('/v1/world/npcs'));
 
   const courtiers = createMemo(() => {

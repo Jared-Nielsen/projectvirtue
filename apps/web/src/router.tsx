@@ -5,6 +5,7 @@
 
 import { Route, type RouteSectionProps } from '@solidjs/router';
 import { type Component, ErrorBoundary, type JSX } from 'solid-js';
+import { EditorScreen } from './editor/EditorScreen';
 import { MenuLayout } from './layouts/MenuLayout';
 import { PlayLayout } from './layouts/PlayLayout';
 import { Book } from './routes/Book';
@@ -80,6 +81,7 @@ export function Routes(): JSX.Element {
         <Route path="/character" component={protectedScreen(CharacterList)} />
         <Route path="/character/create" component={protectedScreen(CharacterCreate)} />
         <Route path="/loading/:variant" component={withErrorBoundary(LoadingScreen)} />
+        <Route path="/play/editor" component={protectedScreen(EditorScreen)} />
       </Route>
 
       <Route component={PlayShell}>

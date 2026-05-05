@@ -29,7 +29,7 @@ Project Virtue runs an **authoritative server model** (Doc #6 §2). Clients send
               v                 v                       v                 v
        +-------------+   +-------------+         +-------------+   +-------------+
        | Region GS   |   | Region GS   |   ...   | Region GS   |   | Region GS   |
-       |  britain.0  |   |  britain.1  |         |   trinsic   |   |  yew, etc.  |
+       |  highmere.0  |   |  highmere.1  |         |   stonereach   |   |  blackford, etc.  |
        |  (UE5 ded.) |   |  (UE5 ded.) |         |  (UE5 ded.) |   |  (UE5 ded.) |
        |  + MCP Sub  |   |  + MCP Sub  |         |  + MCP Sub  |   |  + MCP Sub  |
        +------+------+   +------+------+         +------+------+   +------+------+
@@ -226,7 +226,7 @@ For moving entities (`Physical.velocity` non-zero), position broadcasts are rate
 
 | Direction | Steady-state target | Burst ceiling | Phase |
 |---|---|---|---|
-| Server → client (per client per region) | **10 KB/s** | 50 KB/s during combat or Britain market square crowd | All phases |
+| Server → client (per client per region) | **10 KB/s** | 50 KB/s during combat or Highmere market square crowd | All phases |
 | Client → server (per client) | 1 KB/s | 5 KB/s during rapid verb fire | All phases |
 | Region GS aggregate egress (200 players) | ~2 MB/s | 10 MB/s | Per region process |
 
@@ -236,10 +236,10 @@ Exceeding 50 KB/s sustained for 10 s triggers server-side LOD: position broadcas
 
 ## 6. Region Partitioning
 
-- Each region (`britain`, `trinsic`, `yew`, `minoc`, `moonglow`, `skara_brae`, `jhelom`, `magincia`, `serpent_hold`, `cove`, plus wilderness tiles) is a **separate game-server process**.
+- Each region (`highmere`, `stonereach`, `blackford`, `coldforge`, `lumencove`, `skara_brae`, `jhelom`, `aurelia`, `serpent_hold`, `cove`, plus wilderness tiles) is a **separate game-server process**.
 - A client subscribes only to its current region; clients in region X receive `EntityDelta`/`EntitySpawn`/`EntityDespawn` only for region X (Doc #6 §2 spatial partitioning, Doc #14 §6 spatial constraint).
 - **Cross-region traffic** (global chat, Virtue Watch events per Doc #6 §5, shard-wide story events per Doc #6 §6) flows through the message bus, not via direct region-to-region sockets.
-- **Region capacity:** soft cap 200 concurrent players per region process. Britain (and any other heavily-trafficked region) may run multiple parallel instances (`britain.0`, `britain.1`, ...) behind a regional load balancer; players are placed by least-loaded with friend-group affinity.
+- **Region capacity:** soft cap 200 concurrent players per region process. Highmere (and any other heavily-trafficked region) may run multiple parallel instances (`highmere.0`, `highmere.1`, ...) behind a regional load balancer; players are placed by least-loaded with friend-group affinity.
 - **Sharding key for the bus:** `shard_id + region_id` for region-scoped events; `shard_id` for shard-global events.
 
 ---
@@ -435,7 +435,7 @@ Matches Doc #6 §2 launch numbers.
 |---|---|---|
 | Concurrent players per shard at launch | 2,000 | Across all regions |
 | Concurrent players per region process | 200 | Soft cap; spawn parallel instances above |
-| Region processes per shard typical | ~10 | Britain with 5 instances; smaller towns 1; wilderness 1–2 |
+| Region processes per shard typical | ~10 | Highmere with 5 instances; smaller towns 1; wilderness 1–2 |
 | Scale-out trigger | Region instance utilization > 80% for 10 min | Spawn additional instance behind regional LB |
 | Live-service ceiling (Doc #6 §2) | 10,000+ | Requires DB sharding and cross-shard moongates (Doc #6 §2) |
 
@@ -449,8 +449,8 @@ Per Doc #11 vertical slice and Doc #14 §8, Doc #16 §12.
 
 | Item | Phase 1 |
 |---|---|
-| Player count | 8 simultaneous in Britain |
-| Regions | One: `britain` only |
+| Player count | 8 simultaneous in Highmere |
+| Regions | One: `highmere` only |
 | Server | Rust process (`forge-shard`, bevy_ecs + Tokio) on a single machine, in-process; no real cluster (per Doc #41) |
 | Region handoff | Not implemented (only one region exists) |
 | Persistence | SQLite per Doc #21 Phase 1; no Redis |
@@ -464,7 +464,7 @@ Per Doc #11 vertical slice and Doc #14 §8, Doc #16 §12.
 | Heartbeat / soft disconnect | Yes |
 | Region handoff plumbing | Stubbed (codepath present, never invoked) |
 
-Phase 1 success metric (network-side): two players in Britain see each other's `Physical.position` updates at 5 Hz with smooth 60 fps client interpolation, observe a third player picking up a barrel and the `Container.contents` mutation replicates in < 200 ms, and reading a Virtue title on another player returns the correct value with `OwnerOnly` private fields invisible. Combat replication is out of scope.
+Phase 1 success metric (network-side): two players in Highmere see each other's `Physical.position` updates at 5 Hz with smooth 60 fps client interpolation, observe a third player picking up a barrel and the `Container.contents` mutation replicates in < 200 ms, and reading a Virtue title on another player returns the correct value with `OwnerOnly` private fields invisible. Combat replication is out of scope.
 
 ---
 
@@ -494,7 +494,7 @@ This makes housing instances `Friends`-default with explicit per-entity override
 2. `[OPEN]` **Wire format choice: MessagePack vs FlatBuffers vs Cap'n Proto.** Phase 1 uses MessagePack for ergonomics; a perf bake-off (encode/decode CPU, payload size, schema-evolution friction) gates the Phase 2 pick.
 3. `[OPEN]` **Soft-disconnect window per-shard configurable.** Default 30 s. Chaos shard may want shorter (no logoff-cheese in PvP); private instance may want longer (10-min tea-break tolerance for solo runs that brushed multiplayer). Authority for the override and its interaction with Avatar attackability `[OPEN]`.
 4. `[OPEN]` **MCP rate limits vs. tooling-client bursts.** A QA harness scraping 1000 `examine` reads over a region for state diff is legitimate but exceeds player budget. Likely solution: a `qa.harness` or `inspect.bulk` capability tier with elevated read budget but zero mutation budget. Out of scope for Phase 1 since MCP is `stdio`-only.
-5. `[OPEN]` **Server-side LOD policy for crowds.** When >50 players occupy a single tile (Britain market square at festival), what's the position-broadcast cadence floor for distant entities, and is it dynamic per region density? Suggested: drop to 1 Hz position broadcast for entities >30 tiles from the receiving client when region density exceeds threshold; needs measurement.
+5. `[OPEN]` **Server-side LOD policy for crowds.** When >50 players occupy a single tile (Highmere market square at festival), what's the position-broadcast cadence floor for distant entities, and is it dynamic per region density? Suggested: drop to 1 Hz position broadcast for entities >30 tiles from the receiving client when region density exceeds threshold; needs measurement.
 6. `[OPEN]` **`enchantments` field replication semantics.** §5.2 marks `MagicComponent.enchantments` replicated, but specific enchantments (a curse on an item) may be intended to remain hidden until the item is identified (Doc #4.1 alchemy/identify path). May need to split `enchantments_visible` vs. `enchantments_hidden` `[I*]`/`[I]`.
 7. `[OPEN]` **Friends-list persistence scope for housing access.** §15 needs a definitive scope: `PlayerInventory` (per-owner) vs. a new `Social` scope. The friends-list also feeds Doc #6 §4 party invites and may be globally shared — affects cross-shard reachability.
 8. `[OPEN]` **Ghost / observer mode** (whether an Avatar can be invisibly present in a region for spectator/streamer purposes) and its replication relevance treatment.

@@ -1,8 +1,8 @@
 {
   "shards": [
     {
-      "id": "shard_britannia_order",
-      "name": "Britannia (Order)",
+      "id": "shard_avermere_order",
+      "name": "Avermere (Order)",
       "kind": "order",
       "region": "na-east",
       "status": "online",
@@ -11,13 +11,13 @@
       "tickRateHz": 30,
       "serverVersion": "0.1.0-prototype",
       "createdAt": "2026-03-12T00:00:00.000Z",
-      "motd": "Welcome to Britannia. Walk in the Eight Virtues.",
-      "regions": ["region_britain", "region_trinsic", "region_yew", "region_minoc"],
+      "motd": "Welcome to Avermere. Walk in the Eight Virtues.",
+      "regions": ["region_highmere", "region_stonereach", "region_blackford", "region_coldforge"],
       "description": "Canonical Order shard. Virtue rules enforced; PvP confined to ratified arenas."
     },
     {
       "id": "shard_serpent_isle",
-      "name": "Serpent Isle (Order)",
+      "name": "The Iron Marches (Order)",
       "kind": "order",
       "region": "eu-west",
       "status": "online",
@@ -28,7 +28,7 @@
       "createdAt": "2026-03-22T00:00:00.000Z",
       "motd": "Beyond the Pillars: a stranger sea.",
       "regions": ["region_monitor", "region_fawn", "region_moonshade"],
-      "description": "EU-anchored Order shard with Serpent Isle region rotation."
+      "description": "EU-anchored Order shard with The Iron Marches region rotation."
     },
     {
       "id": "shard_chaos_marauder",
@@ -42,7 +42,7 @@
       "serverVersion": "0.1.0-prototype",
       "createdAt": "2026-04-02T00:00:00.000Z",
       "motd": "All is permitted. None is forgiven.",
-      "regions": ["region_buccaneers_den", "region_dungeon_despise"],
+      "regions": ["region_buccaneers_den", "region_dungeon_blacktarn"],
       "description": "Open-PvP Chaos shard. Full looting; reduced Virtue scoring; Doc #35 rules."
     },
     {
@@ -61,8 +61,8 @@
       "description": "APAC Chaos shard, currently in degraded state during a regional ISP issue."
     },
     {
-      "id": "shard_gm_lord_british_banquet",
-      "name": "Lord British's Banquet (Campaign)",
+      "id": "shard_gm_lord_avermere_banquet",
+      "name": "Lord Avermere's Banquet (Campaign)",
       "kind": "gm",
       "region": "na-east",
       "status": "online",
@@ -72,7 +72,7 @@
       "serverVersion": "0.1.0-prototype",
       "createdAt": "2026-04-30T00:00:00.000Z",
       "motd": "Private campaign. Invitation only.",
-      "regions": ["region_castle_britannia"],
+      "regions": ["region_castle_avermere"],
       "description": "GM-hosted six-session campaign run by player 'WiseSage'."
     }
   ]

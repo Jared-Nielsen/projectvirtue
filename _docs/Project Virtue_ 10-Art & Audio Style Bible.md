@@ -48,13 +48,13 @@ We do not replace the retro isometric look with 3D models, realistic textures, o
 * Animation: 8–12 frames per action (walk, attack, idle, use object). All animations must feel weighty and physical.  
 * Customization (Avatar): Limited to clothing dyes and simple armor pieces that fit the medieval fantasy look — no wild fantasy hair or modern outfits.  
 * NPC Variety: Base templates \+ procedural clothing/hair variations within the same style guide.  
-* Party Companions: Iolo, Shamino, Dupre, etc., must match their exact 1992 sprite silhouettes and color schemes.
+* Party Companions: Erevan, Theran, Bron, etc., must match their exact 1992 sprite silhouettes and color schemes.
 
 ---
 
 4\. Environment & Object Design Rules
 
-* Tilesets: Original Britain/Trinsic/etc. tiles as base; new regions use expanded but compatible palettes.  
+* Tilesets: Original Highmere/Stonereach/etc. tiles as base; new regions use expanded but compatible palettes.  
 * Objects: Every interactive item must have unique sprites for multiple states (closed/open, lit/unlit, broken/intact).  
 * Destruction & Physics: Damaged versions of objects must be pre-authored or procedurally dirtied while staying in style.  
 * Environmental Storytelling: Clutter, bloodstains, glowing runes, and small details must tell stories at a glance.
@@ -92,11 +92,11 @@ We do not replace the retro isometric look with 3D models, realistic textures, o
 
 ---
 
-7\. Prototype Scope – “Britain Visual & Audio Vertical Slice”
+7\. Prototype Scope – “Highmere Visual & Audio Vertical Slice”
 
 Must be complete in first playable build:
 
-* Full Britain town with every object using final art style \+ dynamic lighting.  
+* Full Highmere town with every object using final art style \+ dynamic lighting.  
 * Original Ultima VII soundtrack loop \+ 20+ contextual SFX.  
 * 8 key NPCs with full animations and voice lines for opening dialogue.  
 * UI mockups and parchment-style fonts implemented.  
@@ -107,4 +107,4 @@ A player should look at the screen and immediately say, “This is Ultima VII �
 
 ---
 
-This Style Bible is the visual and auditory contract we make with every player and every creator: Britannia must always feel like home.  
+This Style Bible is the visual and auditory contract we make with every player and every creator: Avermere must always feel like home.  

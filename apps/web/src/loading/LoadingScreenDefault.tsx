@@ -69,7 +69,7 @@ export function LoadingScreenDefault(props: LoadingScreenDefaultProps): JSX.Elem
       variant="default"
       tagline={props.tagline ?? 'A Journey. A Choice. A Life.'}
       title={props.title ?? 'WALK IN THE EIGHT'}
-      subtitle={props.subtitle ?? 'The veil draws back upon Britannia.'}
+      subtitle={props.subtitle ?? 'The veil draws back upon Avermere.'}
       quote={props.quote ?? null}
       cssVars={CSS_VARS}
     />

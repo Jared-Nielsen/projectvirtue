@@ -14,7 +14,7 @@ const manifest: LoadingScreenManifest = {
       tagline: '',
       weight: 25,
       quotes: [
-        { text: 'The sea forgives in salt.', attribution: 'Iolo' },
+        { text: 'The sea forgives in salt.', attribution: 'Erevan' },
         { text: 'The compass is a fiction.', attribution: 'Captain' },
       ],
     },
@@ -43,14 +43,14 @@ const manifest: LoadingScreenManifest = {
       tint: '#000',
       tagline: '',
       weight: 25,
-      quotes: [{ text: 'Walk in the Eight virtues.', attribution: 'Lord British' }],
+      quotes: [{ text: 'Walk in the Eight virtues.', attribution: 'Lord Avermere' }],
     },
   ],
 };
 
 describe('tagsForQuote', () => {
   it('detects marine keywords', () => {
-    expect(tagsForQuote('A long voyage at sea', 'Iolo')).toContain('marine');
+    expect(tagsForQuote('A long voyage at sea', 'Erevan')).toContain('marine');
   });
 
   it('detects dungeon keywords', () => {
@@ -58,7 +58,7 @@ describe('tagsForQuote', () => {
   });
 
   it('detects paladin keywords', () => {
-    expect(tagsForQuote('Honor and oath', 'Dupre')).toContain('paladin-castle');
+    expect(tagsForQuote('Honor and oath', 'Bron')).toContain('paladin-castle');
   });
 
   it('returns empty when nothing matches', () => {

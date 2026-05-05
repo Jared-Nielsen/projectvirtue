@@ -1,0 +1,113 @@
+{
+  "npcId": "npc_erevan",
+  "npcName": "Erevan",
+  "portrait": "/assets/portraits/erevan.webp",
+  "tree": {
+    "id": "tree_erevan",
+    "npcId": "npc_erevan",
+    "opening": ["name", "job", "lute", "sheep"],
+    "keywords": {
+      "name": "resp_erevan_name",
+      "job": "resp_erevan_job",
+      "lute": "resp_erevan_lute",
+      "sheep": "resp_erevan_sheep",
+      "song": "resp_erevan_song",
+      "theran": "resp_erevan_theran",
+      "fellowship": "resp_erevan_fellowship",
+      "bye": "resp_erevan_bye"
+    },
+    "responses": {
+      "resp_erevan_name": {
+        "id": "resp_erevan_name",
+        "text": {
+          "key": "erevan.name",
+          "en": "Erevan, bowyer and bard, at thy service. The bow's the surer trade these days."
+        },
+        "unlocks": [],
+        "locks": [],
+        "sideEffects": []
+      },
+      "resp_erevan_job": {
+        "id": "resp_erevan_job",
+        "text": {
+          "key": "erevan.job",
+          "en": "I make bows, sing for coin, and lose sheep. I am told I am bad at one of these."
+        },
+        "unlocks": ["sheep"],
+        "locks": [],
+        "sideEffects": []
+      },
+      "resp_erevan_lute": {
+        "id": "resp_erevan_lute",
+        "text": {
+          "key": "erevan.lute",
+          "en": "An old oak lute, given me by Gwenno before she went south. I shall not pawn it. Do not ask."
+        },
+        "unlocks": ["song"],
+        "locks": [],
+        "sideEffects": []
+      },
+      "resp_erevan_song": {
+        "id": "resp_erevan_song",
+        "text": {
+          "key": "erevan.song",
+          "en": "Three coppers buys thee one verse. Five buys thee silence. The choice is thine."
+        },
+        "unlocks": [],
+        "locks": [],
+        "sideEffects": []
+      },
+      "resp_erevan_sheep": {
+        "id": "resp_erevan_sheep",
+        "text": {
+          "key": "erevan.sheep",
+          "en": "Three of them, dear friend. Up the Blackford road. They go on purpose, I swear it. If thou findest them, my thanks shall be measurable in beer."
+        },
+        "unlocks": [],
+        "locks": [],
+        "sideEffects": [{ "kind": "StartQuest", "questId": "quest_lost_lambs" }]
+      },
+      "resp_erevan_theran": {
+        "id": "resp_erevan_theran",
+        "text": {
+          "key": "erevan.theran",
+          "en": "Theran is in the woods, as ever. Tell him from me he owes me three coppers."
+        },
+        "unlocks": [],
+        "locks": [],
+        "sideEffects": []
+      },
+      "resp_erevan_fellowship": {
+        "id": "resp_erevan_fellowship",
+        "text": {
+          "key": "erevan.fellowship",
+          "en": "I do not wear that medallion. Nor will I. The Fellowship and I are old strangers."
+        },
+        "unlocks": [],
+        "locks": [],
+        "sideEffects": [{ "kind": "ChangeVirtue", "virtue": "truth", "delta": 1 }]
+      },
+      "resp_erevan_bye": {
+        "id": "resp_erevan_bye",
+        "text": {
+          "key": "erevan.bye",
+          "en": "Walk softly. The road is long, and so are the verses."
+        },
+        "unlocks": [],
+        "locks": [],
+        "sideEffects": [{ "kind": "EndDialogue" }]
+      },
+      "resp_erevan_default": {
+        "id": "resp_erevan_default",
+        "text": {
+          "key": "erevan.default",
+          "en": "I am told I am full of opinions. I am also told to keep most of them."
+        },
+        "unlocks": [],
+        "locks": [],
+        "sideEffects": []
+      }
+    },
+    "defaultResponseId": "resp_erevan_default"
+  }
+}

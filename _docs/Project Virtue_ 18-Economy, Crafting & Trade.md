@@ -7,7 +7,7 @@ Status: Living Technical Reference — Normative spec for the recipe schema, cur
 
 Depends on: #2 GDD §5, #4 Simulation §4, #4.1 Crafting addendum, #5 Virtues §4, #6 Persistent World §3 + §4, #11 Prototype Scope, #13 Core Schema, #14 MCP Surface, #15 Character/Party/Inventory.
 
-Source heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VII Part Two: Serpent Isle* (1993). `[U4]` = *Ultima IV: Quest of the Avatar* (1985). `[BR]` = original to Project Virtue.
+Source heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VII Part Two: The Iron Marches* (1993). `[U4]` = *Ultima IV: Quest of the Avatar* (1985). `[BR]` = original to Project Virtue.
 
 ---
 
@@ -246,11 +246,11 @@ Multipliers (clamped to [0.5, 2.0] to prevent runaway):
 | Modifier | Trigger | Effect |
 |---|---|---|
 | `virtue_buy_mod` low Honor (<30) | merchant suspects player is a deadbeat | ×1.25 |
-| `virtue_buy_mod` low Honesty (<30) | merchant suspects theft | ×1.50 |
-| `virtue_buy_mod` high Compassion (>70) at compassion-aligned merchant | gratitude discount | ×0.90 |
+| `virtue_buy_mod` low Truth (<30) | merchant suspects theft | ×1.50 |
+| `virtue_buy_mod` high Mercy (>70) at mercy-aligned merchant | gratitude discount | ×0.90 |
 | `virtue_buy_mod` high Honor (>70) at faction-guild merchant | guild discount | ×0.85 |
 | `virtue_buy_mod` low Justice (<20) at any lawful-aligned merchant | refusal | trade refused outright; reaction state Wary→Hostile (Doc #17 §11 reference) |
-| `virtue_sell_mod` high Sacrifice (>70) | merchant gifts small reagents free | ×1.15 to player's sale price; some recipes flagged `gift_eligible` transfer at 0 gp |
+| `virtue_sell_mod` high Devotion (>70) | merchant gifts small reagents free | ×1.15 to player's sale price; some recipes flagged `gift_eligible` transfer at 0 gp |
 | `scarcity_mod` regional supply low | demand spike | ×1.10 to ×2.00 |
 | `scarcity_mod` regional supply high | glut | ×0.50 to ×0.90 |
 
@@ -405,26 +405,26 @@ Identical dispatcher path with auto-accept on the companion side — matches Doc
 | Path | Consent? | Virtue Effect | `acquired_via` |
 |---|---|---|---|
 | `trade` | both sides | none | `Gifted` |
-| `give` (Doc #15 §7.1) | recipient implicit | Sacrifice + (if no return), Compassion + (target in need) | `Gifted` |
-| `donate` (Doc #13 §2) | recipient implicit | Sacrifice + + | `Gifted` |
-| `steal` (Doc #13 §2) | none | Honesty −, Justice − | `Stolen` |
+| `give` (Doc #15 §7.1) | recipient implicit | Devotion + (if no return), Mercy + (target in need) | `Gifted` |
+| `donate` (Doc #13 §2) | recipient implicit | Devotion + + | `Gifted` |
+| `steal` (Doc #13 §2) | none | Truth −, Justice − | `Stolen` |
 | `drag` from `World`-owned | n/a (unowned) | none | `Found` |
 
 ---
 
 ## 10. Virtue × Economy Interactions
 
-Cross-reference to Doc #5 §4 ("High Sacrifice players get free reagents from grateful NPCs; low Honor players pay higher taxes"). BR formalizes:
+Cross-reference to Doc #5 §4 ("High Devotion players get free reagents from grateful NPCs; low Honor players pay higher taxes"). BR formalizes:
 
 | Trigger | Effect | Source |
 |---|---|---|
-| Sacrifice > 75 | Compassion-aligned merchants gift 1 small reagent per game-day on first BUY visit | Doc #5 §4 |
-| Honesty < 30 | All merchants in regions with `always_watched = true` apply +50% buy mod (§7.2) | Doc #15 §6.4 + §7.2 |
+| Devotion > 75 | Mercy-aligned merchants gift 1 small reagent per game-day on first BUY visit | Doc #5 §4 |
+| Truth < 30 | All merchants in regions with `always_watched = true` apply +50% buy mod (§7.2) | Doc #15 §6.4 + §7.2 |
 | Honor > 70 + faction match (e.g. Paladin in Empath Abbey) | 15% guild discount on all purchases | §7.2 |
 | Justice < 20 | Lawful-aligned merchants refuse trade entirely, NPC reaction Wary→Hostile | Doc #17 §11 |
 | Bribery active | Cost scales inversely with target NPC's Honor (high-Honor targets cost more, refuse more) | Doc #15 §6.5 |
-| Compassion > 70 | Beggar NPCs offer small information / quest hooks (no economic effect, but a social-economic loop) | Doc #5 §4 |
-| Spirituality > 80 | Shrine offering plates accept any item as a Virtue-positive `donate`, including high-value gear | Doc #5 §3 |
+| Mercy > 70 | Beggar NPCs offer small information / quest hooks (no economic effect, but a social-economic loop) | Doc #5 §4 |
+| Insight > 80 | Shrine offering plates accept any item as a Virtue-positive `donate`, including high-value gear | Doc #5 §3 |
 | Humility < 20 | NPC reaction tone shifts; some merchants refuse to even open BUY panel | Doc #5 §2 |
 
 ---
@@ -445,7 +445,7 @@ Stations are placeable in player housing (Doc #6 §3 `HousingAndCreations` scope
 | Alchemy bench | `fixture.alchemy_bench` | Physical, Container, ScriptHook | passive; holds reagent intermediates |
 | Campfire | `fixture.campfire` | Physical, State, ScriptHook | `lit: bool`; substitutes for oven on cooking recipes only |
 
-Stations placed in player housing carry `PersistenceScope = HousingAndCreations` and respect the housing grace period for ownership inactivity. Stations in town squares carry `PersistenceScope = WorldState` and never reset `[BG]` (the Britain forge is the Britain forge forever).
+Stations placed in player housing carry `PersistenceScope = HousingAndCreations` and respect the housing grace period for ownership inactivity. Stations in town squares carry `PersistenceScope = WorldState` and never reset `[BG]` (the Highmere forge is the Highmere forge forever).
 
 ---
 
@@ -482,25 +482,25 @@ The `recipes` resource is read-only over MCP — UGC recipe authoring is in-engi
 
 ---
 
-## 13. Phase 1 Prototype Scope (12-Week "Britain Alive")
+## 13. Phase 1 Prototype Scope (12-Week "Highmere Alive")
 
 Per Doc #11, Doc #14 §8, Doc #15 §8. Deliberately minimal.
 
 | Subsystem | In Scope | Deferred |
 |---|---|---|
 | Recipes | 8 working recipes from Doc #4.1 §6 (bread, dough, dagger, healing potion, cooked meat, arrows, cloth bolt, blessed bread) | All other recipes; magical-variant `spell_effect` token |
-| Stations | 3 functional in Britain: forge, oven, alchemy bench (cauldron). Anvil + workbench + loom present but recipes deferred | Mortar & pestle as inventory tool; campfire substitution; player-housing placement |
+| Stations | 3 functional in Highmere: forge, oven, alchemy bench (cauldron). Anvil + workbench + loom present but recipes deferred | Mortar & pestle as inventory tool; campfire substitution; player-housing placement |
 | Quality | Per-instance `quality` field stored on outputs; combat damage multiplier active | Armor / food / potion quality effects; tool quality contribution; repair recipes |
 | Currency | Gold only (single denomination) | Copper, silver, platinum stacks |
-| NPC merchants | 3 in Britain: baker (bread + flour), blacksmith (basic weapons), apothecary (reagents). BUY/SELL keyword path active. | All other merchants; haggle; faction-guild discounts |
-| Virtue × price | High Honor discount + low Honesty surcharge visible | All other Virtue × economy rules; Justice-refusal cascade |
+| NPC merchants | 3 in Highmere: baker (bread + flour), blacksmith (basic weapons), apothecary (reagents). BUY/SELL keyword path active. | All other merchants; haggle; faction-guild discounts |
+| Virtue × price | High Honor discount + low Truth surcharge visible | All other Virtue × economy rules; Justice-refusal cascade |
 | Restock | 24 game-hour restock tick active | Restock quantity tuning per merchant |
 | Shop scarcity | Static `scarcity_mod = 1.0` for all items | Live ledger; demand tracking |
 | Player-to-player trade | **Deferred** — no MP marketplace in Phase 1 (consistent with Doc #15 §8) | All of §9 |
 | Persistent shard marketplace | **Deferred** — single-player vertical slice; no `MarketStall` placement | All of §8 |
 | MCP tools | None of §12 required for Phase 1 (per Doc #14 §8 the only mutating verb is `use`) | All of §12 |
 
-Phase 1 success metric: a player can buy flour from the Britain baker, drag flour onto water to make dough, drag dough into a lit oven to bake bread (observing per-instance quality), donate the bread to a beggar (observing Sacrifice +), and return to the same baker the next game-day to find the shelves restocked.
+Phase 1 success metric: a player can buy flour from the Highmere baker, drag flour onto water to make dough, drag dough into a lit oven to bake bread (observing per-instance quality), donate the bread to a beggar (observing Devotion +), and return to the same baker the next game-day to find the shelves restocked.
 
 ---
 
@@ -527,10 +527,10 @@ Phase 1 success metric: a player can buy flour from the Britain baker, drag flou
 1. `[OPEN]` **Base price table.** §7 references `Shop.price_table` and §8 references stall price suggestions, but the canonical base-gp value for each item type does not yet exist. Needs an economy balance pass coordinated with crafting input cost (a dagger should cost more than its iron ingot input). Pending `data/prices/base.toml`.
 2. `[OPEN]` **Regional scarcity propagation algorithm.** §8.4 defines the ledger schema and update cadence but not the function from `(supply_24h, demand_24h)` to `scarcity_mod`. Candidates: linear ratio, Cobb-Douglas, or a seasonal-baseline-with-shock model. Affects stall listing recommendations and NPC restock pricing.
 3. `[OPEN]` **Cross-shard wallet portability for cosmetic-only purchases.** Doc #6 §2 permits paid cosmetic recall scrolls and (potentially) a real-money cosmetic store. If those purchases are gold-denominated, gold must be at least partially cross-shard for the cosmetic case while remaining shard-local for gameplay. Resolution likely lives in a future live-ops doc, but the contract boundary needs to be clear before the persistent marketplace ships.
-4. `[OPEN]` **Companion-merchant interaction.** Can a party companion (e.g. Iolo) sell items to NPC merchants on the Avatar's behalf, or initiate trades with other Avatars? Touches `CompanionPolicy.inventory_share_policy` (Doc #15 §3.2). BG precedent: companions hold items but never transact independently — BR's stance is `[OPEN]`.
+4. `[OPEN]` **Companion-merchant interaction.** Can a party companion (e.g. Erevan) sell items to NPC merchants on the Avatar's behalf, or initiate trades with other Avatars? Touches `CompanionPolicy.inventory_share_policy` (Doc #15 §3.2). BG precedent: companions hold items but never transact independently — BR's stance is `[OPEN]`.
 5. `[OPEN]` **MarketStall ownership transfer on housing abandonment.** §8.3 defers to Doc #13 §5 [OPEN] 8 (housing grace period). Once that grace period is set, stall reversion mechanics need a concrete rule: revert to `World` (anyone takes the contents)? Auctioned by NPC clerk? Returned to owner's escrow on next login?
 6. `[OPEN]` **Haggle dispatcher path.** §7.4 sketches a DEX+INT roll on a `right_click` sub-verb but the menu_token model (Doc #14 §4 invariant 5) needs concrete `action_id` values and a `params` schema. Pending right-click sub-verb taxonomy resolution (Doc #13 §5 [OPEN] 1).
-7. `[OPEN]` **Crafting failure Virtue scoring.** §4.1 mentions Humility loss on catastrophic failure but the magnitude and trigger conditions are not formalized. Should setting your own alchemy lab on fire cost Spirituality, Humility, or both?
+7. `[OPEN]` **Crafting failure Virtue scoring.** §4.1 mentions Humility loss on catastrophic failure but the magnitude and trigger conditions are not formalized. Should setting your own alchemy lab on fire cost Insight, Humility, or both?
 8. `[OPEN]` **UGC recipe Virtue review.** §4.2 punts UGC recipe publishing to Doc #19. Once #19 lands, the recipe schema's `source: "ugc"` flag needs a marketplace-approval pipeline definition.
 9. `[OPEN]` **Recipe journal as authoritative state vs. UI cache.** §4.2 calls the player's journal "UI-only". If a player wipes their client cache, do learned recipes survive? Persistence scope for the journal is currently unset; candidates are `PlayerInventory` (per-Avatar) or none (recompute on demand from action history).
 10. `[OPEN]` **Two-phase trade timeout under network partition.** §9.2 cites the 30-second rollback (Doc #6 §3) but trade-specific timeout semantics (does the lock release on partition? does the session expire?) need a concrete rule before MP ships.

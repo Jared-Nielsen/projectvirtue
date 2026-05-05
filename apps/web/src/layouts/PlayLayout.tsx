@@ -11,13 +11,21 @@ import {
   Loading,
   ManaBar,
   MinimapPlaceholder,
+  Popover,
+  Slider,
   Stack,
   WindowFrame,
 } from '@br/ui';
-import { A, useNavigate } from '@solidjs/router';
-import { type JSX, Show, Suspense, createResource } from 'solid-js';
+import { useNavigate } from '@solidjs/router';
+import { type JSX, Show, Suspense, createResource, onCleanup, onMount } from 'solid-js';
 import { signOut } from '../state/auth';
+import { canvasState } from '../state/canvas';
 import { mockClient } from '../state/mockClient';
+
+// Footer icon size (px). Replacement art (kingdom sigils, scroll icons,
+// etc.) drops in at this size; the explicit width/height keeps layout
+// stable when SVGs swap to bitmaps.
+const FOOTER_ICON_SIZE_PX = 44;
 
 export interface PlayLayoutProps {
   children?: JSX.Element;
@@ -143,14 +151,152 @@ export function PlayLayout(props: PlayLayoutProps): JSX.Element {
         }}
       >
         <Cluster gap="3" justify="space-between" align="center">
-          <Cluster gap="3">
-            <A href="/play/inventory">Inventory</A>
-            <A href="/play/journal">Journal</A>
-            <A href="/play/combat">Combat</A>
+          <Cluster gap="2">
+            <FooterIcon
+              icon="backpack"
+              label="Inventory"
+              onClick={() => navigate('/play/inventory')}
+            />
+            <FooterIcon icon="scroll" label="Journal" onClick={() => navigate('/play/journal')} />
+            <FooterIcon icon="swords" label="Combat" onClick={() => navigate('/play/combat')} />
+            <FooterIcon icon="gear" label="Options" onClick={() => navigate('/play/options')} />
           </Cluster>
-          <span style={{ opacity: 0.6, 'font-size': '0.85rem' }}>HUD slot</span>
+          <Cluster gap="2" align="center">
+            <TimeOfDayControl />
+            <HudToggle />
+          </Cluster>
         </Cluster>
       </footer>
     </div>
+  );
+}
+
+interface FooterIconProps {
+  readonly icon: 'backpack' | 'scroll' | 'swords' | 'gear';
+  readonly label: string;
+  readonly onClick: () => void;
+}
+
+/** Footer toolbar slot. Fixed pixel size so replacement art drops in
+ *  cleanly; uses the @br/ui IconButton hover/focus visuals as-is. */
+function FooterIcon(props: FooterIconProps): JSX.Element {
+  return (
+    <span
+      style={{
+        display: 'inline-flex',
+        width: `${FOOTER_ICON_SIZE_PX}px`,
+        height: `${FOOTER_ICON_SIZE_PX}px`,
+      }}
+    >
+      <IconButton
+        icon={props.icon}
+        label={props.label}
+        variant="ghost"
+        size="lg"
+        onClick={props.onClick}
+        title={props.label}
+      />
+    </span>
+  );
+}
+
+/** Sun icon → popover with a 0–24h slider for the day/night cycle.
+ *  Dragging the slider pauses auto-advance; "Resume cycle" re-arms it. */
+function TimeOfDayControl(): JSX.Element {
+  const onSliderChange = (value: number): void => {
+    canvasState.setCurrentHour(value);
+    canvasState.setDayNightAutoAdvance(false);
+  };
+  return (
+    <Popover
+      trigger={
+        <span
+          style={{
+            display: 'inline-flex',
+            width: `${FOOTER_ICON_SIZE_PX}px`,
+            height: `${FOOTER_ICON_SIZE_PX}px`,
+          }}
+        >
+          <IconButton
+            icon="sun"
+            label="Time of day"
+            variant="ghost"
+            size="lg"
+            title="Time of day"
+          />
+        </span>
+      }
+    >
+      <div style={{ 'min-width': '220px', padding: 'var(--br-space-2, 0.5rem)' }}>
+        <Slider
+          label={`Time: ${canvasState.currentHour().toFixed(1)}h`}
+          min={0}
+          max={24}
+          step={0.5}
+          value={canvasState.currentHour()}
+          showValue={false}
+          marks={[
+            { value: 0, label: '00' },
+            { value: 6, label: '06' },
+            { value: 12, label: '12' },
+            { value: 18, label: '18' },
+            { value: 24, label: '24' },
+          ]}
+          onValueChange={onSliderChange}
+        />
+        <Cluster gap="2" justify="end" align="center">
+          <button
+            type="button"
+            onClick={() => canvasState.setDayNightAutoAdvance(true)}
+            style={{
+              background: 'transparent',
+              border: '1px solid var(--br-color-border, #3a3328)',
+              color: 'var(--br-color-ink, #e8e2d2)',
+              padding: '4px 10px',
+              'border-radius': '4px',
+              cursor: 'pointer',
+              'font-size': '0.85rem',
+            }}
+          >
+            Resume cycle
+          </button>
+        </Cluster>
+      </div>
+    </Popover>
+  );
+}
+
+/** Eye icon (+ keyboard 'H') toggles the canvas overlay layers
+ *  (day/night tint, lighting, dev perf overlay). The world tiles +
+ *  entities are unaffected so movement/click still work. */
+function HudToggle(): JSX.Element {
+  const onKeyDown = (ev: KeyboardEvent): void => {
+    if (ev.key !== 'h' && ev.key !== 'H') return;
+    const target = ev.target as HTMLElement | null;
+    if (target && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) return;
+    canvasState.setHudOverlaysVisible(!canvasState.hudOverlaysVisible());
+  };
+  onMount(() => window.addEventListener('keydown', onKeyDown));
+  onCleanup(() => window.removeEventListener('keydown', onKeyDown));
+
+  return (
+    <span
+      style={{
+        display: 'inline-flex',
+        width: `${FOOTER_ICON_SIZE_PX}px`,
+        height: `${FOOTER_ICON_SIZE_PX}px`,
+      }}
+    >
+      <IconButton
+        icon={canvasState.hudOverlaysVisible() ? 'eye' : 'eye-off'}
+        label={
+          canvasState.hudOverlaysVisible() ? 'Hide canvas overlays (H)' : 'Show canvas overlays (H)'
+        }
+        variant="ghost"
+        size="lg"
+        title={canvasState.hudOverlaysVisible() ? 'Hide overlays (H)' : 'Show overlays (H)'}
+        onClick={() => canvasState.setHudOverlaysVisible(!canvasState.hudOverlaysVisible())}
+      />
+    </span>
   );
 }

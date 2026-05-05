@@ -35,7 +35,7 @@ const VARIANT_KEYWORDS: Readonly<Record<LoadingVariant, readonly string[]>> = {
     'banner',
     'knight',
   ],
-  default: ['codex', 'eight', 'virtues', 'avatar', 'britannia'],
+  default: ['codex', 'eight', 'virtues', 'avatar', 'avermere'],
 };
 
 /** Heuristic — return the variants this quote is thematically aligned with. */

@@ -9,7 +9,7 @@ Status: Living Technical Design Reference – Drives all gameplay implementation
 1\. Simulation Philosophy – “The World Is Alive”
 
 The simulation system is Ultima VII. Every object in the world must behave as a real, physical entity with properties, states, and consequences. The player should be able to experiment endlessly and discover emergent gameplay exactly as they did in 1992\. Core Design Rule:  
-If it exists in the world, the player can pick it up, move it, combine it, break it, or use it in ways the designers never explicitly planned — provided it respects physics, logic, and the Virtue system.This document defines the rules that make Britannia feel like a living, breathing place rather than a theme-park level.
+If it exists in the world, the player can pick it up, move it, combine it, break it, or use it in ways the designers never explicitly planned — provided it respects physics, logic, and the Virtue system.This document defines the rules that make Avermere feel like a living, breathing place rather than a theme-park level.
 
 ---
 
@@ -64,7 +64,7 @@ Destruction & Permanence:
 Unlimited Nesting: Bags inside chests inside barrels inside carts — exactly as in the original.  
 Weight & Volume Limits: Enforced on characters and containers.  
 Search & Sort: Click-and-drag or auto-sort options.  
-Ownership Transfer: Moving an item from an NPC’s container triggers a Virtue check (Stealing \= loss of Honesty/Justice).Special Containers:
+Ownership Transfer: Moving an item from an NPC’s container triggers a Virtue check (Stealing \= loss of Truth/Justice).Special Containers:
 
 * Corpses – Lootable with decay timer.  
 * Chests & Doors – Lockable/pickable/trappable.  
@@ -115,11 +115,11 @@ Emergent Gameplay:
 
 ---
 
-8\. Prototype Scope – “Britain Simulation Vertical Slice”
+8\. Prototype Scope – “Highmere Simulation Vertical Slice”
 
 Must be fully functional in first playable build:
 
-* Every object in Britain town is interactive with correct properties.  
+* Every object in Highmere town is interactive with correct properties.  
 * Fire spread, water, and lighting fully simulated in the starting area.  
 * 20+ NPCs with complete daily schedules.  
 * Full container nesting and drag-and-drop.  

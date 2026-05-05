@@ -13,7 +13,7 @@ Depends on: \#4 Simulation, \#5 Virtues, \#6 Persistent World, \#7 UGC, \#9 Tool
 
 ## 1. Purpose & Non-Goals
 
-The Model Context Protocol (MCP) server exposes Britannia's simulation to external clients (LLM agents, devtools, QA harnesses, accessibility shims, future Avatar AI companions) via a finite, contract-bound tool and resource surface.
+The Model Context Protocol (MCP) server exposes Avermere's simulation to external clients (LLM agents, devtools, QA harnesses, accessibility shims, future Avatar AI companions) via a finite, contract-bound tool and resource surface.
 
 Purpose:
 
@@ -200,7 +200,7 @@ Standard error codes: `ERR_SHARD_BINDING`, `ERR_CAPABILITY`, `ERR_VIRTUE_REJECTE
 ```
 
 * Mutates: target's `State`, possibly `Container`, possibly `Lit`, possibly `Open`, possibly inventory of the Avatar; may spawn child entities (e.g., bread from oven).
-* Virtues movable: Compassion (heal), Honesty (read sealed letter), Spirituality (meditate), Honor (touch shrine), Sacrifice (donate at altar). Sign and magnitude are determined by the Virtue Engine, not by the tool.
+* Virtues movable: Mercy (heal), Truth (read sealed letter), Insight (meditate), Honor (touch shrine), Devotion (donate at altar). Sign and magnitude are determined by the Virtue Engine, not by the tool.
 * Errors: `ERR_INVALID_TARGET`, `ERR_OUT_OF_RANGE`, `ERR_OWNERSHIP`, `ERR_VIRTUE_REJECTED`, `ERR_PHYSICS`.
 
 ### 5.4 drag
@@ -219,7 +219,7 @@ Standard error codes: `ERR_SHARD_BINDING`, `ERR_CAPABILITY`, `ERR_VIRTUE_REJECTE
 ```
 
 * Mutates: target's `Transform` and/or parent `Container`; affected container weights/volumes; ownership transfer if moving from an NPC's container into Avatar inventory.
-* Virtues movable: Honesty, Justice (taking owned property), Compassion (returning lost item to owner).
+* Virtues movable: Truth, Justice (taking owned property), Mercy (returning lost item to owner).
 * Errors: `ERR_OWNERSHIP`, `ERR_PHYSICS` (overweight, blocked), `ERR_OUT_OF_RANGE`, `ERR_VIRTUE_REJECTED`.
 
 ### 5.5 drop
@@ -253,7 +253,7 @@ Standard error codes: `ERR_SHARD_BINDING`, `ERR_CAPABILITY`, `ERR_VIRTUE_REJECTE
 ```
 
 * Mutates: consumes one or both inputs; spawns one or more output entities per recipe (\#4.1 crafting addendum). May fail benignly (humorous feedback per \#4) — `ok: true` with no `state_diff` is a valid outcome and is not an error.
-* Virtues movable: Sacrifice (donating a successful craft afterwards is a separate verb), Honor (forging cursed item against an oath could move Honor negatively if the player has sworn one).
+* Virtues movable: Devotion (donating a successful craft afterwards is a separate verb), Honor (forging cursed item against an oath could move Honor negatively if the player has sworn one).
 * Errors: `ERR_INVALID_TARGET`, `ERR_OWNERSHIP`, `ERR_PHYSICS`.
 
 ### 5.7 right\_click
@@ -272,7 +272,7 @@ Standard error codes: `ERR_SHARD_BINDING`, `ERR_CAPABILITY`, `ERR_VIRTUE_REJECTE
 ```
 
 * Mutates: action-dependent; the action's component-mutation set is declared by the entity's script hook and validated by the dispatcher.
-* Virtues movable: any, depending on action (Lockpick → Honesty/Justice; Pour onto altar → Spirituality/Sacrifice; Ignite owned barn → Compassion/Justice large negative).
+* Virtues movable: any, depending on action (Lockpick → Truth/Justice; Pour onto altar → Insight/Devotion; Ignite owned barn → Mercy/Justice large negative).
 * Errors: `ERR_UNKNOWN_ACTION` (stale `menu_token` or wrong entity), `ERR_CAPABILITY`, `ERR_VIRTUE_REJECTED`.
 
 ### 5.8 attack
@@ -289,7 +289,7 @@ Standard error codes: `ERR_SHARD_BINDING`, `ERR_CAPABILITY`, `ERR_VIRTUE_REJECTE
 ```
 
 * Mutates: target's `Health`/`Damage`, possibly `State` (on-fire weapon ignites target), Avatar's `Stamina`, weapon `Durability`.
-* Virtues movable: Valor (engaging stronger foes), Compassion (attacking helpless / fleeing target moves negatively), Justice (attacking sanctioned criminal moves positively, attacking innocent moves strongly negatively), Honor (attacking unarmed or sleeping target moves negatively).
+* Virtues movable: Courage (engaging stronger foes), Mercy (attacking helpless / fleeing target moves negatively), Justice (attacking sanctioned criminal moves positively, attacking innocent moves strongly negatively), Honor (attacking unarmed or sleeping target moves negatively).
 * Errors: `ERR_INVALID_TARGET`, `ERR_OUT_OF_RANGE`, `ERR_VIRTUE_REJECTED` (e.g., attempting murder on Virtue Shard against protected NPC).
 
 ### 5.9 cast\_spell
@@ -308,7 +308,7 @@ Standard error codes: `ERR_SHARD_BINDING`, `ERR_CAPABILITY`, `ERR_VIRTUE_REJECTE
 ```
 
 * Mutates: consumes reagents from Avatar inventory (real items per \#4.6), Avatar `Mana`, target state (damage, fire, levitation, etc.); environmental effects propagate via simulation, not via this tool.
-* Virtues movable: Spirituality (use of sanctioned magic), Compassion (heal/restore), Justice (binding criminals), Honor (oath-bound spells); negative on hostile/forbidden castings.
+* Virtues movable: Insight (use of sanctioned magic), Mercy (heal/restore), Justice (binding criminals), Honor (oath-bound spells); negative on hostile/forbidden castings.
 * Errors: `ERR_INVALID_TARGET`, `ERR_OUT_OF_RANGE`, `ERR_PHYSICS` (no reagents, no mana — returns `ok: false` with specific code).
 
 ### 5.10 throw
@@ -325,7 +325,7 @@ Standard error codes: `ERR_SHARD_BINDING`, `ERR_CAPABILITY`, `ERR_VIRTUE_REJECTE
 ```
 
 * Mutates: target's `Transform`, momentum, `Fragility` checks on impact (may break), may damage entities at impact point, may ignite flammable surfaces if entity is on fire.
-* Virtues movable: Compassion / Justice if thrown at an entity (treated as `attack` with thrown weapon), Honor (throwing a gifted item).
+* Virtues movable: Mercy / Justice if thrown at an entity (treated as `attack` with thrown weapon), Honor (throwing a gifted item).
 * Errors: `ERR_OUT_OF_RANGE`, `ERR_PHYSICS`.
 
 ### 5.11 move\_to
@@ -342,7 +342,7 @@ Standard error codes: `ERR_SHARD_BINDING`, `ERR_CAPABILITY`, `ERR_VIRTUE_REJECTE
 ```
 
 * Mutates: Avatar `Transform` over time (issues a path request through the same nav system used by mouse-click movement); does not teleport.
-* Virtues movable: none directly. Trespass into private/owned regions during movement may emit Honesty/Justice events the same way mouse movement does.
+* Virtues movable: none directly. Trespass into private/owned regions during movement may emit Truth/Justice events the same way mouse movement does.
 * Errors: `ERR_OUT_OF_RANGE`, `ERR_PHYSICS` (unreachable), `ERR_BUSY` (already moving and `mode` mismatch).
 
 ### 5.12 discord.post\_to\_guild\_channel
@@ -358,7 +358,7 @@ Standard error codes: `ERR_SHARD_BINDING`, `ERR_CAPABILITY`, `ERR_VIRTUE_REJECTE
 }
 ```
 
-* Description: Posts a message to a guild's linked Discord channel via the Britannia Discord bot. Used for in-game-originated announcements (raid calls, market events, guild-bulletin echoes).
+* Description: Posts a message to a guild's linked Discord channel via the Avermere Discord bot. Used for in-game-originated announcements (raid calls, market events, guild-bulletin echoes).
 * Authorization: guild-leader only, and only for guilds that have explicitly opted in to the Discord interop link. Calls from non-leader sessions or against non-linked guilds return `ERR_CAPABILITY`.
 * Rate limits: outbound calls are rate-limited per Discord's API (per-channel + global bucket); excess returns `ERR_RATE_LIMIT`.
 * OUTBOUND ONLY. Inbound Discord commands and Discord-side messages are NOT exposed via MCP. Discord is a community-augmentation surface only; it is never authoritative, never required, and never inside the in-game chat path (Doc #37 §Discord-interop is the canonical spec; see also Doc #41 Engine & Stack ADR for the Discord bot's process placement).
@@ -409,9 +409,9 @@ The Roblox bridge is a viable proof-of-concept path. It is not a parity target.
 
 ---
 
-## 8. Phase 1 Implementation Scope (12-Week "Britain Alive")
+## 8. Phase 1 Implementation Scope (12-Week "Highmere Alive")
 
-Per Doc \#11, the prototype is Britain-only, 8-player, 12 weeks. The MCP surface for that slice is deliberately minimal: enough to prove the dispatcher path end-to-end and to support an LLM-driven QA/inspection agent during the build, without expanding scope.
+Per Doc \#11, the prototype is Highmere-only, 8-player, 12 weeks. The MCP surface for that slice is deliberately minimal: enough to prove the dispatcher path end-to-end and to support an LLM-driven QA/inspection agent during the build, without expanding scope.
 
 In-scope tools (Phase 1):
 
@@ -419,7 +419,7 @@ In-scope tools (Phase 1):
 | ----- | ----- |
 | `examine` | Pure read through dispatcher; proves observation events and Virtue-neutral path. |
 | `entity_by_id` | Foundational resource read; needed by every client. |
-| `entities_in_region` | Lets agents enumerate Britain without polling `entity_by_id`. |
+| `entities_in_region` | Lets agents enumerate Highmere without polling `entity_by_id`. |
 | `virtue_readout` (own Avatar only) | Required to validate Virtue movement during prototype QA. |
 | **One mutating verb: `use`** | Chosen over `drag` because `use` exercises the broadest set of downstream systems (state mutation, Virtue scoring on shrines/altars/locks, persistence on door state, replication of `Open`/`Lit` flags) with the simplest input schema. `drag` adds physics-pathing complexity that is not needed to prove the dispatcher contract. |
 
@@ -431,7 +431,7 @@ Out of scope for Phase 1 (deferred to post-prototype):
 * Roblox bridge.
 * SSE transport (Phase 1 is `stdio` only, single-process, dev-machine; SSE is added in the post-prototype hardening pass once auth and rate-limit policies are settled).
 
-Phase 1 success metric: a non-engine client process can, via stdio MCP, enumerate entities in Britain, examine an NPC, read its own Virtue, `use` the Compassion shrine, and observe both the simulated state change and the Virtue delta — produced by the same code path that fires for a mouse click.
+Phase 1 success metric: a non-engine client process can, via stdio MCP, enumerate entities in Highmere, examine an NPC, read its own Virtue, `use` the Mercy shrine, and observe both the simulated state change and the Virtue delta — produced by the same code path that fires for a mouse click.
 
 ---
 

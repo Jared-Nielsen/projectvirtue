@@ -17,7 +17,7 @@ describe('MockClient', () => {
 
   it('POST /v1/auth/login returns a session and Me payload', async () => {
     const res = await client.post<LoginResponse>('/v1/auth/login', {
-      email: 'stranger@britannia.example',
+      email: 'stranger@avermere.example',
       password: 'mock',
     });
     expect(res.session.protocolVersion).toBe(1);

@@ -1,8 +1,8 @@
 {
   "campaigns": [
     {
-      "id": "campaign_lord_british_banquet",
-      "name": "Lord British's Banquet",
+      "id": "campaign_lord_avermere_banquet",
+      "name": "Lord Avermere's Banquet",
       "state": "RUNNING",
       "gmHandle": "wisesage_gm",
       "playerCount": 5,
@@ -12,7 +12,7 @@
     },
     {
       "id": "campaign_dark_tower",
-      "name": "The Dark Tower of Despise",
+      "name": "The Dark Tower of Blacktarn",
       "state": "INVITED",
       "gmHandle": "umbra_gm",
       "playerCount": 3,
@@ -22,7 +22,7 @@
     },
     {
       "id": "campaign_first_voyage",
-      "name": "First Voyage to the Serpent Isle",
+      "name": "First Voyage to the The Iron Marches",
       "state": "DRAFT",
       "gmHandle": "captain_hawkins_gm",
       "playerCount": 1,
@@ -30,8 +30,8 @@
       "tags": ["voyage", "exploration"]
     },
     {
-      "id": "campaign_yew_assize",
-      "name": "Yew Assize: The Bell Murders",
+      "id": "campaign_blackford_assize",
+      "name": "Blackford Assize: The Bell Murders",
       "state": "SUSPENDED",
       "gmHandle": "barrister_quill_gm",
       "playerCount": 4,

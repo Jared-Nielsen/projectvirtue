@@ -60,7 +60,7 @@ export function placeLabels(
 const DEFAULT_BOUNDS = { minX: 0, minY: 0, maxX: 32, maxY: 24 };
 
 export function CityHud(props: CityHudProps): JSX.Element {
-  const region = (): string => props.regionId ?? 'region_britain';
+  const region = (): string => props.regionId ?? 'region_highmere';
   const label = (): string => props.regionLabel ?? 'Greenvale';
 
   const [npcs] = createResource(() => mockClient.get<NpcsPayload>('/v1/world/npcs'));

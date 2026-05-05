@@ -151,7 +151,7 @@ describe('CityHud.placeLabels', () => {
       archetype: 'archetype.npc.test' as Npc['archetype'],
       name: id,
       title: 'Test',
-      regionId: 'region_britain' as Npc['regionId'],
+      regionId: 'region_highmere' as Npc['regionId'],
       position: { x, y, z: 0 },
       disposition: 'friendly',
       portrait: '',

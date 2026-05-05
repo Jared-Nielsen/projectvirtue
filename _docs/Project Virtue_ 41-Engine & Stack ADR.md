@@ -219,7 +219,7 @@ This is non-obvious — many MMOs embed their editor in the game client. The rea
 This is the row most likely to be misread. There are **two kinds of cutscene** and they have different owners:
 
 - **Cinematic cutscenes** (a fixed pre-rendered or scripted sequence with cameras, voiceover, baked timing — e.g. the intro movie, end-of-act stingers): **UE5 Sequencer.** These are linear, non-interactive, and run only on the UE5 client. The TS client either skips them or shows a still-frame fallback.
-- **In-world scripted events** (Iolo waves at you when you walk past his shop; a wandering bard plays a tune at noon): **Rust scripted events.** These run in the simulation, drive the same NPC entities the rest of the game uses, and replicate to all clients identically.
+- **In-world scripted events** (Erevan waves at you when you walk past his shop; a wandering bard plays a tune at noon): **Rust scripted events.** These run in the simulation, drive the same NPC entities the rest of the game uses, and replicate to all clients identically.
 
 Conflating these is the failure mode. A scripted event is **not** a cinematic; a cinematic is **not** an NPC behaviour.
 

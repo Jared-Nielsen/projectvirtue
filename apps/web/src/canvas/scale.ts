@@ -5,15 +5,15 @@
 //
 // We currently develop against the Kenney isometric-miniature art (chunky, 3D-
 // feeling tiles — `kenney-miniature` mode is the default). When the project
-// later moves to flatter Ultima VII-style art with a larger-feeling world,
-// switching `DEFAULT_SCALE_MODE` (or selecting via `?scale=ultima-vii`) tunes
+// later moves to flatter flat 2:1 iso art with smaller per-tile footprint with a larger-feeling world,
+// switching `DEFAULT_SCALE_MODE` (or selecting via `?scale=flat-classic`) tunes
 // the entire canvas without per-system patches.
 //
 // Adding a new mode: add a const matching the `ScaleMode` shape, register it
 // in `SCALE_MODES`, and extend `ScaleModeId`. Every consumer that already
 // reads from this module picks it up automatically.
 
-export type ScaleModeId = 'kenney-miniature' | 'ultima-vii';
+export type ScaleModeId = 'kenney-miniature' | 'flat-classic';
 
 export interface ScaleMode {
   readonly id: ScaleModeId;
@@ -57,25 +57,38 @@ export interface ScaleMode {
     readonly y: number;
   };
 
-  /** Sprite atlas manifest URL, served from the app's `public/` dir. */
+  /** Sprite atlas manifest URL, served from the app's `public/` dir.
+   *  Used by the legacy programmatic-tile path; superseded for tile art
+   *  by `tileMapSource` (Tiled .tmx/.tmj) when the canvas falls through
+   *  to pixi-tiledmap. */
   readonly atlasManifest: string;
+
+  /** Tiled map (.tmx or .tmj) URL for this mode's default region.
+   *  Loaded by `pixi-tiledmap`; the .tmx may reference R2-hosted PNGs
+   *  cross-origin (CORS configured on media.gamecodex.com). */
+  readonly tileMapSource: string;
 }
 
+// Real Kenney isometric-miniature tile size is 256x128 (the diamond
+// footprint inside their 256x512 PNGs — the upper portion is the
+// building/decor extending above). Earlier presets used 128x64 as a
+// guess before we sampled the real art.
 const KENNEY_MINIATURE: ScaleMode = {
   id: 'kenney-miniature',
   label: 'Kenney miniature (chunky 3D-feel)',
-  tile: { w: 128, h: 64 },
+  tile: { w: 256, h: 128 },
   spriteScale: { player: 0.55, npc: 0.5 },
-  camera: { minZoom: 0.4, maxZoom: 2.0, initialZoom: 1.0 },
-  walk: { playerTilesPerSec: 4, npcTilesPerSec: 1.5 },
-  lighting: { torchRadius: 220 },
+  camera: { minZoom: 0.25, maxZoom: 1.25, initialZoom: 0.6 },
+  walk: { playerTilesPerSec: 3, npcTilesPerSec: 1.2 },
+  lighting: { torchRadius: 360 },
   decorAnchor: { x: 0.5, y: 0.85 },
   atlasManifest: '/sprites.json',
+  tileMapSource: '/maps/avermere-library.tmx',
 };
 
-const ULTIMA_VII: ScaleMode = {
-  id: 'ultima-vii',
-  label: 'Ultima VII (flat, expansive world feel)',
+const FLAT_CLASSIC: ScaleMode = {
+  id: 'flat-classic',
+  label: 'Flat-Classic (flat 2:1 iso, expansive world feel)',
   tile: { w: 64, h: 32 },
   spriteScale: { player: 0.85, npc: 0.8 },
   camera: { minZoom: 0.7, maxZoom: 3.5, initialZoom: 1.5 },
@@ -83,11 +96,14 @@ const ULTIMA_VII: ScaleMode = {
   lighting: { torchRadius: 140 },
   decorAnchor: { x: 0.5, y: 0.85 },
   atlasManifest: '/sprites.json',
+  // Flat-classic art pack and its .tmx are not yet authored — the canvas
+  // falls back to programmatic colored diamonds when Tiled load fails.
+  tileMapSource: '/maps/avermere-flat.tmx',
 };
 
 export const SCALE_MODES = {
   'kenney-miniature': KENNEY_MINIATURE,
-  'ultima-vii': ULTIMA_VII,
+  'flat-classic': FLAT_CLASSIC,
 } as const satisfies Record<ScaleModeId, ScaleMode>;
 
 /** Default scale mode used when no override is provided. */

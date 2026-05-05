@@ -10,18 +10,18 @@ import {
 describe('scale mode registry', () => {
   it('exposes both presets keyed by id', () => {
     expect(SCALE_MODES['kenney-miniature']).toBeDefined();
-    expect(SCALE_MODES['ultima-vii']).toBeDefined();
+    expect(SCALE_MODES['flat-classic']).toBeDefined();
     expect(SCALE_MODES['kenney-miniature'].id).toBe('kenney-miniature');
-    expect(SCALE_MODES['ultima-vii'].id).toBe('ultima-vii');
+    expect(SCALE_MODES['flat-classic'].id).toBe('flat-classic');
   });
 
   it('default is kenney-miniature while we develop against the Kenney art', () => {
     expect(DEFAULT_SCALE_MODE).toBe('kenney-miniature');
   });
 
-  it('kenney mode renders chunkier than ultima-vii (larger tile pixels)', () => {
+  it('kenney mode renders chunkier than flat-classic (larger tile pixels)', () => {
     const kenney = SCALE_MODES['kenney-miniature'];
-    const u7 = SCALE_MODES['ultima-vii'];
+    const u7 = SCALE_MODES['flat-classic'];
     expect(kenney.tile.w).toBeGreaterThan(u7.tile.w);
     expect(kenney.tile.h).toBeGreaterThan(u7.tile.h);
   });
@@ -35,7 +35,7 @@ describe('scale mode registry', () => {
 
 describe('getScaleMode()', () => {
   it('returns the requested mode when valid', () => {
-    expect(getScaleMode('ultima-vii').id).toBe('ultima-vii');
+    expect(getScaleMode('flat-classic').id).toBe('flat-classic');
     expect(getScaleMode('kenney-miniature').id).toBe('kenney-miniature');
   });
 
@@ -47,8 +47,8 @@ describe('getScaleMode()', () => {
 
 describe('isoMetricsFor()', () => {
   it('projects ScaleMode.tile into the IsoMetrics shape that tiles.ts consumes', () => {
-    expect(isoMetricsFor(SCALE_MODES['kenney-miniature'])).toEqual({ tileW: 128, tileH: 64 });
-    expect(isoMetricsFor(SCALE_MODES['ultima-vii'])).toEqual({ tileW: 64, tileH: 32 });
+    expect(isoMetricsFor(SCALE_MODES['kenney-miniature'])).toEqual({ tileW: 256, tileH: 128 });
+    expect(isoMetricsFor(SCALE_MODES['flat-classic'])).toEqual({ tileW: 64, tileH: 32 });
   });
 });
 
@@ -72,12 +72,12 @@ describe('getActiveScaleMode() override resolution', () => {
     expect(getActiveScaleMode().id).toBe(DEFAULT_SCALE_MODE);
   });
 
-  it('honours ?scale=ultima-vii on the URL', () => {
+  it('honours ?scale=flat-classic on the URL', () => {
     Object.defineProperty(window, 'location', {
-      value: { ...realLocation, search: '?scale=ultima-vii' },
+      value: { ...realLocation, search: '?scale=flat-classic' },
       configurable: true,
     });
-    expect(getActiveScaleMode().id).toBe('ultima-vii');
+    expect(getActiveScaleMode().id).toBe('flat-classic');
   });
 
   it('honours pv.canvas.scaleMode in localStorage when no URL override is present', () => {
@@ -85,8 +85,8 @@ describe('getActiveScaleMode() override resolution', () => {
       value: { ...realLocation, search: '' },
       configurable: true,
     });
-    window.localStorage.setItem('pv.canvas.scaleMode', 'ultima-vii');
-    expect(getActiveScaleMode().id).toBe('ultima-vii');
+    window.localStorage.setItem('pv.canvas.scaleMode', 'flat-classic');
+    expect(getActiveScaleMode().id).toBe('flat-classic');
   });
 
   it('URL override beats localStorage', () => {
@@ -94,7 +94,7 @@ describe('getActiveScaleMode() override resolution', () => {
       value: { ...realLocation, search: '?scale=kenney-miniature' },
       configurable: true,
     });
-    window.localStorage.setItem('pv.canvas.scaleMode', 'ultima-vii');
+    window.localStorage.setItem('pv.canvas.scaleMode', 'flat-classic');
     expect(getActiveScaleMode().id).toBe('kenney-miniature');
   });
 

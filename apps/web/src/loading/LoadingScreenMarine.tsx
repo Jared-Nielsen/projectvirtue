@@ -68,8 +68,8 @@ export function LoadingScreenMarine(props: LoadingScreenMarineProps): JSX.Elemen
     <LoadingScreenFrame
       variant="marine"
       tagline={props.tagline ?? 'A Journey. A Choice. A Life.'}
-      title="ACROSS THE BRITANNIAN MAIN"
-      subtitle="By tide and tiller, the Vesper-bound make port at last."
+      title="ACROSS THE AVERMEREAN MAIN"
+      subtitle="By tide and tiller, the Eastwall-bound make port at last."
       quote={props.quote ?? null}
       cssVars={CSS_VARS}
     />

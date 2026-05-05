@@ -9,9 +9,9 @@ tags:
 category: 'dev-update'
 ---
 
-A "shard" in our terminology is a self-contained instance of Sosaria — a complete world with its own population, economy, history, and tick cadence. We launch with two flavors that share infrastructure but disagree on the rules.
+A "shard" in our terminology is a self-contained instance of Mythenor — a complete world with its own population, economy, history, and tick cadence. We launch with two flavors that share infrastructure but disagree on the rules.
 
-Order shards enforce the virtue system as a hard ruleset. PvP is consensual or arena-bounded. Looting is restricted. Reputation is sticky. These are the canonical Britannia experience.
+Order shards enforce the virtue system as a hard ruleset. PvP is consensual or arena-bounded. Looting is restricted. Reputation is sticky. These are the canonical Avermere experience.
 
 Chaos shards remove the velvet rope. Open PvP, full looting, reduced virtue rewards. Same world, different social contract. They're also the source of the most talked-about emergent stories.
 

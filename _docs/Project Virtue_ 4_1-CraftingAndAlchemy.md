@@ -31,7 +31,7 @@ If it makes sense in a medieval fantasy world, it should work — even if the de
 * Dough \+ Heat (oven/fire) → Bread  
 * Meat \+ Heat → Cooked meat  
 * Advanced: Pies, cakes, stews using multiple ingredients in pots/pans.  
-* Remake addition: Spoilage timer on raw food (adds realism and Sacrifice opportunities).
+* Remake addition: Spoilage timer on raw food (adds realism and Devotion opportunities).
 
 3.2 Smithing & Metalwork
 
@@ -70,7 +70,7 @@ If it makes sense in a medieval fantasy world, it should work — even if the de
 
 5\. Integration with Other Systems
 
-* Virtues (\#5): High Sacrifice players may receive free ingredients from grateful NPCs. Low Honesty players risk being caught stealing reagents.  
+* Virtues (\#5): High Devotion players may receive free ingredients from grateful NPCs. Low Truth players risk being caught stealing reagents.  
 * Simulation (\#4): Crafted items obey full physics and environmental rules (a fresh loaf can be set on fire or eaten by rats).  
 * Persistent World (\#6): Crafted goods can be traded in the player economy.  
 * UGC (\#7): Players can publish new recipes and crafting stations.  
@@ -78,9 +78,9 @@ If it makes sense in a medieval fantasy world, it should work — even if the de
 
 ---
 
-6\. Prototype Scope for “Britain Alive”
+6\. Prototype Scope for “Highmere Alive”
 
-* Functional forge, oven, and alchemy lab in Britain.  
+* Functional forge, oven, and alchemy lab in Highmere.  
 * At least 8 working recipes (bread, dagger, basic healing potion, etc.).  
 * Visible crafting animations and failure states.  
 * Items created in the prototype remain fully simulated (can be dropped, traded with friends, or used in combat).

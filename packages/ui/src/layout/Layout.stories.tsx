@@ -40,11 +40,11 @@ export const ClusterExample: Story = {
 export const GridExample: Story = {
   render: () => (
     <Grid minColumn="180px" gap="4">
-      {tile('Britain')}
-      {tile('Trinsic')}
-      {tile('Magincia')}
-      {tile('Moonglow')}
-      {tile('Yew')}
+      {tile('Highmere')}
+      {tile('Stonereach')}
+      {tile('Aurelia')}
+      {tile('Lumencove')}
+      {tile('Blackford')}
       {tile('Jhelom')}
     </Grid>
   ),

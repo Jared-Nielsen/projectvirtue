@@ -25,16 +25,16 @@ Each Virtue is tracked independently on a scale of 0–100 (hidden from player u
 
 | Virtue | Core Question | Positive Actions (examples) | Negative Actions (examples) | Gameplay Impact |
 | ----- | ----- | ----- | ----- | ----- |
-| Honesty | Do you speak and act truthfully? | Tell truth in dialogue, return lost items | Lie, steal, cheat in trades | NPC trust, shop prices, quest availability |
-| Compassion | Do you show mercy and empathy? | Heal wounded NPCs, donate gold, spare lives | Kill innocents, ignore suffering | Party loyalty, follower recruitment, healing costs |
-| Valor | Do you face danger with courage? | Fight overwhelming odds, protect the weak | Flee combat, abandon allies | Combat reputation, guard/NPC aid in battle |
+| Truth | Do you speak and act truthfully? | Tell truth in dialogue, return lost items | Lie, steal, cheat in trades | NPC trust, shop prices, quest availability |
+| Mercy | Do you show mercy and empathy? | Heal wounded NPCs, donate gold, spare lives | Kill innocents, ignore suffering | Party loyalty, follower recruitment, healing costs |
+| Courage | Do you face danger with courage? | Fight overwhelming odds, protect the weak | Flee combat, abandon allies | Combat reputation, guard/NPC aid in battle |
 | Justice | Do you uphold fairness? | Punish criminals fairly, balance scales | Murder innocents, accept bribes | Legal consequences, High Court reputation |
-| Sacrifice | Do you give of yourself? | Donate reagents, risk life for others | Hoard resources, exploit others | Crafting discounts, NPC gifts, story sacrifices |
+| Devotion | Do you give of yourself? | Donate reagents, risk life for others | Hoard resources, exploit others | Crafting discounts, NPC gifts, story sacrifices |
 | Honor | Do you keep your word? | Fulfill promises, respect oaths | Break contracts, betray allies | Guild membership, long-term NPC alliances |
-| Spirituality | Do you seek inner wisdom? | Meditate at shrines, study lore | Desecrate holy sites, ignore spiritual quests | Magic power, vision/dream sequences |
+| Insight | Do you seek inner wisdom? | Meditate at shrines, study lore | Desecrate holy sites, ignore spiritual quests | Magic power, vision/dream sequences |
 | Humility | Do you remain humble? | Admit ignorance, help the lowly | Boast, demand rewards, act superior | Random helpful events, hidden quest access |
 
-Opposing Tension: Raising one Virtue can slightly lower its philosophical opposite (e.g., extreme Valor may reduce Compassion if it leads to reckless violence).
+Opposing Tension: Raising one Virtue can slightly lower its philosophical opposite (e.g., extreme Courage may reduce Mercy if it leads to reckless violence).
 
 ---
 
@@ -49,7 +49,7 @@ Visible Feedback Systems:
 
 * Shrine meditation gives exact Virtue readings.  
 * NPC dialogue changes tone based on reputation thresholds.  
-* Visual/audio cues (e.g., guards salute high-Honor players; beggars avoid low-Compassion players).  
+* Visual/audio cues (e.g., guards salute high-Honor players; beggars avoid low-Mercy players).  
 * Periodic “Virtue Visions” — dream sequences that narrate the consequences of recent actions.
 
 Persistent Multiplayer Layer:
@@ -61,8 +61,8 @@ Persistent Multiplayer Layer:
 
 4\. Integration with Simulation & World Systems (Cross-Document Links)
 
-* Simulation (\#4): Stealing an object triggers immediate Honesty/Justice loss. Burning an innocent’s home causes massive Compassion/Sacrifice penalties. Saving a burning NPC raises multiple Virtues.  
-* Economy & Crafting: High Sacrifice players get free reagents from grateful NPCs; low Honor players pay higher taxes.  
+* Simulation (\#4): Stealing an object triggers immediate Truth/Justice loss. Burning an innocent’s home causes massive Mercy/Devotion penalties. Saving a burning NPC raises multiple Virtues.  
+* Economy & Crafting: High Devotion players get free reagents from grateful NPCs; low Honor players pay higher taxes.  
 * Combat: Killing with environmental objects (pushing enemy into fire) is judged less harshly than direct murder.  
 * Story & Quests: Major branches (including the Black Gate campaign) have Virtue-gated endings and optional paths.  
 * UGC & Modding (\#7): Player-created quests are automatically scored for Virtue alignment. Highly virtuous content gets promotion priority in the marketplace.
@@ -74,7 +74,7 @@ Persistent Multiplayer Layer:
 Examples of Emergent Morality:
 
 * A player who consistently lies may find merchants giving fake discounts that are actually scams.  
-* A high-Valor player who abandons a companion in combat may trigger a permanent companion desertion event.  
+* A high-Courage player who abandons a companion in combat may trigger a permanent companion desertion event.  
 * In persistent multiplayer, a town may vote to exile a player whose low Justice score has caused chaos.
 
 Redemption Path:  
@@ -82,14 +82,14 @@ Virtues can always be regained through atonement quests, shrine pilgrimages, or 
 
 ---
 
-6\. Prototype Scope – “Virtues in Britain”
+6\. Prototype Scope – “Virtues in Highmere”
 
 Must be fully functional in vertical slice:
 
-* All eight Virtues tracked in real time during the Britain town sequence.  
+* All eight Virtues tracked in real time during the Highmere town sequence.  
 * Immediate feedback when player steals, lies, helps, or harms.  
 * At least 8 NPCs whose dialogue and schedules change based on the player’s current Virtue profile.  
-* One shrine (Compassion shrine outside Britain) fully interactive with meditation and Virtue readout.  
+* One shrine (Mercy shrine outside Highmere) fully interactive with meditation and Virtue readout.  
 * Visible consequences: e.g., steal from a merchant → guards become hostile; help a beggar → free inn stay later.
 
 Success Metric:  
@@ -97,7 +97,7 @@ A player who experiments with moral choices for 15 minutes should feel the world
 
 ---
 
-Appendix: Open Questions for Lord British
+Appendix: Open Questions for Lord Avermere
 
 * Desired edge-case rulings on Virtue conflicts.  
 * Any new philosophical expansions he wishes to introduce for the persistent era.

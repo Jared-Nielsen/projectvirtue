@@ -8,7 +8,7 @@ Status: Living Framework Reference – Ensures every new region feels like it be
 
 1\. Procedural Vision – “Guided Discovery, Never Random Chaos”
 
-Procedural generation in Project Virtue is not about infinite identical planets like No Man’s Sky. It is about guided, hand-crafted-feeling expansion that grows Britannia outward from the 1992 map while preserving the retro isometric soul, simulation depth, and Virtue-driven storytelling of the original game.Core Design Rule:  
+Procedural generation in Project Virtue is not about infinite identical planets like No Man’s Sky. It is about guided, hand-crafted-feeling expansion that grows Avermere outward from the 1992 map while preserving the retro isometric soul, simulation depth, and Virtue-driven storytelling of the original game.Core Design Rule:  
 Every procedurally generated area must feel like a lost page from a Richard Garriott notebook — mysterious, wondrous, and morally complex. Randomness serves discovery; it never replaces hand-crafted narrative or simulation fidelity.This framework allows the world to grow for decades without requiring hundreds of artists and designers.
 
 ---
@@ -50,14 +50,14 @@ Generation Types:
 
 3.3 Quests & Narrative
 
-* Template library of Virtue-driven quest skeletons (“A farmer needs help choosing between honesty and compassion”).  
+* Template library of Virtue-driven quest skeletons (“A farmer needs help choosing between truth and mercy”).  
 * Dynamic dialogue generated from NPC personality \+ player Virtue score.  
 * Branching outcomes based on player choices and group reputation.
 
 3.4 NPC & Creature Population
 
 * Base templates \+ procedural variation in appearance, schedules, and secret flags.  
-* Spawn rates balanced by Virtue density (high-Compassion areas have fewer hostile creatures).
+* Spawn rates balanced by Virtue density (high-Mercy areas have fewer hostile creatures).
 
 3.5 Resource & Economy Nodes
 
@@ -98,7 +98,7 @@ Team Workflow:
 
 6\. Prototype Scope – “First Procedural Test”
 
-Must be functional in Britain vertical slice:
+Must be functional in Highmere vertical slice:
 
 * One small procedural dungeon (“Cave of Trials”) that can be regenerated with different layouts, objects, and a simple Virtue dilemma.  
 * Basic quest template that reacts to player Virtue score.  
@@ -115,4 +115,4 @@ Appendix: Technical Implementation Notes
 * All procedural content stored as lightweight data packets (fast downloads).  
 * Live team override tools for emergency fixes or special events.
 
-This framework ensures Project Virtue can grow infinitely while always feeling like the same beloved world Lord British first created.  
+This framework ensures Project Virtue can grow infinitely while always feeling like the same beloved world Lord Avermere first created.  

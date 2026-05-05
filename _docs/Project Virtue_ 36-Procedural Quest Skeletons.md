@@ -10,7 +10,7 @@ Depends on: #3 World Bible, #5 Virtues, #6 Persistent World, #8 Procedural Gener
 
 Resolves: Doc #8 §3.3 (procedural quest skeleton library was promised but not specified). Doc #19 §10 (`QuestSkeleton.params` schema was sketched but slot resolution, coherence checks, chaining, and authoring were left to this document).
 
-Provenance tags: `[BG]` Black Gate (Ultima VII original), `[SI]` Serpent Isle, `[U4]` Ultima IV (Virtues canon), `[BR]` Project Virtue (new layer). Most of this document is `[BR]` — Ultima VII's quests were hand-authored single-file scripts; nothing in the original used templated parameter slots or runtime binding.
+Provenance tags: `[BG]` Black Gate (Ultima VII original), `[SI]` The Iron Marches, `[U4]` Ultima IV (Virtues canon), `[BR]` Project Virtue (new layer). Most of this document is `[BR]` — Ultima VII's quests were hand-authored single-file scripts; nothing in the original used templated parameter slots or runtime binding.
 
 ---
 
@@ -18,17 +18,17 @@ Provenance tags: `[BG]` Black Gate (Ultima VII original), `[SI]` Serpent Isle, `
 
 ### 1.1 Why skeletons at all `[BR]`
 
-Britannia must grow continuously without surrendering its hand-crafted feel (Doc #8 §1, "Guided Discovery, Never Random Chaos"). Hand-authoring every side quest in every frontier region scales linearly with team size and inversely with shipping velocity; pure LLM-driven generation produces text that drifts off-canon, contradicts world state, and bypasses Virtue scoring. **Skeletons sit between**: a designer-authored *shape* (a fetch, an escort, a betrayal) with typed parameter slots that the procedural generator binds at runtime to live world state. The shape carries the load-bearing structure — Virtue branches, fail conditions, journal cadence, reward semantics — while the slots carry the local color (which NPC, which item, which region, which moral dilemma).
+Avermere must grow continuously without surrendering its hand-crafted feel (Doc #8 §1, "Guided Discovery, Never Random Chaos"). Hand-authoring every side quest in every frontier region scales linearly with team size and inversely with shipping velocity; pure LLM-driven generation produces text that drifts off-canon, contradicts world state, and bypasses Virtue scoring. **Skeletons sit between**: a designer-authored *shape* (a fetch, an escort, a betrayal) with typed parameter slots that the procedural generator binds at runtime to live world state. The shape carries the load-bearing structure — Virtue branches, fail conditions, journal cadence, reward semantics — while the slots carry the local color (which NPC, which item, which region, which moral dilemma).
 
 The skeleton is a `Quest` (Doc #19 §3.1) with `is_skeleton = true` and a typed `params` array. **Every binding emits a fully-formed `Quest` instance through the same schema** — no parallel runtime, no privileged write path. Skeleton binding is just code that fills in the strings and `EntityId`s of an ordinary quest before it enters the journal.
 
 ### 1.2 Non-negotiables
 
 1. **Dispatcher invariant.** Every effect a skeleton-bound quest produces — `GiveItem`, `ChangeVirtue`, `StartQuest`, `CompleteQuest` — flows through `VerbDispatcher.dispatch(...)` (Doc #13 §4 / Doc #19 §6). A bound quest is structurally identical to a hand-authored one. Per the Doc #41 Engine & Stack ADR, the dispatcher and the binder both run on the authoritative Rust server; UE5 and TS/PixiJS clients are dumb views that surface bound quest text and stage state via the Protobuf wire protocol and never bind quests locally.
-2. **Virtue scoring fires.** A bound "slay" quest whose target is an `is_innocent = true` NPC produces the same Compassion/Justice loss as any other innocent kill (Doc #13 §1.7, Doc #5 §4). The skeleton system cannot launder away moral weight.
+2. **Virtue scoring fires.** A bound "slay" quest whose target is an `is_innocent = true` NPC produces the same Mercy/Justice loss as any other innocent kill (Doc #13 §1.7, Doc #5 §4). The skeleton system cannot launder away moral weight.
 3. **Coherence before journal.** A bound quest is only written to a player's journal (Doc #17 §3.2) **after** the coherence checker (§7) has confirmed its slots resolve to entities that exist, are reachable, and do not contradict existing live quests in the player's journal or the region.
 4. **Determinism from seed.** Given a fixed `(skeleton_id, region_seed, time_seed)`, slot resolution produces the same quest. This makes incidents reproducible for moderation review (Doc #29) and gives Doc #28 telemetry a stable identity per quest instance.
-5. **Lord British's cabinet is off limits.** The eight canonical companions (Iolo, Shamino, Spark, Dupre, Jaana, Geoffrey, Julia, Katrina) and Lord British himself are permanently excluded from `target` and `victim` slots in skeletons unless explicitly opted-in via the Alternate Britannia flag (Doc #19 §8.3, Doc #3 §7). `[BR]` matching the Doc #19 validator red-flag rule.
+5. **Lord Avermere's cabinet is off limits.** The eight canonical companions (Erevan, Theran, Spark, Bron, Jaana, Geoffrey, Julia, Katrina) and Lord Avermere himself are permanently excluded from `target` and `victim` slots in skeletons unless explicitly opted-in via the Alternate Avermere flag (Doc #19 §8.3, Doc #3 §7). `[BR]` matching the Doc #19 validator red-flag rule.
 
 ### 1.3 Hand-authored vs skeleton-bound
 
@@ -53,21 +53,21 @@ The Phase-1-launch skeleton library is a small, curated set. Frontier expansions
 
 | Kind | Spine | Typical slots | Virtue affordances |
 |---|---|---|---|
-| `fetch` | Giver asks Avatar to retrieve `{item}` from `{location}` and return it | `giver`, `item`, `location`, `reward`, `time_window?` | Compassion (helping the needful); Honesty (proving a returned item authentic); Sacrifice if reward forfeited |
-| `deliver` | Giver hands Avatar `{package}` to carry to `{recipient}` in `{destination}`, possibly with peril en route | `giver`, `package`, `recipient`, `destination`, `reward`, `time_window?`, `intercept?` | Honor (oath of safe passage); Honesty (no peeking inside `package`) |
-| `slay` | `{target}` is identified as a monster/threat; Avatar is asked to kill it | `giver`, `target`, `location`, `reward`, `evidence?` | Valor (combat); Justice (correct identification); Compassion if target turns out to be misidentified |
-| `escort` | Giver or `{escortee}` requires safe travel to `{destination}`, with `{ambushers}` likely along the path | `giver`, `escortee`, `destination`, `time_window`, `ambushers?`, `reward` | Valor + Compassion; Sacrifice if escortee dies |
-| `investigate` | A wrong has occurred; Avatar must gather `{clues}` and identify `{culprit}` from a candidate set | `giver`, `crime`, `clue_set`, `suspect_set`, `reward` | Honesty (truthful accusation); Justice (correct identification) |
-| `defend` | A `{location}` will be attacked by `{aggressors}` at `{time_window}`; Avatar must hold | `giver`, `location`, `aggressors`, `time_window`, `reward` | Valor; Sacrifice |
-| `gather` | Collect `{count}` of `{resource}` from `{biome_or_region}` and bring to `{recipient}` | `recipient`, `resource`, `count`, `biome_or_region`, `reward` | Compassion (rebuilding); Humility (humble labor) |
-| `rescue` | `{captive}` is held by `{captor}` in `{prison}`; Avatar must free them | `giver`, `captive`, `captor`, `prison`, `reward`, `ransom_alt?` | Compassion; Sacrifice (ransom alt) |
-| `ritual` | Perform a `{rite}` requiring `{components}` at `{shrine_or_circle}` at `{time_window}` | `officiant?`, `rite`, `components`, `shrine_or_circle`, `time_window` | Spirituality; Sacrifice (rare components); Humility |
-| `exploration` | Discover a hinted `{landmark}` in `{region}` and report what was found | `giver`, `landmark`, `region`, `reward`, `report_keyword` | Spirituality; Honesty (truthful report) |
-| `courier_chain` | A multi-hop delivery: `{package}` travels A → B → C → D, each hop yielding a fragment of a larger reveal | `start_giver`, `hops[]`, `final_recipient`, `reward` | Honor; Honesty; Patience as a sub-virtue of Humility |
-| `betrayal` | An apparent giver/quest is a trap; the "true" objective is uncovered mid-quest, presenting a Virtue choice | `apparent_giver`, `apparent_quest`, `true_objective`, `reveal_trigger`, `reward_truth`, `reward_complicity` | Honesty (refuse complicity); Compassion (refuse the betrayal); Honor; Justice |
+| `fetch` | Giver asks Avatar to retrieve `{item}` from `{location}` and return it | `giver`, `item`, `location`, `reward`, `time_window?` | Mercy (helping the needful); Truth (proving a returned item authentic); Devotion if reward forfeited |
+| `deliver` | Giver hands Avatar `{package}` to carry to `{recipient}` in `{destination}`, possibly with peril en route | `giver`, `package`, `recipient`, `destination`, `reward`, `time_window?`, `intercept?` | Honor (oath of safe passage); Truth (no peeking inside `package`) |
+| `slay` | `{target}` is identified as a monster/threat; Avatar is asked to kill it | `giver`, `target`, `location`, `reward`, `evidence?` | Courage (combat); Justice (correct identification); Mercy if target turns out to be misidentified |
+| `escort` | Giver or `{escortee}` requires safe travel to `{destination}`, with `{ambushers}` likely along the path | `giver`, `escortee`, `destination`, `time_window`, `ambushers?`, `reward` | Courage + Mercy; Devotion if escortee dies |
+| `investigate` | A wrong has occurred; Avatar must gather `{clues}` and identify `{culprit}` from a candidate set | `giver`, `crime`, `clue_set`, `suspect_set`, `reward` | Truth (truthful accusation); Justice (correct identification) |
+| `defend` | A `{location}` will be attacked by `{aggressors}` at `{time_window}`; Avatar must hold | `giver`, `location`, `aggressors`, `time_window`, `reward` | Courage; Devotion |
+| `gather` | Collect `{count}` of `{resource}` from `{biome_or_region}` and bring to `{recipient}` | `recipient`, `resource`, `count`, `biome_or_region`, `reward` | Mercy (rebuilding); Humility (humble labor) |
+| `rescue` | `{captive}` is held by `{captor}` in `{prison}`; Avatar must free them | `giver`, `captive`, `captor`, `prison`, `reward`, `ransom_alt?` | Mercy; Devotion (ransom alt) |
+| `ritual` | Perform a `{rite}` requiring `{components}` at `{shrine_or_circle}` at `{time_window}` | `officiant?`, `rite`, `components`, `shrine_or_circle`, `time_window` | Insight; Devotion (rare components); Humility |
+| `exploration` | Discover a hinted `{landmark}` in `{region}` and report what was found | `giver`, `landmark`, `region`, `reward`, `report_keyword` | Insight; Truth (truthful report) |
+| `courier_chain` | A multi-hop delivery: `{package}` travels A → B → C → D, each hop yielding a fragment of a larger reveal | `start_giver`, `hops[]`, `final_recipient`, `reward` | Honor; Truth; Patience as a sub-virtue of Humility |
+| `betrayal` | An apparent giver/quest is a trap; the "true" objective is uncovered mid-quest, presenting a Virtue choice | `apparent_giver`, `apparent_quest`, `true_objective`, `reveal_trigger`, `reward_truth`, `reward_complicity` | Truth (refuse complicity); Mercy (refuse the betrayal); Honor; Justice |
 | `mediate` | Two NPCs `{party_a}` and `{party_b}` are in dispute over `{stake}`; Avatar must broker | `party_a`, `party_b`, `stake`, `reward_a?`, `reward_b?` | Justice; Humility |
-| `cleanse` | A `{site}` has been profaned by `{taint}`; Avatar must purify it (often a ritual sub-skeleton) | `site`, `taint`, `cleanser`, `reward` | Spirituality; Sacrifice |
-| `vigil` | Stand watch / accompany a dying NPC / wait at a place during a `{time_window}` | `subject`, `time_window`, `reward` | Compassion; Spirituality; Humility |
+| `cleanse` | A `{site}` has been profaned by `{taint}`; Avatar must purify it (often a ritual sub-skeleton) | `site`, `taint`, `cleanser`, `reward` | Insight; Devotion |
+| `vigil` | Stand watch / accompany a dying NPC / wait at a place during a `{time_window}` | `subject`, `time_window`, `reward` | Mercy; Insight; Humility |
 
 `courier_chain`, `betrayal`, and `mediate` are *meta-skeletons*: their internal stages compose other skeletons (§9 chaining). The library is open — designers add new kinds through §10 authoring tools.
 
@@ -381,7 +381,7 @@ deterministic_pick(candidates, seed_rng, slot) -> Candidate:
 - A **branch_point** (the stage at which the player learns the truth)
 - A **virtue_consequences** map for each player choice
 
-Dilemmas inject a *branch* into an otherwise-linear skeleton stage, replacing the simple `RETURN` stage with a forked terminal. The Virtue Engine (Doc #5 §4) scores the chosen branch as it would any verb. This is how a `fetch` of a "lost heirloom" can become a Compassion test ("the rightful owner is the thief") or an Honesty test ("the giver lied about who they were").
+Dilemmas inject a *branch* into an otherwise-linear skeleton stage, replacing the simple `RETURN` stage with a forked terminal. The Virtue Engine (Doc #5 §4) scores the chosen branch as it would any verb. This is how a `fetch` of a "lost heirloom" can become a Mercy test ("the rightful owner is the thief") or an Truth test ("the giver lied about who they were").
 
 ---
 
@@ -402,8 +402,8 @@ type DifficultyKnob   = "trivial" | "easy" | "standard" | "hard" | "heroic"
 type LengthKnob       = "short" | "standard" | "long" | "epic"
 type RewardTier       = "minor" | "standard" | "fine" | "great" | "legendary"
 type NarrativeTone    = "earnest" | "gallows" | "pastoral" | "ominous" | "comic"
-type VirtueAlignmentKnob = "+honesty" | "+compassion" | "+valor" | "+justice"
-                         | "+sacrifice" | "+honor" | "+spirituality" | "+humility"
+type VirtueAlignmentKnob = "+truth" | "+mercy" | "+courage" | "+justice"
+                         | "+devotion" | "+honor" | "+insight" | "+humility"
                          | "neutral" | "shadowed"   // shadowed = deliberately negative-pull
 ```
 
@@ -457,7 +457,7 @@ Tone selects a variant of every `LocalizedTemplate` that has tone-keyed alternat
 
 ### 6.5 Virtue alignment knob
 
-Biases dilemma selection (§5.6) and reward composition (a `+honesty` aligned skeleton is more likely to pick a Virtue dilemma whose "honest" branch is the Avatar's virtuous path, and to emit Honesty-tinted Virtue rewards). `shadowed` is the deliberate-negative-pull alignment used in `betrayal` skeletons and Alternate Britannia content.
+Biases dilemma selection (§5.6) and reward composition (a `+truth` aligned skeleton is more likely to pick a Virtue dilemma whose "honest" branch is the Avatar's virtuous path, and to emit Truth-tinted Virtue rewards). `shadowed` is the deliberate-negative-pull alignment used in `betrayal` skeletons and Alternate Avermere content.
 
 ---
 
@@ -475,7 +475,7 @@ Bound quests must not contradict the world. The coherence checker runs after slo
 | **Active-quest collision** | Skeleton would fetch the same item another active quest is also fetching | Active-quest registry query keyed on `(item_id, role)` |
 | **Faction contradiction** | "Slay the brigand" but the candidate target's faction is now allied with the giver's faction | Faction relation query (Doc #6 §5); reject if relation has flipped |
 | **Schedule contradiction** | Giver's schedule has them in a non-interruptible slot for the entire offer window | Doc #17 §6 schedule check; reject if no `talk`-able slot in next 24 game-hours |
-| **Lore canon** | Target archetype matches a canonical NPC (Doc #19 §8.3) without Alternate Britannia opt-in | Hard reject; matches Doc #19 validator red flag |
+| **Lore canon** | Target archetype matches a canonical NPC (Doc #19 §8.3) without Alternate Avermere opt-in | Hard reject; matches Doc #19 validator red flag |
 | **Prior-resolved arc** | Skeleton would describe an event already resolved by an arc (Doc #26) | Arc registry query; reject if relevant arc completed contradictorily |
 | **Player-witness contradiction** | "Find who killed X" but player witnessed X alive 5 minutes ago | Witness store query (Doc #15 §6.2 / Doc #17 §9); reject |
 | **Resource exhaustion** | "Gather 20 mandrake" but the region holds 3 mandrake nodes total | Resource node availability (Doc #18 §4); reject if `available < count * 1.5` |
@@ -616,11 +616,11 @@ The launch fixture set:
 
 | Fixture | Purpose |
 |---|---|
-| `fixture.britain_baseline` | Standard civic region; many NPCs, mid resource availability |
+| `fixture.highmere_baseline` | Standard civic region; many NPCs, mid resource availability |
 | `fixture.frontier_sparse` | Frontier region with few NPCs and resources; tests resource-exhaustion handling |
 | `fixture.dungeon` | Pocket realm; tests `forbid_pocket_realm` and reachability |
 | `fixture.mid_arc` | Region mid-Arc; tests prior-resolved-arc coherence |
-| `fixture.alternate_britannia` | Alt-britannia opt-in fixture; tests canonical-NPC slot resolution under opt-in |
+| `fixture.alternate_avermere` | Alt-avermere opt-in fixture; tests canonical-NPC slot resolution under opt-in |
 
 ### 10.4 Hot reload
 
@@ -650,7 +650,7 @@ Maps to Doc #19 §5 sandbox levels:
 | `Restricted` | none (cannot author skeletons) | n/a | n/a | n/a |
 | `Standard` | none (skeletons require `Trusted`+) | n/a | n/a | n/a |
 | `Trusted` | all primary kinds (§2.1) | `long` | `fine` | `Local` and `Regional` |
-| `Official` | all + canonical-NPC slots under Alt-Britannia | `epic` | `legendary` | any |
+| `Official` | all + canonical-NPC slots under Alt-Avermere | `epic` | `legendary` | any |
 
 Phase 1 does not include UGC skeleton authoring (matches Doc #19 §13); the launch library is Origin-authored.
 
@@ -917,10 +917,10 @@ All `procgen.*` tools resolve to verbs that flow through `PlayerInputDispatcher`
 
 Five fully-resolved bindings. Each shows the skeleton, the binding inputs, the resolved slots, and the resulting journal text.
 
-### 16.1 Example A — `fetch` in the Britain frontier
+### 16.1 Example A — `fetch` in the Highmere frontier
 
 **Skeleton:** `official.fetch.lost_heirloom`
-**Inputs:** `region_id="britain.northwood_wilds"`, `region_seed=0x7a3f...`, `time_seed=0x21bc...`, `knobs={ difficulty: standard, length: short, reward_tier: standard, narrative_tone: pastoral, virtue_alignment: +compassion }`
+**Inputs:** `region_id="highmere.northwood_wilds"`, `region_seed=0x7a3f...`, `time_seed=0x21bc...`, `knobs={ difficulty: standard, length: short, reward_tier: standard, narrative_tone: pastoral, virtue_alignment: +mercy }`
 
 ```yaml
 id: official.fetch.lost_heirloom
@@ -949,9 +949,9 @@ templates:
 |---|---|
 | `giver` | `npc.commoner.elara` (Elara Mossleaf, baker of Northwood Hamlet, age 67, schedule `Work` 06:00–14:00, `Idle` 14:00–18:00) |
 | `item` | `item.heirloom.brass_ladle` (a brass ladle, weight 0.4kg) |
-| `location` | `region.britain.northwood_wilds.ruin.old_well` (the Old Well ruin, 412 tiles from Elara's bakery, walkable via the north road) |
+| `location` | `region.highmere.northwood_wilds.ruin.old_well` (the Old Well ruin, 412 tiles from Elara's bakery, walkable via the north road) |
 | `time_window` | 2 game-days (172,800 seconds), deadline `Day 47, 06:00` |
-| `reward` | `currency.gp × 80`, `Compassion +2` |
+| `reward` | `currency.gp × 80`, `Mercy +2` |
 
 **Journal text (after interpolation):**
 
@@ -964,7 +964,7 @@ templates:
 ### 16.2 Example B — `slay` with misidentification dilemma
 
 **Skeleton:** `official.slay.local_terror`
-**Inputs:** `region_id="britain.eastern_fens"`, `region_seed=0xe7a1...`, `time_seed=0x44df...`, `knobs={ difficulty: hard, length: standard, reward_tier: fine, narrative_tone: ominous, virtue_alignment: +justice }`
+**Inputs:** `region_id="highmere.eastern_fens"`, `region_seed=0xe7a1...`, `time_seed=0x44df...`, `knobs={ difficulty: hard, length: standard, reward_tier: fine, narrative_tone: ominous, virtue_alignment: +justice }`
 
 ```yaml
 id: official.slay.local_terror
@@ -974,7 +974,7 @@ params:
   - { name: giver,    type: { t: NpcRef, filter: { faction: "civic.*", schedule_tag: "elder|guard" } }, required: true }
   - { name: location, type: { t: Location, filter: { biome: ["swamp","forest"], reachable_from: giver, max_distance_tiles: 1200 } }, required: true }
   - { name: target,   type: { t: NpcRef, filter: { archetype_pattern: "npc.creature.*|npc.brigand.*", proximity_to: location, proximity_tiles: 64 } }, required: true }
-  - { name: dilemma,  type: { t: VirtueDilemma, axes: [Justice, Compassion], polarity: either }, required: true }
+  - { name: dilemma,  type: { t: VirtueDilemma, axes: [Justice, Mercy], polarity: either }, required: true }
   - { name: reward,   type: { t: Reward, tier: from_knob }, required: true }
 fail_conditions:
   - { c: TargetDead, ref: giver }
@@ -995,15 +995,15 @@ chain_hooks:
 | Slot | Resolved value |
 |---|---|
 | `giver` | `npc.elder.fenswick.oren` (Elder Oren of Fenswick) |
-| `location` | `region.britain.eastern_fens.bog.willowmere` (Willowmere Bog) |
+| `location` | `region.highmere.eastern_fens.bog.willowmere` (Willowmere Bog) |
 | `target` | `npc.creature.bog_lurker.0xa3f1` (a bog lurker; specifically: `is_innocent = false`, faction `wildlife.bog`) |
 | `dilemma` | `dilemma.justice_compassion.04` — "The 'lurker' is a transformed missing villager; killing it ends the curse but kills the villager" |
-| `reward` | `currency.gp × 250`, `item.weapon.silvered_dagger × 1`, `Justice +3` (success), `Compassion +5` (mercy branch) |
+| `reward` | `currency.gp × 250`, `item.weapon.silvered_dagger × 1`, `Justice +3` (success), `Mercy +5` (mercy branch) |
 
 **Branched outcome:** the chain hook `reveal_misidentification` fires when the player examines the lurker mid-combat (`OnUse` trigger on the lurker entity reveals a curse-bound amulet). On reveal, the `DILEMMA` stage offers two terminal branches:
 
-- **Slay** — finish the kill; Justice +3, Compassion −2; the village is safe, the villager is gone.
-- **Spare** — leave; chain into `official.cleanse.curse_bound` for the cleanse path; Compassion +5, Sacrifice +2.
+- **Slay** — finish the kill; Justice +3, Mercy −2; the village is safe, the villager is gone.
+- **Spare** — leave; chain into `official.cleanse.curse_bound` for the cleanse path; Mercy +5, Devotion +2.
 
 **Coherence checks passed:** Elder Oren is alive and his schedule is interruptible during 18:00–22:00, the bog lurker exists, Willowmere is walkable, no allied-faction contradiction, the dilemma is appropriate to the slay kind under `+justice` alignment.
 
@@ -1012,7 +1012,7 @@ chain_hooks:
 ### 16.3 Example C — `courier_chain`, three-hop
 
 **Skeleton:** `official.courier_chain.sealed_letter`
-**Inputs:** `region_id="britain.trinsic"`, `region_seed=0x13ab...`, `time_seed=0x99e2...`, `knobs={ difficulty: easy, length: long, reward_tier: standard, narrative_tone: earnest, virtue_alignment: +honor }`
+**Inputs:** `region_id="highmere.stonereach"`, `region_seed=0x13ab...`, `time_seed=0x99e2...`, `knobs={ difficulty: easy, length: long, reward_tier: standard, narrative_tone: earnest, virtue_alignment: +honor }`
 
 ```yaml
 id: official.courier_chain.sealed_letter
@@ -1050,12 +1050,12 @@ chain_hooks:
 
 | Slot | Resolved value |
 |---|---|
-| `start_giver` | `npc.scribe.trinsic.danil` (Danil the Scribe) |
+| `start_giver` | `npc.scribe.stonereach.danil` (Danil the Scribe) |
 | `package` | `item.letter.sealed.bronze_seal` (a letter bearing a bronze seal) |
 | `hop_b` | `npc.merchant.cove.merielle` (Merielle of Cove) |
-| `hop_c` | `npc.guard.britain.captain.thane` (Captain Thane of Britain) |
-| `final_recipient` | `npc.noble.britain.lady.harriet` (Lady Harriet) |
-| `reward` | `currency.gp × 220`, `Honor +4`, faction reputation `civic.britain +5` |
+| `hop_c` | `npc.guard.highmere.captain.thane` (Captain Thane of Highmere) |
+| `final_recipient` | `npc.noble.highmere.lady.harriet` (Lady Harriet) |
+| `reward` | `currency.gp × 220`, `Honor +4`, faction reputation `civic.highmere +5` |
 
 The journal merges all three child quest journals inline; the player sees one continuous quest with milestones at each hop. Each hop's giver dialogue is generated from `official.deliver.basic`'s templates, retoned by the parent's `narrative_tone: earnest`.
 
@@ -1066,7 +1066,7 @@ The journal merges all three child quest journals inline; the player sees one co
 ### 16.4 Example D — `betrayal` with shadowed alignment
 
 **Skeleton:** `official.betrayal.fellowship_recruiter`
-**Inputs:** `region_id="britain"`, `region_seed=0x5ca1...`, `time_seed=0x7711...`, `knobs={ difficulty: standard, length: standard, reward_tier: fine, narrative_tone: ominous, virtue_alignment: shadowed }`
+**Inputs:** `region_id="highmere"`, `region_seed=0x5ca1...`, `time_seed=0x7711...`, `knobs={ difficulty: standard, length: standard, reward_tier: fine, narrative_tone: ominous, virtue_alignment: shadowed }`
 
 ```yaml
 id: official.betrayal.fellowship_recruiter
@@ -1080,33 +1080,33 @@ params:
   - { name: reward_truth,       type: { t: Reward, tier: from_knob }, required: true }
   - { name: reward_complicity,  type: { t: Reward, tier: from_knob }, required: true }
 fail_conditions:
-  - { c: VirtueFloor, virtue: Honesty, value: 5 }
+  - { c: VirtueFloor, virtue: Truth, value: 5 }
 prerequisites:
   - { p: ShardAge, min_days: 14 }
-  - { p: PlayerVirtueRange, virtue: Honesty, min: 30, max: 100 }
+  - { p: PlayerVirtueRange, virtue: Truth, min: 30, max: 100 }
 ```
 
 **Resolved slots:**
 
 | Slot | Resolved value |
 |---|---|
-| `apparent_giver` | `npc.fellowship.recruiter.morton` (Morton, recruiter at the Britain Fellowship hall) |
+| `apparent_giver` | `npc.fellowship.recruiter.morton` (Morton, recruiter at the Highmere Fellowship hall) |
 | `apparent_quest` | `item.scroll.fellowship.recruitment` |
 | `true_objective` | `npc.fellowship.inner.batlin_acolyte.virela` (Virela, an inner-circle acolyte) |
 | `reveal_trigger` | `"on_dialogue_keyword:trinity"` (when the player asks about "trinity" in dialogue with Morton) |
-| `reward_truth` | `Honesty +6`, `Honor +3`, `currency.gp × 180`, faction `civic.britain +5` |
-| `reward_complicity` | `currency.gp × 600`, faction `fellowship.inner +10`, `Honesty −4`, `Justice −3` |
+| `reward_truth` | `Truth +6`, `Honor +3`, `currency.gp × 180`, faction `civic.highmere +5` |
+| `reward_complicity` | `currency.gp × 600`, faction `fellowship.inner +10`, `Truth −4`, `Justice −3` |
 
-**Branch:** Morton recruits the Avatar to "deliver a recruitment scroll" to a target town. Mid-quest, on the `trinity` keyword, the truth surfaces: the scroll contains coded instructions to identify a Resistance sympathizer for elimination. The Avatar may **report Morton to the Britain town guard** (truth branch — high Virtue rewards, Fellowship faction loss) or **complete the delivery to Virela** (complicity branch — large gold and Fellowship inner-circle access, Virtue cost, world-state flags propagated to the Guardian Incursion arc per Doc #26).
+**Branch:** Morton recruits the Avatar to "deliver a recruitment scroll" to a target town. Mid-quest, on the `trinity` keyword, the truth surfaces: the scroll contains coded instructions to identify a Resistance sympathizer for elimination. The Avatar may **report Morton to the Highmere town guard** (truth branch — high Virtue rewards, Fellowship faction loss) or **complete the delivery to Virela** (complicity branch — large gold and Fellowship inner-circle access, Virtue cost, world-state flags propagated to the Guardian Incursion arc per Doc #26).
 
-The shadowed alignment knob biases the dilemma library (§5.6) toward this betrayal; the prerequisite floors prevent it from being offered to low-Honesty Avatars (who would not provide the moral tension the skeleton exists to create).
+The shadowed alignment knob biases the dilemma library (§5.6) toward this betrayal; the prerequisite floors prevent it from being offered to low-Truth Avatars (who would not provide the moral tension the skeleton exists to create).
 
 ---
 
 ### 16.5 Example E — `gather` with resource constraint
 
 **Skeleton:** `official.gather.healer_supplies`
-**Inputs:** `region_id="britain.yew"`, `region_seed=0x88f1...`, `time_seed=0x33a0...`, `knobs={ difficulty: easy, length: short, reward_tier: minor, narrative_tone: pastoral, virtue_alignment: +humility }`
+**Inputs:** `region_id="highmere.blackford"`, `region_seed=0x88f1...`, `time_seed=0x33a0...`, `knobs={ difficulty: easy, length: short, reward_tier: minor, narrative_tone: pastoral, virtue_alignment: +humility }`
 
 ```yaml
 id: official.gather.healer_supplies
@@ -1114,12 +1114,12 @@ kind: gather
 tags: [no_combat, short, civic, solo_friendly]
 params:
   - { name: recipient,    type: { t: NpcRef, filter: { archetype_pattern: "npc.healer.*|npc.druid.*" } }, required: true }
-  - { name: resource,     type: { t: ResourceNode, filter: { kind: "herb", region: yew } }, required: true }
+  - { name: resource,     type: { t: ResourceNode, filter: { kind: "herb", region: blackford } }, required: true }
   - { name: count,        type: { t: Count, min: 5, max: 12 }, required: true }
   - { name: biome_or_region, type: { t: Location, filter: { biome: ["forest"], reachable_from: recipient, max_distance_tiles: 800 } }, required: true }
   - { name: reward,       type: { t: Reward, tier: from_knob }, required: true }
 prerequisites:
-  - { p: ResourceAvailable, resource_kind: "herb.silverleaf", region: "britain.yew", min_count: 18 }
+  - { p: ResourceAvailable, resource_kind: "herb.silverleaf", region: "highmere.blackford", min_count: 18 }
 fail_conditions:
   - { c: TargetDead, ref: recipient }
 ```
@@ -1128,10 +1128,10 @@ fail_conditions:
 
 | Slot | Resolved value |
 |---|---|
-| `recipient` | `npc.druid.yew.brendel` (Brendel the druid) |
+| `recipient` | `npc.druid.blackford.brendel` (Brendel the druid) |
 | `resource` | `resource.herb.silverleaf` (a forest herb cluster, 18 nodes available in the region) |
 | `count` | 8 |
-| `biome_or_region` | `region.britain.yew.silverwood` (the Silverwood) |
+| `biome_or_region` | `region.highmere.blackford.silverwood` (the Silverwood) |
 | `reward` | `currency.gp × 30`, `Humility +2`, `item.potion.minor_heal × 2` |
 
 **Coherence:** the prerequisite `ResourceAvailable` ensured the Silverwood actually has enough silverleaf to support an 8-pick quest with 1.5× safety margin (per §7.1 row "resource exhaustion"). If a competing player completes another silverleaf gather quest concurrently and node count drops below the threshold, this binding's drift check at next stage entry will succeed (the count is locked at bind time from the player's perspective; the world-side resource check is for binder availability, not quest validity once accepted).
@@ -1144,7 +1144,7 @@ Per Doc #11. Deliberately minimal; proves the skeleton-bind-coherence loop end-t
 
 | Feature | Phase 1 status |
 |---|---|
-| Skeleton library | **3 skeletons:** `fetch`, `slay`, `gather` (matches the Doc #8 §6 "Cave of Trials" minimum and adds two civic skeletons for Britain) |
+| Skeleton library | **3 skeletons:** `fetch`, `slay`, `gather` (matches the Doc #8 §6 "Cave of Trials" minimum and adds two civic skeletons for Highmere) |
 | Slot types | `NpcRef`, `ItemArchetype`, `Location`, `Count`, `Reward` only |
 | Variation knobs | `difficulty` and `reward_tier` only; tone defaults to `earnest`, length to `standard`, alignment to `neutral` |
 | Coherence checks | Standard checks §7.1 rows 1–4 (dead reference, reachability, ownership, active-quest collision); rows 5+ deferred |
@@ -1152,7 +1152,7 @@ Per Doc #11. Deliberately minimal; proves the skeleton-bind-coherence loop end-t
 | Chaining | **deferred to Phase 2** |
 | Authoring tools | YAML-only authoring; no in-game editor (Phase 2) |
 | Compiler | yes; passes 1–6, 8 from §10.2; chain validity (pass 7) trivial since no chains |
-| Auto-test | yes against the `fixture.britain_baseline` fixture only |
+| Auto-test | yes against the `fixture.highmere_baseline` fixture only |
 | Hot reload | yes (skeleton registry is versioned) |
 | LLM variation | **off** in Phase 1 |
 | Telemetry | `bind.attempted/succeeded/skipped`, `offered`, `accepted`, `completed`, `coherence_drift`; no dashboards in P1 |
@@ -1161,7 +1161,7 @@ Per Doc #11. Deliberately minimal; proves the skeleton-bind-coherence loop end-t
 | Dilemma library | **none in Phase 1**; the `slay` skeleton uses a hard-authored deterministic dilemma rather than a library lookup |
 | Persistence | `skeletons` and `skeleton_bindings` tables created; `skeleton_active_collisions` deferred |
 
-**Phase 1 success metric:** A player walks into Britain, talks to the baker (Garritt, per Doc #17 §13), is offered a procedurally-bound `gather` quest ("Fetch me 5 silverleaf from the Silverwood") whose slots resolve from live world state; on completion, the binder retires the binding and after the per-skeleton cooldown a new `gather` binding for the same skeleton produces a *different* item, location, or count. The player perceives "Garritt asks me for things" as a reactive feature rather than a fixed script.
+**Phase 1 success metric:** A player walks into Highmere, talks to the baker (Garritt, per Doc #17 §13), is offered a procedurally-bound `gather` quest ("Fetch me 5 silverleaf from the Silverwood") whose slots resolve from live world state; on completion, the binder retires the binding and after the per-skeleton cooldown a new `gather` binding for the same skeleton produces a *different* item, location, or count. The player perceives "Garritt asks me for things" as a reactive feature rather than a fixed script.
 
 ---
 
@@ -1176,7 +1176,7 @@ Per Doc #11. Deliberately minimal; proves the skeleton-bind-coherence loop end-t
 7. `[OPEN]` **Chain failure cascade.** §9.2 says coherence rejection rejects the entire chain. If a chain's hop-2 child becomes incoherent during play (after binding succeeded), should the parent fail entirely, or skip the failed child and continue? Current plan: fail entirely. Alternative: graceful-degrade with reduced reward.
 8. `[OPEN]` **Offer-time Virtue gates and discoverability.** §3.5 `PlayerVirtueRange` prevents skeletons from being offered to unsuitable Avatars. From the Avatar's perspective, they will not know a quest existed they didn't qualify for. Matches Doc #17 §4 invariant 2 (hidden gates give no hint), but creates a "hidden side-quests" suspicion from players. Whether to surface a generic "the recruiter eyes you skeptically" hint without revealing the gate is undecided.
 9. `[OPEN]` **Skeleton retirement vs in-flight quests.** §10.4 says retired skeletons continue serving in-flight quests against their bound version. What happens if a `Retired` skeleton is *also* found to be exploit-buggy during a live incident — do in-flight quests forcibly auto-fail with refund, or are they grandfathered? Ties to Doc #29 emergency-rollback procedures.
-10. `[OPEN]` **Cross-shard skeleton library.** §14.1 stores skeleton templates in `WorldState` shard-local. Whether the skeleton *library* (the templates) is per-shard or shared across all shards is undecided. Most arguments favor shared (designer-authored templates have no reason to differ per-shard); UGC skeletons and Alternate Britannia variants argue for per-shard. Likely answer: Origin templates are shard-shared, UGC templates are shard-local until promoted.
+10. `[OPEN]` **Cross-shard skeleton library.** §14.1 stores skeleton templates in `WorldState` shard-local. Whether the skeleton *library* (the templates) is per-shard or shared across all shards is undecided. Most arguments favor shared (designer-authored templates have no reason to differ per-shard); UGC skeletons and Alternate Avermere variants argue for per-shard. Likely answer: Origin templates are shard-shared, UGC templates are shard-local until promoted.
 11. `[OPEN]` **Quest density target.** No explicit target for "how many simultaneous bound quests should a region carry." Affects shard concurrent quota tuning (§11.4). A frontier region with 12 active side quests feels alive; with 60 it feels like a job board.
 12. `[OPEN]` **Anti-grief on `mediate` skeletons.** A Trusted creator could author a `mediate` skeleton whose stake creates a faction conflict in a region (e.g., "broker between two innocent NPCs over a stolen-item accusation that is fictional"). The Virtue validator (§10.2 pass 8) will catch flat negative-Virtue scripts but may not catch slow-burn social engineering. Whether to add a "social-claim integrity" hint to coherence checks is undecided.
 
