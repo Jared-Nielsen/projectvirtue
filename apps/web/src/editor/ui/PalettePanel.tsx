@@ -128,10 +128,23 @@ const PaletteCell: Component<PaletteCellProps> = (props) => {
           overflow: 'hidden',
         }}
       >
+        {/*
+          crossorigin="anonymous" forces the palette image fetch to the
+          same CORS mode Pixi's Assets.load uses for the canvas. Without
+          this, the palette would load in no-cors mode and populate the
+          browser cache with an entry that has no Access-Control-Allow-
+          Origin header. The canvas's later cors-mode fetch for the same
+          URL would reuse that tainted cache entry and fail with
+          "No 'Access-Control-Allow-Origin' header is present" — even
+          though the server (R2) returns the header correctly. Tagging
+          the <img> with crossorigin populates the cache CORS-ready so
+          the canvas hits a clean entry.
+        */}
         <img
           src={props.tile.src}
           alt=""
           loading="lazy"
+          crossOrigin="anonymous"
           style={{
             width: '100%',
             height: 'auto',
