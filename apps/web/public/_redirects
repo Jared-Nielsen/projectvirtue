@@ -1,0 +1,17 @@
+# Netlify SPA fallback for the @br/web game client.
+#
+# The game client is a Vite SPA with @solidjs/router doing client-side
+# routing for /play/*, /character, /character/create, /home, /login,
+# /loading/:variant, /play/editor, etc. Without this rewrite a direct
+# visit (or refresh) on any of those URLs would return 404 because
+# Netlify can't find a matching file in dist/. The 200 status keeps the
+# URL bar showing the requested path while serving the SPA shell, which
+# then hydrates the right route.
+#
+# This file is the authoritative redirect rule; the equivalent
+# [[redirects]] block in apps/web/netlify.toml is dead weight under the
+# current monorepo packagePath dashboard config (Netlify reads no toml).
+# Vite copies public/ verbatim into dist/, so this lands at dist/_redirects
+# where Netlify's publish-dir scanner picks it up unconditionally.
+
+/*    /index.html   200
