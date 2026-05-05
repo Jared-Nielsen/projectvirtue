@@ -117,12 +117,35 @@ iteration velocity (designers don't write JSON), maintenance (pixi-tiledmap
 v2.4.0 published ~3 weeks ago), and UGC fit (Doc #7 — `.tmj` is the de-facto
 community format).
 
-**Integration plan** (deferred — not yet implemented):
+## Asset hosting (Cloudflare R2 at `media.gamecodex.com`)
+
+Production tile/sprite/audio art is **NOT in git** — it lives on Cloudflare
+R2 and is fetched at runtime (or sync'd at build time by a future
+`tools/r2-sync` script). Reference Kenney kits (`_tileart/`) are
+gitignored — the team re-downloads from kenney.nl when iterating offline.
+
+Known R2 paths (set 2026-05-05):
+
+| Kit | URL prefix |
+| --- | --- |
+| Kenney isometric-miniature-farm | `https://media.gamecodex.com/tile/farm/iso/` |
+| Kenney isometric-miniature-dungeon | `https://media.gamecodex.com/tile/dungeon/iso/` |
+| Kenney isometric-miniature-library | `https://media.gamecodex.com/tile/library/iso/` |
+
+Path scheme: `tile/<kit>/<projection>/...`. The R2 bucket needs CORS
+allowing `https://*.virtu3.com` (and dev origins) so the canvas can fetch
+tilesets directly from the CDN. Hexagon and retro-fantasy kits don't have
+R2 paths assigned yet.
+
+## Tile-rendering integration plan (deferred — not yet implemented)
 
 1. `pnpm --filter @br/web add pixi-tiledmap@^2.4.0`
-2. Add `tileMapSource: string` to `ScaleMode` pointing at e.g.
-   `/maps/<region>.<mode>.tmj`. Each scale mode declares the tileset that
-   matches its art, so `?scale=ultima-vii` loads a flatter map.
+2. Add `cdnBase: string` and `tileMapSource: string` to `ScaleMode`. For
+   `kenney-miniature` mode `cdnBase` is one of the `media.gamecodex.com/tile/<kit>/iso/`
+   URLs above; for `ultima-vii` mode it points at the eventual flat-art
+   bucket. `tileMapSource` is a `.tmj` URL (also R2-hosted) referencing
+   tileset PNGs under that `cdnBase`. `?scale=ultima-vii` switches both
+   projection and tileset.
 3. New `tiles.ts` path: load `.tmj` via `pixi-tiledmap`, parent its
    container under `world`. Keep the current programmatic drawing as the
    "registry-load-failed" fallback (already useful — see `app.ts:loadAssets`).
@@ -130,8 +153,9 @@ community format).
    source into `@br/mocks/data/world/tiles/<region>.json`. Tiled becomes
    the *source*; the typed JSON in `@br/mocks` stays the *wire-format*
    placeholder for the eventual protobuf codegen target (Doc #22 §4.5).
-5. Per-region maps land in `apps/web/public/maps/<region>.<mode>.tmj`
-   alongside their tileset images.
+5. Per-region maps live on R2 (e.g. `media.gamecodex.com/maps/sosaria.kenney-miniature.tmj`),
+   not in `apps/web/public/`. The `tools/r2-sync` script can pull them
+   into `apps/web/public/maps/` during dev for offline iteration.
 
 ## Mock-to-real swap path
 
