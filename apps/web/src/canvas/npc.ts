@@ -67,7 +67,7 @@ export class NpcEntity {
     this.idleTimer = randInt(MIN_IDLE_MS, MAX_IDLE_MS);
     // Wander speed is a function of tiles/sec mapped through the iso projection
     // (so it stays visually consistent across scale modes — 1.5 t/s in Kenney
-    // mode and 1.5 t/s in Ultima VII mode both look like a casual stroll).
+    // mode and 1.5 t/s in flat-classic mode both look like a casual stroll).
     const tilesPerSec = opts.speedTilesPerSec ?? 1.5;
     this.speedPxPerSec = tilesPerSec * (this.metrics.tileW / 2 + this.metrics.tileH / 2);
 

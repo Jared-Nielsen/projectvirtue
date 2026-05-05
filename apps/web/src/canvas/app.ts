@@ -29,6 +29,7 @@ import {
 } from './scale';
 import { type SpriteRegistry, loadSpriteRegistry } from './sprites';
 import { type TileLayer, buildTileLayer, makeIsoProjector, tileAtWorldPoint } from './tiles';
+import { loadTiledLayer } from './tilesTiled';
 import { type TileTrigger, TriggerHost } from './triggers';
 
 export interface CanvasRuntime {
@@ -128,10 +129,33 @@ export async function mountCanvas(opts: MountOptions): Promise<CanvasRuntime> {
     };
   }
 
-  // Tile layer.
+  // Tile layer. Walkability + region metadata still come from the JSON
+  // fixture (the eventual protobuf wire format); the visual ground/decor
+  // tries the scale mode's authored Tiled map first and falls back to the
+  // programmatic colored-diamond renderer if the Tiled load fails (404,
+  // CORS, schema, etc.). The two layers share the same iso projection
+  // because we author maps with matching tile dims (256x128 for the
+  // Kenney-miniature mode, 64x32 for flat-classic).
   const tileMap = fixtures.loadTileMapMythenor();
   const tileLayer = buildTileLayer(tileMap, isoMetrics);
-  world.addChild(tileLayer.container);
+
+  let usedTiledMap = false;
+  try {
+    const tiled = await loadTiledLayer(scaleMode.tileMapSource);
+    world.addChild(tiled.container);
+    usedTiledMap = true;
+    // eslint-disable-next-line no-console
+    console.info(
+      `[canvas] loaded Tiled map ${tiled.source} (${tiled.mapWidth}x${tiled.mapHeight} @ ${tiled.tileWidth}x${tiled.tileHeight})`,
+    );
+  } catch (err) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      `[canvas] Tiled map load failed for ${scaleMode.tileMapSource}; falling back to programmatic tiles.`,
+      err,
+    );
+    world.addChild(tileLayer.container);
+  }
 
   const project = makeIsoProjector(isoMetrics);
   const grid: Walkable = {
@@ -139,6 +163,16 @@ export async function mountCanvas(opts: MountOptions): Promise<CanvasRuntime> {
     height: tileLayer.map.height,
     isWalkable: (x, y) => tileLayer.isWalkable(x, y),
   };
+
+  // When the Tiled visual layer is in use, we still need the
+  // programmatic-tile container to provide the click-to-move hit zones.
+  // Add an invisible copy below the Tiled layer (alpha 0) so pointer
+  // events work but the fallback art doesn't show through.
+  if (usedTiledMap) {
+    tileLayer.container.alpha = 0;
+    tileLayer.container.zIndex = -1;
+    world.addChild(tileLayer.container);
+  }
 
   // Player.
   const playerStart = findOpenStart(tileLayer);
