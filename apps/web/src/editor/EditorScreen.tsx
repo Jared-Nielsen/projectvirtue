@@ -172,7 +172,12 @@ export function EditorScreen(): JSX.Element {
           selectedTileId={state().selectedTileId}
           onSelect={(id) => actions.setSelectedTileId(id)}
         />
-        <EditorCanvas state={state} actions={actions} metrics={metrics} />
+        <EditorCanvas
+          state={state}
+          actions={actions}
+          metrics={metrics}
+          manifest={paletteRes() ?? null}
+        />
       </div>
 
       <StatusBar state={state} />
