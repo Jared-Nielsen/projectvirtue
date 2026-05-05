@@ -1,0 +1,53 @@
+[build]
+  base = "."
+  command = "pnpm --filter @br/web build"
+  publish = "apps/web/dist"
+
+[build.environment]
+  NODE_VERSION = "24"
+  PNPM_VERSION = "10"
+
+# SPA fallback — the game client is a Vite SPA with @solidjs/router doing
+# client-side routing for /play/*, /character, /character/create, /home,
+# /login, /loading/:variant, /play/editor, etc. Without this rewrite a
+# direct visit (or refresh) on any of those URLs would return 404 because
+# Netlify can't find a matching file in dist/. The 200 status keeps the
+# URL bar showing the requested path while serving the SPA shell, which
+# then hydrates the right route.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"
+    Permissions-Policy = "interest-cohort=()"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.svg"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.png"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.woff2"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
