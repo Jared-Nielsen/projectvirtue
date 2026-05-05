@@ -38,11 +38,11 @@
       "createdAt": "2026-04-21T13:05:00.000Z",
       "lastPlayedAt": "2026-05-04T19:42:00.000Z",
       "playtimeSeconds": 187200,
-      "location": { "regionId": "region_britain", "x": 16, "y": 12, "z": 0 }
+      "location": { "regionId": "region_highmere", "x": 16, "y": 12, "z": 0 }
     },
     {
-      "id": "char_paladin_dupre",
-      "avatarId": "avatar_paladin_dupre",
+      "id": "char_paladin_bron",
+      "avatarId": "avatar_paladin_bron",
       "accountId": "acct_01HXYZ_avatar",
       "shardId": "shard_avermere_order",
       "name": "Sir Cedric",

@@ -15,7 +15,7 @@ Source heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ul
 
 ## 1. Dialogue Philosophy
 
-Dialogue in Project Virtue is keyword-driven, not branch-tree-driven `[BG]`. The `talk` verb opens a session that surfaces a small set of bold keywords; clicking a keyword yields the NPC's response and may surface new keywords or retire stale ones. This is preserved verbatim from BG/SI; we do not adopt the cinematic-branch pattern from later RPGs. Responses are filtered at every invocation by (a) the Avatar's eight Virtues (Doc #5 §2), (b) world flags (quest progress, Fellowship membership, witnessed events from Doc #15 §6.2), and (c) the NPC's currently-executing schedule slot — an NPC at the forge will speak about iron, the same NPC at the tavern will gossip. SI's scripted "rant" cutscenes (Shamino's lost love, Dupre's drunkenness) are preserved as `TriggerCutscene` side-effects on specific keywords `[SI]`, but the keyword core is non-negotiable. Voice acting (Doc #2 §4.6) attaches per-Response, not per-tree.
+Dialogue in Project Virtue is keyword-driven, not branch-tree-driven `[BG]`. The `talk` verb opens a session that surfaces a small set of bold keywords; clicking a keyword yields the NPC's response and may surface new keywords or retire stale ones. This is preserved verbatim from BG/SI; we do not adopt the cinematic-branch pattern from later RPGs. Responses are filtered at every invocation by (a) the Avatar's eight Virtues (Doc #5 §2), (b) world flags (quest progress, Fellowship membership, witnessed events from Doc #15 §6.2), and (c) the NPC's currently-executing schedule slot — an NPC at the forge will speak about iron, the same NPC at the tavern will gossip. SI's scripted "rant" cutscenes (Theran's lost love, Bron's drunkenness) are preserved as `TriggerCutscene` side-effects on specific keywords `[SI]`, but the keyword core is non-negotiable. Voice acting (Doc #2 §4.6) attaches per-Response, not per-tree.
 
 ---
 
@@ -467,8 +467,8 @@ type CompanionBanter = {
 
 Examples from BG/SI:
 - Erevan at Highmere music guild: bardic banter about his lute. `[BG]`
-- Shamino in any forest region: ranger nostalgia. `[BG]`
-- Dupre on entering any tavern: drinking comment. `[BG]` (graduates to scripted rant on third trigger `[SI]`).
+- Theran in any forest region: ranger nostalgia. `[BG]`
+- Bron on entering any tavern: drinking comment. `[BG]` (graduates to scripted rant on third trigger `[SI]`).
 
 ### 10.2 Companion-witness barbs
 
@@ -476,7 +476,7 @@ When a companion's `witness_enabled = true` (Doc #15 §3.2 default `true` in BR 
 
 ### 10.3 Companion-vs-companion dialogue `[OPEN]`
 
-Whether companions ever address each other (e.g., Erevan and Shamino bickering in earshot of the Avatar) is `[OPEN]` (§14). The data model supports it (banter triggered by `EnterEntity` matching another companion), but no Phase 1 commitment.
+Whether companions ever address each other (e.g., Erevan and Theran bickering in earshot of the Avatar) is `[OPEN]` (§14). The data model supports it (banter triggered by `EnterEntity` matching another companion), but no Phase 1 commitment.
 
 ---
 
@@ -601,7 +601,7 @@ Per Doc #11. Deliberately minimal; proves the keyword loop and schedule executio
 | Schedule execution | Move-to + activity verbs through dispatcher; missing-prop fallback to `Idle` | Override slot installation by external events |
 | Interruption | `talk` interrupts walking NPC (§8.1); `attack` pauses schedule (§8.2) | Prop-theft rescheduling (§8.3) deferred to Phase 2 |
 | Gossip / rumors | **None.** No `RumorStore`, no `Socialize` activity, no rumor-derived keywords | Full system per §9 |
-| Companion dialogue | Erevan and Shamino (the two Phase 1 companions per Doc #15 §8) have dialogue trees with `name`/`job`/`bye` + 3 contextual keywords each; **no banter triggers** | Banter system, companion-witness barbs, companion-vs-companion |
+| Companion dialogue | Erevan and Theran (the two Phase 1 companions per Doc #15 §8) have dialogue trees with `name`/`job`/`bye` + 3 contextual keywords each; **no banter triggers** | Banter system, companion-witness barbs, companion-vs-companion |
 | Reaction matrix | `Friendly`/`Neutral`/`Wary`/`Hostile` only (no `Fearful`); recomputed on `talk` | `Fearful` state, faction-relation inputs |
 | Multiplayer | **Single-player only** for vertical slice (matches Doc #14 §8 Phase 1 transport scope) | Per-player session instancing, instanced cutscenes |
 | MCP | None of the §12 tools required for the Phase 1 slice (per Doc #14 §8 — only `examine` and `use` ship as mutating-path proofs) | All §12 tools and resources deferred to Phase 2 |

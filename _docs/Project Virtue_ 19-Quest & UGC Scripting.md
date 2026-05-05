@@ -453,7 +453,7 @@ VirtueAlignmentScore =
 
 - Script uniformly drives any Virtue negative across all reachable paths (anti-Virtue content) — score on that virtue ≤ −50 with no positive branch.
 - Script bypasses Virtue scoring by `flag.set` patterns that mimic verbs the dispatcher would have scored (e.g., setting an "owned_by_player" flag in a way that semantically equals a `steal` without invoking `steal`). Detected by a pattern matcher against known scoring-evasion idioms; matcher rules versioned alongside this doc.
-- Script targets `[BG]` canonical NPCs (Lord Avermere, Erevan, Shamino, Spark, Dupre, Jaana, Geoffrey, Julia, Katrina, Sentri, Mariah, Tseramed) with `attack`, `TeleportActor`, or `DespawnEntity` outside an Alternate Avermere opt-in (Doc #3 §7).
+- Script targets `[BG]` canonical NPCs (Lord Avermere, Erevan, Theran, Spark, Bron, Jaana, Geoffrey, Julia, Katrina, Sentri, Eris, Tseramed) with `attack`, `TeleportActor`, or `DespawnEntity` outside an Alternate Avermere opt-in (Doc #3 §7).
 - Script invokes verbs above its sandbox level (already a compile error; flagged here for moderation transparency).
 - Script causes runaway state (e.g., infinite spawn loops not captured by §7 budgets) detected by graph cycle analysis.
 

@@ -21,7 +21,7 @@
       "id": "recipe_lesser_healing_potion",
       "name": { "key": "recipe.lesser_healing_potion", "en": "Brew Lesser Healing Potion" },
       "description": "Yarrow, ginseng, honey, glass. Boil briefly.",
-      "stationId": "station_alchemy_britain",
+      "stationId": "station_alchemy_highmere",
       "skill": "alchemy",
       "difficulty": "easy",
       "inputs": [

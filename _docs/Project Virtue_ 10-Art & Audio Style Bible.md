@@ -48,7 +48,7 @@ We do not replace the retro isometric look with 3D models, realistic textures, o
 * Animation: 8–12 frames per action (walk, attack, idle, use object). All animations must feel weighty and physical.  
 * Customization (Avatar): Limited to clothing dyes and simple armor pieces that fit the medieval fantasy look — no wild fantasy hair or modern outfits.  
 * NPC Variety: Base templates \+ procedural clothing/hair variations within the same style guide.  
-* Party Companions: Erevan, Shamino, Dupre, etc., must match their exact 1992 sprite silhouettes and color schemes.
+* Party Companions: Erevan, Theran, Bron, etc., must match their exact 1992 sprite silhouettes and color schemes.
 
 ---
 

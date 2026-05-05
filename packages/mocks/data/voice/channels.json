@@ -1,14 +1,14 @@
 {
   "channels": [
     {
-      "id": "voice_proximity_britain",
+      "id": "voice_proximity_highmere",
       "kind": "proximity",
       "name": "Highmere — Proximity",
       "capacity": 32,
       "pushToTalk": false,
       "bitrateKbps": 48,
       "active": true,
-      "regionTag": "region_britain",
+      "regionTag": "region_highmere",
       "participants": [
         {
           "characterId": "char_avatar_of_virtue",
@@ -52,9 +52,9 @@
           "joinedAt": "2026-05-04T20:00:00.000Z"
         },
         {
-          "characterId": "char_npc_shamino",
-          "handle": "shamino_ranger",
-          "displayName": "Shamino",
+          "characterId": "char_npc_theran",
+          "handle": "theran_ranger",
+          "displayName": "Theran",
           "muted": false,
           "deafened": false,
           "speaking": false,

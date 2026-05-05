@@ -85,7 +85,7 @@ export const WORLD_REGIONS: readonly WorldRegion[] = [
     pin: [700, 600],
   },
   {
-    id: 'serpent-coast',
+    id: 'wyrm-reach',
     name: 'Wyrm Reach',
     subtitle: 'Stranger Sea',
     description: 'Beyond the Pillars: ferries leave from here for the The Iron Marches shard.',

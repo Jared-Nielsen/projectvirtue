@@ -9,7 +9,7 @@
       },
       "state": "active",
       "giver": "Lord Avermere",
-      "regionId": "region_britain",
+      "regionId": "region_highmere",
       "recommendedLevel": 1,
       "virtueTags": ["truth", "humility"],
       "objectives": [
@@ -61,7 +61,7 @@
       },
       "state": "active",
       "giver": "Erevan",
-      "regionId": "region_britain",
+      "regionId": "region_highmere",
       "recommendedLevel": 2,
       "virtueTags": ["mercy"],
       "objectives": [

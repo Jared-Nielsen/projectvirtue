@@ -348,11 +348,11 @@ projectvirtue/
 │   │   ├── networking/
 │   │   └── mcp/
 │   ├── e2e/                     # full client+server scenarios via Playwright
-│   │   ├── britain_smoke.spec.ts
+│   │   ├── highmere_smoke.spec.ts
 │   │   ├── multiplayer_sync.spec.ts
 │   │   └── ugc_publish.spec.ts
 │   ├── replay/                  # recorded sessions for determinism gate
-│   │   └── britain_60s_baseline.replay
+│   │   └── highmere_60s_baseline.replay
 │   └── perf/                    # criterion benchmarks; load-test scripts
 │
 ├── _docs/                       # design docs (this doc lives here as #40)
@@ -516,7 +516,7 @@ CI runs on every PR and on push to `main`. The matrix below treats **Client B (T
 | `unit-rust` | PR, push | ubuntu-latest, macos-14 | `cargo nextest run --workspace` | < 8 min |
 | `unit-ts` | PR, push | ubuntu-latest | `pnpm test --filter=...` (Vitest) | < 4 min |
 | `integration` | PR, push | ubuntu-latest | spins up `docker-compose.test.yml`; runs `cargo nextest run --features=integration --tests` | < 12 min |
-| `determinism` | PR, push | ubuntu-latest | `scripts/run-determinism.sh tests/replay/britain_60s_baseline.replay` | < 5 min |
+| `determinism` | PR, push | ubuntu-latest | `scripts/run-determinism.sh tests/replay/highmere_60s_baseline.replay` | < 5 min |
 | `e2e` | PR (label `e2e`), push to `main` | ubuntu-latest | spins up full stack; runs Playwright | < 20 min |
 | `build-artifacts` | push to `main`, tags | ubuntu-latest, macos-14 | builds release binaries + client bundle; uploads to artifact store | < 15 min |
 | `nightly-perf` | cron `0 6 * * *` | ubuntu-latest | criterion benchmarks; tracks regressions in a comment on a tracking issue | < 30 min |
@@ -613,7 +613,7 @@ jobs:
       - uses: dtolnay/rust-toolchain@stable
       - uses: Swatinem/rust-cache@v2
       - run: cargo build --release -p forge-tools-cli
-      - run: ./scripts/run-determinism.sh tests/replay/britain_60s_baseline.replay
+      - run: ./scripts/run-determinism.sh tests/replay/highmere_60s_baseline.replay
 ```
 
 ### 6.3 Pre-commit hooks
@@ -746,7 +746,7 @@ A separate `docker-compose.test.yml` differs only in volume strategy (no persist
 - A player that re-feeds the captured stream into a fresh shard process and asserts the same `EntityDelta` byte stream comes out at every tick.
 - A `replay format v1` (committed in `crates/replay/FORMAT.md`) — a length-prefixed MessagePack stream (replay-only on-disk format; wire encoding is Protobuf per ADR 0006).
 
-`tests/replay/britain_60s_baseline.replay` is the canonical baseline. CI's determinism job replays it and fails on any divergence. When intentional changes break determinism (e.g. a sim-rule change), the procedure is documented in §11.4.
+`tests/replay/highmere_60s_baseline.replay` is the canonical baseline. CI's determinism job replays it and fails on any divergence. When intentional changes break determinism (e.g. a sim-rule change), the procedure is documented in §11.4.
 
 ---
 
@@ -937,7 +937,7 @@ Intentional changes that break the byte-identical replay-test gate follow this p
 
 1. PR is labeled `determinism-break`.
 2. PR description includes a `BREAKING CHANGE:` footer with the rationale.
-3. PR includes the regenerated `tests/replay/britain_60s_baseline.replay` as a separate commit.
+3. PR includes the regenerated `tests/replay/highmere_60s_baseline.replay` as a separate commit.
 4. PR includes an ADR (`adr/`) documenting the decision.
 5. Reviewer is the systems-architecture lead.
 
@@ -1069,7 +1069,7 @@ The 12 weeks break into four tracks landing in lockstep with Doc #11 §4:
 | **W3** | Spatial grid, tile streaming, basic client renderer (**Client B vertical slice begins — Doc #41**) | `crates/spatial` with `RegionGeometry` loader (Doc #23 §2); region tile-stream protocol (Doc #22); `crates/sim` empty world stepping at 20 Hz | **Client B (TS web)** renders a tile grid for Highmere (256×256, ground floor only, no entities); pan + zoom; debug coordinate overlay | `tools/map-import` lifts Highmere tile data from a TOML reference map into the spatial format | Client B shows recognisable Highmere street grid, no entities yet; sim ticks at 20 Hz with stable budget metric |
 | **W4** | Entity/verb dispatch, first interactable | `crates/verb-dispatcher` with full Doc #13 §4 dispatch contract; `examine`, `look`, `use`, `drop` verbs implemented end-to-end; `crates/sim` Physical + State + Container + Ownership components live; persistence write-contract enforced (sqlx + Postgres) | Client shows entities (sprites stubbed as colored rects), right-click contextual menu (Doc #25 §T-13-1); successful `examine` displays the entity's Doc #17 §14 LocalizedString | First 50 archetypes in `content/archetypes/` (Erevan, Lord Avermere, doors, torches, barrels, food); placeholder PixiJS sprites | A player can right-click a barrel, pick "examine", see the description, and the verb hits Postgres `replication_log` |
 | **W5** | NPC schedules, virtues, sprite pipeline live (**protocol freeze candidate — Doc #41**) | `crates/virtue` Virtue scoring on every dispatched verb; `crates/sim` Schedule system at 1 Hz (Doc #17 §6); 15 Highmere NPC schedules wired up; `crates/animation` server-side AnimationStateId arbitration (Doc #31 §3); **`/shared/proto` v1 release-candidate cut; protocol-change ADR template established** | Client B renders sprites via the Doc #31 manifest; AnimationStateId drives sprite-frame selection; HUD shows the avatar's 8-Virtue tallies | `tools/atlas-pack` (Aseprite → atlas + manifest) live; first 15 NPCs ship with `walk_*` and `idle_*` states in 8 directions; gypsy questions (Doc #25 §T-15-1) drive character creation | An NPC walks from home to forge at 9 AM in-game time; player sees the sprite animate; stealing a torch raises Truth -3 in the Virtue panel |
-| **W6** | Multiplayer foundation, replication (**`/shared/proto` v1.0 frozen; UE5 onboarding starts in parallel — Doc #41**) | Region replication at 10 Hz (Doc #22 §5); `EntityDelta` packets working; up to 4 players in one region simultaneously; `crates/replication` snapshot/diff codec; **`/shared/proto` tagged `v1.0` — schema changes from W7 onward require an ADR** | Client B interpolates remote players; movement prediction for own avatar (Doc #22 §6); two browsers in two windows show each other moving. **Client A (UE5) onboarding begins this week**: UE5 project scaffolded, native replication disabled, C++ protobuf codegen consumed, raw-socket connection to `forge-shard`, "hello world" auth + examine round-trip | Determinism baseline replay recorded (`britain_60s_baseline.replay`); UE5 build pipeline added to CI (build-only, not yet gated) | Two engineers in two browsers see each other walk around Highmere in real time; UE5 project compiles in CI and successfully authenticates to `forge-shard` |
+| **W6** | Multiplayer foundation, replication (**`/shared/proto` v1.0 frozen; UE5 onboarding starts in parallel — Doc #41**) | Region replication at 10 Hz (Doc #22 §5); `EntityDelta` packets working; up to 4 players in one region simultaneously; `crates/replication` snapshot/diff codec; **`/shared/proto` tagged `v1.0` — schema changes from W7 onward require an ADR** | Client B interpolates remote players; movement prediction for own avatar (Doc #22 §6); two browsers in two windows show each other moving. **Client A (UE5) onboarding begins this week**: UE5 project scaffolded, native replication disabled, C++ protobuf codegen consumed, raw-socket connection to `forge-shard`, "hello world" auth + examine round-trip | Determinism baseline replay recorded (`highmere_60s_baseline.replay`); UE5 build pipeline added to CI (build-only, not yet gated) | Two engineers in two browsers see each other walk around Highmere in real time; UE5 project compiles in CI and successfully authenticates to `forge-shard` |
 | **W7** | Persistent state across sessions, region partitioning | Logout/login cycle preserves world + Avatar state (Doc #21); region-handoff protocol stub (Doc #22 §7) — single-region for now but the message exists; rollback protection at 30 s (Doc #21 §7) | Client login picker (shard + avatar select); session resume works | `forge-tools-cli replay` works against recorded sessions; integration tests for persistence round-trip green | Quit the client, restart, see the same dropped barrel where it was; replay-test gate green in CI |
 | **W8** | Multiplayer scale to 8, simulation depth | Full Doc #4 simulation: physics (gravity, stacking), fire propagation, water, container nesting, item combination (Doc #4.1 cantrip-tier crafting); 8 simultaneous players load-tested | Client renders fire spread, water tiles, sparks; particle effects via PixiJS | `tests/perf/` baseline criterion bench at 8 players + 500 active entities; first Grafana dashboard "Shard Health" complete | 8-player playtest: a player lights a barrel on fire, fire spreads to neighbouring barrels, all 8 see it within one network tick |
 | **W9** | UGC editor v0 — placement | In-game UGC mode: gated by capability (Doc #25 §T-13-13 — Phase 1 ships no `ugc.author` capability publicly; W9 ships an internal flag `ENABLE_UGC_PUBLISH=true` with the dev avatar only); `script_invoke` plumbing live but no Trusted scripts (Doc #25 §T-13-1) | Editor UI: grid snapping, archetype palette, place + delete + select; saves to `content/maps/<creator>/<slug>/placement.toml` | Editor → publish pipeline: writes a self-contained map bundle; the `forge-tools-cli ugc-validate` checks against the Doc #19 sandbox rules | A friend can join the dev's shard, walk into a player-built room, see placed objects |
@@ -1128,7 +1128,7 @@ All of the following must be true before the W12 demo to Garriott is considered 
 
 ### 16.1 Functional
 
-- [ ] Highmere (256×256, ground + 1 floor for the Castle interior) loads in the client and renders correctly. *Evidence: e2e `britain_smoke.spec.ts` green.*
+- [ ] Highmere (256×256, ground + 1 floor for the Castle interior) loads in the client and renders correctly. *Evidence: e2e `highmere_smoke.spec.ts` green.*
 - [ ] All 50 Phase-1 archetypes are interactive end-to-end (examine, use, drop, optionally combine). *Evidence: integration tests, content lint.*
 - [ ] All 15 Highmere NPCs run their full daily schedules (Doc #17 §6). *Evidence: 24-in-game-hour replay test with no schedule-step warnings.*
 - [ ] The 8-Virtue scoring (Doc #5) updates on every dispatcher verb that carries a `VirtueWeights` mapping. *Evidence: integration tests; HUD demo.*

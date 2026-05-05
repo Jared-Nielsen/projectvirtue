@@ -10,8 +10,9 @@
 // layer can subscribe to br:trigger:* events without importing canvas
 // internals.
 
-import { onCleanup, onMount } from 'solid-js';
+import { createEffect, onCleanup, onMount } from 'solid-js';
 import type { Component } from 'solid-js';
+import { canvasState } from '../state/canvas';
 import { type CanvasRuntime, mountCanvas } from './app';
 
 export interface GameCanvasProps {
@@ -37,6 +38,19 @@ export const GameCanvas: Component<GameCanvasProps> = (props) => {
         }
         runtime = next;
         props.onReady?.(next);
+
+        // Bridge HUD signals → canvas runtime. Each effect re-runs whenever
+        // the corresponding signal updates and is auto-cleaned with the
+        // component lifetime (Solid's tracking scope).
+        createEffect(() => {
+          next.setHour(canvasState.currentHour());
+        });
+        createEffect(() => {
+          next.setDayNightAutoAdvance(canvasState.dayNightAutoAdvance());
+        });
+        createEffect(() => {
+          next.setOverlaysVisible(canvasState.hudOverlaysVisible());
+        });
       } catch (err) {
         // Surface the failure inline so the dev sees something rather than
         // a blank rectangle. The route's error boundary catches re-throws.

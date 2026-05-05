@@ -698,7 +698,7 @@ Per Doc #11 and Doc #20 §5 (Phase 1 critical path).
 | Cross-mode import | Single-player only — no shard binding to round-trip yet | Classic-shard ↔ `.fdsave` export/import |
 | Backup | Save-file copy via OS file system | PostgreSQL replication, WAL archiving, GDPR export endpoint |
 
-The Phase 1 success metric (Doc #15 §8) — Avatar walks Highmere with Erevan and Shamino, equips a sword, drags a torch, steals a loaf — relies on this scope. The dispatcher's persistence write path (§9) ships in Phase 1 against SQLite; the write-batching window is the same; the failure-handling contract (`ERR_PERSISTENCE` rollback) is the same. Switching to PostgreSQL in Phase 2 is a backend swap behind the same dispatcher contract.
+The Phase 1 success metric (Doc #15 §8) — Avatar walks Highmere with Erevan and Theran, equips a sword, drags a torch, steals a loaf — relies on this scope. The dispatcher's persistence write path (§9) ships in Phase 1 against SQLite; the write-batching window is the same; the failure-handling contract (`ERR_PERSISTENCE` rollback) is the same. Switching to PostgreSQL in Phase 2 is a backend swap behind the same dispatcher contract.
 
 ---
 

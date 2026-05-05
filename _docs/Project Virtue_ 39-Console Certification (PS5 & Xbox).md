@@ -420,7 +420,7 @@ DualSense's distinctive features are leveraged where they add to immersion witho
 |---|---|
 | Haptic feedback (high-fidelity rumble) | Combat hits (per weapon type — sword has a different haptic curve than mace); spell cast (per spell circle — minor circle = light pulse, major circle = sustained vibration); environmental events (earthquakes during certain late-game story beats, rain pattering as ambient background haptics). |
 | Adaptive triggers | Drawing a bow (L2 trigger gains tension as the bow is drawn, releases on shot); blocking with a shield (L2 firms when shield is raised); spell channeling (L2 holds spell mid-cast with increasing tension until release). |
-| Speaker (controller speaker) | Optional NPC-voice routing — when a Companion speaks (Erevan, Shamino) and the player has DualSense as audio output, the voice plays on the controller speaker for added presence. Falls back to TV speakers if controller-speaker output is disabled in player settings. |
+| Speaker (controller speaker) | Optional NPC-voice routing — when a Companion speaks (Erevan, Theran) and the player has DualSense as audio output, the voice plays on the controller speaker for added presence. Falls back to TV speakers if controller-speaker output is disabled in player settings. |
 | Light bar | Reflects party leader's selected Virtue alignment (subtle hue shift). Off by default; opt-in. |
 
 Haptic profiles are versioned and live in an asset manifest; UGC creators (Doc #7) **do not** get to define haptic profiles in launch scope (limits cert surface; Phase 4 candidate).

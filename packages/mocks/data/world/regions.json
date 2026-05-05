@@ -1,7 +1,7 @@
 {
   "regions": [
     {
-      "id": "region_britain",
+      "id": "region_highmere",
       "name": "highmere",
       "displayName": { "key": "region.highmere", "en": "Highmere" },
       "biome": "town",
@@ -21,7 +21,7 @@
       "description": "City of Honor. Walled, proud, paladin-bound — the southern gateway to the Cape.",
       "safeZone": true,
       "recommendedLevel": 3,
-      "neighbors": ["region_britain", "region_jhelom"],
+      "neighbors": ["region_highmere", "region_jhelom"],
       "bounds": { "minX": 32, "minY": 0, "maxX": 60, "maxY": 24 }
     },
     {
@@ -33,7 +33,7 @@
       "description": "The deep wood of Blackford. Druid groves, Empath Abbey bells, and the long-quiet Court of Truth.",
       "safeZone": true,
       "recommendedLevel": 4,
-      "neighbors": ["region_britain", "region_coldforge"],
+      "neighbors": ["region_highmere", "region_coldforge"],
       "bounds": { "minX": 0, "minY": 24, "maxX": 32, "maxY": 48 }
     },
     {
@@ -57,7 +57,7 @@
       "description": "A pit of Pride and the things that feed on it. Goblins, ettins, and worse.",
       "safeZone": false,
       "recommendedLevel": 8,
-      "neighbors": ["region_britain"],
+      "neighbors": ["region_highmere"],
       "bounds": { "minX": 0, "minY": 48, "maxX": 24, "maxY": 64 }
     }
   ]

@@ -16,24 +16,24 @@ const oathChoice: DialogNode['choices'][number] = {
 };
 
 const baseDlg: Omit<NpcDialog, 'entryNodeId' | 'nodes'> = {
-  npcId: 'npc_dupre' as NpcDialog['npcId'],
-  npcName: 'Dupre',
-  portrait: '/assets/portraits/dupre.webp',
+  npcId: 'npc_bron' as NpcDialog['npcId'],
+  npcName: 'Bron',
+  portrait: '/assets/portraits/bron.webp',
   tree: {
-    id: 'tree_dupre' as NpcDialog['tree']['id'],
-    npcId: 'npc_dupre' as NpcDialog['tree']['npcId'],
+    id: 'tree_bron' as NpcDialog['tree']['id'],
+    npcId: 'npc_bron' as NpcDialog['tree']['npcId'],
     opening: ['greet'],
-    keywords: { greet: 'resp_dupre_greet' },
+    keywords: { greet: 'resp_bron_greet' },
     responses: {
-      resp_dupre_greet: {
-        id: 'resp_dupre_greet',
+      resp_bron_greet: {
+        id: 'resp_bron_greet',
         text: { key: 'g', en: 'Well met.' },
         unlocks: [],
         locks: [],
         sideEffects: [],
       },
     },
-    defaultResponseId: 'resp_dupre_greet',
+    defaultResponseId: 'resp_bron_greet',
   },
 };
 

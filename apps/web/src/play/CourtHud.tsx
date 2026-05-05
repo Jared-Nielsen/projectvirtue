@@ -13,7 +13,7 @@ import styles from './CourtHud.module.css';
 import shared from './hud-shared.module.css';
 
 export interface CourtHudProps {
-  /** Region whose NPCs constitute the court (default: region_britain). */
+  /** Region whose NPCs constitute the court (default: region_highmere). */
   readonly regionId?: string;
 }
 
@@ -33,7 +33,7 @@ const CROWD_CHATTER: readonly string[] = [
 ];
 
 export function CourtHud(props: CourtHudProps): JSX.Element {
-  const region = (): string => props.regionId ?? 'region_britain';
+  const region = (): string => props.regionId ?? 'region_highmere';
   const [npcs] = createResource(() => mockClient.get<NpcsPayload>('/v1/world/npcs'));
 
   const courtiers = createMemo(() => {

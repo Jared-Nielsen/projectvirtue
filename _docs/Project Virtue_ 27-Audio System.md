@@ -255,7 +255,7 @@ on DialogueUpdate(response):
 | NPC tier | Voice scope | Selection criteria |
 |---|---|---|
 | Lord Avermere, primary companions, principal antagonists | Full VO across all responses | Named in original story |
-| Major Highmere NPCs (Erevan, Shamino, Dupre, Mariah, Gwenno, etc.) | Full VO across all responses | Named, recurring |
+| Major Highmere NPCs (Erevan, Theran, Bron, Eris, Gwenno, etc.) | Full VO across all responses | Named, recurring |
 | Quest-bearing named NPCs | Opening response VO + critical-branch VO; remainder text-only | Has at least one `StartQuest` or `UpdateQuest` `DialogueEffect` |
 | Background named NPCs (shopkeepers, guards) | Greeting line VO only | One-line VO budget per NPC |
 | Anonymous crowd NPCs | Text-only | No `npc_id` stable identity |
@@ -290,7 +290,7 @@ TTS is **out of scope for Phase 1**. UGC NPCs in Phase 1 are silent (text-only) 
 ## 7. Voice for the Player Avatar
 
 - **Avatar is silent.** Doc #10 §5.3 silent-protagonist tradition is preserved; no Avatar VO is recorded or generated for any response.
-- **Canonical companions** (Erevan, Shamino, Dupre — the Phase 1 set per Doc #15 §8 lists Erevan and Shamino) have full VO for their barks, banter, and dialogue trees.
+- **Canonical companions** (Erevan, Theran, Bron — the Phase 1 set per Doc #15 §8 lists Erevan and Theran) have full VO for their barks, banter, and dialogue trees.
 - **Player-to-player voice chat** is a separate Phase 3+ system, out of this doc's scope; preliminary notes in Doc #22 §16 (P2P NAT traversal [OPEN]). See Doc #37 for full voice spec, and Doc #41 §6 for the boundary — Rust signaling + LiveKit SFU + UE5/TS audio I/O.
 
 ---

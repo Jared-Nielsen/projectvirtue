@@ -58,7 +58,7 @@ describe('tagsForQuote', () => {
   });
 
   it('detects paladin keywords', () => {
-    expect(tagsForQuote('Honor and oath', 'Dupre')).toContain('paladin-castle');
+    expect(tagsForQuote('Honor and oath', 'Bron')).toContain('paladin-castle');
   });
 
   it('returns empty when nothing matches', () => {

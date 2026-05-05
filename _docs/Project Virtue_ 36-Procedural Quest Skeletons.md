@@ -28,7 +28,7 @@ The skeleton is a `Quest` (Doc #19 §3.1) with `is_skeleton = true` and a typed 
 2. **Virtue scoring fires.** A bound "slay" quest whose target is an `is_innocent = true` NPC produces the same Mercy/Justice loss as any other innocent kill (Doc #13 §1.7, Doc #5 §4). The skeleton system cannot launder away moral weight.
 3. **Coherence before journal.** A bound quest is only written to a player's journal (Doc #17 §3.2) **after** the coherence checker (§7) has confirmed its slots resolve to entities that exist, are reachable, and do not contradict existing live quests in the player's journal or the region.
 4. **Determinism from seed.** Given a fixed `(skeleton_id, region_seed, time_seed)`, slot resolution produces the same quest. This makes incidents reproducible for moderation review (Doc #29) and gives Doc #28 telemetry a stable identity per quest instance.
-5. **Lord Avermere's cabinet is off limits.** The eight canonical companions (Erevan, Shamino, Spark, Dupre, Jaana, Geoffrey, Julia, Katrina) and Lord Avermere himself are permanently excluded from `target` and `victim` slots in skeletons unless explicitly opted-in via the Alternate Avermere flag (Doc #19 §8.3, Doc #3 §7). `[BR]` matching the Doc #19 validator red-flag rule.
+5. **Lord Avermere's cabinet is off limits.** The eight canonical companions (Erevan, Theran, Spark, Bron, Jaana, Geoffrey, Julia, Katrina) and Lord Avermere himself are permanently excluded from `target` and `victim` slots in skeletons unless explicitly opted-in via the Alternate Avermere flag (Doc #19 §8.3, Doc #3 §7). `[BR]` matching the Doc #19 validator red-flag rule.
 
 ### 1.3 Hand-authored vs skeleton-bound
 
@@ -616,7 +616,7 @@ The launch fixture set:
 
 | Fixture | Purpose |
 |---|---|
-| `fixture.britain_baseline` | Standard civic region; many NPCs, mid resource availability |
+| `fixture.highmere_baseline` | Standard civic region; many NPCs, mid resource availability |
 | `fixture.frontier_sparse` | Frontier region with few NPCs and resources; tests resource-exhaustion handling |
 | `fixture.dungeon` | Pocket realm; tests `forbid_pocket_realm` and reachability |
 | `fixture.mid_arc` | Region mid-Arc; tests prior-resolved-arc coherence |
@@ -1152,7 +1152,7 @@ Per Doc #11. Deliberately minimal; proves the skeleton-bind-coherence loop end-t
 | Chaining | **deferred to Phase 2** |
 | Authoring tools | YAML-only authoring; no in-game editor (Phase 2) |
 | Compiler | yes; passes 1–6, 8 from §10.2; chain validity (pass 7) trivial since no chains |
-| Auto-test | yes against the `fixture.britain_baseline` fixture only |
+| Auto-test | yes against the `fixture.highmere_baseline` fixture only |
 | Hot reload | yes (skeleton registry is versioned) |
 | LLM variation | **off** in Phase 1 |
 | Telemetry | `bind.attempted/succeeded/skipped`, `offered`, `accepted`, `completed`, `coherence_drift`; no dashboards in P1 |

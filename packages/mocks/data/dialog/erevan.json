@@ -12,7 +12,7 @@
       "lute": "resp_erevan_lute",
       "sheep": "resp_erevan_sheep",
       "song": "resp_erevan_song",
-      "shamino": "resp_erevan_shamino",
+      "theran": "resp_erevan_theran",
       "fellowship": "resp_erevan_fellowship",
       "bye": "resp_erevan_bye"
     },
@@ -67,11 +67,11 @@
         "locks": [],
         "sideEffects": [{ "kind": "StartQuest", "questId": "quest_lost_lambs" }]
       },
-      "resp_erevan_shamino": {
-        "id": "resp_erevan_shamino",
+      "resp_erevan_theran": {
+        "id": "resp_erevan_theran",
         "text": {
-          "key": "erevan.shamino",
-          "en": "Shamino is in the woods, as ever. Tell him from me he owes me three coppers."
+          "key": "erevan.theran",
+          "en": "Theran is in the woods, as ever. Tell him from me he owes me three coppers."
         },
         "unlocks": [],
         "locks": [],

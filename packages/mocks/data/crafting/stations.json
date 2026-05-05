@@ -10,10 +10,10 @@
       "publicAccess": true
     },
     {
-      "id": "station_alchemy_britain",
+      "id": "station_alchemy_highmere",
       "name": "Karis's Apothecary",
       "skill": "alchemy",
-      "regionId": "region_britain",
+      "regionId": "region_highmere",
       "iconKey": "icon.station.alchemy",
       "description": "Smells, oddly, of mint. Karis denies adding mint.",
       "publicAccess": true
@@ -40,7 +40,7 @@
       "id": "station_workbench_any",
       "name": "Common Workbench",
       "skill": "tinkering",
-      "regionId": "region_britain",
+      "regionId": "region_highmere",
       "iconKey": "icon.station.workbench",
       "description": "Found in nearly every town. Useful for trivial crafts.",
       "publicAccess": true
@@ -49,7 +49,7 @@
       "id": "station_kitchen_castle",
       "name": "Castle Kitchens",
       "skill": "cooking",
-      "regionId": "region_britain",
+      "regionId": "region_highmere",
       "iconKey": "icon.station.kitchen",
       "description": "Lord Avermere's cooks tolerate amateur visits before noon.",
       "publicAccess": false

@@ -36,6 +36,13 @@ export interface CanvasRuntime {
   readonly app: Application;
   readonly events: EventTarget;
   readonly scaleMode: ScaleMode;
+  /** Force the day/night overlay to a specific in-game hour [0, 24). */
+  setHour(hour: number): void;
+  /** Pause / resume automatic day/night advancement. */
+  setDayNightAutoAdvance(on: boolean): void;
+  /** Show or hide the canvas overlay layers (day/night tint, lighting,
+   *  dev perf overlay). The world tiles + entities are unaffected. */
+  setOverlaysVisible(on: boolean): void;
   destroy(): Promise<void>;
 }
 
@@ -256,7 +263,9 @@ export async function mountCanvas(opts: MountOptions): Promise<CanvasRuntime> {
     color: 0xffd28a,
   });
 
-  const dayNight = new DayNight({ app });
+  // Default the day/night cycle to noon so the canvas doesn't boot under
+  // a darkness overlay (the cycle was visibly grey-blue at hour 0).
+  const dayNight = new DayNight({ app, initialHour: 12 });
   app.stage.addChild(dayNight.container);
 
   const combatFx = new CombatFx();
@@ -321,6 +330,17 @@ export async function mountCanvas(opts: MountOptions): Promise<CanvasRuntime> {
     app,
     events,
     scaleMode,
+    setHour(hour) {
+      dayNight.setHour(hour);
+    },
+    setDayNightAutoAdvance(on) {
+      dayNight.setAutoAdvance(on);
+    },
+    setOverlaysVisible(on) {
+      dayNight.container.visible = on;
+      lighting.container.visible = on;
+      if (perfOverlay) perfOverlay.container.visible = on;
+    },
     async destroy() {
       app.ticker.stop();
       camera.destroy();

@@ -19,6 +19,15 @@ import { type Application, Container, Graphics } from 'pixi.js';
 export interface DayNightOptions {
   readonly app: Application;
   readonly cycleSeconds?: number;
+  /** Initial in-game hour [0, 24). Defaults to 12 (noon — alpha 0, fully
+   *  visible) so the canvas does not boot under a darkness overlay that
+   *  reads as a grey-blue blocking rectangle. The cycle still advances
+   *  each tick if `update()` is called per frame. */
+  readonly initialHour?: number;
+  /** When false, `update()` does not advance the cycle — the overlay
+   *  stays at whatever hour `setHour()` last fixed. Used by the
+   *  time-of-day slider in the HUD so the user can pin a moment. */
+  readonly autoAdvance?: boolean;
 }
 
 const DEFAULT_CYCLE = 24 * 60; // 24 minutes
@@ -46,10 +55,14 @@ export class DayNight {
   readonly container: Container;
   private readonly overlay: Graphics;
   private readonly cycleSeconds: number;
-  private elapsed = 0;
+  private elapsed: number;
+  private autoAdvance: boolean;
 
   constructor(private readonly opts: DayNightOptions) {
     this.cycleSeconds = opts.cycleSeconds ?? DEFAULT_CYCLE;
+    this.autoAdvance = opts.autoAdvance ?? true;
+    const startHour = opts.initialHour ?? 12;
+    this.elapsed = (startHour / 24) * this.cycleSeconds;
     this.container = new Container();
     this.container.label = 'day-night';
     this.overlay = new Graphics();
@@ -57,13 +70,26 @@ export class DayNight {
     this.redraw();
   }
 
-  /** Force the cycle to a specific in-game hour [0, 24). Useful for tests. */
+  /** Force the cycle to a specific in-game hour [0, 24). */
   setHour(hour: number): void {
-    this.elapsed = (hour / 24) * this.cycleSeconds;
+    const clamped = Math.max(0, Math.min(24, hour));
+    this.elapsed = (clamped / 24) * this.cycleSeconds;
     this.redraw();
   }
 
+  /** Read the current in-game hour [0, 24). */
+  getHour(): number {
+    return this.currentHour();
+  }
+
+  /** Pause / resume automatic cycling. When paused the overlay stays
+   *  at the last-set hour. */
+  setAutoAdvance(on: boolean): void {
+    this.autoAdvance = on;
+  }
+
   update(dtSec: number): void {
+    if (!this.autoAdvance) return;
     this.elapsed = (this.elapsed + dtSec) % this.cycleSeconds;
     this.redraw();
   }

@@ -13,7 +13,7 @@ Source heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ul
 
 ## 1. Onboarding Philosophy
 
-Two parallel paths preserve the BG opening for veterans while granting absolute beginners a respectful runway. Path A — **Highmere Town Opening** `[BG]` — drops the new Avatar directly into the simulation: red moongate, summoned-from-the-real-world fiction, Erevan and the Companions present, no overlay tutorial, no floating tooltips. Learning is diegetic; the player figures out controls by trying, exactly as in 1992. Path B — **Tutorial Shard** `[BR]` — is an instanced Avatar's Garden where three guidance NPCs, played as in-fiction tutors (a warrior, an herbalist, a scribe), reveal the same controls through ordinary `talk`-and-`use` interactions. Crucially, no tooltip popups, no animated arrows, no "Press W to walk" overlays appear in either path; the only difference is that Path B's NPCs are *willing teachers* and Path A's are *busy townsfolk*. Both paths flip the same `tutorial_britain_complete` flag and unlock both the UGC editor (Doc #7 §2) and persistent-shard access (Doc #6 §2). This resolves the apparent tension between Doc #2 §1 ("no hand-holding tutorials that insult veteran players") and Doc #6 §2 / Doc #7 §2 (Tutorial Shard exists, UGC gated behind tutorial completion): the *gate* persists, but the *hand-holding* never does — what was a "wizard tutorial" in lesser games becomes an in-fiction Avatar's Garden where Lord Avermere's chosen tutors speak to you in character `[BR]`.
+Two parallel paths preserve the BG opening for veterans while granting absolute beginners a respectful runway. Path A — **Highmere Town Opening** `[BG]` — drops the new Avatar directly into the simulation: red moongate, summoned-from-the-real-world fiction, Erevan and the Companions present, no overlay tutorial, no floating tooltips. Learning is diegetic; the player figures out controls by trying, exactly as in 1992. Path B — **Tutorial Shard** `[BR]` — is an instanced Avatar's Garden where three guidance NPCs, played as in-fiction tutors (a warrior, an herbalist, a scribe), reveal the same controls through ordinary `talk`-and-`use` interactions. Crucially, no tooltip popups, no animated arrows, no "Press W to walk" overlays appear in either path; the only difference is that Path B's NPCs are *willing teachers* and Path A's are *busy townsfolk*. Both paths flip the same `tutorial_highmere_complete` flag and unlock both the UGC editor (Doc #7 §2) and persistent-shard access (Doc #6 §2). This resolves the apparent tension between Doc #2 §1 ("no hand-holding tutorials that insult veteran players") and Doc #6 §2 / Doc #7 §2 (Tutorial Shard exists, UGC gated behind tutorial completion): the *gate* persists, but the *hand-holding* never does — what was a "wizard tutorial" in lesser games becomes an in-fiction Avatar's Garden where Lord Avermere's chosen tutors speak to you in character `[BR]`.
 
 ---
 
@@ -33,7 +33,7 @@ Title screen
 |---|---|
 | Choice scope | **Per-Avatar**, not per-account. Players may re-roll a new Avatar later and pick the other path. |
 | Default selection on fresh account | Neutral — neither answer pre-checked. The prompt presents two sentences explaining each path. |
-| Default selection if account already has any Avatar with `tutorial_britain_complete = true` on any shard | "Aye" pre-checked (§6). |
+| Default selection if account already has any Avatar with `tutorial_highmere_complete = true` on any shard | "Aye" pre-checked (§6). |
 | "Show me" preview | A scripted ~60s capture of Highmere ambient gameplay (no UI, no narration). Returns to the question. The player may pick "Show me" again. |
 | Persistence of choice | The selected path is stored as `OnboardingChoice = { "veteran" | "beginner" | "preview" }` on the Avatar's `PlayerInventory`-scoped onboarding record (Doc #13 §3). Used only for telemetry; never re-prompted. |
 
@@ -54,7 +54,7 @@ Red moongate opens in the Avatar's bedroom (the meta-fictional Real-World framin
 | Element | Detail |
 |---|---|
 | Location | Highmere main square, central plaza, daylight, fair weather |
-| Companions present | Erevan, Shamino, Dupre — already in the party at spawn |
+| Companions present | Erevan, Theran, Bron — already in the party at spawn |
 | First scripted moment | Erevan greets the Avatar by name and gestures toward Lord Avermere's castle: "Avatar, Lord Avermere awaits. The castle lies thataway." Single line, no modal. |
 | HUD state | None. No tooltips, no key hints. Inventory and stats panels are toggleable per Doc #15 §5.4 but not pre-opened. |
 
@@ -81,7 +81,7 @@ The four milestones below collectively define "the player has practiced the four
 | 3 | Examine Lord Avermere (any verb that resolves on him) | `tutorial.examine_lb` | `examine` (Doc #14 §5.7) |
 | 4 | Visit at least one shop (entering trade dialog counts; no purchase required) | `tutorial.shop` | `OpenShop` side-effect (Doc #17 §5.3) |
 
-When all four sub-flags are set, the dispatcher writes `tutorial_britain_complete = true` to the same record. No notification fires. The player simply finds, on their next visit to the main menu, that the UGC editor option is now selectable (§7).
+When all four sub-flags are set, the dispatcher writes `tutorial_highmere_complete = true` to the same record. No notification fires. The player simply finds, on their next visit to the main menu, that the UGC editor option is now selectable (§7).
 
 | Property | Value |
 |---|---|
@@ -124,9 +124,9 @@ Each tutor's exit dialogue, on satisfying their own sub-flag, includes the line:
 > "Thou art ready. Walk through yonder moongate to Highmere proper, Avatar."
 
 When all three sub-flags are set, the moongate at the north of the garden visibly activates (was inert before). Stepping through it:
-1. Sets `tutorial_britain_complete = true` on the Avatar's onboarding record.
+1. Sets `tutorial_highmere_complete = true` on the Avatar's onboarding record.
 2. Spawns the Avatar in Highmere main square (same location as §3.2's Highmere Town Opening).
-3. Erevan, Shamino, and Dupre are present (same as §3.2). Erevan's "Lord Avermere awaits" greeting fires.
+3. Erevan, Theran, and Bron are present (same as §3.2). Erevan's "Lord Avermere awaits" greeting fires.
 
 ### 4.4 Time Target
 
@@ -165,7 +165,7 @@ This list is the operational reading of Doc #2 §1. Any future feature request t
 
 | Condition | Behavior |
 |---|---|
-| Account has any Avatar (any shard) with `tutorial_britain_complete = true` | "Aye, I have walked these lands before" auto-checked on the path-choice prompt. Player may still pick "Nay" to revisit the garden on this new Avatar. |
+| Account has any Avatar (any shard) with `tutorial_highmere_complete = true` | "Aye, I have walked these lands before" auto-checked on the path-choice prompt. Player may still pick "Nay" to revisit the garden on this new Avatar. |
 | Fresh account, no completed Avatars | Question defaults to neutral. Two-sentence explanation appears below: "If thou hast played the Ultimas of old, choose AYE and step into Highmere. If thou art new to Avermere, choose NAY and Lord Avermere's tutors shall greet thee in his garden." |
 | Account holder has explicitly opted into "always show me Highmere Town Opening" in account settings | Path-choice prompt skipped; goes straight to §3. |
 
@@ -179,10 +179,10 @@ The veteran shortcut is per-account, not per-shard, because the relevant fact (d
 
 | Rule | Detail |
 |---|---|
-| Lock condition | `tutorial_britain_complete = false` on the active Avatar |
+| Lock condition | `tutorial_highmere_complete = false` on the active Avatar |
 | Lock kind | **Hard requirement.** The UGC editor entry in the main menu and the in-fiction "Avatar's Studio" portal in Highmere are **hidden**, not greyed-out, until the flag is set. Hidden because greying-out is a teasing pattern that violates the no-hand-holding spirit. |
 | Reasoning | Per Doc #7 §3, brand-new players who have never moved a barrel or talked to an NPC will produce UGC that floods the moderation queue with empty rooms and noise. The tutorial gate filters this at zero cost — completing the tutorial proves the creator understands the simulation primitives they will be authoring. |
-| Re-lock | **Never.** Once unlocked for an Avatar, the editor remains unlocked even after Avatar reset (Doc #15 §1.5). The `tutorial_britain_complete` flag is not part of the reset-able Virtue/Inventory state; it lives on a separate permanent onboarding record. |
+| Re-lock | **Never.** Once unlocked for an Avatar, the editor remains unlocked even after Avatar reset (Doc #15 §1.5). The `tutorial_highmere_complete` flag is not part of the reset-able Virtue/Inventory state; it lives on a separate permanent onboarding record. |
 | Cross-Avatar inheritance | An account holder who completed the tutorial on Avatar A may access the editor on Avatar B *if* Avatar B also has the flag set; flag is per-Avatar, not per-account. Rationale: a friend logging in on the same account on a fresh Avatar is treated as a fresh creator session. |
 
 ---
@@ -192,8 +192,8 @@ The veteran shortcut is per-account, not per-shard, because the relevant fact (d
 | Shard type | Tutorial gate? | Rationale |
 |---|---|---|
 | Classic Shard (Doc #6 §2) | **No gate.** | Classic is single-player or small private co-op; new players who don't know controls only affect themselves and their friends. |
-| Virtue Shard (public persistent) | **Gated.** Requires `tutorial_britain_complete = true`. | Virtue Shard is a shared resource. New players who don't know controls grief the experience for others by getting lost in shops, accidentally stealing, blocking doorways. |
-| Chaos Shard (public persistent, PvP-allowed) | **Gated.** Requires `tutorial_britain_complete = true`. | Same reason, doubly so — a new player walking into PvP without knowing how to combat is being wronged by the system, not the other players. |
+| Virtue Shard (public persistent) | **Gated.** Requires `tutorial_highmere_complete = true`. | Virtue Shard is a shared resource. New players who don't know controls grief the experience for others by getting lost in shops, accidentally stealing, blocking doorways. |
+| Chaos Shard (public persistent, PvP-allowed) | **Gated.** Requires `tutorial_highmere_complete = true`. | Same reason, doubly so — a new player walking into PvP without knowing how to combat is being wronged by the system, not the other players. |
 | Avatar's Garden (instanced) | N/A — this *is* the tutorial. | Always reachable as Path B for any Avatar. |
 
 Players who pick "Aye" at the path question and then skip out without completing the four Highmere milestones (§3.4) cannot enter persistent shards. They will receive a single in-fiction prompt at any persistent-shard moongate: "Avermere is not yet ready for thee, Avatar. Visit Highmere town and learn its ways first." No tooltip, no modal — a plain dialogue line from the moongate's attendant NPC.
@@ -211,7 +211,7 @@ For players who have been inactive long enough that they may have forgotten cont
 | Player chooses "Nay" | Avatar resumes in last region as normal. |
 | Player chooses "Aye" then leaves before satisfying the three tutors | No penalty, no progress loss; the prompt does not re-fire for another 180 days. |
 
-The re-onboarding flow does not affect `tutorial_britain_complete`. The flag, once set, stays set forever.
+The re-onboarding flow does not affect `tutorial_highmere_complete`. The flag, once set, stays set forever.
 
 ---
 
@@ -268,7 +268,7 @@ Amendments to Doc #14 §5 (tools) and §6 (resources). All gated by capabilities
 
 | Resource URI | Returns | Capability |
 |---|---|---|
-| `forge://shard/{s}/avatar/{id}/tutorial_state` | `{ tutorial_britain_complete: bool, sub_flags: { dialogue: bool, move_item: bool, examine_lb: bool, shop: bool, toridan: bool, avila: bool, quill: bool }, onboarding_choice: "veteran" \| "beginner" \| "preview" \| null, shard_briefings_seen: ShardId[], first_completed_at: Timestamp \| null }` | `inspect.read` for **OWN avatar only** (per Doc #15 §7.3 cross-avatar gating rule). Reading another Avatar's tutorial state returns `ERR_CAPABILITY`. |
+| `forge://shard/{s}/avatar/{id}/tutorial_state` | `{ tutorial_highmere_complete: bool, sub_flags: { dialogue: bool, move_item: bool, examine_lb: bool, shop: bool, toridan: bool, avila: bool, quill: bool }, onboarding_choice: "veteran" \| "beginner" \| "preview" \| null, shard_briefings_seen: ShardId[], first_completed_at: Timestamp \| null }` | `inspect.read` for **OWN avatar only** (per Doc #15 §7.3 cross-avatar gating rule). Reading another Avatar's tutorial state returns `ERR_CAPABILITY`. |
 
 Read-only. There is no MCP tool that *clears* the tutorial flag in production; the flag is monotonic-true. (Avatar reset, which destroys the Avatar entirely, is the only way to "lose" the flag — and even then, the account-level memory is preserved per §6.)
 
@@ -276,7 +276,7 @@ Read-only. There is no MCP tool that *clears* the tutorial flag in production; t
 
 | Tool | Capability | Envelope Inputs | Returns | Mutates |
 |---|---|---|---|---|
-| `complete_tutorial_for_testing` | **`avatar.full` PLUS designer-only flag** (`session.designer = true`); rejected outright on production capability sets | `avatar_id` | `{ tutorial_britain_complete: true, sub_flags_set: string[] }` | Force-sets all sub-flags AND `tutorial_britain_complete = true` on the named Avatar. **QA-only.** |
+| `complete_tutorial_for_testing` | **`avatar.full` PLUS designer-only flag** (`session.designer = true`); rejected outright on production capability sets | `avatar_id` | `{ tutorial_highmere_complete: true, sub_flags_set: string[] }` | Force-sets all sub-flags AND `tutorial_highmere_complete = true` on the named Avatar. **QA-only.** |
 
 ```json
 // complete_tutorial_for_testing
@@ -287,7 +287,7 @@ Read-only. There is no MCP tool that *clears* the tutorial flag in production; t
     "avatar_id": "AvatarId"
   },
   "returns": {
-    "tutorial_britain_complete": "boolean",
+    "tutorial_highmere_complete": "boolean",
     "sub_flags_set": ["string"]
   }
 }
@@ -310,30 +310,30 @@ Per Doc #11. Highmere Town Opening only — Tutorial Shard deferred to Phase 2.
 |---|---|---|
 | First-launch flow | Path-choice question shown after genesis; "Nay" option **greyed and labeled "Coming in Phase 2"**; "Aye" and "Show me" functional | Tutorial Shard option enabled |
 | Cinematic | **Text intro screen** ("Lord Avermere summons thee..."): single screen, click to dismiss; no animation | Full red-moongate-from-the-bedroom cinematic |
-| Spawn | Highmere main square; Erevan + Shamino present (Doc #15 §8 names only those two for Phase 1); Dupre **deferred** | Dupre at spawn, full-square ambient population |
+| Spawn | Highmere main square; Erevan + Theran present (Doc #15 §8 names only those two for Phase 1); Bron **deferred** | Bron at spawn, full-square ambient population |
 | Discovery anchors | Barrel + apples (uses container nesting from Doc #15 §5.2); unlit torch in sconce; one beggar NPC named Carlin | Additional anchors |
 | Milestone flags | All 4 wired (§3.4) and tracked through standard dispatcher channels | Telemetry dashboard for milestones |
 | Tutorial Shard | **Not built.** No instanced region, no Toridan/Avila/Quill, no garden moongate | Full §4 build in Phase 2 |
-| UGC editor unlock | Hard gate working on flag flip — editor menu hidden until `tutorial_britain_complete = true`, then visible | Editor itself per Doc #7 §6 Phase 1 scope |
+| UGC editor unlock | Hard gate working on flag flip — editor menu hidden until `tutorial_highmere_complete = true`, then visible | Editor itself per Doc #7 §6 Phase 1 scope |
 | Persistent shard gating | **Not enforced** — Phase 1 multiplayer is single-region only per Doc #22 Phase 1 scope; no Virtue/Chaos shards exist yet | Full gating per §8 in Phase 2 |
 | Re-onboarding | **Not built** | Full §9 in Phase 2 |
 | Multiplayer briefing | **Not built** (no persistent shards in Phase 1) | Full §10 in Phase 2 |
 | MCP | `tutorial_state` resource present (used by QA harness); `complete_tutorial_for_testing` tool present (designer-flagged) | None |
 | Veteran shortcut | Account-memory check skipped (no prior accounts in Phase 1 alpha); always defaults to neutral | Per-account memory in Phase 2 |
 
-**Phase 1 success metric:** a Garriott playtester picks "Aye" at the path question, spawns in Highmere with Erevan and Shamino, walks five tiles, picks up an apple from the discovery barrel (milestone 2), talks to Carlin and learns the keyword `coin` (milestone 1), enters the bakery and clicks the baker (milestone 4), walks to Lord Avermere's chamber and clicks him (milestone 3), and on returning to the main menu sees the UGC editor option appear — without ever having seen a tooltip, popup, or arrow.
+**Phase 1 success metric:** a Garriott playtester picks "Aye" at the path question, spawns in Highmere with Erevan and Theran, walks five tiles, picks up an apple from the discovery barrel (milestone 2), talks to Carlin and learns the keyword `coin` (milestone 1), enters the bakery and clicks the baker (milestone 4), walks to Lord Avermere's chamber and clicks him (milestone 3), and on returning to the main menu sees the UGC editor option appear — without ever having seen a tooltip, popup, or arrow.
 
 ---
 
 ## 15. Open Questions
 
 1. `[OPEN]` **Lord Avermere voice cast.** §3.1 requires a voice line for Lord Avermere's opening summons. Casting decision pending license-holder consultation (Doc #1 §5 — Garriott as Creative Steward).
-2. `[OPEN]` **Tutor identities — generic or canonical?** §4.2 names Master Toridan, Mistress Avila, Brother Quill as generic tutors. Lore tension: should the three tutors instead be Erevan, Shamino, and Dupre themselves? Pro-canonical: stronger fiction, no new NPCs to author. Pro-generic: the Companions are already-met characters who arrive *with* the Avatar in Highmere (Doc #15 §3); having them simultaneously be tutors-in-the-garden requires a fictional bridge (memory? flashback?) that the BG framing does not support cleanly. Recommend keeping generic tutors and treating the garden as a Lord-Avermere-administered school. Final call deferred.
+2. `[OPEN]` **Tutor identities — generic or canonical?** §4.2 names Master Toridan, Mistress Avila, Brother Quill as generic tutors. Lore tension: should the three tutors instead be Erevan, Theran, and Bron themselves? Pro-canonical: stronger fiction, no new NPCs to author. Pro-generic: the Companions are already-met characters who arrive *with* the Avatar in Highmere (Doc #15 §3); having them simultaneously be tutors-in-the-garden requires a fictional bridge (memory? flashback?) that the BG framing does not support cleanly. Recommend keeping generic tutors and treating the garden as a Lord-Avermere-administered school. Final call deferred.
 3. `[OPEN]` **Localization of the path-choice prompt.** §2's "Hast thou walked these lands before?" is the English rendering. The archaic-English register is a deliberate stylistic choice (BG's voice). Localized versions need an in-language equivalent of the same register, not a literal translation. Per-locale translator brief required. Affects every locale Doc TBD covers (Doc #25 candidate, intersects §12 accessibility).
 4. `[OPEN]` **Cinematic skippability.** §3.1 stub: in Phase 2 when the full red-moongate cinematic exists, should it be skippable on first viewing? Recommendation: **skippable after first viewing only**, with a "watch again" entry in the main menu's Codex section. First-viewing non-skippable to ensure narrative beat lands; subsequent skippable for replays. Final call deferred to cinematic delivery.
 5. `[OPEN — needs new doc; not addressed in #23]` **Avatar's Garden interaction with persistent shards.** The garden is instanced (§4.5), so two Avatars on the same Virtue Shard never see each other's gardens. Open: does the garden technically *exist* on the shard's region map (visible at the south wall as a hedged enclosure no one else can enter), or is it spatially elsewhere (a dimensional pocket)? The hedged-on-the-map version preserves the BG visual that the Avatar walked from the garden into Highmere; the pocket version is technically simpler. Recommendation: hedged-on-the-map, with the moongate at the north end being the only entrance/exit. (Originally deferred to Doc #23 spatial systems, but #23 does not in fact address the persistent-shard / instanced-garden interaction; needs its own Phase-2 design pass.)
 6. `[OPEN]` **Carlin the beggar's continued role post-tutorial.** §3.3's beggar is a real NPC with a real schedule. After milestone 1, does he persist as a normal Highmere beggar (preferred — preserves the simulation-first principle), get a unique long-arc storyline (overinvestment in a tutorial NPC), or remain ambient color (waste)? Recommend persistent as normal beggar with a small Mercy-rewarded mini-arc available to high-Mercy Avatars who feed him repeatedly.
-7. `[OPEN]` **Phase 2 Tutorial Shard regional accessibility.** When the garden ships in Phase 2, can a Phase 1 veteran Avatar (already `tutorial_britain_complete = true`) ever revisit it? §9's re-onboarding flow says yes after 180 days. Open: should there be a "always available, just walk to the south wall" route too, for players who want a refresher sooner? Recommendation: yes — the moongate at Highmere's south wall is always passable in either direction for Avatars who have the flag set. Final call deferred to Phase 2 spec.
+7. `[OPEN]` **Phase 2 Tutorial Shard regional accessibility.** When the garden ships in Phase 2, can a Phase 1 veteran Avatar (already `tutorial_highmere_complete = true`) ever revisit it? §9's re-onboarding flow says yes after 180 days. Open: should there be a "always available, just walk to the south wall" route too, for players who want a refresher sooner? Recommendation: yes — the moongate at Highmere's south wall is always passable in either direction for Avatars who have the flag set. Final call deferred to Phase 2 spec.
 8. `[OPEN]` **Telemetry retention for onboarding records.** §3.4 stores per-milestone first-trigger timestamps for live ops. How long retained? GDPR-style retention concerns intersect with Doc #6 persistence rules. Recommendation: 180 days rolling, then aggregate-only. Final call deferred to live-ops doc.
 
 ---

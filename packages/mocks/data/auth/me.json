@@ -4,7 +4,7 @@
   "email": "stranger@avermere.example",
   "displayName": "The Stranger",
   "createdAt": "2026-04-21T13:00:00.000Z",
-  "avatarIds": ["avatar_avatar_of_virtue", "avatar_paladin_dupre"],
+  "avatarIds": ["avatar_avatar_of_virtue", "avatar_paladin_bron"],
   "entitlements": ["base_game", "founders_cloak"],
   "emailVerified": true
 }

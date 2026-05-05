@@ -168,6 +168,6 @@ function keeperOf(npcId: string): string {
   // Convenience subtitle. Real NPC manifest will carry a localized title.
   if (npcId.includes('lord-avermere')) return 'Sovereign of Highmere';
   if (npcId.includes('erevan')) return 'Bard of Highmere';
-  if (npcId.includes('dupre') || npcId === 'branch') return 'Knight of Stonereach';
+  if (npcId.includes('bron') || npcId === 'branch') return 'Knight of Stonereach';
   return 'Keeper of Secrets';
 }

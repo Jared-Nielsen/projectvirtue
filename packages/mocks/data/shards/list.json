@@ -12,7 +12,7 @@
       "serverVersion": "0.1.0-prototype",
       "createdAt": "2026-03-12T00:00:00.000Z",
       "motd": "Welcome to Avermere. Walk in the Eight Virtues.",
-      "regions": ["region_britain", "region_stonereach", "region_blackford", "region_coldforge"],
+      "regions": ["region_highmere", "region_stonereach", "region_blackford", "region_coldforge"],
       "description": "Canonical Order shard. Virtue rules enforced; PvP confined to ratified arenas."
     },
     {

@@ -348,7 +348,7 @@ Mirrors Doc #14 §4. These are enforcement contracts in the dispatcher, not guid
 2. **Pre-commit Virtue evaluation.** Virtue side-effects are evaluated by the Virtue Engine *before* the verb commits. `private_handout` of a stolen item still moves Truth/Justice for the GM. `puppet`-driven NPC actions score Virtues for the GM Avatar, not the puppeted NPC's archetype. `gm_spawn` of hostile creatures into a participant's path that result in participant deaths does not directly score Virtues but is audit-logged for moderation pattern detection.
 3. **Capability immutability.** `gm.host` is granted at session open and revoked at session close; cannot be elevated mid-session.
 4. **Non-participant immunity.** GM cannot modify non-participants. Any GM verb with a target outside `GMSession.participants` (for player verbs) or outside `pocket_realm_id` (for spatial verbs) returns `ERR_GM_NOT_PARTICIPANT` / `ERR_GM_NOT_IN_POCKET_REALM`.
-5. **Canon preservation.** GM cannot bypass canon rules (Doc #3 §7). Attempting to `puppet` Lord Avermere, Erevan, Shamino, etc. outside an Alternate Avermere opt-in is auto-rejected at validate (matches the Doc #19 §8.3 red flag rule).
+5. **Canon preservation.** GM cannot bypass canon rules (Doc #3 §7). Attempting to `puppet` Lord Avermere, Erevan, Theran, etc. outside an Alternate Avermere opt-in is auto-rejected at validate (matches the Doc #19 §8.3 red flag rule).
 6. **Audit log.** Every GM verb invocation is logged to a new `gm_session_audit` table for moderation review:
 
 ```sql
@@ -512,7 +512,7 @@ Standard error codes apply, plus the GM-specific codes from §8.
 | `arcs` / `arc_participants` / `gm_session_audit` tables | Deferred; first migration adding them ships in the Phase 2 multiplayer prototype kickoff |
 | Soft-pause via shared dialogue | Deferred; depends on Doc #17's per-player-instanced dialogue extension to multi-participant, which is also Phase 2 |
 
-Phase 1 success metric (matches Doc #11 / Doc #15 §8): Avatar walks Highmere with Erevan and Shamino. Nothing in this document blocks that. `[BR]`
+Phase 1 success metric (matches Doc #11 / Doc #15 §8): Avatar walks Highmere with Erevan and Theran. Nothing in this document blocks that. `[BR]`
 
 ---
 
@@ -520,7 +520,7 @@ Phase 1 success metric (matches Doc #11 / Doc #15 §8): Avatar walks Highmere wi
 
 1. `[OPEN]` **Max simultaneous participants in a GM session.** Proposed 8 to match Doc #15 multiplayer party cap, but a GM session might want **spectators in addition**. Should `Spectator` count against the cap, or is there a separate spectator cap (e.g., 8 active + 16 spectators)?
 2. `[OPEN]` **`puppet` × NPC schedule resumption.** When `unpuppet` fires mid-schedule (the NPC was at slot 3 of an 8-slot daily schedule when puppeted; 6 hours of in-fiction time elapsed during the session): does the schedule resume at the original slot, the slot the NPC *would* have been in by current time, or does it skip ahead with a "missed prayers" penalty? Doc #17 §6 is silent on multi-hour schedule interruption.
-3. `[OPEN]` **NPC-companion participation.** Can the GM invite NPC companions of participants (Erevan, Shamino — Doc #15 §3) into the session? Default proposal: companions auto-follow their bound Avatar into the session as ambient party, retain their `Schedule` (degenerate `Follow`), are not subject to `gather` (they follow whoever owns them). Edge case: companion banter (Doc #17 §10) inside soft-pause — banter channel suppressed during `InScene`?
+3. `[OPEN]` **NPC-companion participation.** Can the GM invite NPC companions of participants (Erevan, Theran — Doc #15 §3) into the session? Default proposal: companions auto-follow their bound Avatar into the session as ambient party, retain their `Schedule` (degenerate `Follow`), are not subject to `gather` (they follow whoever owns them). Edge case: companion banter (Doc #17 §10) inside soft-pause — banter channel suppressed during `InScene`?
 4. `[OPEN]` **GM revenue / monetization.** Doc #7 §4 declares a creator economy. Does the GM earn revenue per session-hour? Per attended participant? Tip jar from participants only? Does revenue change if the session is `LiveCanonical`? Affects taxonomy of "professional GM" tier.
 5. `[OPEN]` **Group Virtue gating in arc transitions.** An `ArcTransition.trigger` of kind `PredicateNode` can read participant Virtues. Should the predicate evaluate against (a) every participant individually (ALL must qualify), (b) any participant (ANY qualifies), (c) party Virtue average, or (d) a configurable per-transition mode? Affects arc author expressiveness.
 6. `[OPEN]` **Session recording / playback.** Should sessions be recordable for asynchronous post-session review (the GM and participants want to look back at the session like a tabletop replay, or the moderation team wants to review a flagged session)? Storage cost is non-trivial — the dispatcher log + chat + narration text per 4-hour session is in the multi-MB range. Decision affects DB schema.

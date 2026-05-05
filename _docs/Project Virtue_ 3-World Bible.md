@@ -70,7 +70,7 @@ Official patches and expansions will advance the calendar year by year, allowing
 5\. Major Factions & Organizations (1992 Status)
 
 * The Fellowship – Seemingly benevolent self-help group; actually the Guardian’s primary cult.  
-* The Companions of the Avatar – Erevan, Shamino, Dupre, and other classic party members (canonically still active).  
+* The Companions of the Avatar – Erevan, Theran, Bron, and other classic party members (canonically still active).  
 * The Order of the Eight Virtues – Loose monastic network maintaining the shrines.  
 * Guilds – Mages of Lumencove, Warriors of Jhelom, Bards of Highmere, etc.  
 * Player-Created Factions (post-launch): Allowed and encouraged, but must register with the in-game “High Court of Avermere” system for persistence.
@@ -81,7 +81,7 @@ Official patches and expansions will advance the calendar year by year, allowing
 
 * Lord Avermere – Immortal ruler, wise but sometimes distant.  
 * The Avatar – Player character; embodiment of the Virtues; can be male or female.  
-* Erevan, Shamino, Dupre – Core companions; fully voiced and schedule-driven.  
+* Erevan, Theran, Bron – Core companions; fully voiced and schedule-driven.  
 * Batlin – Leader of the Fellowship (major antagonist).  
 * The Guardian – Primary villain; voice heard in dreams and through red gates.
 

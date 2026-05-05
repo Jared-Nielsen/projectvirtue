@@ -37,7 +37,7 @@
     "createdAt": "2026-05-04T20:30:00.000Z",
     "lastPlayedAt": "2026-05-04T20:30:00.000Z",
     "playtimeSeconds": 0,
-    "location": { "regionId": "region_britain", "x": 16, "y": 12, "z": 0 }
+    "location": { "regionId": "region_highmere", "x": 16, "y": 12, "z": 0 }
   },
   "tutorialQuestId": "quest_first_dawn"
 }

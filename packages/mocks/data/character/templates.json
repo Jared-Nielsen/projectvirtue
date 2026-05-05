@@ -77,8 +77,8 @@
       "portraitOptions": ["portrait_elf_female_wise_02", "portrait_human_male_mischievous_01"]
     },
     {
-      "id": "tmpl_bard_of_britain",
-      "displayName": { "key": "tmpl.bard_of_britain", "en": "Bard of Highmere" },
+      "id": "tmpl_bard_of_highmere",
+      "displayName": { "key": "tmpl.bard_of_highmere", "en": "Bard of Highmere" },
       "description": "Lute and longbow alike. Disarms with words; finishes with arrows.",
       "race": "human",
       "class": "bard",

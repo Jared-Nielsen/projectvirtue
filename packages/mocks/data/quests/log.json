@@ -9,7 +9,7 @@
       },
       "state": "active",
       "giver": "Lord Avermere",
-      "regionId": "region_britain",
+      "regionId": "region_highmere",
       "recommendedLevel": 1,
       "virtueTags": ["truth", "humility"],
       "objectives": [
@@ -44,7 +44,7 @@
       },
       "state": "completed",
       "giver": "Hierophant Antos",
-      "regionId": "region_britain",
+      "regionId": "region_highmere",
       "recommendedLevel": 3,
       "virtueTags": ["mercy", "insight"],
       "objectives": [
@@ -80,7 +80,7 @@
       },
       "state": "failed",
       "giver": "Captain of the Highmere Watch",
-      "regionId": "region_britain",
+      "regionId": "region_highmere",
       "recommendedLevel": 6,
       "virtueTags": ["courage", "justice"],
       "objectives": [
@@ -109,7 +109,7 @@
       "summary": { "key": "quest.lost_lambs.summary", "en": "Erevan's flock has wandered." },
       "state": "active",
       "giver": "Erevan",
-      "regionId": "region_britain",
+      "regionId": "region_highmere",
       "recommendedLevel": 2,
       "virtueTags": ["mercy"],
       "objectives": [],

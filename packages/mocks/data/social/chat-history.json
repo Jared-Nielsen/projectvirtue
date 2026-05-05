@@ -1,6 +1,6 @@
 {
   "channels": [
-    { "id": "chan_local_britain", "kind": "local", "name": "Local — Highmere", "muted": false },
+    { "id": "chan_local_highmere", "kind": "local", "name": "Local — Highmere", "muted": false },
     { "id": "chan_global_order", "kind": "global", "name": "Global — Order", "muted": false },
     {
       "id": "chan_guild_coa",
@@ -42,7 +42,7 @@
     },
     {
       "id": "msg_003",
-      "channelId": "chan_local_britain",
+      "channelId": "chan_local_highmere",
       "channelKind": "local",
       "senderHandle": "erevan_bowyer",
       "senderDisplayName": "Erevan",
@@ -52,7 +52,7 @@
     },
     {
       "id": "msg_004",
-      "channelId": "chan_local_britain",
+      "channelId": "chan_local_highmere",
       "channelKind": "local",
       "senderHandle": "passerby_gareth",
       "senderDisplayName": "Gareth",
@@ -84,8 +84,8 @@
       "id": "msg_007",
       "channelId": "chan_party_blackford",
       "channelKind": "party",
-      "senderHandle": "shamino_ranger",
-      "senderDisplayName": "Shamino",
+      "senderHandle": "theran_ranger",
+      "senderDisplayName": "Theran",
       "body": "Tracks south. Two goblins, maybe three. Go quietly.",
       "sentAt": "2026-05-04T20:01:00.000Z",
       "system": false

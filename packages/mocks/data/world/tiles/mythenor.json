@@ -1,8 +1,8 @@
 {
-  "regionId": "region_britain",
-  "width": 32,
-  "height": 24,
-  "tileSize": 32,
+  "regionId": "region_highmere",
+  "width": 10,
+  "height": 10,
+  "tileSize": 256,
   "origin": {
     "x": 0,
     "y": 0
@@ -10,3189 +10,423 @@
   "rows": [
     [
       {
-        "type": "grass",
+        "type": "cobblestone",
         "walkable": true
       },
       {
-        "type": "grass",
+        "type": "cobblestone",
         "walkable": true
       },
       {
-        "type": "grass",
+        "type": "cobblestone",
         "walkable": true
       },
       {
-        "type": "grass",
+        "type": "cobblestone",
         "walkable": true
       },
       {
-        "type": "grass",
+        "type": "cobblestone",
         "walkable": true
       },
       {
-        "type": "grass",
+        "type": "cobblestone",
         "walkable": true
       },
       {
-        "type": "grass",
+        "type": "cobblestone",
         "walkable": true
       },
       {
-        "type": "grass",
+        "type": "cobblestone",
         "walkable": true
       },
       {
-        "type": "grass",
+        "type": "cobblestone",
         "walkable": true
       },
       {
-        "type": "grass",
+        "type": "cobblestone",
         "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "plaza",
-        "walkable": true
-      },
-      {
-        "type": "plaza",
-        "walkable": true
-      },
-      {
-        "type": "plaza",
-        "walkable": true
-      },
-      {
-        "type": "plaza",
-        "walkable": true
-      },
-      {
-        "type": "plaza",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
       }
     ],
     [
       {
-        "type": "grass",
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      }
+    ],
+    [
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      }
+    ],
+    [
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      }
+    ],
+    [
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      }
+    ],
+    [
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      }
+    ],
+    [
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      }
+    ],
+    [
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      }
+    ],
+    [
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      }
+    ],
+    [
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
+        "walkable": true
+      },
+      {
+        "type": "cobblestone",
         "walkable": true
       },
       {
         "type": "plaza",
         "walkable": true,
-        "decor": "moongate",
         "portalTo": "region_blackford"
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "plaza",
-        "walkable": true
-      },
-      {
-        "type": "plaza",
-        "walkable": true
-      },
-      {
-        "type": "plaza",
-        "walkable": true
-      },
-      {
-        "type": "plaza",
-        "walkable": true
-      },
-      {
-        "type": "plaza",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      }
-    ],
-    [
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "plaza",
-        "walkable": true
-      },
-      {
-        "type": "plaza",
-        "walkable": true
-      },
-      {
-        "type": "plaza",
-        "walkable": true
-      },
-      {
-        "type": "plaza",
-        "walkable": true
-      },
-      {
-        "type": "plaza",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      }
-    ],
-    [
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "plaza",
-        "walkable": true
-      },
-      {
-        "type": "plaza",
-        "walkable": true
-      },
-      {
-        "type": "plaza",
-        "walkable": true
-      },
-      {
-        "type": "plaza",
-        "walkable": true
-      },
-      {
-        "type": "plaza",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      }
-    ],
-    [
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      }
-    ],
-    [
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      }
-    ],
-    [
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "town",
-        "walkable": false,
-        "decor": "building_stone"
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "town",
-        "walkable": false,
-        "decor": "building_stone"
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "town",
-        "walkable": false,
-        "decor": "building_stone"
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      }
-    ],
-    [
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "town",
-        "walkable": false,
-        "decor": "building_stone"
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "town",
-        "walkable": false,
-        "decor": "building_stone"
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "town",
-        "walkable": false,
-        "decor": "building_stone"
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      }
-    ],
-    [
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "town",
-        "walkable": false,
-        "decor": "building_stone"
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "town",
-        "walkable": false,
-        "decor": "building_stone"
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "town",
-        "walkable": false,
-        "decor": "building_stone"
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      }
-    ],
-    [
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "town",
-        "walkable": false,
-        "decor": "building_stone"
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "town",
-        "walkable": false,
-        "decor": "building_stone"
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "town",
-        "walkable": false,
-        "decor": "building_stone"
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      }
-    ],
-    [
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "town",
-        "walkable": false,
-        "decor": "building_stone"
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "town",
-        "walkable": false,
-        "decor": "building_stone"
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "cobblestone",
-        "walkable": true
-      },
-      {
-        "type": "town",
-        "walkable": false,
-        "decor": "building_stone"
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      }
-    ],
-    [
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      }
-    ],
-    [
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      }
-    ],
-    [
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      }
-    ],
-    [
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      }
-    ],
-    [
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      }
-    ],
-    [
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      }
-    ],
-    [
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      }
-    ],
-    [
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      }
-    ],
-    [
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "forest",
-        "walkable": true,
-        "decor": "tree_oak"
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      }
-    ],
-    [
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      }
-    ],
-    [
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
-      }
-    ],
-    [
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true,
-        "decor": "dock",
-        "portalTo": "region_stonereach"
-      },
-      {
-        "type": "water",
-        "walkable": false
-      }
-    ],
-    [
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "road",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "mountain",
-        "walkable": false
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "grass",
-        "walkable": true
-      },
-      {
-        "type": "sand",
-        "walkable": true
-      },
-      {
-        "type": "water",
-        "walkable": false
-      },
-      {
-        "type": "water",
-        "walkable": false
       }
     ]
   ]

@@ -25,8 +25,8 @@
       "initiative": 14
     },
     {
-      "entityId": "ent_dupre_companion",
-      "name": "Dupre",
+      "entityId": "ent_bron_companion",
+      "name": "Bron",
       "faction": "ally",
       "hp": { "current": 130, "max": 142 },
       "mana": { "current": 24, "max": 36 },
@@ -34,12 +34,12 @@
       "stance": "defensive",
       "armorRating": 24,
       "statusEffects": [],
-      "portrait": "/assets/portraits/dupre.webp",
+      "portrait": "/assets/portraits/bron.webp",
       "initiative": 11
     },
     {
-      "entityId": "ent_mariah_companion",
-      "name": "Mariah",
+      "entityId": "ent_eris_companion",
+      "name": "Eris",
       "faction": "ally",
       "hp": { "current": 56, "max": 60 },
       "mana": { "current": 102, "max": 110 },
@@ -47,7 +47,7 @@
       "stance": "casting",
       "armorRating": 6,
       "statusEffects": [],
-      "portrait": "/assets/portraits/mariah.webp",
+      "portrait": "/assets/portraits/eris.webp",
       "initiative": 13
     },
     {
@@ -67,7 +67,7 @@
   "recentDamage": [
     {
       "source": "ent_dragon_dustspire",
-      "target": "ent_dupre_companion",
+      "target": "ent_bron_companion",
       "amount": 38,
       "type": "fire",
       "crit": false,
@@ -75,7 +75,7 @@
       "tick": 1399810
     },
     {
-      "source": "ent_mariah_companion",
+      "source": "ent_eris_companion",
       "target": "ent_dragon_dustspire",
       "amount": 28,
       "type": "cold",

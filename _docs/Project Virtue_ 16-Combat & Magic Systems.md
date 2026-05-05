@@ -541,7 +541,7 @@ Per Doc #11 (12-week "Highmere Alive") and Doc #15 §8.
 | Reagents | All 8 reagents exist as items, stealable, weighable; no active spell consumption | Reagent consumption in casts |
 | MCP | None of §11 tools required for Phase 1 (per Doc #14 §8 already restricts MCP to `examine`/`use`) | All §11 tools and resources deferred to Phase 2 |
 
-Phase 1 success metric: a player can enter Cave of Trials with Erevan (set to `AttackNearest`) and Shamino (set to `Manual`), engage three brigands, take poisoned-arrow damage, drink a cure potion (uses §7 RemoveState path via `use` verb on potion), kill one brigand directly (Courage +, Mercy −), kill another by knocking him into the burning brazier with `attack(intent=displace)` (env-kill scoring confirmed at 40% of direct-murder magnitude), and witness a third brigand die to On Fire DoT after Erevan's torch ignited him.
+Phase 1 success metric: a player can enter Cave of Trials with Erevan (set to `AttackNearest`) and Theran (set to `Manual`), engage three brigands, take poisoned-arrow damage, drink a cure potion (uses §7 RemoveState path via `use` verb on potion), kill one brigand directly (Courage +, Mercy −), kill another by knocking him into the burning brazier with `attack(intent=displace)` (env-kill scoring confirmed at 40% of direct-murder magnitude), and witness a third brigand die to On Fire DoT after Erevan's torch ignited him.
 
 ---
 

@@ -213,7 +213,7 @@ Mode is set per-companion via `set_combat_mode` (§8). Mode persists with the co
 
 ### 3.4 Permadeath Locks `[SI]`
 
-Companions flagged `permadeath_locked = true` cannot be resurrected by any means, including the Ankh of Renewal (§5). BR mirrors SI's Boydon (any death) and Dupre (Wall of Lights only) precedents. BG-equivalent candidates: Spark (if the BG storyline's tragic Stonereach-orphan death is preserved) and Tseramed (if the Forest of Blackford arc retains its ranger devotion). Final list `[OPEN]`.
+Companions flagged `permadeath_locked = true` cannot be resurrected by any means, including the Ankh of Renewal (§5). BR mirrors SI's Boydon (any death) and Bron (Wall of Lights only) precedents. BG-equivalent candidates: Spark (if the BG storyline's tragic Stonereach-orphan death is preserved) and Tseramed (if the Forest of Blackford arc retains its ranger devotion). Final list `[OPEN]`.
 
 ### 3.5 Real-Time Follow + Per-Companion Override
 
@@ -515,14 +515,14 @@ Per Doc #11. Deliberately minimal; proves the dispatcher path end-to-end.
 |---|---|---|
 | Character gen | Name + portrait + 3 of the 7 gypsy questions (single-player only); class skew computed but stat assignment fixed | Full 7 questions, shard binding, persistence write |
 | Stats | All 5 primary/secondary stats present in schema; fixed level 1; training disabled | Trainer NPCs, leveling, XP, atrophy |
-| Party | Erevan + Shamino only; default AI mode = `Attack Nearest`; no permadeath logic | All other companions, AI modes 3–10, trade dialog, MP party invites |
+| Party | Erevan + Theran only; default AI mode = `Attack Nearest`; no permadeath logic | All other companions, AI modes 3–10, trade dialog, MP party invites |
 | Paperdoll | 8 of 14 slots active: head, torso, back, belt, left_hand, right_hand, hands, feet | earrings, neck, cloak, rings, legs, quiver |
 | Inventory | Container nesting working at unlimited depth; weight constraint enforced; drag/drop | volume/bulk constraint, trade UI, stacking caps for non-gold items |
 | Resurrection | Avatar respawn at Lord Avermere's chamber on death; no companion resurrection | Ankh of Renewal item, Resurrect spell, Memorial Quests |
 | Ownership | World vs NPC tagging only; theft witness check uses single-NPC line-of-sight | Player-witnesses, companion-witnesses, always-watched zones, bribery |
 | MCP | None of the §7 tools required for the Phase 1 slice | All §7 tools and resources deferred to Phase 2 |
 
-Phase 1 success metric (consistent with Doc #14 §8): a player can complete genesis, walk into Highmere with Erevan and Shamino, equip a sword in left_hand, drag a torch from a bag-in-chest into their backpack (proving cascading weight), and steal a loaf of bread under one watching baker's nose to observe the Truth/Justice delta.
+Phase 1 success metric (consistent with Doc #14 §8): a player can complete genesis, walk into Highmere with Erevan and Theran, equip a sword in left_hand, drag a torch from a bag-in-chest into their backpack (proving cascading weight), and steal a loaf of bread under one watching baker's nose to observe the Truth/Justice delta.
 
 ---
 
