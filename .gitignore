@@ -34,3 +34,8 @@ Thumbs.db
 .env
 .env.local
 .env.*.local
+
+# Reference art kits (Kenney etc.) — kept dev-local; production art moves to
+# Cloudflare R2 with a sync script when real assets land. Re-download from
+# kenney.nl while developing.
+_tileart
