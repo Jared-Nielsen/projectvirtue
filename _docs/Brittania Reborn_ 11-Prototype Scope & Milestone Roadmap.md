@@ -5,6 +5,8 @@ Date: May 2026
 Author: \[Your Name / Project Lead\]  
 Status: Final Capstone Document – Ties together Documents 1–10 into an executable prototype plan
 
+> See Doc #41 (Engine & Stack ADR) for the canonical engine boundary.
+
 ---
 
 1\. Purpose of This Document

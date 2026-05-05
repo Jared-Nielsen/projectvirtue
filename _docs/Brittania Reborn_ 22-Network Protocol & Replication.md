@@ -451,14 +451,14 @@ Per Doc #11 vertical slice and Doc #14 §8, Doc #16 §12.
 |---|---|
 | Player count | 8 simultaneous in Britain |
 | Regions | One: `britain` only |
-| Server | UE5 dedicated server binary on a single machine, in-process; no real cluster |
+| Server | Rust process (`forge-shard`, bevy_ecs + Tokio) on a single machine, in-process; no real cluster (per Doc #41) |
 | Region handoff | Not implemented (only one region exists) |
 | Persistence | SQLite per Doc #21 Phase 1; no Redis |
 | Replication | `Physical.position`, `Container.contents`, public `Ownership.owner`, public Virtue title (`Region` relevance) |
 | Combat sync | **Deferred** — multiplayer combat disabled in Phase 1 (Doc #16 §12), so combat-state replication unwired |
 | MCP | `stdio` only (Doc #14 §8); SSE deferred |
-| Wire format | MessagePack |
-| Transport | Reliable TCP (UE5 default); UDP split deferred to Phase 2 |
+| Wire format | Protobuf — `/shared/proto` codegen for Rust + C++ + TS (per Doc #41 §2) |
+| Transport | Reliable TCP / WebSocket framing; UDP split deferred to Phase 2 (per Doc #41) |
 | Anti-cheat hardening | Deferred to Phase 2 priority |
 | Bandwidth instrumentation | Yes — measure 10 KB/s steady-state per client claim |
 | Heartbeat / soft disconnect | Yes |

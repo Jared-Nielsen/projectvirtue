@@ -6,7 +6,7 @@ Date: May 2026
 Author: [Engineering Lead]
 Status: Normative engineering plan — selects repo strategy, language stack, build/CI tooling, branching model, and the week-by-week deliverable schedule that lifts Doc #11 into committed code. All BLOCK-P1 design questions are resolved per Doc #25; this doc is the green-light kickoff for Phase 1 prototype construction.
 
-> **Updated 2026-05-04** to reflect Doc #41 — Engine & Stack ADR. The client section is now SPLIT into two production targets: **Client A — UE5** (production: desktop + PS5 + Xbox; carries cert, platform identity, voice I/O, full fidelity) and **Client B — TS / PixiJS / Solid.js** (web prototype + permanent web-thin-client; web only; feature subset of Client A; never console; never authoritative). The authoritative server (Rust, single implementation) is unchanged. The wire protocol in `/shared/proto` (Protobuf, codegen for Rust + C++ + TS) is the source of truth; UE5 native replication is FORBIDDEN; the UE5 client is a "dumb view" that talks raw sockets to the Rust server. Determinism remains server-side only. See Doc #41 for the full 12-system boundary table.
+> **Updated 2026-05-04** to reflect Doc #41 — Engine & Stack ADR. The client section is now SPLIT into two production targets: **Client A — UE5** (production: desktop + PS5 + Xbox; carries cert, platform identity, voice I/O, full fidelity) and **Client B — TS / PixiJS / Solid.js** (permanent product surface, per Doc #41 OQ-2 resolution, 2026-05-04; web only; feature subset of Client A; never console; never authoritative). The authoritative server (Rust, single implementation) is unchanged. The wire protocol in `/shared/proto` (Protobuf, codegen for Rust + C++ + TS) is the source of truth; UE5 native replication is FORBIDDEN; the UE5 client is a "dumb view" that talks raw sockets to the Rust server. Determinism remains server-side only. See Doc #41 for the full 12-system boundary table.
 
 Depends on: #1 Vision, #2 GDD, #4 Simulation, #6 Persistent World, #9 Tooling, #10 Style Bible, #11 Prototype Scope & Milestone Roadmap, #13 Core Schema (Entity, Verb, Scope), #14 MCP Server Surface, #21 Save Format & Shard DB, #22 Network Protocol & Replication, #23 Pathfinding & Spatial Systems, #25 BLOCK-P1 Resolutions, #28 Telemetry, #29 Moderation & Admin Tools, #31 Sprite Animation Pipeline, #32 Anti-cheat & Security Hardening, #33 Localization, #34 Accessibility.
 
@@ -109,7 +109,7 @@ Engineers without LFS configured see pointer files — CI fails fast with a clea
 | **Cache / pubsub** | **Redis 7** via `redis-rs` async | KeyDB | Native Tokio support; Doc #21 §2.2 already names Redis | KeyDB is fine but no compelling reason to deviate |
 | **Cross-region bus** | **NATS** via `async-nats` | Redis pub/sub fallback | Doc #22 §2 already lists NATS as preferred | Redis pub/sub is the documented fallback; we keep the abstraction trait so we can swap in tests |
 | **Client A — UE5 (production: desktop + PS5 + Xbox; carries cert)** | **Unreal Engine 5** (renderer, input, UI, platform identity, voice I/O, full fidelity) | Unity, Godot | Per Doc #41: the production client across desktop and console. Cert-bearing platform binary; full audio fidelity; voice I/O. **MUST** treat itself as a "dumb view": zero authoritative logic, native UE5 replication FORBIDDEN, talks raw sockets to the Rust server using the `/shared/proto` wire schema (codegen → C++) | See Doc #9 §3 evaluation — UE5 wins on console + fidelity; alternatives ruled out there |
-| **Client B — TS / PixiJS / Solid.js (web prototype + permanent web-thin-client)** | **TypeScript 5.5 + Vite + PixiJS 8 + Solid.js** | Phaser 4, Excalibur, Bevy in WASM | Per Doc #41: web-only thin client. Used for the W3–W6 vertical slice prototype and permanently afterwards as the web-feature-flagged subset of Client A. NEVER console. NEVER authoritative. NEVER carries exclusive features (may OMIT features; never ADD). PixiJS is a tight, fast 2D scene-graph; we own the gameplay layer above it which matches our Doc #13 entity model; runs in any modern browser; no platform-store gatekeeping for the public web reach (Doc #6 §2). Solid.js overlay handles paperdoll/dialogue/spellbook (Doc #15 §5, Doc #17) with fine-grained reactivity. | Phaser is heavier and bundles state/scene/physics machinery we'd be fighting against; Excalibur is small but younger ecosystem; Bevy-in-WASM ships ~5 MB minimum and demands shared-array-buffer headers we'd rather not require for a public web client |
+| **Client B — TS / PixiJS / Solid.js (permanent product surface, per Doc #41 OQ-2 resolution 2026-05-04)** | **TypeScript 5.5 + Vite + PixiJS 8 + Solid.js** | Phaser 4, Excalibur, Bevy in WASM | Per Doc #41: web-only thin client and a **permanent product surface** (not a Phase-1 throwaway). Builds the W3–W6 vertical slice and continues forever as the web-feature-flagged subset of Client A. NEVER console. NEVER authoritative. NEVER carries exclusive features (may OMIT features; never ADD). PixiJS is a tight, fast 2D scene-graph; we own the gameplay layer above it which matches our Doc #13 entity model; runs in any modern browser; no platform-store gatekeeping for the public web reach (Doc #6 §2). Solid.js overlay handles paperdoll/dialogue/spellbook (Doc #15 §5, Doc #17) with fine-grained reactivity. | Phaser is heavier and bundles state/scene/physics machinery we'd be fighting against; Excalibur is small but younger ecosystem; Bevy-in-WASM ships ~5 MB minimum and demands shared-array-buffer headers we'd rather not require for a public web client |
 | **Shared types** | **Custom Rust→TS codegen via `ts-rs` 9.0** for internal Rust types; **Protobuf in `/shared/proto` is the wire source of truth** with codegen for **Rust + C++ (UE5) + TS** per Doc #41 | protobuf for everything, flatbuffers, capnproto | `ts-rs` lets the Rust types in `crates/shared` be the source of truth for *internal* shapes; the **wire** is protobuf-defined in `/shared/proto` so all three clients (Rust internal, C++ UE5, TS web) speak the same envelopes — see Doc #41 boundary table; flatbuffers/capnproto are zero-copy formats whose ergonomic cost is not justified at our message rates (10 Hz state, ~10/sec verbs/client) | Pure-protobuf-everything forces every internal Rust type to be a `prost`-generated struct — fights our Doc #13 component bag; flatbuffers lifetime story is rough in Rust |
 | **Wire encoding** | **Protobuf for the wire envelope (per Doc #41 — `/shared/proto` is the source of truth, codegen for Rust + C++ + TS); MessagePack inner-channel encoding** (Doc #22 §4.1) via `rmp-serde` where applicable | JSON, CBOR, FlatBuffers | Doc #41 elevates protobuf from "handshake-only" to the canonical wire envelope so the UE5 (C++) and web (TS) clients can both decode the same packets; MessagePack remains an option for high-rate inner channels where the protobuf bump cadence would be a friction | JSON loses bytes at our scale; CBOR is fine but no advantage over Protobuf+MsgPack |
 | **Asset pipeline** | **Aseprite CLI** for sprite extraction → custom Rust tool (`forge-assets`) for atlas + manifest gen → PNG + JSON sidecars (Doc #31 §2) | TexturePacker, Spine | Aseprite is the source of truth for pixel art; we own the manifest format (Doc #31) so a custom Rust tool gives us the exact output | TexturePacker is non-deterministic across versions; Spine is rigged 2D, wrong art style |
@@ -134,9 +134,11 @@ forge-shard (single binary)
 ├── PlayerInputDispatcher (single ingress, Doc #13 §4 / Doc #14 §2)
 ├── VerbDispatcher (the choke point)
 ├── MCP Subsystem (`mcp-server` crate; stdio + SSE per Doc #14 §2)
-├── Replication (per-region snapshot diff, MessagePack-encoded, Doc #22)
+├── Replication (per-region snapshot diff, Protobuf-encoded*, Doc #22)
 └── Persistence (sqlx → Postgres / rusqlite → SQLite, Doc #21)
 ```
+
+\* Wire encoding is Protobuf per ADR 0006 (supersedes ADR 0005 MessagePack); see §13.2.
 
 The 20 Hz tick is driven by a `tokio::time::interval` with `MissedTickBehavior::Burst` so a long tick catches up rather than slipping silently — the determinism harness (§7.5) catches missed ticks via a watchdog.
 
@@ -167,7 +169,7 @@ Per Doc #41, two clients are produced from the same Rust authoritative server an
 
 **Client A — UE5** (production: desktop + PS5 + Xbox; carries cert, platform identity, voice I/O, full audio + visual fidelity). Onboarding starts in W6; W12 goal = feature-equal between TS web and UE5 desktop. Console cert is Phase 2 (NOT in the 12-week prototype). **UE5 native replication is FORBIDDEN**; the UE5 client opens a raw socket to `forge-shard` and exchanges protobuf-encoded `ClientMessage`/`ServerMessage` envelopes. Zero authoritative logic ships in the UE5 client.
 
-**Client B — TS / PixiJS / Solid.js** (web-only prototype + permanent web-thin-client). Builds the W3–W6 vertical slice. Permanently afterwards: a web-feature-flagged subset of Client A (may OMIT features, never ADD). Never console, never authoritative.
+**Client B — TS / PixiJS / Solid.js** (web-only; **permanent product surface** per Doc #41 OQ-2 resolution, 2026-05-04 — not a Phase-1 throwaway). Builds the W3–W6 vertical slice and continues forever as a web-feature-flagged subset of Client A (may OMIT features, never ADD). Never console, never authoritative. Long-term hiring includes a permanent TS/PixiJS engineer role (not a short-term prototyper); CI investment, QA matrix, security review, accessibility (Doc #34), and localization parity (Doc #33) are on the same tier as Client A.
 
 **Client B (web) layout:**
 
@@ -185,10 +187,12 @@ forge-client (Vite-built SPA)
 │   ├── InventoryPanel (Doc #15)
 │   ├── HUD (status, virtues, region label)
 │   └── DevConsole (dev-only)
-├── NetClient (WebSocket → MessagePack → ClientMessage / ServerMessage)
+├── NetClient (WebSocket → Protobuf* → ClientMessage / ServerMessage)
 ├── PredictionEngine (movement-only, Doc #22 §6)
 └── AssetLoader (manifest-driven, Doc #31)
 ```
+
+\* Wire encoding is Protobuf per ADR 0006 (supersedes ADR 0005 MessagePack); see §13.2.
 
 Audio (Doc #27) is a separate Howler.js wrapper bound to `EntitySpawn`/`EntityDelta` events. Localized strings (Doc #33) are loaded from a per-locale JSON bundle picked at boot.
 
@@ -276,7 +280,7 @@ projectvirtue/
 │   ├── replication/             # Doc #22 region replication
 │   ├── spatial/                 # Doc #23 grid + R-tree + A* wrapper
 │   ├── pathfinding/             # Doc #23 A* + cost lambdas
-│   ├── network/                 # WebSocket + MessagePack codec + channel mux
+│   ├── network/                 # WebSocket + Protobuf codec* + channel mux
 │   ├── mcp-server/              # Doc #14 surface; stdio + SSE
 │   ├── audio-events/            # Doc #27 server-side SFX-trigger fan-out
 │   ├── animation/               # Doc #31 server-side animation-state arbitration
@@ -289,7 +293,7 @@ projectvirtue/
 ├── packages/                    # TypeScript / pnpm workspace members
 │   ├── client-core/             # PixiJS scene, input, prediction
 │   ├── client-ui/               # Solid.js UI panels
-│   ├── client-net/              # WebSocket + MessagePack client
+│   ├── client-net/              # WebSocket + Protobuf client* 
 │   ├── client-assets/           # asset loader, manifest types
 │   ├── shared-ts/               # re-exports shared/generated/ts/* with a stable façade
 │   └── eslint-config-forge/     # shared lint rules
@@ -502,7 +506,7 @@ packages:
 
 ### 6.1 GitHub Actions matrix
 
-CI runs on every PR and on push to `main`. The matrix:
+CI runs on every PR and on push to `main`. The matrix below treats **Client B (TS web) CI on the same tier as Client A (UE5)** — per Doc #41 OQ-2 resolution (2026-05-04), the web client is a permanent product surface, so its lint, typecheck, unit, e2e, and bundle/build artifact jobs are gating on the same cadence as the UE5 build pipeline.
 
 | Job | Triggers | OS | Steps | SLA |
 |---|---|---|---|---|
@@ -740,7 +744,7 @@ A separate `docker-compose.test.yml` differs only in volume strategy (no persist
 
 - A recorder that captures every `VerbInvocation`, `RNG` consumption, and `ServerTick` boundary for a wall-clock window.
 - A player that re-feeds the captured stream into a fresh shard process and asserts the same `EntityDelta` byte stream comes out at every tick.
-- A `replay format v1` (committed in `crates/replay/FORMAT.md`) — a length-prefixed MessagePack stream.
+- A `replay format v1` (committed in `crates/replay/FORMAT.md`) — a length-prefixed MessagePack stream (replay-only on-disk format; wire encoding is Protobuf per ADR 0006).
 
 `tests/replay/britain_60s_baseline.replay` is the canonical baseline. CI's determinism job replays it and fails on any divergence. When intentional changes break determinism (e.g. a sim-rule change), the procedure is documented in §11.4.
 
@@ -1016,12 +1020,13 @@ Phase 1 starts with these ADRs (this doc derives them):
 | 0002 | Rust authoritative server (supersedes UE5 from Doc #9) | Accepted |
 | 0003 | TypeScript + PixiJS + Solid.js client | Accepted |
 | 0004 | Rust types as schema source of truth via ts-rs | Accepted |
-| 0005 | MessagePack on the wire, protobuf for handshake | Accepted |
-| 0006 | SOPS + age for repo secrets | Accepted |
-| 0007 | Trunk-based development, squash merges | Accepted |
-| 0008 | Determinism gate via byte-identical replay tests | Accepted |
-| 0009 | SQLx compile-time-checked SQL | Accepted |
-| 0010 | OpenTelemetry → Prometheus + Jaeger + Grafana | Accepted |
+| 0005 | MessagePack on the wire, protobuf for handshake | Superseded by 0006 (2026-05-04) |
+| 0006 | Wire format: Protobuf supersedes MessagePack (2026-05-04) — Doc #41 ADR §2: Protobuf chosen as canonical wire format; codegen for Rust + C++ + TS; protocol freezes W5–W6 of prototype | Accepted (supersedes 0005) |
+| 0007 | SOPS + age for repo secrets | Accepted |
+| 0008 | Trunk-based development, squash merges | Accepted |
+| 0009 | Determinism gate via byte-identical replay tests | Accepted |
+| 0010 | SQLx compile-time-checked SQL | Accepted |
+| 0011 | OpenTelemetry → Prometheus + Jaeger + Grafana | Accepted |
 
 ### 13.3 Code documentation generation
 
@@ -1205,6 +1210,7 @@ This doc cross-references many existing docs. The following cross-doc edits are 
 - **Doc #30 (Cross-Doc Consistency Audit):** rerun after the above edits; expect the engine-name-grep to be clean.
 - **Doc #31 §1 (Animation Philosophy):** replace "rendering integration with UE5" with "rendering integration via PixiJS in the Doc #40 client".
 - All five docs above should re-cite Doc #40 in their `Depends on:` line.
+- **2026-05-04 — OQ-2 resolved — web client permanent.** Per Doc #41 OQ-2 resolution, the TS/PixiJS web client is a permanent product surface (not a Phase-1 throwaway). This doc updated to reflect: TS engineer role is permanent (§3.5); web-client CI is on the same tier as UE5-client CI (§6.1); QA matrix, security review, accessibility (Doc #34), and localization parity (Doc #33) cover both clients. The "feature-flagged subset" policy (web may omit features, never adds them) is unchanged.
 
 The cross-doc PR is owned by the engineering lead and lands in the same week as W1.
 

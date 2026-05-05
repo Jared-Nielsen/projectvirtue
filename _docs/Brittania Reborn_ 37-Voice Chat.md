@@ -842,7 +842,112 @@ Voice chat is **Phase 3+** content per Doc #11 and Doc #27 §7. Phase 1 ships wi
 
 ---
 
-## 15. Open Questions
+## 15. Discord Interop (Community Augmentation Layer)
+
+First-party in-game voice and text — LiveKit-backed voice (§3) and the Doc #6 §4 chat layer — are and remain the canonical communication surfaces for Britannia Reborn. Discord is added as an **optional augmentation** for the community ecosystem that grows around the game (guild servers, content creators, out-of-band coordination), never as a substitute for the in-game stack. This section specifies what we integrate, what we deliberately do not, and the security and policy boundaries that hold the line.
+
+### Scope & non-goals
+
+Discord integration is an **OPTIONAL augmentation layer**. It is never required to play Britannia Reborn, never authoritative for in-game state, and never replaces in-game voice or text for any of the canonical channels: proximity (§2.4), party (§2.1), guild (§2.2), or system / shard-wide announcements. A player who never touches Discord experiences zero gameplay degradation — exactly the same posture as a player who declines voice consent at first-join (§8.1, §13).
+
+Discord communications are **NOT within the GDPR portability perimeter** (Doc #38). Conversations that happen on a guild's Discord server are governed by Discord's terms and Discord's data residency, not ours. Our data export bundle (§8.6) does not — and cannot — include Discord messages. This gap must be disclosed in the privacy policy (cross-ref §11 and Doc #38).
+
+The integration is **outbound-biased.** The game tells Discord things; Discord tells the game very little, and what little it does tell us is read-only and game-state-inert (see §"Three integration surfaces" below).
+
+### Three integration surfaces (in-scope for Phase 2)
+
+Three concrete integration points, in increasing order of complexity and trust required.
+
+#### Rich Presence
+
+The game publishes a Discord status string for the running client. Example: "Playing Britannia Reborn — in Trinsic". The status updates as the player moves between regions, joins a party, or enters a hosted GM session (Doc #26 §5).
+
+| Element | Spec |
+|---|---|
+| Implementation surface | Discord SDK in the **UE5 client only**. The TS web client falls back to Discord's web Rich Presence, which is more limited (no Spectate/Join, fewer state strings) |
+| Update cadence | Throttled to one update per 15 s; coalesces region transitions to avoid status spam |
+| Content | Shard name, current region, party size; never coordinates, never inventory, never combat state |
+| Spectate / Join buttons | Optional, **only enabled in non-Chaos shards**. Chaos shards (full-loot PvP) explicitly suppress Join buttons to avoid griefing-via-Discord-friend-list |
+| Opt-out | Settings → Privacy → "Publish Rich Presence to Discord" — off by default for new accounts; one-click toggle |
+
+Rich Presence runs entirely in the client; no server-side coordination required. It is the cheapest integration surface and the lowest-risk.
+
+#### OAuth account link
+
+Players may **optionally** link their Discord account to their game account via Discord OAuth2.
+
+| Element | Spec |
+|---|---|
+| Opt-in | Explicitly user-initiated from Settings → Account → Linked Accounts → Discord |
+| Granularity | Per-scope consent: identity (Discord username + id), guild membership read, role-write (only if guild-bot present in the target Discord) |
+| Storage | `discord_id` on the account row; encrypted at rest using the same KMS-wrapped per-tenant key as the moderation evidence path (§8.3) |
+| Revocation | One-click unlink in Settings; immediate cascade — `discord_id` purged, any Discord roles auto-granted by us are revoked, any Rich Presence "verified Discord" badge removed |
+
+Use cases enabled by an opt-in link:
+
+- **Auto-grant guild Discord roles** when in-game guild membership changes (join, promote, kick). The guild bot (below) is the executor.
+- **Reduce friction** for joining a guild's Discord — the in-game guild roster surfaces a "Join Discord" button for linked guilds.
+- **Cross-platform identity** for content creators — streamers who want their Discord handle visible alongside their character name (always opt-in display; see §"Security & policy boundaries").
+
+#### Guild bot
+
+A server-side Rust service (a small companion to the main game-server fleet, deployable independently) that posts to a guild's Discord channel.
+
+| Posting category | Direction | Default | Examples |
+|---|---|---|---|
+| Server status | Out | On | "Atlantic shard back online after maintenance" |
+| Raid kill-feed | Out | On (configurable per guild) | "Guildmember Iolo defeated Lord British's Lich (raid: Despise Level 3)" |
+| Login / logout summary | Out | On (rolled up hourly to avoid spam) | "12 guildmembers online: …" |
+| Scheduled events | Out | On | Auto-posts when a guild leader schedules an event in-game |
+| Achievement broadcasts | Out | Per-member opt-in | "Iolo earned the *Champion of Britannia* title" |
+| Inbound commands | In | Read-only allowlist | `!who-online`, `!guild-treasury-readonly`, `!next-event` |
+
+**OUTBOUND ONLY by default.** The guild bot's inbound surface is restricted to a **strict read-only allowlist.** Inbound Discord commands MUST NOT move currency, transfer items, change membership, queue actions, or affect game state in any way. This is a hard architectural rule, not a configuration setting — there is no code path from a Discord webhook to a writable game-state verb. The economic-attack-surface implications (Doc #32) make this non-negotiable.
+
+### Security & policy boundaries
+
+- **Discord-side moderation is Discord's responsibility, not ours.** We do not moderate guild Discord servers; we do not enforce Britannia Reborn's Code of Conduct against Discord messages. The two trust boundaries are deliberately separate.
+- **Linking Discord identity is opt-in and revocable** at all times. Display of `discord_id` to other players is **OFF by default**; a player must explicitly toggle "Show my Discord on my profile" to surface it.
+- **Doxx prevention.** Never display a player's Discord username alongside their character name without explicit consent. The in-game guild roster, kill-feed, and chat name-tags surface character names only; Discord identity is opt-in display per §above.
+- **Per-guild invite model.** The guild bot must be invited per-guild by the guild leader; there is no global "auto-join" of player Discords, no scraping of player Discord servers, and no implicit linkage between a player's personal Discord and the bot.
+- **Rate limit & circuit breaker.** All outbound Discord posts are rate-limited to Discord's published API limits (50 req/s/bot, 5 req/s/channel). A circuit breaker around the Discord client trips on sustained 5xx or 429 from Discord's edge — when tripped, the bot drops messages to a bounded queue and continues; **a Discord outage never stalls the game tick.** This is the same posture as §13 graceful-degrade-to-text.
+- **Age verification & adult-content fences.** Discord age and game age may diverge (a minor verified in our COPPA flow may have a Discord account that has accessed Discord's adult-only servers). If our age data flags a player as a minor, the OAuth flow must refuse to link to a Discord account that has accessed adult-only Discord content. The exact API surface for this check is `[OPEN]` (Discord's age-gate metadata is partial and changing); resolution required before Phase 2 ship — see §16.
+
+### What is explicitly NOT integrated (and why)
+
+| Surface | Decision | Reason |
+|---|---|---|
+| In-game proximity chat → Discord | **No** | Proximity is location-based (§2.4, attenuation per Doc #27 §3); Discord is room-based. The semantics do not translate — there is no Discord channel for "everyone within 30 metres of the Trinsic fountain." |
+| Discord voice replacing LiveKit | **No** | Console certification (Doc #39) requires first-party voice with platform-mute integration (§10). Discord cannot satisfy console mute hooks. |
+| Discord text channels replacing in-game text chat | **No** | Two losses: moderation sovereignty (Doc #29 — we cannot enforce CoC on Discord) and GDPR portability (Doc #38 — we cannot export Discord messages). |
+| Game state mutated by Discord commands | **No** | Inbound is read-only by architectural rule. No currency, items, membership writes, action queueing, or any state-affecting verb is reachable from a Discord webhook path. |
+
+Each of these is a deliberate "no" with a documented reason, not a "not yet" — the decision is not expected to revisit unless the underlying constraint changes (e.g., Discord ships console-cert-compatible mute APIs).
+
+### Phase 2 scope (post-prototype)
+
+Sized to fit a **2–3 engineer-week** total for a useful first version, parallelizable across two engineers.
+
+| Workstream | Effort |
+|---|---|
+| Rich Presence (UE5 client SDK integration, throttling, opt-out toggle) | ~3 engineer-days |
+| OAuth link (Discord OAuth2 flow, account-row storage, revocation cascade) | ~3 engineer-days |
+| Guild bot v1 — server status + login feed + scheduled events posting | ~1 engineer-week |
+| **Total** | **2–3 engineer-weeks** |
+
+Owner: TBD; depends on the community manager (for guild-leader UX, bot configuration, moderation policy) and one backend engineer (for the Rust service, OAuth flow, and Discord SDK integration). The work has no critical-path dependency on the core voice stack (§3) — this section can ship in any order relative to Phase 3 voice GA.
+
+### Cross-references
+
+- **Doc #14 (MCP Server Surface)** — adds a `discord.post_to_guild_channel` server-side verb (rate-limited, opt-in by guild leader, outbound only). Cross-ref §12 of this doc for the parallel voice-MCP surface.
+- **Doc #28 (Live-Service Telemetry)** — track Discord-link conversion rate as a community-health metric; correlate with guild retention.
+- **Doc #29 (Moderation & Admin Tools)** — guild-Discord moderation is **out of scope**; we provide a reporting bridge (a player can `/report` from Discord that lands as a Doc #29 §3 ticket) but no enforcement path on the Discord side.
+- **Doc #38 (Privacy & Data Governance)** — Discord conversations are **NOT in the GDPR export bundle**. This gap must be disclosed in the privacy policy. Cross-ref §8.6 of this doc.
+- **Doc #41 (Engine & Stack ADR)** — Discord is listed in §6 third-party services table; this section is the integration spec for that listing.
+
+---
+
+## 16. Open Questions
 
 1. `[OPEN]` **Spatial voice in dungeon levels (vertical stacking).** Doc #27 §13 item 6 asks the same about combat sound through floors. For voice, the equivalent question: should a player whispering on the floor below be audible upstairs at any volume? Default proposal: voice follows the same `spatial_flags.through_floors` rule as combat, but whispering gets a stricter setting (always full-block). Audio director sign-off needed.
 2. `[OPEN]` **Voice-changer policy.** Voice changers (pitch shift, formant scramble) used by players for fun, role-play, or anonymity. §7.5 flags voice-changer pattern only when correlated with another report; should role-play servers (Virtue shards) explicitly endorse voice changers as in-character expression? Working assumption: yes, with the standard moderation rules; needs Design ratification.
@@ -857,7 +962,7 @@ Voice chat is **Phase 3+** content per Doc #11 and Doc #27 §7. Phase 1 ships wi
 
 ---
 
-## 16. Cross-Document Integration
+## 17. Cross-Document Integration
 
 | This Doc | Touches |
 |---|---|
@@ -879,7 +984,7 @@ Voice chat is **Phase 3+** content per Doc #11 and Doc #27 §7. Phase 1 ships wi
 | §12 MCP additions | Doc #14 §3 (capabilities), §5 (tools), §6 (resources); Doc #32 §11 (MCP security model) |
 | §13 Failure modes | Doc #6 §4 (text channel always present); Doc #22 §13 (SFU spawn-pattern parallel to game-server spawn pattern) |
 | §14 Phasing | Doc #11, Doc #27 §7, Doc #27 §12 (Phase 1 deferral) |
-| §15 Open Questions | Doc #6 §2 (cross-shard moongates), Doc #14 §3 (MCP capability future), Doc #27 §13 item 6 (vertical sound), Doc #29 §12 (appeals retention) |
+| §16 Open Questions | Doc #6 §2 (cross-shard moongates), Doc #14 §3 (MCP capability future), Doc #27 §13 item 6 (vertical sound), Doc #29 §12 (appeals retention) |
 
 ### Resolved Cross-Doc Items
 
@@ -889,7 +994,7 @@ Voice chat is **Phase 3+** content per Doc #11 and Doc #27 §7. Phase 1 ships wi
 
 ### New [OPEN] Items
 
-Ten, listed in §15: vertical-stack voice attenuation, voice-changer policy, GM-session highlight-reel consent, cross-shard voice mesh, MCP-mediated voice speakers, presence indicator for silent proximity listeners, ASR cost-distribution architecture, ban-appeal retention extension, Doc #38 dependency resolution, and per-channel soundtrack-duck override.
+Ten, listed in §16: vertical-stack voice attenuation, voice-changer policy, GM-session highlight-reel consent, cross-shard voice mesh, MCP-mediated voice speakers, presence indicator for silent proximity listeners, ASR cost-distribution architecture, ban-appeal retention extension, Doc #38 dependency resolution, and per-channel soundtrack-duck override.
 
 ### Bandwidth Budget Summary
 
