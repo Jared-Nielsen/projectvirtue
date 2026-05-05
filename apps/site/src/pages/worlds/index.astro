@@ -27,16 +27,21 @@ const status = loadShardStatus();
       </p>
       <p>
         {/*
-          World Editor entry point (Doc #43). The game client (the @br/web
-          Vite app) hosts the route /play/editor, which is auth-gated by
-          <Protected>. In production the marketing site and game client
-          share the virtu3.com origin, so a relative href reaches the SPA
-          correctly. In dev the game client serves on :5173 — devs running
-          both apps can jump there manually. If the two ever split onto
-          different subdomains, swap this href for an env-driven absolute
-          URL (e.g. import.meta.env.PUBLIC_GAME_BASE_URL).
+          World Editor entry point (Doc #43). The game client (@br/web)
+          hosts the route /play/editor and is auth-gated by <Protected>.
+          The marketing site and game client live on separate Netlify
+          subdomains (virtuesite.netlify.app + gamevirtu3.netlify.app),
+          so the link must be absolute to cross origins. PUBLIC_GAME_BASE_URL
+          overrides the default at build time when it's set; otherwise we
+          fall back to the production game-client URL. The marketing-site
+          .env.example documents this var.
         */}
-        <a href="/play/editor" class="cta cta--ghost">Open World Editor →</a>
+        <a
+          href={`${import.meta.env.PUBLIC_GAME_BASE_URL ?? 'https://gamevirtu3.netlify.app'}/play/editor`}
+          class="cta cta--ghost"
+        >
+          Open World Editor →
+        </a>
       </p>
     </div>
   </section>
