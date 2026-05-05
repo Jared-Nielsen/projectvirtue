@@ -1,0 +1,106 @@
+---
+import { getCollection } from 'astro:content';
+import JournalPostCard from '../../components/JournalPostCard.astro';
+import JournalFilter from '../../islands/JournalFilter.tsx';
+import NewsletterForm from '../../islands/NewsletterForm.tsx';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const description =
+  'Stories, dev diaries, and deeper looks into the world of Project Virtue. Follow our journey as we build a world worth getting lost in.';
+
+const all = await getCollection('journal');
+// Newest first by date.
+const posts = [...all].sort((a, b) => (a.data.date < b.data.date ? 1 : -1));
+const featured = posts[0];
+const others = featured ? posts.filter((p) => p.slug !== featured.slug) : posts;
+---
+
+<BaseLayout title="Journal" description={description}>
+  <section class="journal-hero" aria-labelledby="journal-title">
+    <div class="container">
+      <h1 id="journal-title">Journal</h1>
+      <p class="lede">
+        Stories, dev diaries, and deeper looks into the world of Project Virtue. Follow our journey
+        as we build a world worth getting lost in — and a community worth growing up in.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" aria-label="Posts">
+    <div class="container journal-layout">
+      <div class="journal-main">
+        <JournalFilter client:visible />
+
+        <div class="journal-grid-wrap" data-pv-journal-grid data-filter="all">
+          {featured && (
+            <div class="journal-featured" data-cat={featured.data.category}>
+              <JournalPostCard post={featured} featured />
+            </div>
+          )}
+          <div class="journal-grid">
+            {others.map((p) => (
+              <div class="journal-grid__item" data-cat={p.data.category}>
+                <JournalPostCard post={p} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <aside class="journal-side" aria-label="Journal sidebar">
+        <div class="surface journal-side__block">
+          <h2>Stay Updated</h2>
+          <p>Get journals and behind-the-scenes content delivered every other week.</p>
+          <NewsletterForm client:visible variant="stacked" />
+        </div>
+        {featured && (
+          <div class="surface journal-side__block">
+            <h2>Featured Post</h2>
+            <article class="journal-side__featured">
+              <h3>{featured.data.title}</h3>
+              <p>{featured.data.excerpt}</p>
+              <a href={`/journal/${featured.slug}`}>Read more →</a>
+            </article>
+          </div>
+        )}
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .journal-hero { padding: 64px 0 32px; }
+  .journal-layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 32px;
+  }
+  @media (max-width: 880px) {
+    .journal-layout { grid-template-columns: 1fr; }
+  }
+  .journal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+  }
+  /* Filter behaviour: the JournalFilter island sets data-filter on the wrapper. */
+  .journal-grid-wrap[data-filter='dev-update'] [data-cat]:not([data-cat='dev-update']) { display: none; }
+  .journal-grid-wrap[data-filter='lore'] [data-cat]:not([data-cat='lore']) { display: none; }
+  .journal-grid-wrap[data-filter='tutorial'] [data-cat]:not([data-cat='tutorial']) { display: none; }
+  .journal-grid-wrap[data-filter='community'] [data-cat]:not([data-cat='community']) { display: none; }
+  /* When category is anything other than "all" hide the featured slot — the
+   * original SPA only showed it on "all". */
+  .journal-grid-wrap:not([data-filter='all']) .journal-featured { display: none; }
+  .journal-side__block {
+    margin-bottom: 16px;
+  }
+  .journal-side__block h2 { font-size: 1rem; margin: 0 0 8px; }
+  .journal-side__block p {
+    font-size: 0.875rem;
+    color: var(--br-parchment-200);
+    margin-bottom: 12px;
+  }
+  .journal-side__featured h3 { font-size: 0.9375rem; margin: 0 0 6px; }
+  .journal-side__featured p { font-size: 0.8125rem; }
+</style>

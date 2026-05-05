@@ -8,6 +8,8 @@ build
 .vite
 .histoire
 .turbo
+.astro
+storybook-static
 *.tsbuildinfo
 
 # Test coverage

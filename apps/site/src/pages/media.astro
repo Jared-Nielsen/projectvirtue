@@ -1,0 +1,60 @@
+---
+import MediaGalleryItem from '../components/MediaGalleryItem.astro';
+import { MEDIA } from '../data/media';
+import MediaGallery from '../islands/MediaGallery.tsx';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const description =
+  'Screenshots, videos, and artwork from the world of Project Virtue. Press kit available on request.';
+
+// Static fallback for non-JS crawlers: render every item as plain figures.
+// The interactive MediaGallery island re-renders the same content with
+// filter pills + lightbox once it hydrates.
+const featured = MEDIA.find((m) => m.featured);
+const others = MEDIA.filter((m) => !m.featured);
+---
+
+<BaseLayout title="Media" description={description}>
+  <section class="media-hero">
+    <div class="container media-hero__inner">
+      <h1>Media</h1>
+      <p class="lede">Screenshots, videos, and artwork from the world of Project Virtue.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-label="Media gallery">
+    <div class="container media-layout">
+      <MediaGallery client:visible />
+    </div>
+  </section>
+
+  {/* Static SSR fallback: hidden once the island hydrates (it replaces the
+   * children of `media-layout` above). For non-JS visitors and crawlers,
+   * the same content is rendered below in pure HTML. */}
+  <noscript>
+    <section class="section" aria-label="Media gallery (no script)">
+      <div class="container">
+        <div class="media-grid-static">
+          {featured && <MediaGalleryItem item={featured} featured />}
+          {others.map((m) => <MediaGalleryItem item={m} />)}
+        </div>
+      </div>
+    </section>
+  </noscript>
+</BaseLayout>
+
+<style>
+  .media-hero { padding: 56px 0 24px; }
+  .media-hero__inner { max-width: 760px; }
+  .media-layout {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 880px) { .media-layout { grid-template-columns: 1fr; } }
+  .media-grid-static {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+</style>

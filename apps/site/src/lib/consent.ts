@@ -7,9 +7,10 @@
 // "Decline" persists a record so we don't re-prompt every visit, and so the
 // analytics gate (lib/analytics.ts) treats decline === reject.
 
-import { isServer } from 'solid-js/web';
-
 export type ConsentChoice = 'accept' | 'decline';
+
+const isBrowser = (): boolean =>
+  typeof window !== 'undefined' && typeof localStorage !== 'undefined';
 
 export interface ConsentRecord {
   readonly choice: ConsentChoice;
@@ -21,7 +22,7 @@ export const CONSENT_KEY = 'br.consent.v1';
 export const CONSENT_VERSION = 1;
 
 export function readConsent(): ConsentRecord | null {
-  if (isServer || typeof localStorage === 'undefined') return null;
+  if (!isBrowser()) return null;
   try {
     const raw = localStorage.getItem(CONSENT_KEY);
     if (!raw) return null;
@@ -39,7 +40,7 @@ export function writeConsent(choice: ConsentChoice): ConsentRecord {
     version: CONSENT_VERSION,
     decidedAt: new Date().toISOString(),
   };
-  if (!isServer && typeof localStorage !== 'undefined') {
+  if (isBrowser()) {
     try {
       localStorage.setItem(CONSENT_KEY, JSON.stringify(record));
     } catch {
@@ -50,7 +51,7 @@ export function writeConsent(choice: ConsentChoice): ConsentRecord {
 }
 
 export function clearConsent(): void {
-  if (isServer || typeof localStorage === 'undefined') return;
+  if (!isBrowser()) return;
   try {
     localStorage.removeItem(CONSENT_KEY);
   } catch {
