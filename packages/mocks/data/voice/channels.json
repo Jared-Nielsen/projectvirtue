@@ -1,0 +1,98 @@
+{
+  "channels": [
+    {
+      "id": "voice_proximity_britain",
+      "kind": "proximity",
+      "name": "Britain — Proximity",
+      "capacity": 32,
+      "pushToTalk": false,
+      "bitrateKbps": 48,
+      "active": true,
+      "regionTag": "region_britain",
+      "participants": [
+        {
+          "characterId": "char_avatar_of_virtue",
+          "handle": "thestranger",
+          "displayName": "Aramis the Stranger",
+          "muted": false,
+          "deafened": false,
+          "speaking": false,
+          "volume": 1.0,
+          "joinedAt": "2026-05-04T19:55:00.000Z"
+        },
+        {
+          "characterId": "char_npc_iolo",
+          "handle": "iolo_bowyer",
+          "displayName": "Iolo",
+          "muted": false,
+          "deafened": false,
+          "speaking": true,
+          "volume": 0.85,
+          "joinedAt": "2026-05-04T19:42:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "voice_party_yew_patrol",
+      "kind": "party",
+      "name": "Party — Yew Patrol",
+      "capacity": 6,
+      "pushToTalk": true,
+      "bitrateKbps": 64,
+      "active": true,
+      "participants": [
+        {
+          "characterId": "char_avatar_of_virtue",
+          "handle": "thestranger",
+          "displayName": "Aramis the Stranger",
+          "muted": false,
+          "deafened": false,
+          "speaking": false,
+          "volume": 1.0,
+          "joinedAt": "2026-05-04T20:00:00.000Z"
+        },
+        {
+          "characterId": "char_npc_shamino",
+          "handle": "shamino_ranger",
+          "displayName": "Shamino",
+          "muted": false,
+          "deafened": false,
+          "speaking": false,
+          "volume": 0.95,
+          "joinedAt": "2026-05-04T19:58:00.000Z"
+        }
+      ]
+    },
+    {
+      "id": "voice_guild_coa",
+      "kind": "guild",
+      "name": "Guild — Companions of the Avatar",
+      "capacity": 50,
+      "pushToTalk": false,
+      "bitrateKbps": 64,
+      "active": false,
+      "participants": []
+    },
+    {
+      "id": "voice_campaign_lord_british_banquet",
+      "kind": "campaign",
+      "name": "Campaign — Lord British's Banquet",
+      "capacity": 8,
+      "pushToTalk": false,
+      "bitrateKbps": 96,
+      "active": true,
+      "participants": [
+        {
+          "characterId": "char_gm_wisesage",
+          "handle": "wisesage_gm",
+          "displayName": "WiseSage",
+          "muted": false,
+          "deafened": false,
+          "speaking": true,
+          "volume": 1.0,
+          "joinedAt": "2026-05-04T20:30:00.000Z"
+        }
+      ]
+    }
+  ]
+}

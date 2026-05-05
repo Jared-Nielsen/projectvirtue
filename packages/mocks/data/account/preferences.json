@@ -1,0 +1,11 @@
+{
+  "accountId": "acct_01HXYZ_avatar",
+  "locale": "en-US",
+  "timezone": "America/Los_Angeles",
+  "emailOptIn": true,
+  "telemetryConsent": true,
+  "marketingConsent": false,
+  "pushNotifications": true,
+  "preferredShard": "shard_britannia_order",
+  "hidesAdultContent": false
+}

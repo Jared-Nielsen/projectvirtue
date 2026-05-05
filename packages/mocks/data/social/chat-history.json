@@ -1,0 +1,99 @@
+{
+  "channels": [
+    { "id": "chan_local_britain", "kind": "local", "name": "Local — Britain", "muted": false },
+    { "id": "chan_global_order", "kind": "global", "name": "Global — Order", "muted": false },
+    {
+      "id": "chan_guild_coa",
+      "kind": "guild",
+      "name": "Guild — Companions of the Avatar",
+      "muted": false
+    },
+    { "id": "chan_party_yew", "kind": "party", "name": "Party — Yew Patrol", "muted": false },
+    { "id": "chan_whisper_iolo", "kind": "whisper", "name": "Iolo", "muted": false },
+    { "id": "chan_system", "kind": "system", "name": "System", "muted": false }
+  ],
+  "messages": [
+    {
+      "id": "msg_001",
+      "channelId": "chan_guild_coa",
+      "channelKind": "guild",
+      "senderHandle": "thestranger",
+      "senderDisplayName": "Aramis the Stranger",
+      "senderRole": "leader",
+      "body": "Council at 8pm. Bring the Codex Primer.",
+      "sentAt": "2026-05-04T19:00:00.000Z",
+      "system": false
+    },
+    {
+      "id": "msg_002",
+      "channelId": "chan_guild_coa",
+      "channelKind": "guild",
+      "senderHandle": "duprealt",
+      "senderDisplayName": "Sir Cedric",
+      "senderRole": "officer",
+      "body": "Aye. I'll be late, the Trinsic gate is jammed again.",
+      "sentAt": "2026-05-04T19:02:00.000Z",
+      "system": false
+    },
+    {
+      "id": "msg_003",
+      "channelId": "chan_local_britain",
+      "channelKind": "local",
+      "senderHandle": "iolo_bowyer",
+      "senderDisplayName": "Iolo",
+      "body": "Anyone seen three sheep wandering up the Yew road?",
+      "sentAt": "2026-05-04T19:05:00.000Z",
+      "system": false
+    },
+    {
+      "id": "msg_004",
+      "channelId": "chan_local_britain",
+      "channelKind": "local",
+      "senderHandle": "passerby_gareth",
+      "senderDisplayName": "Gareth",
+      "body": "lol",
+      "sentAt": "2026-05-04T19:05:30.000Z",
+      "system": false
+    },
+    {
+      "id": "msg_005",
+      "channelId": "chan_global_order",
+      "channelKind": "global",
+      "senderHandle": "system",
+      "senderDisplayName": "Britannia",
+      "body": "Live event 'The Bell of Empath Abbey' begins at 21:00 server time.",
+      "sentAt": "2026-05-04T19:00:00.000Z",
+      "system": true
+    },
+    {
+      "id": "msg_006",
+      "channelId": "chan_whisper_iolo",
+      "channelKind": "whisper",
+      "senderHandle": "iolo_bowyer",
+      "senderDisplayName": "Iolo",
+      "body": "If thou findest only two sheep, lie. I shall pretend not to know.",
+      "sentAt": "2026-05-04T19:08:00.000Z",
+      "system": false
+    },
+    {
+      "id": "msg_007",
+      "channelId": "chan_party_yew",
+      "channelKind": "party",
+      "senderHandle": "shamino_ranger",
+      "senderDisplayName": "Shamino",
+      "body": "Tracks south. Two goblins, maybe three. Go quietly.",
+      "sentAt": "2026-05-04T20:01:00.000Z",
+      "system": false
+    },
+    {
+      "id": "msg_008",
+      "channelId": "chan_system",
+      "channelKind": "system",
+      "senderHandle": "system",
+      "senderDisplayName": "System",
+      "body": "Server tick rate dropped to 24Hz on shard_chaos_dread; performance investigation in progress.",
+      "sentAt": "2026-05-04T20:15:00.000Z",
+      "system": true
+    }
+  ]
+}

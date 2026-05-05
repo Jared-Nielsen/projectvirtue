@@ -1,0 +1,49 @@
+{
+  "id": "book_the_virtues",
+  "title": "Of the Eight Virtues",
+  "author": "Brother Antos of Empath Abbey",
+  "era": "Year 142 of Lord British's Reign",
+  "summary": "A primer on the Eight Virtues of Britannia, copied for novitiates of the Codex.",
+  "tags": ["virtue", "lore", "primer"],
+  "readable": true,
+  "publishedAt": "2026-04-21T00:00:00.000Z",
+  "pages": [
+    {
+      "index": 0,
+      "heading": "On the Eight",
+      "body": "There are Eight, and they are not in order of importance, but each in service of the others. Compassion and Honesty are the parents; Honor and Humility are the brothers; Justice and Sacrifice are the friends; Spirituality and Valor are the witnesses.",
+      "illustration": "illum.ankh"
+    },
+    {
+      "index": 1,
+      "heading": "Of Compassion",
+      "body": "Compassion is the first because without it the rest are merely orderly. To know another's hurt and to lessen it without thought of profit is the work of Compassion. The shrine stands east of Britain, beyond the orchard."
+    },
+    {
+      "index": 2,
+      "heading": "Of Honesty",
+      "body": "Honesty is what you say to yourself in private. It is not pretty, and it is not for the listening of others, and yet without it Honor cannot stand."
+    },
+    {
+      "index": 3,
+      "heading": "Of Honor",
+      "body": "Honor is what you do when no one watches. To swear an oath is small. To keep it through dark and indifference is the whole of the matter."
+    },
+    {
+      "index": 4,
+      "heading": "Of Humility",
+      "body": "Humility is the trust that the world will continue without you. The proud man cannot rest. Of all the Virtues, it is the only one improved by silence."
+    },
+    {
+      "index": 5,
+      "heading": "Of Justice, Sacrifice, Spirituality, and Valor",
+      "body": "These the novitiate may read in the second volume. They are the Virtues of the cloister and the field, of those who give and those who hold."
+    },
+    {
+      "index": 6,
+      "heading": "Closing",
+      "body": "There is a ninth thing that is not a Virtue. It is the spirit of the Avatar, which is not earned and cannot be granted, but which lives in any soul that holds the Eight in even rough proportion. Brother Antos. Empath Abbey. Year 142.",
+      "illustration": "illum.flourish"
+    }
+  ]
+}

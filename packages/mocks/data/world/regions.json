@@ -1,0 +1,64 @@
+{
+  "regions": [
+    {
+      "id": "region_britain",
+      "name": "britain",
+      "displayName": { "key": "region.britain", "en": "Britain" },
+      "biome": "town",
+      "tileMapKey": "sosaria",
+      "description": "The shining capital of Britannia. Lord British's castle dominates the skyline; the marketplace teems with banter, baked bread, and rumor.",
+      "safeZone": true,
+      "recommendedLevel": 1,
+      "neighbors": ["region_yew", "region_trinsic", "region_cove"],
+      "bounds": { "minX": 0, "minY": 0, "maxX": 32, "maxY": 24 }
+    },
+    {
+      "id": "region_trinsic",
+      "name": "trinsic",
+      "displayName": { "key": "region.trinsic", "en": "Trinsic" },
+      "biome": "town",
+      "tileMapKey": "trinsic",
+      "description": "City of Honor. Walled, proud, paladin-bound — the southern gateway to the Cape.",
+      "safeZone": true,
+      "recommendedLevel": 3,
+      "neighbors": ["region_britain", "region_jhelom"],
+      "bounds": { "minX": 32, "minY": 0, "maxX": 60, "maxY": 24 }
+    },
+    {
+      "id": "region_yew",
+      "name": "yew",
+      "displayName": { "key": "region.yew", "en": "Yew" },
+      "biome": "forest",
+      "tileMapKey": "yew",
+      "description": "The deep wood of Yew. Druid groves, Empath Abbey bells, and the long-quiet Court of Truth.",
+      "safeZone": true,
+      "recommendedLevel": 4,
+      "neighbors": ["region_britain", "region_minoc"],
+      "bounds": { "minX": 0, "minY": 24, "maxX": 32, "maxY": 48 }
+    },
+    {
+      "id": "region_minoc",
+      "name": "minoc",
+      "displayName": { "key": "region.minoc", "en": "Minoc" },
+      "biome": "mountain",
+      "tileMapKey": "minoc",
+      "description": "Mountain town of Sacrifice. Forges roar by night and the mines rumble by day.",
+      "safeZone": true,
+      "recommendedLevel": 5,
+      "neighbors": ["region_yew", "region_cove"],
+      "bounds": { "minX": 32, "minY": 24, "maxX": 60, "maxY": 48 }
+    },
+    {
+      "id": "region_dungeon_despise",
+      "name": "dungeon_despise",
+      "displayName": { "key": "region.dungeon_despise", "en": "Despise" },
+      "biome": "dungeon",
+      "tileMapKey": "despise",
+      "description": "A pit of Pride and the things that feed on it. Goblins, ettins, and worse.",
+      "safeZone": false,
+      "recommendedLevel": 8,
+      "neighbors": ["region_britain"],
+      "bounds": { "minX": 0, "minY": 48, "maxX": 24, "maxY": 64 }
+    }
+  ]
+}

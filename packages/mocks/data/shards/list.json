@@ -1,0 +1,79 @@
+{
+  "shards": [
+    {
+      "id": "shard_britannia_order",
+      "name": "Britannia (Order)",
+      "kind": "order",
+      "region": "na-east",
+      "status": "online",
+      "population": 1284,
+      "capacity": 2400,
+      "tickRateHz": 30,
+      "serverVersion": "0.1.0-prototype",
+      "createdAt": "2026-03-12T00:00:00.000Z",
+      "motd": "Welcome to Britannia. Walk in the Eight Virtues.",
+      "regions": ["region_britain", "region_trinsic", "region_yew", "region_minoc"],
+      "description": "Canonical Order shard. Virtue rules enforced; PvP confined to ratified arenas."
+    },
+    {
+      "id": "shard_serpent_isle",
+      "name": "Serpent Isle (Order)",
+      "kind": "order",
+      "region": "eu-west",
+      "status": "online",
+      "population": 642,
+      "capacity": 1600,
+      "tickRateHz": 30,
+      "serverVersion": "0.1.0-prototype",
+      "createdAt": "2026-03-22T00:00:00.000Z",
+      "motd": "Beyond the Pillars: a stranger sea.",
+      "regions": ["region_monitor", "region_fawn", "region_moonshade"],
+      "description": "EU-anchored Order shard with Serpent Isle region rotation."
+    },
+    {
+      "id": "shard_chaos_marauder",
+      "name": "Marauder (Chaos)",
+      "kind": "chaos",
+      "region": "na-west",
+      "status": "online",
+      "population": 388,
+      "capacity": 1200,
+      "tickRateHz": 30,
+      "serverVersion": "0.1.0-prototype",
+      "createdAt": "2026-04-02T00:00:00.000Z",
+      "motd": "All is permitted. None is forgiven.",
+      "regions": ["region_buccaneers_den", "region_dungeon_despise"],
+      "description": "Open-PvP Chaos shard. Full looting; reduced Virtue scoring; Doc #35 rules."
+    },
+    {
+      "id": "shard_chaos_dread",
+      "name": "Dread Hour (Chaos)",
+      "kind": "chaos",
+      "region": "apac",
+      "status": "degraded",
+      "population": 122,
+      "capacity": 800,
+      "tickRateHz": 24,
+      "serverVersion": "0.1.0-prototype",
+      "createdAt": "2026-04-18T00:00:00.000Z",
+      "motd": "Lag is reportedly biblical. Sorry.",
+      "regions": ["region_buccaneers_den", "region_dungeon_shame"],
+      "description": "APAC Chaos shard, currently in degraded state during a regional ISP issue."
+    },
+    {
+      "id": "shard_gm_lord_british_banquet",
+      "name": "Lord British's Banquet (Campaign)",
+      "kind": "gm",
+      "region": "na-east",
+      "status": "online",
+      "population": 6,
+      "capacity": 8,
+      "tickRateHz": 30,
+      "serverVersion": "0.1.0-prototype",
+      "createdAt": "2026-04-30T00:00:00.000Z",
+      "motd": "Private campaign. Invitation only.",
+      "regions": ["region_castle_britannia"],
+      "description": "GM-hosted six-session campaign run by player 'WiseSage'."
+    }
+  ]
+}

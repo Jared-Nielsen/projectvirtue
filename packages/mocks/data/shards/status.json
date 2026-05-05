@@ -1,0 +1,54 @@
+{
+  "snapshots": [
+    {
+      "id": "shard_britannia_order",
+      "status": "online",
+      "population": 1284,
+      "queueLength": 0,
+      "tickP99Ms": 18,
+      "uptimeSeconds": 4860000,
+      "lastChecked": "2026-05-04T20:30:00.000Z",
+      "health": "green"
+    },
+    {
+      "id": "shard_serpent_isle",
+      "status": "online",
+      "population": 642,
+      "queueLength": 0,
+      "tickP99Ms": 22,
+      "uptimeSeconds": 3760000,
+      "lastChecked": "2026-05-04T20:30:00.000Z",
+      "health": "green"
+    },
+    {
+      "id": "shard_chaos_marauder",
+      "status": "online",
+      "population": 388,
+      "queueLength": 0,
+      "tickP99Ms": 19,
+      "uptimeSeconds": 2880000,
+      "lastChecked": "2026-05-04T20:30:00.000Z",
+      "health": "green"
+    },
+    {
+      "id": "shard_chaos_dread",
+      "status": "degraded",
+      "population": 122,
+      "queueLength": 14,
+      "tickP99Ms": 64,
+      "uptimeSeconds": 1410000,
+      "lastChecked": "2026-05-04T20:30:00.000Z",
+      "health": "amber"
+    },
+    {
+      "id": "shard_gm_lord_british_banquet",
+      "status": "online",
+      "population": 6,
+      "queueLength": 0,
+      "tickP99Ms": 7,
+      "uptimeSeconds": 460000,
+      "lastChecked": "2026-05-04T20:30:00.000Z",
+      "health": "green"
+    }
+  ]
+}

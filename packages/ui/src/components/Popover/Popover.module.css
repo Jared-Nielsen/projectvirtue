@@ -1,0 +1,20 @@
+.wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.panel {
+  position: absolute;
+  top: calc(100% + var(--br-space-1));
+  left: 0;
+  z-index: var(--br-z-modal);
+  min-width: 200px;
+  background: var(--br-surface);
+  color: var(--br-text);
+  border: 1px solid var(--br-border-strong);
+  border-radius: var(--br-radius-md);
+  box-shadow: var(--br-shadow-lg);
+  padding: var(--br-space-3);
+  font-family: var(--br-font-ui);
+  font-size: var(--br-fs-ui);
+}

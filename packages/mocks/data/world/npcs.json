@@ -1,0 +1,102 @@
+{
+  "npcs": [
+    {
+      "id": "npc_lord_british",
+      "entityId": "ent_lord_british",
+      "archetype": "archetype.npc.monarch.lord_british",
+      "name": "Lord British",
+      "title": "King of Britannia",
+      "regionId": "region_britain",
+      "position": { "x": 16, "y": 2, "z": 0 },
+      "disposition": "friendly",
+      "portrait": "/assets/portraits/lord_british.webp",
+      "dialogTreeId": "tree_lord_british",
+      "currentSlotIdx": 2,
+      "currentActivity": "HoldingCourt"
+    },
+    {
+      "id": "npc_iolo",
+      "entityId": "ent_iolo",
+      "archetype": "archetype.npc.companion.bard",
+      "name": "Iolo",
+      "title": "Bard, Bowyer of Britain",
+      "regionId": "region_britain",
+      "position": { "x": 14, "y": 9, "z": 0 },
+      "disposition": "friendly",
+      "portrait": "/assets/portraits/iolo.webp",
+      "dialogTreeId": "tree_iolo",
+      "currentSlotIdx": 1,
+      "currentActivity": "Work"
+    },
+    {
+      "id": "npc_shamino",
+      "entityId": "ent_shamino",
+      "archetype": "archetype.npc.companion.ranger",
+      "name": "Shamino",
+      "title": "Ranger of the Deep Forest",
+      "regionId": "region_yew",
+      "position": { "x": 8, "y": 14, "z": 0 },
+      "disposition": "friendly",
+      "portrait": "/assets/portraits/shamino.webp",
+      "dialogTreeId": "tree_shamino",
+      "currentSlotIdx": 0,
+      "currentActivity": "Patrol"
+    },
+    {
+      "id": "npc_dupre",
+      "entityId": "ent_dupre",
+      "archetype": "archetype.npc.companion.paladin",
+      "name": "Dupre",
+      "title": "Paladin of Trinsic",
+      "regionId": "region_trinsic",
+      "position": { "x": 36, "y": 9, "z": 0 },
+      "disposition": "friendly",
+      "portrait": "/assets/portraits/dupre.webp",
+      "dialogTreeId": "tree_dupre",
+      "currentSlotIdx": 3,
+      "currentActivity": "Socialize"
+    },
+    {
+      "id": "npc_mariah",
+      "entityId": "ent_mariah",
+      "archetype": "archetype.npc.companion.mage",
+      "name": "Mariah",
+      "title": "Mage of the Lyceum",
+      "regionId": "region_britain",
+      "position": { "x": 17, "y": 7, "z": 0 },
+      "disposition": "friendly",
+      "portrait": "/assets/portraits/mariah.webp",
+      "dialogTreeId": "tree_mariah",
+      "currentSlotIdx": 1,
+      "currentActivity": "Work"
+    },
+    {
+      "id": "npc_smith_the_horse",
+      "entityId": "ent_smith_the_horse",
+      "archetype": "archetype.npc.special.talking_horse",
+      "name": "Smith",
+      "title": "the Horse",
+      "regionId": "region_britain",
+      "position": { "x": 13, "y": 11, "z": 0 },
+      "disposition": "friendly",
+      "portrait": "/assets/portraits/smith_horse.webp",
+      "dialogTreeId": "tree_smith_horse",
+      "currentSlotIdx": 0,
+      "currentActivity": "Idle"
+    },
+    {
+      "id": "npc_ratticus_brigand",
+      "entityId": "ent_ratticus_brigand",
+      "archetype": "archetype.npc.hostile.brigand",
+      "name": "Ratticus",
+      "title": "Brigand-Captain",
+      "regionId": "region_dungeon_despise",
+      "position": { "x": 12, "y": 56, "z": -2 },
+      "disposition": "hostile",
+      "portrait": "/assets/portraits/brigand.webp",
+      "dialogTreeId": "tree_brigand_default",
+      "currentSlotIdx": 0,
+      "currentActivity": "Patrol"
+    }
+  ]
+}

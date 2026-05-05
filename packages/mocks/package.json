@@ -1,0 +1,43 @@
+{
+  "name": "@br/mocks",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./browser": {
+      "types": "./src/browser.ts",
+      "default": "./src/browser.ts"
+    },
+    "./node": {
+      "types": "./src/node.ts",
+      "default": "./src/node.ts"
+    },
+    "./data/*": "./data/*"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "test": "vitest --run"
+  },
+  "dependencies": {
+    "@br/types": "workspace:*"
+  },
+  "peerDependencies": {
+    "msw": "^2.6.0"
+  },
+  "peerDependenciesMeta": {
+    "msw": { "optional": true }
+  },
+  "devDependencies": {
+    "msw": "2.6.6",
+    "typescript": "5.6.3",
+    "vitest": "2.1.5"
+  }
+}

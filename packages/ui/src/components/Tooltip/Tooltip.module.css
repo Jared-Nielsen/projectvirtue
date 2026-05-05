@@ -1,0 +1,29 @@
+.wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.bubble {
+  position: absolute;
+  bottom: calc(100% + var(--br-space-1));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: var(--br-z-modal);
+  background: var(--br-dungeon-700);
+  color: var(--br-parchment-100);
+  border: 1px solid var(--br-sigil-600);
+  border-radius: var(--br-radius-md);
+  padding: var(--br-space-1) var(--br-space-3);
+  font-family: var(--br-font-ui);
+  font-size: var(--br-fs-label);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: var(--br-shadow-md);
+  opacity: 0;
+  transition: opacity var(--br-dur-fast) var(--br-ease-standard);
+}
+
+.visible {
+  opacity: 1;
+}

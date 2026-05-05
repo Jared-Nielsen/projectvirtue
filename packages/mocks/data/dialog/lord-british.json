@@ -1,0 +1,127 @@
+{
+  "npcId": "npc_lord_british",
+  "npcName": "Lord British",
+  "portrait": "/assets/portraits/lord_british.webp",
+  "tree": {
+    "id": "tree_lord_british",
+    "npcId": "npc_lord_british",
+    "opening": ["name", "job", "virtue", "quest"],
+    "keywords": {
+      "name": "resp_lb_name",
+      "job": "resp_lb_job",
+      "virtue": "resp_lb_virtue",
+      "quest": "resp_lb_quest",
+      "codex": "resp_lb_codex",
+      "shrine": "resp_lb_shrine",
+      "compassion": "resp_lb_compassion",
+      "honesty": "resp_lb_honesty",
+      "bye": "resp_lb_bye"
+    },
+    "responses": {
+      "resp_lb_name": {
+        "id": "resp_lb_name",
+        "text": {
+          "key": "lb.name",
+          "en": "I am British, by the grace of the Eight, sovereign of these lands."
+        },
+        "unlocks": ["codex"],
+        "locks": [],
+        "sideEffects": [],
+        "voicedClipKey": "vo.lb.name"
+      },
+      "resp_lb_job": {
+        "id": "resp_lb_job",
+        "text": {
+          "key": "lb.job",
+          "en": "I rule, when I am permitted. I listen, more often than I speak. Today I have been listening."
+        },
+        "unlocks": ["quest"],
+        "locks": [],
+        "sideEffects": [],
+        "voicedClipKey": "vo.lb.job"
+      },
+      "resp_lb_virtue": {
+        "id": "resp_lb_virtue",
+        "text": {
+          "key": "lb.virtue",
+          "en": "Eight Virtues hold this realm together. They are not laws. They are habits. Habits are harder than laws."
+        },
+        "unlocks": ["compassion", "honesty", "shrine"],
+        "locks": [],
+        "sideEffects": [],
+        "voicedClipKey": "vo.lb.virtue"
+      },
+      "resp_lb_quest": {
+        "id": "resp_lb_quest",
+        "text": {
+          "key": "lb.quest",
+          "en": "Yes — there is a matter. Read the Codex Primer in your pack. We will speak again when thou hast."
+        },
+        "unlocks": ["codex"],
+        "locks": [],
+        "sideEffects": [
+          { "kind": "GiveItem", "archetype": "archetype.book.codex.primer", "qty": 1 },
+          { "kind": "ChangeVirtue", "virtue": "humility", "delta": 2 }
+        ],
+        "voicedClipKey": "vo.lb.quest"
+      },
+      "resp_lb_codex": {
+        "id": "resp_lb_codex",
+        "text": {
+          "key": "lb.codex",
+          "en": "The Codex of Ultimate Wisdom is real. It is also exactly as far away as it has always been."
+        },
+        "unlocks": [],
+        "locks": [],
+        "sideEffects": [
+          { "kind": "SetFlag", "flagId": "flag.lb.codex_acknowledged", "value": true }
+        ]
+      },
+      "resp_lb_shrine": {
+        "id": "resp_lb_shrine",
+        "text": {
+          "key": "lb.shrine",
+          "en": "The Shrine of Compassion lies east of the city, past the orchard. Go there before thou comest back to me."
+        },
+        "unlocks": [],
+        "locks": [],
+        "sideEffects": []
+      },
+      "resp_lb_compassion": {
+        "id": "resp_lb_compassion",
+        "text": {
+          "key": "lb.compassion",
+          "en": "It is harder than it looks, and easier than thou fearest."
+        },
+        "unlocks": [],
+        "locks": [],
+        "sideEffects": []
+      },
+      "resp_lb_honesty": {
+        "id": "resp_lb_honesty",
+        "text": {
+          "key": "lb.honesty",
+          "en": "Begin with the lies thou tellest thyself. The rest is bookkeeping."
+        },
+        "unlocks": [],
+        "locks": [],
+        "sideEffects": []
+      },
+      "resp_lb_bye": {
+        "id": "resp_lb_bye",
+        "text": { "key": "lb.bye", "en": "Walk in the Eight, friend." },
+        "unlocks": [],
+        "locks": [],
+        "sideEffects": [{ "kind": "EndDialogue" }]
+      },
+      "resp_lb_default": {
+        "id": "resp_lb_default",
+        "text": { "key": "lb.default", "en": "I know nothing of that." },
+        "unlocks": [],
+        "locks": [],
+        "sideEffects": []
+      }
+    },
+    "defaultResponseId": "resp_lb_default"
+  }
+}

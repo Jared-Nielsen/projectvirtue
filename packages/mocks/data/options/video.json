@@ -1,0 +1,13 @@
+{
+  "resolution": "1920x1080",
+  "displayMode": "borderless",
+  "vsync": true,
+  "frameRateCap": 144,
+  "fieldOfView": 72,
+  "renderScale": 1.0,
+  "textureQuality": "high",
+  "shadowQuality": "high",
+  "antialiasing": "taa",
+  "bloom": true,
+  "motionBlur": false
+}

@@ -1,0 +1,58 @@
+{
+  "stations": [
+    {
+      "id": "station_forge_minoc",
+      "name": "Toryn's Forge",
+      "skill": "smithing",
+      "regionId": "region_minoc",
+      "iconKey": "icon.station.forge",
+      "description": "The largest public forge in Minoc. Heat is included; coal is not.",
+      "publicAccess": true
+    },
+    {
+      "id": "station_alchemy_britain",
+      "name": "Karis's Apothecary",
+      "skill": "alchemy",
+      "regionId": "region_britain",
+      "iconKey": "icon.station.alchemy",
+      "description": "Smells, oddly, of mint. Karis denies adding mint.",
+      "publicAccess": true
+    },
+    {
+      "id": "station_carpentry_yew",
+      "name": "Empath Abbey Carpentry",
+      "skill": "carpentry",
+      "regionId": "region_yew",
+      "iconKey": "icon.station.carpentry",
+      "description": "Run by druids. Wood is given freely if your purpose pleases them.",
+      "publicAccess": true
+    },
+    {
+      "id": "station_loom_moonglow",
+      "name": "Lyceum Loom",
+      "skill": "tailoring",
+      "regionId": "region_moonshade",
+      "iconKey": "icon.station.loom",
+      "description": "An old loom magically rethreaded each dawn.",
+      "publicAccess": false
+    },
+    {
+      "id": "station_workbench_any",
+      "name": "Common Workbench",
+      "skill": "tinkering",
+      "regionId": "region_britain",
+      "iconKey": "icon.station.workbench",
+      "description": "Found in nearly every town. Useful for trivial crafts.",
+      "publicAccess": true
+    },
+    {
+      "id": "station_kitchen_castle",
+      "name": "Castle Kitchens",
+      "skill": "cooking",
+      "regionId": "region_britain",
+      "iconKey": "icon.station.kitchen",
+      "description": "Lord British's cooks tolerate amateur visits before noon.",
+      "publicAccess": false
+    }
+  ]
+}

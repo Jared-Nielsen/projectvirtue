@@ -1,0 +1,43 @@
+{
+  "character": {
+    "id": "char_new_avatar_01",
+    "avatarId": "avatar_new_avatar_01",
+    "accountId": "acct_01HXYZ_avatar",
+    "shardId": "shard_britannia_order",
+    "name": "Wynne the Wanderer",
+    "race": "human",
+    "class": "avatar",
+    "virtueAlignment": "balance",
+    "portraitId": "portrait_human_female_wise_01",
+    "level": 1,
+    "experience": 0,
+    "stats": {
+      "strength": 12,
+      "dexterity": 12,
+      "intelligence": 12,
+      "constitution": 12,
+      "wisdom": 14,
+      "charisma": 12
+    },
+    "hp": { "current": 24, "max": 24 },
+    "mana": { "current": 12, "max": 12 },
+    "stamina": { "current": 30, "max": 30 },
+    "currency": { "gold": 25, "silver": 0, "copper": 0 },
+    "virtueScores": {
+      "compassion": 50,
+      "honesty": 50,
+      "honor": 50,
+      "humility": 50,
+      "justice": 50,
+      "sacrifice": 50,
+      "spirituality": 50,
+      "valor": 50
+    },
+    "publicTitle": "Newly Arrived",
+    "createdAt": "2026-05-04T20:30:00.000Z",
+    "lastPlayedAt": "2026-05-04T20:30:00.000Z",
+    "playtimeSeconds": 0,
+    "location": { "regionId": "region_britain", "x": 16, "y": 12, "z": 0 }
+  },
+  "tutorialQuestId": "quest_first_dawn"
+}

@@ -1,0 +1,95 @@
+{
+  "recipes": [
+    {
+      "id": "recipe_iron_longsword",
+      "name": { "key": "recipe.iron_longsword", "en": "Forge Iron Longsword" },
+      "description": "Hammer and hot iron. The pommel is your secret.",
+      "stationId": "station_forge_minoc",
+      "skill": "smithing",
+      "difficulty": "standard",
+      "inputs": [
+        { "itemId": "item_cat_iron_ingot", "itemName": "Iron Ingot", "qty": 4 },
+        { "itemId": "item_cat_oak_handle", "itemName": "Oak Handle", "qty": 1 }
+      ],
+      "output": { "itemId": "item_cat_longsword_iron", "itemName": "Iron Longsword", "qty": 1 },
+      "successChance": 0.85,
+      "experience": 60,
+      "knownByPlayer": true,
+      "iconKey": "icon.recipe.longsword"
+    },
+    {
+      "id": "recipe_lesser_healing_potion",
+      "name": { "key": "recipe.lesser_healing_potion", "en": "Brew Lesser Healing Potion" },
+      "description": "Yarrow, ginseng, honey, glass. Boil briefly.",
+      "stationId": "station_alchemy_britain",
+      "skill": "alchemy",
+      "difficulty": "easy",
+      "inputs": [
+        { "itemId": "item_cat_reagent_yarrow", "itemName": "Yarrow", "qty": 2 },
+        { "itemId": "item_cat_reagent_ginseng", "itemName": "Ginseng", "qty": 1 },
+        { "itemId": "item_cat_glass_phial", "itemName": "Glass Phial", "qty": 1 }
+      ],
+      "output": {
+        "itemId": "item_cat_potion_healing",
+        "itemName": "Lesser Healing Potion",
+        "qty": 1
+      },
+      "successChance": 0.92,
+      "experience": 25,
+      "knownByPlayer": true,
+      "iconKey": "icon.recipe.potion_red"
+    },
+    {
+      "id": "recipe_yew_longbow",
+      "name": { "key": "recipe.yew_longbow", "en": "Carve Yew Longbow" },
+      "description": "Drawn yew, sinew, beeswax. Patience is the reagent.",
+      "stationId": "station_carpentry_yew",
+      "skill": "carpentry",
+      "difficulty": "difficult",
+      "inputs": [
+        { "itemId": "item_cat_yew_stave", "itemName": "Yew Stave", "qty": 1 },
+        { "itemId": "item_cat_sinew", "itemName": "Sinew", "qty": 2 }
+      ],
+      "output": { "itemId": "item_cat_yew_longbow", "itemName": "Yew Longbow", "qty": 1 },
+      "successChance": 0.65,
+      "experience": 100,
+      "knownByPlayer": true,
+      "iconKey": "icon.recipe.longbow"
+    },
+    {
+      "id": "recipe_apprentice_robe",
+      "name": { "key": "recipe.apprentice_robe", "en": "Sew Apprentice Robe" },
+      "description": "Plain wool dyed in the Lyceum's blue.",
+      "stationId": "station_loom_moonglow",
+      "skill": "tailoring",
+      "difficulty": "easy",
+      "inputs": [
+        { "itemId": "item_cat_wool_bolt", "itemName": "Wool Bolt", "qty": 3 },
+        { "itemId": "item_cat_dye_blue", "itemName": "Lyceum Blue Dye", "qty": 1 }
+      ],
+      "output": { "itemId": "item_cat_robe_apprentice", "itemName": "Apprentice Robe", "qty": 1 },
+      "successChance": 0.9,
+      "experience": 35,
+      "knownByPlayer": false,
+      "iconKey": "icon.recipe.robe_blue"
+    },
+    {
+      "id": "recipe_torch",
+      "name": { "key": "recipe.torch", "en": "Bind Torch" },
+      "description": "Pitch, rag, stick. A child can do it.",
+      "stationId": "station_workbench_any",
+      "skill": "tinkering",
+      "difficulty": "trivial",
+      "inputs": [
+        { "itemId": "item_cat_pitch", "itemName": "Pitch", "qty": 1 },
+        { "itemId": "item_cat_rag", "itemName": "Rag", "qty": 1 },
+        { "itemId": "item_cat_stick", "itemName": "Stick", "qty": 1 }
+      ],
+      "output": { "itemId": "item_cat_torch", "itemName": "Torch", "qty": 3 },
+      "successChance": 0.99,
+      "experience": 4,
+      "knownByPlayer": true,
+      "iconKey": "icon.recipe.torch"
+    }
+  ]
+}

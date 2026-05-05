@@ -1,0 +1,96 @@
+{
+  "encounterId": "enc_dragon_dustspire",
+  "regionId": "region_dungeon_despise",
+  "tick": 1399812,
+  "inCombat": true,
+  "turnIndex": 1,
+  "bossEncounter": true,
+  "phase": {
+    "id": "phase_grounded",
+    "label": { "key": "phase.dragon.grounded", "en": "Grounded — wing pinned" },
+    "remainingHp": 480
+  },
+  "participants": [
+    {
+      "entityId": "ent_avatar_aramis",
+      "name": "Aramis the Stranger",
+      "faction": "player",
+      "hp": { "current": 96, "max": 96 },
+      "mana": { "current": 60, "max": 60 },
+      "stamina": { "current": 80, "max": 80 },
+      "stance": "aggressive",
+      "armorRating": 18,
+      "statusEffects": [],
+      "portrait": "/assets/portraits/stranger.webp",
+      "initiative": 14
+    },
+    {
+      "entityId": "ent_dupre_companion",
+      "name": "Dupre",
+      "faction": "ally",
+      "hp": { "current": 130, "max": 142 },
+      "mana": { "current": 24, "max": 36 },
+      "stamina": { "current": 100, "max": 110 },
+      "stance": "defensive",
+      "armorRating": 24,
+      "statusEffects": [],
+      "portrait": "/assets/portraits/dupre.webp",
+      "initiative": 11
+    },
+    {
+      "entityId": "ent_mariah_companion",
+      "name": "Mariah",
+      "faction": "ally",
+      "hp": { "current": 56, "max": 60 },
+      "mana": { "current": 102, "max": 110 },
+      "stamina": { "current": 50, "max": 60 },
+      "stance": "casting",
+      "armorRating": 6,
+      "statusEffects": [],
+      "portrait": "/assets/portraits/mariah.webp",
+      "initiative": 13
+    },
+    {
+      "entityId": "ent_dragon_dustspire",
+      "name": "Dustspire, Old Wyrm of Despise",
+      "faction": "enemy",
+      "hp": { "current": 480, "max": 720 },
+      "mana": { "current": 80, "max": 120 },
+      "stamina": { "current": 200, "max": 200 },
+      "stance": "aggressive",
+      "armorRating": 32,
+      "statusEffects": ["bleeding"],
+      "portrait": "/assets/portraits/dragon_dustspire.webp",
+      "initiative": 18
+    }
+  ],
+  "recentDamage": [
+    {
+      "source": "ent_dragon_dustspire",
+      "target": "ent_dupre_companion",
+      "amount": 38,
+      "type": "fire",
+      "crit": false,
+      "mitigated": 12,
+      "tick": 1399810
+    },
+    {
+      "source": "ent_mariah_companion",
+      "target": "ent_dragon_dustspire",
+      "amount": 28,
+      "type": "cold",
+      "crit": false,
+      "mitigated": 0,
+      "tick": 1399811
+    },
+    {
+      "source": "ent_avatar_aramis",
+      "target": "ent_dragon_dustspire",
+      "amount": 18,
+      "type": "physical",
+      "crit": true,
+      "mitigated": 6,
+      "tick": 1399812
+    }
+  ]
+}

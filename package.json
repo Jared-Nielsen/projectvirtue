@@ -1,0 +1,32 @@
+{
+  "name": "britannia-reborn",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Britannia Reborn frontend monorepo (UO-inspired MMORPG).",
+  "type": "module",
+  "packageManager": "pnpm@10.33.3",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "pnpm -r --parallel --filter \"./apps/*\" dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "format": "biome format --write .",
+    "test": "pnpm -r test --run",
+    "preview": "pnpm -r --parallel --filter \"./apps/*\" preview"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "typescript": "5.6.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["@biomejs/biome", "esbuild"],
+    "overrides": {
+      "@storybook/builder-vite": "8.4.7",
+      "@storybook/types": "8.4.7"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "characterId": "char_avatar_of_virtue",
+  "slots": {
+    "mainHand": "item_longsword_iron",
+    "offHand": "item_kite_shield",
+    "chest": "item_chainmail",
+    "ring1": "item_silver_ring"
+  },
+  "carriedWeight": 31.45,
+  "maxCarryWeight": 70,
+  "armorRating": 18
+}

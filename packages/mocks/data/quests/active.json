@@ -1,0 +1,91 @@
+{
+  "quests": [
+    {
+      "id": "quest_first_dawn",
+      "title": { "key": "quest.first_dawn", "en": "First Dawn" },
+      "summary": {
+        "key": "quest.first_dawn.summary",
+        "en": "Speak with Lord British in the throne room."
+      },
+      "state": "active",
+      "giver": "Lord British",
+      "regionId": "region_britain",
+      "recommendedLevel": 1,
+      "virtueTags": ["honesty", "humility"],
+      "objectives": [
+        {
+          "id": "obj_first_dawn_1",
+          "questId": "quest_first_dawn",
+          "description": { "key": "obj.first_dawn.1", "en": "Enter Castle Britannia." },
+          "status": "completed",
+          "progress": 1,
+          "target": 1,
+          "hidden": false,
+          "optional": false
+        },
+        {
+          "id": "obj_first_dawn_2",
+          "questId": "quest_first_dawn",
+          "description": { "key": "obj.first_dawn.2", "en": "Speak with Lord British." },
+          "status": "in-progress",
+          "progress": 0,
+          "target": 1,
+          "hidden": false,
+          "optional": false
+        },
+        {
+          "id": "obj_first_dawn_3",
+          "questId": "quest_first_dawn",
+          "description": { "key": "obj.first_dawn.3", "en": "Read the Codex Primer." },
+          "status": "pending",
+          "progress": 0,
+          "target": 1,
+          "hidden": false,
+          "optional": true
+        }
+      ],
+      "rewards": {
+        "experience": 200,
+        "gold": 25,
+        "items": ["item_codex_primer"],
+        "virtueDeltas": { "humility": 4 }
+      },
+      "acceptedAt": "2026-05-04T19:00:00.000Z"
+    },
+    {
+      "id": "quest_lost_lambs",
+      "title": { "key": "quest.lost_lambs", "en": "The Lost Lambs of Britain" },
+      "summary": {
+        "key": "quest.lost_lambs.summary",
+        "en": "Iolo's flock has wandered. Recover three lost sheep from the Yew road."
+      },
+      "state": "active",
+      "giver": "Iolo",
+      "regionId": "region_britain",
+      "recommendedLevel": 2,
+      "virtueTags": ["compassion"],
+      "objectives": [
+        {
+          "id": "obj_lost_lambs_1",
+          "questId": "quest_lost_lambs",
+          "description": {
+            "key": "obj.lost_lambs.1",
+            "en": "Recover lost sheep along the Yew road."
+          },
+          "status": "in-progress",
+          "progress": 1,
+          "target": 3,
+          "hidden": false,
+          "optional": false
+        }
+      ],
+      "rewards": {
+        "experience": 150,
+        "gold": 18,
+        "items": ["item_lute_oak"],
+        "virtueDeltas": { "compassion": 6 }
+      },
+      "acceptedAt": "2026-05-03T11:30:00.000Z"
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "npcId": "npc_dupre",
+  "npcName": "Dupre",
+  "portrait": "/assets/portraits/dupre.webp",
+  "tree": {
+    "id": "tree_dupre_branch",
+    "npcId": "npc_dupre",
+    "opening": ["greet"],
+    "keywords": { "greet": "resp_dupre_greet", "bye": "resp_dupre_bye" },
+    "responses": {
+      "resp_dupre_greet": {
+        "id": "resp_dupre_greet",
+        "text": {
+          "key": "dupre.greet",
+          "en": "Well met, stranger. You drink, or you fight, or you tell me what you want. Choose."
+        },
+        "unlocks": [],
+        "locks": [],
+        "sideEffects": []
+      },
+      "resp_dupre_bye": {
+        "id": "resp_dupre_bye",
+        "text": { "key": "dupre.bye", "en": "Mind your back." },
+        "unlocks": [],
+        "locks": [],
+        "sideEffects": [{ "kind": "EndDialogue" }]
+      },
+      "resp_dupre_default": {
+        "id": "resp_dupre_default",
+        "text": { "key": "dupre.default", "en": "Hm." },
+        "unlocks": [],
+        "locks": [],
+        "sideEffects": []
+      }
+    },
+    "defaultResponseId": "resp_dupre_default"
+  },
+  "entryNodeId": "node_dupre_root",
+  "nodes": [
+    {
+      "id": "node_dupre_root",
+      "speaker": "npc",
+      "text": {
+        "key": "dupre.root",
+        "en": "Well met, stranger. You drink, or you fight, or you tell me what you want. Choose."
+      },
+      "choices": [
+        {
+          "id": "ch_drink",
+          "label": { "key": "dupre.choice.drink", "en": "Buy me a drink." },
+          "nextNodeId": "node_dupre_drink"
+        },
+        {
+          "id": "ch_quest",
+          "label": { "key": "dupre.choice.quest", "en": "I have business at the brigands' camp." },
+          "nextNodeId": "node_dupre_quest"
+        },
+        {
+          "id": "ch_oath",
+          "label": {
+            "key": "dupre.choice.oath",
+            "en": "I would swear an oath of Honor before you."
+          },
+          "nextNodeId": "node_dupre_oath",
+          "virtueRequired": { "virtue": "honor", "minScore": 60 }
+        },
+        {
+          "id": "ch_bye",
+          "label": { "key": "dupre.choice.bye", "en": "Farewell." },
+          "endsConversation": true
+        }
+      ]
+    },
+    {
+      "id": "node_dupre_drink",
+      "speaker": "npc",
+      "text": {
+        "key": "dupre.drink",
+        "en": "Now you speak my language. The bartender is across the room. Kindly remind him I have a tab."
+      },
+      "choices": [
+        {
+          "id": "ch_back",
+          "label": { "key": "dupre.choice.back", "en": "(back)" },
+          "nextNodeId": "node_dupre_root"
+        },
+        {
+          "id": "ch_bye",
+          "label": { "key": "dupre.choice.bye", "en": "Farewell." },
+          "endsConversation": true
+        }
+      ]
+    },
+    {
+      "id": "node_dupre_quest",
+      "speaker": "npc",
+      "text": {
+        "key": "dupre.quest",
+        "en": "Ratticus. Eight to one I'd march tonight, but the Captain wants survivors. Bring me sober and I'll come."
+      },
+      "choices": [
+        {
+          "id": "ch_back",
+          "label": { "key": "dupre.choice.back", "en": "(back)" },
+          "nextNodeId": "node_dupre_root"
+        },
+        {
+          "id": "ch_bye",
+          "label": { "key": "dupre.choice.bye", "en": "Farewell." },
+          "endsConversation": true
+        }
+      ]
+    },
+    {
+      "id": "node_dupre_oath",
+      "speaker": "npc",
+      "text": {
+        "key": "dupre.oath",
+        "en": "Then say it. The Shrine is in the next room. The stone hears."
+      },
+      "choices": [
+        {
+          "id": "ch_swear",
+          "label": {
+            "key": "dupre.choice.swear",
+            "en": "I swear by Honor to defend the weak of Trinsic until the brigands are scattered."
+          },
+          "endsConversation": true
+        },
+        {
+          "id": "ch_back",
+          "label": { "key": "dupre.choice.back", "en": "(back)" },
+          "nextNodeId": "node_dupre_root"
+        }
+      ]
+    }
+  ]
+}

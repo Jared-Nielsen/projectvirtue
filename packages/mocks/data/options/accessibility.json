@@ -1,0 +1,11 @@
+{
+  "reducedMotion": false,
+  "highContrast": false,
+  "colorBlindMode": "off",
+  "fontScale": 1.0,
+  "screenReader": false,
+  "captionsForCombat": true,
+  "screenShake": true,
+  "flashingEffects": true,
+  "holdToToggle": false
+}

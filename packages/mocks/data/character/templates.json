@@ -1,0 +1,118 @@
+{
+  "templates": [
+    {
+      "id": "tmpl_avatar_balanced",
+      "displayName": { "key": "tmpl.avatar_balanced", "en": "Avatar of the Eight" },
+      "description": "Balanced across all eight Virtues. Begins with the Ankh pendant and a worn book of the codex.",
+      "race": "human",
+      "class": "avatar",
+      "virtueAlignment": "balance",
+      "baseStats": {
+        "strength": 12,
+        "dexterity": 12,
+        "intelligence": 12,
+        "constitution": 12,
+        "wisdom": 14,
+        "charisma": 12
+      },
+      "startingItems": ["item_ankh_pendant", "item_codex_primer", "item_walking_staff"],
+      "startingSpells": ["spell_in_lor"],
+      "portraitOptions": ["portrait_human_male_stoic_01", "portrait_human_female_wise_01"]
+    },
+    {
+      "id": "tmpl_paladin_of_honor",
+      "displayName": { "key": "tmpl.paladin_of_honor", "en": "Paladin of Honor" },
+      "description": "Sworn to Trinsic. Strong of arm and oath; vulnerable to oathbreaking.",
+      "race": "human",
+      "class": "paladin",
+      "virtueAlignment": "honor",
+      "baseStats": {
+        "strength": 16,
+        "dexterity": 11,
+        "intelligence": 10,
+        "constitution": 15,
+        "wisdom": 12,
+        "charisma": 13
+      },
+      "startingItems": ["item_longsword_iron", "item_kite_shield", "item_chainmail"],
+      "startingSpells": [],
+      "portraitOptions": ["portrait_human_male_fierce_03", "portrait_human_female_fierce_02"]
+    },
+    {
+      "id": "tmpl_ranger_of_yew",
+      "displayName": { "key": "tmpl.ranger_of_yew", "en": "Ranger of Yew" },
+      "description": "Tracker, archer, druid-friendly. The deep wood is your hearth.",
+      "race": "elf",
+      "class": "ranger",
+      "virtueAlignment": "justice",
+      "baseStats": {
+        "strength": 12,
+        "dexterity": 16,
+        "intelligence": 11,
+        "constitution": 12,
+        "wisdom": 14,
+        "charisma": 11
+      },
+      "startingItems": ["item_yew_longbow", "item_quiver_arrows", "item_leather_armor"],
+      "startingSpells": [],
+      "portraitOptions": ["portrait_elf_male_kind_01", "portrait_elf_female_wise_02"]
+    },
+    {
+      "id": "tmpl_mage_of_moonglow",
+      "displayName": { "key": "tmpl.mage_of_moonglow", "en": "Mage of Moonglow" },
+      "description": "Lyceum-trained. The First Circle is yours; the rest awaits study.",
+      "race": "elf",
+      "class": "mage",
+      "virtueAlignment": "spirituality",
+      "baseStats": {
+        "strength": 8,
+        "dexterity": 12,
+        "intelligence": 17,
+        "constitution": 10,
+        "wisdom": 16,
+        "charisma": 13
+      },
+      "startingItems": ["item_apprentice_robe", "item_spellbook_basic", "item_reagent_pouch"],
+      "startingSpells": ["spell_in_lor", "spell_an_zu"],
+      "portraitOptions": ["portrait_elf_female_wise_02", "portrait_human_male_mischievous_01"]
+    },
+    {
+      "id": "tmpl_bard_of_britain",
+      "displayName": { "key": "tmpl.bard_of_britain", "en": "Bard of Britain" },
+      "description": "Lute and longbow alike. Disarms with words; finishes with arrows.",
+      "race": "human",
+      "class": "bard",
+      "virtueAlignment": "compassion",
+      "baseStats": {
+        "strength": 11,
+        "dexterity": 14,
+        "intelligence": 12,
+        "constitution": 11,
+        "wisdom": 12,
+        "charisma": 16
+      },
+      "startingItems": ["item_lute_oak", "item_shortbow", "item_traveling_cloak"],
+      "startingSpells": [],
+      "portraitOptions": ["portrait_human_female_kind_01", "portrait_human_male_mischievous_01"]
+    },
+    {
+      "id": "tmpl_tinker_of_minoc",
+      "displayName": { "key": "tmpl.tinker_of_minoc", "en": "Tinker of Minoc" },
+      "description": "Hammers and clockwork. Mining, smithing, and a stubborn streak.",
+      "race": "dwarf",
+      "class": "tinker",
+      "virtueAlignment": "sacrifice",
+      "baseStats": {
+        "strength": 14,
+        "dexterity": 11,
+        "intelligence": 14,
+        "constitution": 16,
+        "wisdom": 11,
+        "charisma": 9
+      },
+      "startingItems": ["item_smith_hammer", "item_pickaxe", "item_apron_leather"],
+      "startingSpells": [],
+      "portraitOptions": ["portrait_dwarf_male_stoic_01", "portrait_dwarf_female_fierce_01"]
+    }
+  ]
+}

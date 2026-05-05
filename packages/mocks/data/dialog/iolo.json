@@ -1,0 +1,113 @@
+{
+  "npcId": "npc_iolo",
+  "npcName": "Iolo",
+  "portrait": "/assets/portraits/iolo.webp",
+  "tree": {
+    "id": "tree_iolo",
+    "npcId": "npc_iolo",
+    "opening": ["name", "job", "lute", "sheep"],
+    "keywords": {
+      "name": "resp_iolo_name",
+      "job": "resp_iolo_job",
+      "lute": "resp_iolo_lute",
+      "sheep": "resp_iolo_sheep",
+      "song": "resp_iolo_song",
+      "shamino": "resp_iolo_shamino",
+      "fellowship": "resp_iolo_fellowship",
+      "bye": "resp_iolo_bye"
+    },
+    "responses": {
+      "resp_iolo_name": {
+        "id": "resp_iolo_name",
+        "text": {
+          "key": "iolo.name",
+          "en": "Iolo, bowyer and bard, at thy service. The bow's the surer trade these days."
+        },
+        "unlocks": [],
+        "locks": [],
+        "sideEffects": []
+      },
+      "resp_iolo_job": {
+        "id": "resp_iolo_job",
+        "text": {
+          "key": "iolo.job",
+          "en": "I make bows, sing for coin, and lose sheep. I am told I am bad at one of these."
+        },
+        "unlocks": ["sheep"],
+        "locks": [],
+        "sideEffects": []
+      },
+      "resp_iolo_lute": {
+        "id": "resp_iolo_lute",
+        "text": {
+          "key": "iolo.lute",
+          "en": "An old oak lute, given me by Gwenno before she went south. I shall not pawn it. Do not ask."
+        },
+        "unlocks": ["song"],
+        "locks": [],
+        "sideEffects": []
+      },
+      "resp_iolo_song": {
+        "id": "resp_iolo_song",
+        "text": {
+          "key": "iolo.song",
+          "en": "Three coppers buys thee one verse. Five buys thee silence. The choice is thine."
+        },
+        "unlocks": [],
+        "locks": [],
+        "sideEffects": []
+      },
+      "resp_iolo_sheep": {
+        "id": "resp_iolo_sheep",
+        "text": {
+          "key": "iolo.sheep",
+          "en": "Three of them, dear friend. Up the Yew road. They go on purpose, I swear it. If thou findest them, my thanks shall be measurable in beer."
+        },
+        "unlocks": [],
+        "locks": [],
+        "sideEffects": [{ "kind": "StartQuest", "questId": "quest_lost_lambs" }]
+      },
+      "resp_iolo_shamino": {
+        "id": "resp_iolo_shamino",
+        "text": {
+          "key": "iolo.shamino",
+          "en": "Shamino is in the woods, as ever. Tell him from me he owes me three coppers."
+        },
+        "unlocks": [],
+        "locks": [],
+        "sideEffects": []
+      },
+      "resp_iolo_fellowship": {
+        "id": "resp_iolo_fellowship",
+        "text": {
+          "key": "iolo.fellowship",
+          "en": "I do not wear that medallion. Nor will I. The Fellowship and I are old strangers."
+        },
+        "unlocks": [],
+        "locks": [],
+        "sideEffects": [{ "kind": "ChangeVirtue", "virtue": "honesty", "delta": 1 }]
+      },
+      "resp_iolo_bye": {
+        "id": "resp_iolo_bye",
+        "text": {
+          "key": "iolo.bye",
+          "en": "Walk softly. The road is long, and so are the verses."
+        },
+        "unlocks": [],
+        "locks": [],
+        "sideEffects": [{ "kind": "EndDialogue" }]
+      },
+      "resp_iolo_default": {
+        "id": "resp_iolo_default",
+        "text": {
+          "key": "iolo.default",
+          "en": "I am told I am full of opinions. I am also told to keep most of them."
+        },
+        "unlocks": [],
+        "locks": [],
+        "sideEffects": []
+      }
+    },
+    "defaultResponseId": "resp_iolo_default"
+  }
+}

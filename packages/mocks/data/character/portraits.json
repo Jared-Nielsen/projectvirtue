@@ -1,0 +1,84 @@
+{
+  "portraits": [
+    {
+      "id": "portrait_human_male_stoic_01",
+      "url": "/assets/portraits/human_male_stoic_01.webp",
+      "thumbUrl": "/assets/portraits/thumb/human_male_stoic_01.webp",
+      "race": "human",
+      "gender": "male",
+      "mood": "stoic"
+    },
+    {
+      "id": "portrait_human_female_wise_01",
+      "url": "/assets/portraits/human_female_wise_01.webp",
+      "thumbUrl": "/assets/portraits/thumb/human_female_wise_01.webp",
+      "race": "human",
+      "gender": "female",
+      "mood": "wise"
+    },
+    {
+      "id": "portrait_human_male_fierce_03",
+      "url": "/assets/portraits/human_male_fierce_03.webp",
+      "thumbUrl": "/assets/portraits/thumb/human_male_fierce_03.webp",
+      "race": "human",
+      "gender": "male",
+      "mood": "fierce"
+    },
+    {
+      "id": "portrait_human_female_fierce_02",
+      "url": "/assets/portraits/human_female_fierce_02.webp",
+      "thumbUrl": "/assets/portraits/thumb/human_female_fierce_02.webp",
+      "race": "human",
+      "gender": "female",
+      "mood": "fierce"
+    },
+    {
+      "id": "portrait_human_female_kind_01",
+      "url": "/assets/portraits/human_female_kind_01.webp",
+      "thumbUrl": "/assets/portraits/thumb/human_female_kind_01.webp",
+      "race": "human",
+      "gender": "female",
+      "mood": "kind"
+    },
+    {
+      "id": "portrait_human_male_mischievous_01",
+      "url": "/assets/portraits/human_male_mischievous_01.webp",
+      "thumbUrl": "/assets/portraits/thumb/human_male_mischievous_01.webp",
+      "race": "human",
+      "gender": "male",
+      "mood": "mischievous"
+    },
+    {
+      "id": "portrait_elf_male_kind_01",
+      "url": "/assets/portraits/elf_male_kind_01.webp",
+      "thumbUrl": "/assets/portraits/thumb/elf_male_kind_01.webp",
+      "race": "elf",
+      "gender": "male",
+      "mood": "kind"
+    },
+    {
+      "id": "portrait_elf_female_wise_02",
+      "url": "/assets/portraits/elf_female_wise_02.webp",
+      "thumbUrl": "/assets/portraits/thumb/elf_female_wise_02.webp",
+      "race": "elf",
+      "gender": "female",
+      "mood": "wise"
+    },
+    {
+      "id": "portrait_dwarf_male_stoic_01",
+      "url": "/assets/portraits/dwarf_male_stoic_01.webp",
+      "thumbUrl": "/assets/portraits/thumb/dwarf_male_stoic_01.webp",
+      "race": "dwarf",
+      "gender": "male",
+      "mood": "stoic"
+    },
+    {
+      "id": "portrait_dwarf_female_fierce_01",
+      "url": "/assets/portraits/dwarf_female_fierce_01.webp",
+      "thumbUrl": "/assets/portraits/thumb/dwarf_female_fierce_01.webp",
+      "race": "dwarf",
+      "gender": "female",
+      "mood": "fierce"
+    }
+  ]
+}

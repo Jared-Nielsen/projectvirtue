@@ -1,0 +1,51 @@
+{
+  "entries": [
+    {
+      "id": "journal_entry_arrival",
+      "characterId": "char_avatar_of_virtue",
+      "questId": "quest_first_dawn",
+      "title": "Through the Gate",
+      "body": "I stepped through a moongate at sunset and woke at dawn beneath the spires of Britain. The air smelled of bread and rain. A man in a guard's tabard pointed me at the castle without a word.",
+      "recordedAt": "2026-05-04T19:01:00.000Z",
+      "category": "quest",
+      "tags": ["britain", "arrival"]
+    },
+    {
+      "id": "journal_entry_iolo",
+      "characterId": "char_avatar_of_virtue",
+      "questId": "quest_lost_lambs",
+      "title": "Iolo's Sheep",
+      "body": "Iolo asked me, with absolutely no irony, to recover his sheep. He claims they wander the Yew road on purpose, 'to spite him.' I have agreed to help, mostly because I am out of beer money.",
+      "recordedAt": "2026-05-03T11:35:00.000Z",
+      "category": "quest",
+      "tags": ["iolo", "yew", "compassion"]
+    },
+    {
+      "id": "journal_entry_compassion_shrine",
+      "characterId": "char_avatar_of_virtue",
+      "title": "At the Shrine of Compassion",
+      "body": "I knelt before the stone and the wind dropped. I have read about this and never quite believed in it; the wind dropping was its own answer.",
+      "recordedAt": "2026-04-30T20:14:00.000Z",
+      "category": "personal",
+      "tags": ["shrine", "compassion", "virtue"]
+    },
+    {
+      "id": "journal_entry_brigands",
+      "characterId": "char_avatar_of_virtue",
+      "title": "Brigands at Despise",
+      "body": "We were three. They were nine. The Captain has been quiet ever since I returned without his men.",
+      "recordedAt": "2026-04-28T22:00:00.000Z",
+      "category": "quest",
+      "tags": ["despise", "brigand", "failed"]
+    },
+    {
+      "id": "journal_entry_codex_rumor",
+      "characterId": "char_avatar_of_virtue",
+      "title": "The Codex of Ultimate Wisdom",
+      "body": "An old woman in the market said the Codex is real and not a metaphor. She was very sure. She was also missing several teeth and possibly drunk on cider, so I will note it but not yet believe it.",
+      "recordedAt": "2026-05-02T16:48:00.000Z",
+      "category": "rumor",
+      "tags": ["codex", "rumor"]
+    }
+  ]
+}

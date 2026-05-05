@@ -1,0 +1,1 @@
+import{o as r,a as s}from"./web-Cgu1012X.js";function i(o,t=()=>!0){r(()=>{const e=n=>{t()&&n.key==="Escape"&&o(n)};window.addEventListener("keydown",e),s(()=>window.removeEventListener("keydown",e))})}export{i as u};

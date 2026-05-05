@@ -1,0 +1,20 @@
+{
+  "session": {
+    "id": "sess_01HXYZ7QK4GZA9MAGE",
+    "accountId": "acct_01HXYZ_avatar",
+    "token": "mock-jwt-development-only.eyJzdWIiOiJhdmF0YXIifQ.signature",
+    "issuedAt": "2026-05-04T18:00:00.000Z",
+    "expiresAt": "2026-05-05T18:00:00.000Z",
+    "protocolVersion": 1
+  },
+  "me": {
+    "accountId": "acct_01HXYZ_avatar",
+    "handle": "thestranger",
+    "email": "stranger@britannia.example",
+    "displayName": "The Stranger",
+    "createdAt": "2026-04-21T13:00:00.000Z",
+    "avatarIds": ["avatar_avatar_of_virtue", "avatar_paladin_dupre"],
+    "entitlements": ["base_game", "founders_cloak"],
+    "emailVerified": true
+  }
+}
