@@ -1,7 +1,7 @@
 {
   "snapshots": [
     {
-      "id": "shard_britannia_order",
+      "id": "shard_avermere_order",
       "status": "online",
       "population": 1284,
       "queueLength": 0,
@@ -41,7 +41,7 @@
       "health": "amber"
     },
     {
-      "id": "shard_gm_lord_british_banquet",
+      "id": "shard_gm_lord_avermere_banquet",
       "status": "online",
       "population": 6,
       "queueLength": 0,

@@ -4,7 +4,7 @@
       "id": "tmpl_quest_fetch_lost_property",
       "skeleton": "fetch",
       "title": { "key": "qtmpl.fetch_lost_property", "en": "Lost Property" },
-      "virtueTags": ["compassion", "honesty"],
+      "virtueTags": ["mercy", "truth"],
       "minLevel": 1,
       "maxLevel": 4,
       "objectives": [
@@ -24,7 +24,7 @@
       "id": "tmpl_quest_clear_dungeon",
       "skeleton": "kill",
       "title": { "key": "qtmpl.clear_dungeon", "en": "Clear the Dungeon" },
-      "virtueTags": ["valor", "justice"],
+      "virtueTags": ["courage", "justice"],
       "minLevel": 4,
       "maxLevel": 10,
       "objectives": [
@@ -51,7 +51,7 @@
       "id": "tmpl_quest_escort_pilgrim",
       "skeleton": "escort",
       "title": { "key": "qtmpl.escort_pilgrim", "en": "Escort the Pilgrim" },
-      "virtueTags": ["compassion", "honor", "valor"],
+      "virtueTags": ["mercy", "honor", "courage"],
       "minLevel": 2,
       "maxLevel": 6,
       "objectives": [
@@ -71,7 +71,7 @@
       "id": "tmpl_quest_deliver_letter",
       "skeleton": "deliver",
       "title": { "key": "qtmpl.deliver_letter", "en": "Deliver the Sealed Letter" },
-      "virtueTags": ["honesty"],
+      "virtueTags": ["truth"],
       "minLevel": 1,
       "maxLevel": 4,
       "objectives": [
@@ -98,7 +98,7 @@
       "id": "tmpl_quest_investigate",
       "skeleton": "investigate",
       "title": { "key": "qtmpl.investigate", "en": "Strange Tidings" },
-      "virtueTags": ["honesty", "spirituality"],
+      "virtueTags": ["truth", "insight"],
       "minLevel": 3,
       "maxLevel": 8,
       "objectives": [

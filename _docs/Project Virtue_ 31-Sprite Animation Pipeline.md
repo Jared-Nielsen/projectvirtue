@@ -5,11 +5,11 @@ Date: May 2026
 Author: [Art Pipeline Lead]
 Status: Living Technical Reference — Normative spec for the pixel-art sprite asset format, animation state machine, frame budget, UGC import pipeline, runtime rendering integration with UE5, and animation-state replication. Implements the visual style targets in Doc #10 §2–§4 and §6.
 
-Depends on: #4 Simulation & Interaction §2 (entity state drives visual state), #7 UGC Modding §2 (custom asset import), §5 (style validator), #10 Art & Audio Style Bible §2 (pixel-art rules), §3 (character animation), §4 (environment objects), §6 (style validator), §7 (Phase 1 Britain visual slice), #11 Phase 1 Vertical Slice (15 NPCs, dynamic lighting), #13 Core Schema §1 (Entity, components), §2 (verb registry), §4 (dispatch contract — animation as side effect), #14 MCP Server Surface §5 (tool envelope), §6 (resources), #22 Network Protocol & Replication §4 (event channel; state delta replication), §5 (per-entity replication cadence), #23 Pathfinding & Spatial Systems §2 (Direction8, footprint), §5.6 (footstep audio side effect), #27 Audio System §10.1 (verb-keyed SFX hooks — frame-emitted sound IDs), #41 Engine & Stack ADR.
+Depends on: #4 Simulation & Interaction §2 (entity state drives visual state), #7 UGC Modding §2 (custom asset import), §5 (style validator), #10 Art & Audio Style Bible §2 (pixel-art rules), §3 (character animation), §4 (environment objects), §6 (style validator), §7 (Phase 1 Highmere visual slice), #11 Phase 1 Vertical Slice (15 NPCs, dynamic lighting), #13 Core Schema §1 (Entity, components), §2 (verb registry), §4 (dispatch contract — animation as side effect), #14 MCP Server Surface §5 (tool envelope), §6 (resources), #22 Network Protocol & Replication §4 (event channel; state delta replication), §5 (per-entity replication cadence), #23 Pathfinding & Spatial Systems §2 (Direction8, footprint), §5.6 (footstep audio side effect), #27 Audio System §10.1 (verb-keyed SFX hooks — frame-emitted sound IDs), #41 Engine & Stack ADR.
 
 > **Updated 2026-05-04 per Doc #41.** The asset pipeline must DUAL-EMIT for two clients: UE5 (Paper2D / SlateUI) and TS web (PixiJS). A single source (Aseprite + manifest YAML) builds artifacts for both targets. The animation FSM lives in EACH CLIENT — the Rust authoritative server emits entity state only ("ATTACKING", "IDLE", duration); each client picks blends and timings independently. See §2.5 Dual-Emit Requirement and §5.5 Per-Client FSM (per Doc #41).
 
-Heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VII Part Two: Serpent Isle* (1993). `[BR]` = original to Project Virtue.
+Heritage tags: `[BG]` = *Ultima VII: The Black Gate* (1992). `[SI]` = *Ultima VII Part Two: The Iron Marches* (1993). `[BR]` = original to Project Virtue.
 
 ---
 
@@ -37,7 +37,7 @@ Per-sprite metadata in JSON adjacent to the PNG:
 
 ```ts
 type SpriteMetadata = {
-  id:                  SpriteId            // stable; e.g., "iolo_walk_n_3"
+  id:                  SpriteId            // stable; e.g., "erevan_walk_n_3"
   archetype_ref:       AnimationArchetypeId
   dimensions:          { w: int, h: int }  // source pixels; max 128×128 (§11)
   anchor_point:        { x: int, y: int }  // foot/center pivot, in source pixels
@@ -48,8 +48,8 @@ type SpriteMetadata = {
 }
 
 type SpriteId             = string
-type AnimationArchetypeId = string         // e.g., "anim.npc.iolo", "anim.creature.skeleton"
-type PaletteId            = string         // "uv7_base" | "uv7_expansion_yew" | ...
+type AnimationArchetypeId = string         // e.g., "anim.npc.erevan", "anim.creature.skeleton"
+type PaletteId            = string         // "uv7_base" | "uv7_expansion_blackford" | ...
 ```
 
 ### 2.3 Storage layout
@@ -75,7 +75,7 @@ assets://legacy/sprites/{shape_id}/{frame}.png
 | Example | Decode |
 |---|---|
 | `dagger_idle_0.png` | item.dagger, state=idle, frame 0 (no direction — items are facing-agnostic) |
-| `iolo_walk_n_3.png` | npc.iolo, state=walk, facing N, frame 3 |
+| `erevan_walk_n_3.png` | npc.erevan, state=walk, facing N, frame 3 |
 | `skeleton_attack_e_2.png` | creature.skeleton, state=attack, facing E, frame 2 |
 | `door_open_0.png` | item.door, state=open, frame 0 (facing-agnostic) |
 | `fireball_loop_5.png` | effect.fireball, state=loop, frame 5 |
@@ -369,7 +369,7 @@ NPCs / Avatars target **512 KB per character** sprite memory. Smaller archetypes
 | Per-shard global sprite cache (across all subscribed regions) | 200 MB | LRU across regions; region handoff triggers eviction sweep |
 | UGC sprite per-archetype cap | **256 KB** (Doc #7 §2 budget posture) | Submission rejected if exceeded (§10) |
 
-Britain town's 15 NPCs (Doc #17 §13) at ~512 KB each = 7.5 MB; 4 hostile creature archetypes at ~200 KB = 0.8 MB; ~200 static object archetypes at ~16 KB avg = 3.2 MB; total ~12 MB resident — comfortably under the 50 MB region budget.
+Highmere town's 15 NPCs (Doc #17 §13) at ~512 KB each = 7.5 MB; 4 hostile creature archetypes at ~200 KB = 0.8 MB; ~200 static object archetypes at ~16 KB avg = 3.2 MB; total ~12 MB resident — comfortably under the 50 MB region budget.
 
 ### 7.3 Streaming
 
@@ -624,25 +624,25 @@ Subscriptions on `entity/{id}/animation` deliver `AnimationStateChanged` events 
 
 ## 14. Phase 1 Prototype Scope
 
-Per Doc #11 (12-week "Britain Alive") and Doc #10 §7 (Britain visual & audio vertical slice).
+Per Doc #11 (12-week "Highmere Alive") and Doc #10 §7 (Highmere visual & audio vertical slice).
 
 | Subsystem | In Scope | Deferred |
 |---|---|---|
-| Asset source | **Original UV7 sprite extraction for Britain town** fully functional via Pentagram/Exult pipeline (§12); legacy namespace populated | New BR-original sprites for replacement (license-dependent, §15 item 6) |
+| Asset source | **Original UV7 sprite extraction for Highmere town** fully functional via Pentagram/Exult pipeline (§12); legacy namespace populated | New BR-original sprites for replacement (license-dependent, §15 item 6) |
 | NPC animation coverage | **15 NPCs (Doc #17 §13)** with `idle` + `walk` + `use` animations, 8-direction each | `attack`, `cast`, `talk_gesture`, `sit`, `sleep` for NPCs (deferred to Phase 2 along with full combat per Doc #16 §12) |
-| Hostile creature coverage | **4 archetypes**: rat, skeleton, brigand, plus one dungeon variant (cave troll), each with `attack` + `hurt` + `dead` | Full creature roster, idle/walk for non-Britain creatures |
-| Static objects | All Britain town objects (doors, chests, barrels, torches, signs, fountains) with required state variants per Doc #10 §4 | Procedural-region object variants |
+| Hostile creature coverage | **4 archetypes**: rat, skeleton, brigand, plus one dungeon variant (cave troll), each with `attack` + `hurt` + `dead` | Full creature roster, idle/walk for non-Highmere creatures |
+| Static objects | All Highmere town objects (doors, chests, barrels, torches, signs, fountains) with required state variants per Doc #10 §4 | Procedural-region object variants |
 | Effects | None in Phase 1 (no spells in combat scope per Doc #16 §12) | Spell effects, fire/smoke loops |
 | Animation state machine | Full §5 execution; verb-driven transitions wired for `move_to`, `use`, `talk` (no `attack`/`cast` since combat deferred) | `attack`/`cast` transitions (Phase 2 along with combat); damage interrupt logic (Phase 2) |
 | Direction-keyed states | 8-dir for `idle`/`walk`/`use` on all 15 NPCs | n/a |
-| Overlay states | `lit_torch_held` only (player Avatar carrying torch in Britain at night) | `on_fire`, `wet`, `poisoned`, `magic_aura` overlays deferred |
+| Overlay states | `lit_torch_held` only (player Avatar carrying torch in Highmere at night) | `on_fire`, `wet`, `poisoned`, `magic_aura` overlays deferred |
 | Lighting | **Tier B (palette-shift)** only — simple per-tile palette LUT swap based on light intensity; matches Doc #11 dynamic-lighting vertical slice | Tier A (normal maps) deferred to Phase 2; Tier C is the implicit fallback |
 | Frame budget | 50 MB per-region budget enforced; LRU eviction wired | Per-shard 200 MB cross-region cap (Phase 2 multi-region) |
 | UGC sprite submission | **Not in Phase 1.** Style validator scaffold deployed (§11 rules implemented and unit-tested) but `submit_sprite` MCP tool not exposed externally; only placement of existing sprites permitted via Doc #7 §2 editor | Full UGC sprite import deferred to Phase 2 (matches Doc #7 §6 prototype scope — placement only, no custom asset import in first demo) |
 | MCP surface | None of §13 tools required for Phase 1 (matches Doc #14 §8 minimal-MCP posture); `forge://shard/{s}/sprites/manifest` resource available for designer inspection | `submit_sprite`, `set_animation_state` deferred to Phase 2/3 (Phase 3 for `set_animation_state` per Doc #26 GM session timing) |
 | Network replication | `current_state` + `facing` deltas via `event` channel; initial snapshot on EntitySpawn; no `animation_speed_mult` (no haste/slow in Phase 1) | `overlay_states` deltas (only `lit_torch_held` Phase 1, replicated as `state.lit` on the held item, not as overlay), `animation_speed_mult` |
 
-**Phase 1 success metric:** the player walks the Avatar across Britain town square (Doc #23 §14 metric); 15 scheduled NPCs visibly walk to scheduled locations using full 8-direction `walk` animation; the Avatar stands next to the blacksmith and uses the forge with a visible `use` animation; at night the Avatar holds a torch and the `lit_torch_held` light source casts a palette-shift light radius on nearby sprites; a guard on patrol uses 8-direction `walk` animation that smoothly faces the right direction at every tile-boundary crossing.
+**Phase 1 success metric:** the player walks the Avatar across Highmere town square (Doc #23 §14 metric); 15 scheduled NPCs visibly walk to scheduled locations using full 8-direction `walk` animation; the Avatar stands next to the blacksmith and uses the forge with a visible `use` animation; at night the Avatar holds a torch and the `lit_torch_held` light source casts a palette-shift light radius on nearby sprites; a guard on patrol uses 8-direction `walk` animation that smoothly faces the right direction at every tile-boundary crossing.
 
 ---
 
@@ -671,12 +671,12 @@ Per Doc #11 (12-week "Britain Alive") and Doc #10 §7 (Britain visual & audio ve
 | §4 States per Archetype | Doc #10 §3 (character animation, 8–12 frames), Doc #10 §4 (object state variants), Doc #15 (companion roster), Doc #16 (creature combat — attack/hurt/dead states), Doc #17 §13 (NPC roster) |
 | §5 State Machine Execution | Doc #22 §3 (tick rates), Doc #13 §4 (dispatcher side-effect channels), Doc #27 §10.1 (verb-keyed SFX hooks for frame-emitted sounds) |
 | §6 Sprite-Entity Binding | Doc #13 §1 (Entity archetype), Doc #13 §4 (dispatcher — adds animation as channel 8) |
-| §7 Frame Budget | Doc #11 (Phase 1 Britain visual slice), Doc #22 §4 (Subscribe streaming) |
+| §7 Frame Budget | Doc #11 (Phase 1 Highmere visual slice), Doc #22 §4 (Subscribe streaming) |
 | §8 Lighting Integration | Doc #10 §2.3 (dynamic real-time lighting), Doc #4 §3 (darkness affects LOS), Doc #23 §7.2 (lighting modulates LOS) |
 | §9 Network Replication | Doc #22 §4 (event channel — adds AnimationStateChange), Doc #22 §5 (per-entity replication cadence) |
 | §10 UGC Import | Doc #7 §2 (custom asset import), Doc #7 §5 (style validator), Doc #29 (moderation queue) |
 | §11 Style Validator | Doc #10 §6 (validator targets — formalizes), Doc #33 (localized diagnostic messages) |
-| §12 Legacy Extraction | Doc #1 §5 (license alignment — EA / Origin), Doc #11 (Phase 1 Britain visual slice asset source) |
+| §12 Legacy Extraction | Doc #1 §5 (license alignment — EA / Origin), Doc #11 (Phase 1 Highmere visual slice asset source) |
 | §13 MCP Additions | Doc #14 §5 (tools), Doc #14 §6 (resources), Doc #26 (GM `set_animation_state`), Doc #29 (UGC moderation hooks) |
 | §14 Phase 1 | Doc #11 §3 (visual row), Doc #10 §7 (prototype scope), Doc #14 §8 (minimal MCP), Doc #16 §12 (combat deferred — `attack`/`cast` animation deferred), Doc #17 §13 (15 NPC roster) |
 | §15 Open Questions | Doc #27 §6.5 (TTS lip-sync), Doc #28 (replay/rollback determinism), Doc #29 (UGC moderation) |

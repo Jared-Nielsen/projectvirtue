@@ -1,10 +1,10 @@
 {
-  "npcId": "npc_lord_british",
-  "npcName": "Lord British",
-  "portrait": "/assets/portraits/lord_british.webp",
+  "npcId": "npc_lord_avermere",
+  "npcName": "Lord Avermere",
+  "portrait": "/assets/portraits/lord_avermere.webp",
   "tree": {
-    "id": "tree_lord_british",
-    "npcId": "npc_lord_british",
+    "id": "tree_lord_avermere",
+    "npcId": "npc_lord_avermere",
     "opening": ["name", "job", "virtue", "quest"],
     "keywords": {
       "name": "resp_lb_name",
@@ -13,8 +13,8 @@
       "quest": "resp_lb_quest",
       "codex": "resp_lb_codex",
       "shrine": "resp_lb_shrine",
-      "compassion": "resp_lb_compassion",
-      "honesty": "resp_lb_honesty",
+      "mercy": "resp_lb_compassion",
+      "truth": "resp_lb_honesty",
       "bye": "resp_lb_bye"
     },
     "responses": {
@@ -46,7 +46,7 @@
           "key": "lb.virtue",
           "en": "Eight Virtues hold this realm together. They are not laws. They are habits. Habits are harder than laws."
         },
-        "unlocks": ["compassion", "honesty", "shrine"],
+        "unlocks": ["mercy", "truth", "shrine"],
         "locks": [],
         "sideEffects": [],
         "voicedClipKey": "vo.lb.virtue"
@@ -81,7 +81,7 @@
         "id": "resp_lb_shrine",
         "text": {
           "key": "lb.shrine",
-          "en": "The Shrine of Compassion lies east of the city, past the orchard. Go there before thou comest back to me."
+          "en": "The Shrine of Mercy lies east of the city, past the orchard. Go there before thou comest back to me."
         },
         "unlocks": [],
         "locks": [],
@@ -90,7 +90,7 @@
       "resp_lb_compassion": {
         "id": "resp_lb_compassion",
         "text": {
-          "key": "lb.compassion",
+          "key": "lb.mercy",
           "en": "It is harder than it looks, and easier than thou fearest."
         },
         "unlocks": [],
@@ -100,7 +100,7 @@
       "resp_lb_honesty": {
         "id": "resp_lb_honesty",
         "text": {
-          "key": "lb.honesty",
+          "key": "lb.truth",
           "en": "Begin with the lies thou tellest thyself. The rest is bookkeeping."
         },
         "unlocks": [],

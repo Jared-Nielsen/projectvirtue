@@ -7,7 +7,7 @@ Status: Living Technical Reference — Normative spec for the layer above per-qu
 
 Depends on: #3 World Bible, #5 Virtues, #6 Persistent World, #7 UGC, #13 Core Schema (Entity/Verb/Scope), #14 MCP Server Surface, #15 Character/Party/Inventory, #16 Combat & Magic, #17 Dialogue & NPC Schedule, #19 Quest & UGC Scripting, #21 Save Format & Shard DB, #22 Network Protocol & Replication, #24 Onboarding & Tutorial Flow.
 
-Provenance tags: `[BG]` Black Gate (Ultima VII original), `[SI]` Serpent Isle, `[U4]` Ultima IV (Virtues canon), `[BR]` Project Virtue (new layer). Most of this document is `[BR]` — Ultima VII shipped no multiplayer, no persistent shard, and no hosted-GM affordance.
+Provenance tags: `[BG]` Black Gate (Ultima VII original), `[SI]` The Iron Marches, `[U4]` Ultima IV (Virtues canon), `[BR]` Project Virtue (new layer). Most of this document is `[BR]` — Ultima VII shipped no multiplayer, no persistent shard, and no hosted-GM affordance.
 
 ---
 
@@ -15,7 +15,7 @@ Provenance tags: `[BG]` Black Gate (Ultima VII original), `[SI]` Serpent Isle, `
 
 ### 1.1 Long-range Arcs `[BR]`
 
-Britannia is an avowedly persistent world (Doc #6 §1). A persistent world that only knows quests and ad-hoc story-event triggers cannot actually *evolve* across months and years — it can only accumulate fragments. Per-quest FSMs (Doc #19 §3) describe a single arc of a single questline; the `story_event_state` table (Doc #21 §3.10) describes a single phased flag without composition. The gap between them is where Britannia changes shape: the Guardian's Incursion that proceeds from rumour to siege to occupation to liberation over twelve weeks, the Virtue Festival that runs across all shards once per year, the player-published 8-week mystery campaign whose ending depends on which town's mayor was assassinated in week 3. This document defines **Arc** as the named higher-order container above quests and below the shard's lifetime — the unit of *story shape* that persistent simulation needs in order to be more than the sum of its triggers. `[BR]`
+Avermere is an avowedly persistent world (Doc #6 §1). A persistent world that only knows quests and ad-hoc story-event triggers cannot actually *evolve* across months and years — it can only accumulate fragments. Per-quest FSMs (Doc #19 §3) describe a single arc of a single questline; the `story_event_state` table (Doc #21 §3.10) describes a single phased flag without composition. The gap between them is where Avermere changes shape: the Guardian's Incursion that proceeds from rumour to siege to occupation to liberation over twelve weeks, the Virtue Festival that runs across all shards once per year, the player-published 8-week mystery campaign whose ending depends on which town's mayor was assassinated in week 3. This document defines **Arc** as the named higher-order container above quests and below the shard's lifetime — the unit of *story shape* that persistent simulation needs in order to be more than the sum of its triggers. `[BR]`
 
 ### 1.2 Hosted GM Sessions `[BR]`
 
@@ -155,8 +155,8 @@ Migration filename per the project rule: `YYYYMMDDHHmmss_add_arcs.pg.sql` / `.sq
 
 | Scope | Bound to | Example | Replication path |
 |---|---|---|---|
-| `Local` | One region | A Trinsic-only mystery | Standard region replication (Doc #22) |
-| `Regional` | Multiple adjacent regions | Brigand sweep across Britain + Yew + Cove | Per-region replication; arc state in shard DB |
+| `Local` | One region | A Stonereach-only mystery | Standard region replication (Doc #22) |
+| `Regional` | Multiple adjacent regions | Brigand sweep across Highmere + Blackford + Cove | Per-region replication; arc state in shard DB |
 | `Shard` | Entire shard | Guardian Incursion | Shard-wide broadcast on shard pubsub channel |
 | `CrossShard` | All shards (official only) | Virtue Festival | Doc #22 cross-shard message bus; per-shard `ArcRuntime` mirrors a CrossShard arc as a local Shard-scoped child arc with read-only canonical state |
 
@@ -282,7 +282,7 @@ Every GM verb shares the standard `VerbEnvelope` / `VerbResult` from Doc #14 §5
 | `unpuppet(npc_entity_id)` | Removes `Puppeted`; resumes NPC schedule | none | Inverse of `puppet`; auto-fires on session end |
 | `narrate(participants, text)` | None (broadcast only) | none | Narration broadcast to listed participants; flagged in chat as **"GM narration"**; does NOT use NPC dialogue tree, does NOT enter dialogue session |
 | `gm_spawn(template_id, location)` | Spawns NPCs/entities into pocket realm; persistence routes through Doc #21 §13.2 instance-scoped procedural | none directly; spawned entities can later move Virtues normally via standard verbs | Bounded by `SpawnLimits.max_concurrent_entities` (default 50); shard-realm spawns require `arc.persistence_policy != EphemeralPocketRealm` AND moderation approval |
-| `private_handout(player_id, item_template, qty)` | Gives item to participant; bypasses normal economy (no shop transaction); routes through `drag` semantics into participant inventory | **applies normal Virtue side-effects** — handing out a poisoned weapon scores the GM the same way as if the GM had crafted and given it; handing out a stolen unique scores the GM under Honesty/Justice | Logged for audit; bounded by `HandoutLimits` |
+| `private_handout(player_id, item_template, qty)` | Gives item to participant; bypasses normal economy (no shop transaction); routes through `drag` semantics into participant inventory | **applies normal Virtue side-effects** — handing out a poisoned weapon scores the GM the same way as if the GM had crafted and given it; handing out a stolen unique scores the GM under Truth/Justice | Logged for audit; bounded by `HandoutLimits` |
 | `gather(participants?, location)` | Teleports consenting participants to `location` | none | Consent must be granted at session start by each participant (`gather_consent: bool` on session join); revocable mid-session |
 | `time_skip(hours)` | Advances local clock for the session's region | none directly; downstream NPC schedule effects fire normally | **Legal only in pocket realm OR `LiveWithRollback` arcs.** Forbidden in `LiveCanonical`. Participants see fast-forward UI (matches Doc #24 instanced-region "narrative compression" pattern) |
 | `weather_set(weather_type, duration)` | Sets weather in pocket realm region | none | Pocket realm only; live-world weather is governed by simulation, not by the GM |
@@ -345,10 +345,10 @@ A formal rule, separating GM authority from outcome authority.
 Mirrors Doc #14 §4. These are enforcement contracts in the dispatcher, not guidelines.
 
 1. **Single ingress.** GM verbs flow through `PlayerInputDispatcher.Submit(...)` only; same dispatcher path as players, MCP clients, UGC scripts. Reviewers reject any PR that adds a second.
-2. **Pre-commit Virtue evaluation.** Virtue side-effects are evaluated by the Virtue Engine *before* the verb commits. `private_handout` of a stolen item still moves Honesty/Justice for the GM. `puppet`-driven NPC actions score Virtues for the GM Avatar, not the puppeted NPC's archetype. `gm_spawn` of hostile creatures into a participant's path that result in participant deaths does not directly score Virtues but is audit-logged for moderation pattern detection.
+2. **Pre-commit Virtue evaluation.** Virtue side-effects are evaluated by the Virtue Engine *before* the verb commits. `private_handout` of a stolen item still moves Truth/Justice for the GM. `puppet`-driven NPC actions score Virtues for the GM Avatar, not the puppeted NPC's archetype. `gm_spawn` of hostile creatures into a participant's path that result in participant deaths does not directly score Virtues but is audit-logged for moderation pattern detection.
 3. **Capability immutability.** `gm.host` is granted at session open and revoked at session close; cannot be elevated mid-session.
 4. **Non-participant immunity.** GM cannot modify non-participants. Any GM verb with a target outside `GMSession.participants` (for player verbs) or outside `pocket_realm_id` (for spatial verbs) returns `ERR_GM_NOT_PARTICIPANT` / `ERR_GM_NOT_IN_POCKET_REALM`.
-5. **Canon preservation.** GM cannot bypass canon rules (Doc #3 §7). Attempting to `puppet` Lord British, Iolo, Shamino, etc. outside an Alternate Britannia opt-in is auto-rejected at validate (matches the Doc #19 §8.3 red flag rule).
+5. **Canon preservation.** GM cannot bypass canon rules (Doc #3 §7). Attempting to `puppet` Lord Avermere, Erevan, Theran, etc. outside an Alternate Avermere opt-in is auto-rejected at validate (matches the Doc #19 §8.3 red flag rule).
 6. **Audit log.** Every GM verb invocation is logged to a new `gm_session_audit` table for moderation review:
 
 ```sql
@@ -438,7 +438,7 @@ ArcVirtueAlignmentScore =
 
 - Score ≤ −50 on any single Virtue with no positive branch (uniformly anti-Virtue arc).
 - Any transition `side_effect` that auto-revokes Avatar items on transition without explicit consent (anti-griefing pattern).
-- Any stage with `entry_effects` that target `[BG]` canonical NPCs with `attack`, `TeleportActor`, or `DespawnEntity` outside Alternate Britannia opt-in (matches Doc #19 §8.3).
+- Any stage with `entry_effects` that target `[BG]` canonical NPCs with `attack`, `TeleportActor`, or `DespawnEntity` outside Alternate Avermere opt-in (matches Doc #19 §8.3).
 - Any stage that uses `ManualGM` triggers in a `RealTime` pacing policy (semantic mismatch — `ManualGM` requires `GMHosted`).
 - Any cross-shard side-effect from a non-Official arc.
 
@@ -512,7 +512,7 @@ Standard error codes apply, plus the GM-specific codes from §8.
 | `arcs` / `arc_participants` / `gm_session_audit` tables | Deferred; first migration adding them ships in the Phase 2 multiplayer prototype kickoff |
 | Soft-pause via shared dialogue | Deferred; depends on Doc #17's per-player-instanced dialogue extension to multi-participant, which is also Phase 2 |
 
-Phase 1 success metric (matches Doc #11 / Doc #15 §8): Avatar walks Britain with Iolo and Shamino. Nothing in this document blocks that. `[BR]`
+Phase 1 success metric (matches Doc #11 / Doc #15 §8): Avatar walks Highmere with Erevan and Theran. Nothing in this document blocks that. `[BR]`
 
 ---
 
@@ -520,7 +520,7 @@ Phase 1 success metric (matches Doc #11 / Doc #15 §8): Avatar walks Britain wit
 
 1. `[OPEN]` **Max simultaneous participants in a GM session.** Proposed 8 to match Doc #15 multiplayer party cap, but a GM session might want **spectators in addition**. Should `Spectator` count against the cap, or is there a separate spectator cap (e.g., 8 active + 16 spectators)?
 2. `[OPEN]` **`puppet` × NPC schedule resumption.** When `unpuppet` fires mid-schedule (the NPC was at slot 3 of an 8-slot daily schedule when puppeted; 6 hours of in-fiction time elapsed during the session): does the schedule resume at the original slot, the slot the NPC *would* have been in by current time, or does it skip ahead with a "missed prayers" penalty? Doc #17 §6 is silent on multi-hour schedule interruption.
-3. `[OPEN]` **NPC-companion participation.** Can the GM invite NPC companions of participants (Iolo, Shamino — Doc #15 §3) into the session? Default proposal: companions auto-follow their bound Avatar into the session as ambient party, retain their `Schedule` (degenerate `Follow`), are not subject to `gather` (they follow whoever owns them). Edge case: companion banter (Doc #17 §10) inside soft-pause — banter channel suppressed during `InScene`?
+3. `[OPEN]` **NPC-companion participation.** Can the GM invite NPC companions of participants (Erevan, Theran — Doc #15 §3) into the session? Default proposal: companions auto-follow their bound Avatar into the session as ambient party, retain their `Schedule` (degenerate `Follow`), are not subject to `gather` (they follow whoever owns them). Edge case: companion banter (Doc #17 §10) inside soft-pause — banter channel suppressed during `InScene`?
 4. `[OPEN]` **GM revenue / monetization.** Doc #7 §4 declares a creator economy. Does the GM earn revenue per session-hour? Per attended participant? Tip jar from participants only? Does revenue change if the session is `LiveCanonical`? Affects taxonomy of "professional GM" tier.
 5. `[OPEN]` **Group Virtue gating in arc transitions.** An `ArcTransition.trigger` of kind `PredicateNode` can read participant Virtues. Should the predicate evaluate against (a) every participant individually (ALL must qualify), (b) any participant (ANY qualifies), (c) party Virtue average, or (d) a configurable per-transition mode? Affects arc author expressiveness.
 6. `[OPEN]` **Session recording / playback.** Should sessions be recordable for asynchronous post-session review (the GM and participants want to look back at the session like a tabletop replay, or the moderation team wants to review a flagged session)? Storage cost is non-trivial — the dispatcher log + chat + narration text per 4-hour session is in the multi-MB range. Decision affects DB schema.

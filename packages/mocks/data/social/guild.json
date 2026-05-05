@@ -6,8 +6,8 @@
   "description": "A long-running Order-shard guild. Pilgrimage hunts, oath-binding ceremonies, weekly council on Fridays.",
   "heraldryUrl": "/assets/heraldry/coa.webp",
   "foundedAt": "2026-03-22T00:00:00.000Z",
-  "homeShard": "shard_britannia_order",
-  "homeRegion": "region_britain",
+  "homeShard": "shard_avermere_order",
+  "homeRegion": "region_highmere",
   "memberCount": 7,
   "publicCharter": true,
   "discordLinked": true,
@@ -22,7 +22,7 @@
       "contributionPoints": 482
     },
     {
-      "characterId": "char_paladin_dupre",
+      "characterId": "char_paladin_bron",
       "handle": "duprealt",
       "displayName": "Sir Cedric",
       "role": "officer",
@@ -31,34 +31,34 @@
       "contributionPoints": 360
     },
     {
-      "characterId": "char_npc_iolo",
-      "handle": "iolo_bowyer",
-      "displayName": "Iolo",
+      "characterId": "char_npc_erevan",
+      "handle": "erevan_bowyer",
+      "displayName": "Erevan",
       "role": "veteran",
       "joinedAt": "2026-04-23T09:00:00.000Z",
       "lastSeen": "2026-05-04T20:00:00.000Z",
       "contributionPoints": 278
     },
     {
-      "characterId": "char_npc_shamino",
-      "handle": "shamino_ranger",
-      "displayName": "Shamino",
+      "characterId": "char_npc_theran",
+      "handle": "theran_ranger",
+      "displayName": "Theran",
       "role": "veteran",
       "joinedAt": "2026-04-24T17:30:00.000Z",
       "lastSeen": "2026-05-04T19:54:00.000Z",
       "contributionPoints": 244
     },
     {
-      "characterId": "char_npc_mariah",
-      "handle": "mariah_lyceum",
-      "displayName": "Mariah",
+      "characterId": "char_npc_eris",
+      "handle": "eris_lyceum",
+      "displayName": "Eris",
       "role": "member",
       "joinedAt": "2026-04-26T12:00:00.000Z",
       "lastSeen": "2026-05-04T18:30:00.000Z",
       "contributionPoints": 142
     },
     {
-      "characterId": "char_smith_minoc",
+      "characterId": "char_smith_coldforge",
       "handle": "toryn_forge",
       "displayName": "Toryn Forge-Daughter",
       "role": "member",
@@ -68,7 +68,7 @@
     },
     {
       "characterId": "char_apprentice_lirael",
-      "handle": "lirael_moonglow",
+      "handle": "lirael_lumencove",
       "displayName": "Lirael",
       "role": "recruit",
       "joinedAt": "2026-05-01T16:00:00.000Z",

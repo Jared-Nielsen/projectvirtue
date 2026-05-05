@@ -36,6 +36,14 @@ Thumbs.db
 .env.*.local
 
 # Reference art kits (Kenney etc.) — kept dev-local; production art moves to
-# Cloudflare R2 with a sync script when real assets land. Re-download from
-# kenney.nl while developing.
+# Cloudflare R2 (media.gamecodex.com) with a sync script when real assets land.
+# Re-download from kenney.nl while developing.
 _tileart
+
+# Interface art (HUD chrome, panel frames, button bitmaps, etc.) — same
+# pipeline as _tileart: dev-local for prototyping, R2-hosted in production.
+_interfaceart
+
+# Monster / creature sprites + animations — same pipeline. Production
+# pulls from Cloudflare R2 (media.gamecodex.com).
+_monsterart

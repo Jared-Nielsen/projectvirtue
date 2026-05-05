@@ -4,10 +4,14 @@
 
 export type IconName =
   | 'sword'
+  | 'swords'
   | 'shield'
   | 'scroll'
+  | 'backpack'
   | 'heart'
   | 'star'
+  | 'sun'
+  | 'gear'
   | 'x'
   | 'check'
   | 'chevron-down'
@@ -30,6 +34,28 @@ export const iconRegistry: Record<IconName, IconDefinition> = {
       '<path d="M3 21l3.5-1.5L18 8l-2-2L4.5 17.5 3 21z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>' +
       '<path d="M14 4l6 6-2 2-6-6 2-2z" fill="currentColor"/>' +
       '<path d="M5 19l1 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
+  },
+  swords: {
+    body:
+      '<path d="M5 19l3-1.2L18 8l-2-2L6 16.2 4.5 19l.5.5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>' +
+      '<path d="M19 19l-3-1.2L6 8l2-2 10 10.2L19.5 19l-.5.5z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>',
+  },
+  backpack: {
+    body:
+      '<path d="M9 4h6a3 3 0 013 3v2H6V7a3 3 0 013-3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>' +
+      '<path d="M5 9h14v9a2 2 0 01-2 2H7a2 2 0 01-2-2V9z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>' +
+      '<path d="M8 13h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>' +
+      '<path d="M10 17h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
+  },
+  sun: {
+    body:
+      '<circle cx="12" cy="12" r="4" fill="currentColor"/>' +
+      '<path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.5 4.5l2.1 2.1M17.4 17.4l2.1 2.1M4.5 19.5l2.1-2.1M17.4 6.6l2.1-2.1" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>',
+  },
+  gear: {
+    body:
+      '<circle cx="12" cy="12" r="3.2" fill="none" stroke="currentColor" stroke-width="1.5"/>' +
+      '<path d="M19.4 13.5l1.7 1.3-1.5 2.6-2.1-.6a7.5 7.5 0 01-2 1.2L15 20.5h-3l-.5-2.5a7.5 7.5 0 01-2-1.2l-2.1.6-1.5-2.6 1.7-1.3a7.5 7.5 0 010-3l-1.7-1.3 1.5-2.6 2.1.6a7.5 7.5 0 012-1.2L12 3.5h3l.5 2.5a7.5 7.5 0 012 1.2l2.1-.6 1.5 2.6-1.7 1.3a7.5 7.5 0 010 3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>',
   },
   shield: {
     body:

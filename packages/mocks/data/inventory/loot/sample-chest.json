@@ -1,6 +1,6 @@
 {
-  "id": "loot_chest_despise_01",
-  "entityId": "ent_chest_despise_01",
+  "id": "loot_chest_blacktarn_01",
+  "entityId": "ent_chest_blacktarn_01",
   "name": "Iron-Banded Chest",
   "locked": false,
   "trapped": false,
@@ -18,7 +18,7 @@
       "archetype": "archetype.currency.gold.pile",
       "name": "Gold Pieces",
       "displayName": { "key": "item.gold_pieces", "en": "Gold Pieces" },
-      "description": "A pile of gold coins struck with Lord British's profile.",
+      "description": "A pile of gold coins struck with Lord Avermere's profile.",
       "category": "currency",
       "rarity": "mundane",
       "stackable": true,

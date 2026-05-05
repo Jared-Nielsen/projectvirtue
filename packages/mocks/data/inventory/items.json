@@ -136,9 +136,9 @@
       "id": "item_silver_ring",
       "entityId": "ent_inv_silver_ring_01",
       "archetype": "archetype.armor.ring.silver",
-      "name": "Silver Ring of Honesty",
-      "displayName": { "key": "item.silver_ring_honesty", "en": "Silver Ring of Honesty" },
-      "description": "A simple silver band etched with the rune of Honesty. Mildly cool to the touch.",
+      "name": "Silver Ring of Truth",
+      "displayName": { "key": "item.silver_ring_honesty", "en": "Silver Ring of Truth" },
+      "description": "A simple silver band etched with the rune of Truth. Mildly cool to the touch.",
       "category": "armor",
       "rarity": "rare",
       "stackable": false,
@@ -147,7 +147,7 @@
       "value": 220,
       "slot": "ring1",
       "iconKey": "icon.ring.silver",
-      "tags": ["ring", "silver", "virtue", "honesty"],
+      "tags": ["ring", "silver", "virtue", "truth"],
       "equipped": true,
       "bound": false
     }

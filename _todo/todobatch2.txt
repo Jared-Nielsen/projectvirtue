@@ -96,7 +96,7 @@ PHASE 2 — STATIC JSON STUBS + TYPE DEFINITIONS
   [ ] /mocks/shards/list.json                (Order shards + Chaos shards + GM)
   [ ] /mocks/shards/status.json              (per-shard population, health)
   [ ] /mocks/world/regions.json
-  [ ] /mocks/world/tiles/sosaria.json        (sample region grid)
+  [ ] /mocks/world/tiles/mythenor.json        (sample region grid)
   [ ] /mocks/world/npcs.json
   [ ] /mocks/world/landmarks.json
 
@@ -121,8 +121,8 @@ PHASE 2 — STATIC JSON STUBS + TYPE DEFINITIONS
   [ ] /mocks/books/the-virtues.json          (sample readable book)
 
   Dialog + NPCs
-  [ ] /mocks/dialog/lord-british.json
-  [ ] /mocks/dialog/iolo.json
+  [ ] /mocks/dialog/lord-avermere.json
+  [ ] /mocks/dialog/erevan.json
   [ ] /mocks/dialog/branch.json              (sample branch tree)
 
   Combat + abilities + magic
@@ -210,7 +210,7 @@ PHASE 4 — MARKETING WEBSITE (separate app /apps/site)
   [ ] Page: Journal       (Website-5-Journal.png — dev blog index + post)
   [ ] Page: Media         (Website-6-Media.png — gallery + press kit)
   [ ] Page: Join a World  (Website-7-JoinAWorld.png — signup CTA flow)
-  [ ] Component: WorldMap (WorldMap.png — interactive Sosaria map; SVG zoom)
+  [ ] Component: WorldMap (WorldMap.png — interactive Mythenor map; SVG zoom)
   [ ] Newsletter signup form (mocked POST)
   [ ] Cookie / privacy banner (per Doc #38 GDPR)
   [ ] OG/meta tags + sitemap.xml + robots.txt

@@ -15,7 +15,7 @@
 //
 // HUD → Canvas: deferred to Wave 4. TODO comments mark the dispatch sites.
 
-import { useSearchParams } from '@solidjs/router';
+import { useNavigate, useSearchParams } from '@solidjs/router';
 import type { JSX } from 'solid-js';
 import { Show, createSignal, onCleanup, onMount } from 'solid-js';
 import { GameCanvas } from '../canvas/GameCanvas';
@@ -31,8 +31,20 @@ interface TransitionDetail {
   readonly tile?: { readonly x: number; readonly y: number };
 }
 
+interface DialogDetail {
+  readonly npcId?: string;
+}
+
+/** Map a canvas NPC entity id (e.g. `npc_lord_avermere`) to the dialog
+ *  mock slug (`lord-avermere`) that the Dialog route + MockClient
+ *  consume from `/v1/dialog/:slug`. */
+function npcIdToDialogSlug(npcId: string): string {
+  return npcId.replace(/^npc_/, '').replace(/_/g, '-');
+}
+
 export function Play(): JSX.Element {
   const [search] = useSearchParams<{ mode?: string; platformer?: string }>();
+  const navigate = useNavigate();
 
   // Single EventTarget shared with the canvas for triggers.
   const canvasEvents = new EventTarget();
@@ -46,11 +58,20 @@ export function Play(): JSX.Element {
     setPortalOpen(true);
   }
 
+  function onDialog(ev: Event): void {
+    const ce = ev as CustomEvent<DialogDetail>;
+    const npcId = ce.detail?.npcId;
+    if (!npcId) return;
+    navigate(`/play/dialog/${npcIdToDialogSlug(npcId)}`);
+  }
+
   onMount(() => {
     canvasEvents.addEventListener('br:trigger:transition', onTransition);
+    canvasEvents.addEventListener('br:trigger:dialog', onDialog);
   });
   onCleanup(() => {
     canvasEvents.removeEventListener('br:trigger:transition', onTransition);
+    canvasEvents.removeEventListener('br:trigger:dialog', onDialog);
   });
 
   const mode = (): string => search.mode ?? 'default';
@@ -67,7 +88,7 @@ export function Play(): JSX.Element {
       case 'court':
         return 'Ardania Castle';
       default:
-        return "Serpent's Coast";
+        return 'Wyrm Reach';
     }
   };
 
@@ -78,11 +99,11 @@ export function Play(): JSX.Element {
       </div>
 
       <Show when={mode() === 'court'}>
-        <CourtHud regionId="region_britain" />
+        <CourtHud regionId="region_highmere" />
       </Show>
 
       <Show when={mode() === 'city'}>
-        <CityHud regionId="region_britain" regionLabel={regionLabel()} />
+        <CityHud regionId="region_highmere" regionLabel={regionLabel()} />
       </Show>
 
       <Show

@@ -220,7 +220,7 @@ Portability bundles use the §16 layout with these guarantees: JSON Schema files
     "engine_version": "0.4.2",
     "ugc_schema_version": 3,
     "produced_at": "2026-05-15T12:34:56Z",
-    "produced_by": "britannia-reborn-privacy-pipeline/1.0",
+    "produced_by": "avermere-reborn-privacy-pipeline/1.0",
     "subject": { "account_id": "acct_xyz", "scope": "account" },
     "request_id": "req_abc",
     "redaction_pass_version": 1,
@@ -434,7 +434,7 @@ If `auth_session_log` shows recent (≤ 30d) login from unusual country/device, 
 
 ### 9.3 Out-of-Band Recovery Path
 
-Subject who cannot authenticate (lost credentials, 2FA device, recovery codes) reaches DPO via `dpo@britanniareborn.example` (§12) with a notarized identity attestation. Slow path; up to 30 days to verify; response window does not begin until verification completes.
+Subject who cannot authenticate (lost credentials, 2FA device, recovery codes) reaches DPO via `dpo@virtu3.example` (§12) with a notarized identity attestation. Slow path; up to 30 days to verify; response window does not begin until verification completes.
 
 ### 9.4 Region-Specific Fast Paths
 
@@ -556,9 +556,9 @@ Per the Doc #41 Engine & Stack ADR, the entire export and erasure pipeline — f
 
 | Role | Contact |
 |---|---|
-| DPO (EU/UK) | `dpo@britanniareborn.example` (final domain `[OPEN]` §19) |
+| DPO (EU/UK) | `dpo@virtu3.example` (final domain `[OPEN]` §19) |
 | Encarregado (BR) | Same DPO routes initially; Brazil-resident named contact `[OPEN]` §19 |
-| US privacy contact | `privacy@britanniareborn.example` |
+| US privacy contact | `privacy@virtu3.example` |
 | Postal address | In privacy policy |
 | EU representative (Art. 27) | Required if no EU establishment `[OPEN]` §19 |
 
@@ -753,7 +753,7 @@ Quarterly internal aggregate report: requests per kind / regime / state, SLA-bre
 Subject Anastasia (registered EU; has 2 Avatars on a Virtue shard, 1 on Classic, has published 1 UGC quest, has filed 2 reports against another player, has been the target of 1 dismissed report, has 4 transactions over 18 months) requests an account-scope access export.
 
 ```
-britannia-reborn-export_acct_xyz_2026-05-15.zip
+avermere-reborn-export_acct_xyz_2026-05-15.zip
 └── manifest.json                                   <- bundle_schema_version, etc.
 └── _schemas/
     ├── README.md                                  <- how to read this bundle
@@ -778,7 +778,7 @@ britannia-reborn-export_acct_xyz_2026-05-15.zip
     │   ├── inventory.fdsave                       <- SQLite snapshot per Doc #21 §5
     │   ├── virtue_log.json                        <- 1,842 rows
     │   ├── quest_journal.json                     <- 17 quests
-    │   ├── housing_instances.json                 <- 1 plot in Trinsic
+    │   ├── housing_instances.json                 <- 1 plot in Stonereach
     │   ├── market_stalls.json                     <- 1 stall, 12 listings
     │   ├── chat/
     │   │   ├── public_messages.json               <- 312 own messages
@@ -869,7 +869,7 @@ Privacy tools never mutate Entity state — they operate on request-lifecycle me
 
 ## 18. Phase 1 Prototype Scope
 
-Per Doc #11 (Britain-only, 8-player, 12 weeks). Phase 1 is single-player vertical slice with no real users; no production privacy obligations attach. Schema and contracts ship in Phase 1 so Phase 2 multiplayer launch is a backend swap.
+Per Doc #11 (Highmere-only, 8-player, 12 weeks). Phase 1 is single-player vertical slice with no real users; no production privacy obligations attach. Schema and contracts ship in Phase 1 so Phase 2 multiplayer launch is a backend swap.
 
 | Subsystem | Phase 1 | Deferred to Phase 2+ |
 |---|---|---|

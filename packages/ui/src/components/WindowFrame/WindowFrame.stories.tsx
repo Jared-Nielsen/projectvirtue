@@ -27,7 +27,7 @@ export const WithCloseButton: Story = {
   render: () => (
     <WindowFrame title="Ancient Text" onClose={() => alert('close')}>
       <p style={{ 'font-style': 'italic' }}>
-        "Where light is kept in courage, and faith is forged in sacrifice, there shall the Dawn
+        "Where light is kept in courage, and faith is forged in devotion, there shall the Dawn
         endure."
       </p>
       <p>— The Canticle of Ilmara</p>

@@ -143,7 +143,7 @@ Each writes to `admin_audit_log` and to a player-visible portal entry (per §12 
 
 | Action | Mechanism | Scope | Capability | Reversible? |
 |---|---|---|---|---|
-| `warn(avatar_id, message)` | In-fiction private message from "Lord British"; visible only to the warned Avatar; creates a record. | Account-wide | `admin.mod` | Yes (record annotation) |
+| `warn(avatar_id, message)` | In-fiction private message from "Lord Avermere"; visible only to the warned Avatar; creates a record. | Account-wide | `admin.mod` | Yes (record annotation) |
 | `mute(avatar_id, scope, duration)` | Blocks chat verbs only; gameplay unaffected. | `shard` \| `global` | `admin.mod` | Yes (early unmute) |
 | `temp_ban(avatar_id, duration)` | Avatar cannot log into the bound shard for `duration`. Account survives. | `shard` only | `admin.mod` (1h, 24h, 7d, 30d) | Yes (lift) |
 | `permanent_ban(avatar_id)` | Account-wide ban. Avatar cannot log into any shard. | Account-wide | `admin.gm` × 2 (mandatory two-`admin.gm` co-sign; second signer cannot be the originator) | Yes (lift) |
@@ -384,7 +384,7 @@ Amends Doc #14 §3 (capabilities), §5 (tools), §6 (resources). Capability gati
 | Tool | Capability | Notes |
 |---|---|---|
 | `mod_action(ticket_id, action, reason, params?)` | `admin.mod` (+) | Single entry point for ticket actions in §3.5; specific actions gated by tier and by ticket kind. |
-| `warn(avatar_id, message)` | `admin.mod` | §5; in-fiction Lord British DM. |
+| `warn(avatar_id, message)` | `admin.mod` | §5; in-fiction Lord Avermere DM. |
 | `mute(avatar_id, scope, duration)` | `admin.mod` | §5. |
 | `temp_ban(avatar_id, duration)` | `admin.mod` (1h, 24h, 7d, 30d) | §5. |
 | `permanent_ban(avatar_id, reason)` | `admin.gm` | §5; returns `pending_cosign(co_sign_id)` on first call. |
@@ -422,7 +422,7 @@ All admin resources are cross-shard accessible (no `ERR_SHARD_BINDING` for `admi
 
 ## 15. Phase 1 Prototype Scope
 
-Per Doc #11 (Britain-only, 8-player, 12 weeks) and Doc #20 prioritisation.
+Per Doc #11 (Highmere-only, 8-player, 12 weeks) and Doc #20 prioritisation.
 
 | Subsystem | In scope (Phase 1) | Deferred |
 |---|---|---|
@@ -450,7 +450,7 @@ The Phase 1 audit-log file is a stop-gap; the schema and hash-chain logic ship i
 6. `[OPEN]` **Restoring `avatar_reset` from snapshot.** §12.2 says "only restorable if within RPO." The mechanism (hand-extracted SQL from a snapshot vs. a first-class `avatar_restore` admin verb) is not specified. Engineering owner.
 7. `[OPEN]` **Cross-shard ban semantics for account-wide actions.** `permanent_ban` is account-wide, but `admin_audit_log` lives per-shard in the multi-shard deployment. Whether the audit row is replicated to all shards or kept on the originating shard with only the ban flag replicated is `[OPEN]`; affects forensics joinability.
 8. `[OPEN]` **Hash-chain rotation on partition.** `replication_log` is partitioned daily (Doc #21 §3.11). `admin_audit_log` is unpartitioned and indefinite-retention; chain length grows monotonically. At what point (size, time) does the chain get a checkpoint with a rotation key? Cryptographic-engineering call.
-9. `[OPEN]` **Community-guidelines doc for guild Discord servers.** Per §1.1, guild Discord servers are out of our moderation jurisdiction. Should we maintain a non-binding "Britannia Community Guidelines" document that guild leaders are *encouraged* (not required) to adopt for their own Discord servers, modeled on the in-game virtues taxonomy? Trade-off: gives a shared cultural floor and a reference for our reporting-bridge moderators, but creates an implicit expectation that we enforce it (we don't, and won't). Owner: Trust-and-Safety + Community Lead.
+9. `[OPEN]` **Community-guidelines doc for guild Discord servers.** Per §1.1, guild Discord servers are out of our moderation jurisdiction. Should we maintain a non-binding "Avermere Community Guidelines" document that guild leaders are *encouraged* (not required) to adopt for their own Discord servers, modeled on the in-game virtues taxonomy? Trade-off: gives a shared cultural floor and a reference for our reporting-bridge moderators, but creates an implicit expectation that we enforce it (we don't, and won't). Owner: Trust-and-Safety + Community Lead.
 
 ---
 

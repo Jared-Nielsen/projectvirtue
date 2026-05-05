@@ -1,14 +1,14 @@
 {
   "channels": [
     {
-      "id": "voice_proximity_britain",
+      "id": "voice_proximity_highmere",
       "kind": "proximity",
-      "name": "Britain — Proximity",
+      "name": "Highmere — Proximity",
       "capacity": 32,
       "pushToTalk": false,
       "bitrateKbps": 48,
       "active": true,
-      "regionTag": "region_britain",
+      "regionTag": "region_highmere",
       "participants": [
         {
           "characterId": "char_avatar_of_virtue",
@@ -21,9 +21,9 @@
           "joinedAt": "2026-05-04T19:55:00.000Z"
         },
         {
-          "characterId": "char_npc_iolo",
-          "handle": "iolo_bowyer",
-          "displayName": "Iolo",
+          "characterId": "char_npc_erevan",
+          "handle": "erevan_bowyer",
+          "displayName": "Erevan",
           "muted": false,
           "deafened": false,
           "speaking": true,
@@ -33,9 +33,9 @@
       ]
     },
     {
-      "id": "voice_party_yew_patrol",
+      "id": "voice_party_blackford_patrol",
       "kind": "party",
-      "name": "Party — Yew Patrol",
+      "name": "Party — Blackford Patrol",
       "capacity": 6,
       "pushToTalk": true,
       "bitrateKbps": 64,
@@ -52,9 +52,9 @@
           "joinedAt": "2026-05-04T20:00:00.000Z"
         },
         {
-          "characterId": "char_npc_shamino",
-          "handle": "shamino_ranger",
-          "displayName": "Shamino",
+          "characterId": "char_npc_theran",
+          "handle": "theran_ranger",
+          "displayName": "Theran",
           "muted": false,
           "deafened": false,
           "speaking": false,
@@ -74,9 +74,9 @@
       "participants": []
     },
     {
-      "id": "voice_campaign_lord_british_banquet",
+      "id": "voice_campaign_lord_avermere_banquet",
       "kind": "campaign",
-      "name": "Campaign — Lord British's Banquet",
+      "name": "Campaign — Lord Avermere's Banquet",
       "capacity": 8,
       "pushToTalk": false,
       "bitrateKbps": 96,

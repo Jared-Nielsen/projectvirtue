@@ -14,8 +14,8 @@ describe('characterCreate.helpers', () => {
       for (const k of STAT_KEYS) expect(b[k]).toBe(0);
     });
 
-    it('valor lifts strength, dexterity, and constitution by +1 each', () => {
-      const b = virtueStarterBonus('valor');
+    it('courage lifts strength, dexterity, and constitution by +1 each', () => {
+      const b = virtueStarterBonus('courage');
       expect(b.strength).toBe(1);
       expect(b.dexterity).toBe(1);
       expect(b.constitution).toBe(1);

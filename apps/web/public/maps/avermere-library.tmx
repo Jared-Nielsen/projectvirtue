@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Avermere — Library default area.
+
+  Ten-by-ten isometric room rendered with the Kenney isometric-miniature
+  library kit (256x128 tile diamonds; PNG image is 256x512 because the
+  building rises above the diamond footprint). Sprite PNGs are hosted on
+  Cloudflare R2 at media.gamecodex.com/tile/library/iso/.
+
+  Tilesets:
+    1: floor      — floorCarpet_S.png        (walkable carpet)
+    2: bookshelf  — bookcaseBooks_S.png      (decoration)
+    3: tableLong  — longTableChairs_S.png    (decoration)
+    4: chair      — libraryChair_S.png       (decoration)
+    5: candle     — candleStand_S.png        (decoration)
+    6: displayCase — displayCaseBooks_S.png  (decoration)
+
+  Layers:
+    "ground"  — every tile filled with floor (walkable)
+    "decor"   — sparse decoration on top: bookshelves rim the south + east
+                walls, tables + chairs in the centre, candle stands corner.
+
+  Walkability: the canvas runtime currently sources walkable cells from the
+  @br/mocks JSON fixture (mythenor.json). The Tiled map is rendered for
+  visuals only in this v1; collision/walkability migration is the next pass
+  via tools/tiled/tmj-to-tilemap.ts (future).
+-->
+<map version="1.10" tiledversion="1.11.0" orientation="isometric" renderorder="right-down" width="10" height="10" tilewidth="256" tileheight="128" infinite="0" backgroundcolor="#1a1410" nextlayerid="3" nextobjectid="1">
+ <tileset firstgid="1" name="library-iso" tilewidth="256" tileheight="128" tilecount="6" columns="0">
+  <grid orientation="orthogonal" width="1" height="1"/>
+  <tile id="0">
+   <image width="256" height="512" source="https://media.gamecodex.com/tile/library/iso/floorCarpet_S.png"/>
+  </tile>
+  <tile id="1">
+   <image width="256" height="512" source="https://media.gamecodex.com/tile/library/iso/bookcaseBooks_S.png"/>
+  </tile>
+  <tile id="2">
+   <image width="256" height="512" source="https://media.gamecodex.com/tile/library/iso/longTableChairs_S.png"/>
+  </tile>
+  <tile id="3">
+   <image width="256" height="512" source="https://media.gamecodex.com/tile/library/iso/libraryChair_S.png"/>
+  </tile>
+  <tile id="4">
+   <image width="256" height="512" source="https://media.gamecodex.com/tile/library/iso/candleStand_S.png"/>
+  </tile>
+  <tile id="5">
+   <image width="256" height="512" source="https://media.gamecodex.com/tile/library/iso/displayCaseBooks_S.png"/>
+  </tile>
+ </tileset>
+ <layer id="1" name="ground" width="10" height="10">
+  <data encoding="csv">
+1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1
+</data>
+ </layer>
+ <layer id="2" name="decor" width="10" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,2,
+0,0,0,0,0,0,0,0,0,2,
+0,0,0,0,0,0,0,0,0,2,
+0,0,0,0,3,3,0,0,0,2,
+0,0,0,0,3,3,0,0,0,0,
+0,0,0,0,3,3,0,0,0,0,
+0,0,0,0,3,3,0,0,0,2,
+0,0,5,0,0,0,0,6,0,2,
+0,0,0,0,0,0,0,0,0,2,
+2,2,2,2,2,2,2,2,2,2
+</data>
+ </layer>
+</map>

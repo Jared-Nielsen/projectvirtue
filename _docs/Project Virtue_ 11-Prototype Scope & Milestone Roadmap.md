@@ -15,13 +15,13 @@ This is the single source of truth for what we will actually build and show Rich
 
 ---
 
-2\. Prototype Vision – “Britain Alive”
+2\. Prototype Vision – “Highmere Alive”
 
-Title of Demo: Ultima VII: Project Virtue – Britain Vertical SliceCore Experience (15–30 minute playable loop):
+Title of Demo: Ultima VII: Project Virtue – Highmere Vertical SliceCore Experience (15–30 minute playable loop):
 
-* Load into the town of Britain exactly as it appears in 1992 The Black Gate.  
+* Load into the town of Highmere exactly as it appears in 1992 The Black Gate.  
 * Every object is fully interactive with real physics and consequences.  
-* Meet Lord British, Iolo, and several classic NPCs who react to your Virtue choices.  
+* Meet Lord Avermere, Erevan, and several classic NPCs who react to your Virtue choices.  
 * Experience the opening sequence of the original story.  
 * Build and publish your first tiny piece of UGC (a 1-room dungeon or simple quest).  
 * Play with 1–2 friends in the same persistent town to see shared simulation.
@@ -35,16 +35,16 @@ Small but deep. We would rather have 100% fidelity in one town than 50% fidelity
 
 | System (from earlier docs) | Prototype Deliverable | Success Proof |
 | ----- | ----- | ----- |
-| Simulation (\#4) | Every object in Britain interactive (physics, fire, containers, combining) | Player can stack barrels, start a fire, and watch it spread realistically |
-| Virtues (\#5) | Full tracking \+ visible consequences in Britain | Steal → guards react; help beggar → reputation changes |
-| Persistent World (\#6) | 8-player simultaneous presence in Britain | See friends moving objects in real time |
+| Simulation (\#4) | Every object in Highmere interactive (physics, fire, containers, combining) | Player can stack barrels, start a fire, and watch it spread realistically |
+| Virtues (\#5) | Full tracking \+ visible consequences in Highmere | Steal → guards react; help beggar → reputation changes |
+| Persistent World (\#6) | 8-player simultaneous presence in Highmere | See friends moving objects in real time |
 | UGC (\#7) | Basic editor: place objects \+ 3 triggers, publish privately | Friend can load your creation instantly |
 | Procedural (\#8) | One small procedural dungeon (“Cave of Trials”) | Regenerates with different layout each time |
 | Art & Audio (\#10) | Full 1992-style pixel art \+ dynamic lighting \+ original soundtrack | Looks and sounds exactly like Ultima VII |
 
 Out of Scope for Prototype (deferred to Phase 2):
 
-* Full campaign beyond Britain opening  
+* Full campaign beyond Highmere opening  
 * Large-scale economy or guild systems  
 * Console versions  
 * Advanced modding scripting
@@ -57,13 +57,13 @@ Week 0–2: Foundation
 
 * Engine setup \+ isometric renderer  
 * Core simulation systems (physics, containers, fire)  
-* Britain town map imported with all objects
+* Highmere town map imported with all objects
 
 Week 3–5: Interaction & Virtues
 
 * Full object interaction verbs  
 * Virtue engine \+ NPC reaction system  
-* Basic NPC schedules for 15 key Britain NPCs
+* Basic NPC schedules for 15 key Highmere NPCs
 
 Week 6–8: Multiplayer & Persistence
 
@@ -95,13 +95,13 @@ Total Prototype Duration: 12 weeks (3 months) from green-light.
 2. Simulation Test: He spends 5+ minutes just experimenting with objects and says it feels like the original.  
 3. Virtue Test: He sees clear moral consequences and nods in approval.  
 4. Community Test: He builds and shares a tiny creation with the team and smiles.  
-5. Future Vision Test: He says, “I can see how this becomes the living Britannia I always wanted.”
+5. Future Vision Test: He says, “I can see how this becomes the living Avermere I always wanted.”
 
 ---
 
 6\. Risk Register & Mitigations
 
-* Risk: Scope creep → Mitigation: Strict “Britain-only” rule.  
+* Risk: Scope creep → Mitigation: Strict “Highmere-only” rule.  
 * Risk: Simulation performance → Mitigation: Early profiling every sprint.  
 * Risk: Art inconsistency → Mitigation: Style Bible validation tool (Document \#10).  
 * Risk: Networking bugs → Mitigation: Start with 2-player tests, scale up.

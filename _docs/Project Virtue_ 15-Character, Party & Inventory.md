@@ -7,13 +7,13 @@ Status: Living Technical Reference — Normative spec for Avatar genesis, party 
 
 Depends on: #2 GDD (pillars), #4 Simulation, #4.1 Crafting, #5 Virtues, #6 Persistent World, #11 Prototype Scope, #13 Core Schema (Entity/Verb/Scope), #14 MCP Surface.
 
-Source heritage tags used throughout: `[SI]` = mechanic taken from *Ultima VII Part Two: Serpent Isle* (1993). `[U4]` = mechanic taken from *Ultima IV: Quest of the Avatar* (1985). `[BG]` = mechanic taken from *Ultima VII: The Black Gate* (1992). `[BR]` = original to Project Virtue.
+Source heritage tags used throughout: `[SI]` = mechanic taken from *Ultima VII Part Two: The Iron Marches* (1993). `[U4]` = mechanic taken from *Ultima IV: Quest of the Avatar* (1985). `[BG]` = mechanic taken from *Ultima VII: The Black Gate* (1992). `[BR]` = original to Project Virtue.
 
 ---
 
 ## 0. Design Philosophy
 
-Project Virtue is the *Black Gate* storyline played on a *Serpent Isle*-grade chassis with a *Quest of the Avatar* moral spine. From `[SI]` we adopt the expanded 13-slot paperdoll, the 10 canonical combat AI modes, the Hourglass-of-Fate-style companion resurrection, and the explicit `owner` tag on every item. From `[U4]` we restore the gypsy virtue-question character generator, because the Eight Virtues are our pillar (Doc #5) and SI's stat-only genesis is the regression we will not inherit. From `[BR]` we add what neither game shipped: persistent Avatar identity bound to a shard (Doc #6 §3), party-permission rules between human Avatars, anti-griefing constraints on companion AI, virtuous-act XP, and a single-dispatcher witness model for theft (Doc #13 §4) that resolves four open items in Doc #13. We do not propose returning to BG's narrower paperdoll, and we do not propose importing BG saves into BR.
+Project Virtue is the *Black Gate* storyline played on a *The Iron Marches*-grade chassis with a *Quest of the Avatar* moral spine. From `[SI]` we adopt the expanded 13-slot paperdoll, the 10 canonical combat AI modes, the Hourglass-of-Fate-style companion resurrection, and the explicit `owner` tag on every item. From `[U4]` we restore the gypsy virtue-question character generator, because the Eight Virtues are our pillar (Doc #5) and SI's stat-only genesis is the regression we will not inherit. From `[BR]` we add what neither game shipped: persistent Avatar identity bound to a shard (Doc #6 §3), party-permission rules between human Avatars, anti-griefing constraints on companion AI, virtuous-act XP, and a single-dispatcher witness model for theft (Doc #13 §4) that resolves four open items in Doc #13. We do not propose returning to BG's narrower paperdoll, and we do not propose importing BG saves into BR.
 
 ---
 
@@ -53,13 +53,13 @@ Restored from *Ultima IV*. The gypsy presents 7 paired-virtue dilemmas. Each dil
 
    | Virtue | Class | Stat Skew | Starting Weapon |
    |---|---|---|---|
-   | Honesty | Mage | INT/Magic | Dagger + spell book |
-   | Compassion | Bard | DEX/INT | Rapier + lute |
-   | Valor | Fighter | STR/Combat | Longsword |
+   | Truth | Mage | INT/Magic | Dagger + spell book |
+   | Mercy | Bard | DEX/INT | Rapier + lute |
+   | Courage | Fighter | STR/Combat | Longsword |
    | Justice | Druid | INT/Magic | Quarterstaff |
-   | Sacrifice | Tinker | DEX | Crossbow + tools |
+   | Devotion | Tinker | DEX | Crossbow + tools |
    | Honor | Paladin | STR/Combat/Magic | Mace + shield |
-   | Spirituality | Ranger | DEX/Combat | Bow |
+   | Insight | Ranger | DEX/Combat | Bow |
    | Humility | Shepherd | balanced low | Sling |
 
 2. **Starting Virtue scores** — each of the 8 Virtues seeded in `[50, 60]` with a positive bias toward Virtues the player chose (chosen Virtue +5, rejected Virtue -2 from baseline 55). Result is written under the `VirtueReputation` persistence scope at genesis (Doc #6 §3).
@@ -114,7 +114,7 @@ const STAT_CAP: int = 30   // [SI]
 
 | Stat | Trained At | Effect |
 |---|---|---|
-| STR | Combat trainers (Britain barracks, etc.) | Hits, melee damage, carry weight |
+| STR | Combat trainers (Highmere barracks, etc.) | Hits, melee damage, carry weight |
 | DEX | Thieves' guild, ranger lodges | Hit chance, dodge, stealth checks |
 | INT | Lycaeum sages | Mana pool, spell tier unlocks |
 | Combat | Combat trainers | Hit chance, weapon proficiency |
@@ -213,7 +213,7 @@ Mode is set per-companion via `set_combat_mode` (§8). Mode persists with the co
 
 ### 3.4 Permadeath Locks `[SI]`
 
-Companions flagged `permadeath_locked = true` cannot be resurrected by any means, including the Ankh of Renewal (§5). BR mirrors SI's Boydon (any death) and Dupre (Wall of Lights only) precedents. BG-equivalent candidates: Spark (if the BG storyline's tragic Trinsic-orphan death is preserved) and Tseramed (if the Forest of Yew arc retains its ranger sacrifice). Final list `[OPEN]`.
+Companions flagged `permadeath_locked = true` cannot be resurrected by any means, including the Ankh of Renewal (§5). BR mirrors SI's Boydon (any death) and Bron (Wall of Lights only) precedents. BG-equivalent candidates: Spark (if the BG storyline's tragic Stonereach-orphan death is preserved) and Tseramed (if the Forest of Blackford arc retains its ranger devotion). Final list `[OPEN]`.
 
 ### 3.5 Real-Time Follow + Per-Companion Override
 
@@ -236,7 +236,7 @@ Companions follow `obey_player_id` in formation by default (Doc #2 §4.1). `[L]`
 
 On companion death, the companion's paperdoll and backpack contents become a `Container` entity (the corpse) with state:
 
-1. For **60 seconds**, contents are flagged `party-claimable`. Any party member may `drag` from the corpse without triggering theft (no Honesty/Justice loss, no witness check). `OwnershipComponent.owner` flips to the claiming player on transfer.
+1. For **60 seconds**, contents are flagged `party-claimable`. Any party member may `drag` from the corpse without triggering theft (no Truth/Justice loss, no witness check). `OwnershipComponent.owner` flips to the claiming player on transfer.
 2. After 60s, the corpse's `OwnershipComponent.owner` flips to `World`. Anyone may loot; non-party looters are unaffected by Virtue weights (the item is now genuinely unowned — distinct from the BG "looting a dead innocent" case, which still scores).
 3. Items with `OwnershipComponent.bound = true` AND `CompanionPolicy.soulbound_destruct_on_death = true` are destroyed if not retrieved within the 60s window. This is how BR handles oath-bound artifacts (Sacred Quest items, etc.).
 4. The corpse entity itself follows the standard `decay_timer` per Doc #4 §3.1.
@@ -251,7 +251,7 @@ The general non-companion NPC case (a slain shopkeeper) is intentionally left to
 
 | Mode | Respawn Location | Penalty |
 |---|---|---|
-| Single-player | Lord British's chamber, Castle Britannia | Hits = 1, equipment intact, no XP loss |
+| Single-player | Lord Avermere's chamber, Castle Avermere | Hits = 1, equipment intact, no XP loss |
 | Multiplayer (Virtue/Classic shard) | Nearest shrine the Avatar has ever meditated at | Hits = 1, -5 to all Virtues (recoverable, see §4.4) |
 | Multiplayer (Chaos shard) | Nearest shrine | Hits = 1, -5 Virtues, **AND** drop a random 1d3 inventory items as a corpse-container at death point (lootable by anyone) |
 
@@ -277,7 +277,7 @@ Use action: spawns a Healer NPC archetype within 5m, who walks to the nearest de
 
 | Case | Cause | Recovery |
 |---|---|---|
-| Story-sacrifice companions | `CompanionPolicy.permadeath_locked = true` triggered by quest script | None |
+| Story-devotion companions | `CompanionPolicy.permadeath_locked = true` triggered by quest script | None |
 | Chaos-shard companion kill | Companion dies while in a region tagged `chaos_zone = true` | None |
 | Boydon-equivalent assembled companions | If BR includes any (`[OPEN]`, §10) | None (mirror SI Boydon rule) |
 
@@ -287,7 +287,7 @@ Use action: spawns a Healer NPC archetype within 5m, who walks to the nearest de
 |---|---|
 | Shrine pilgrimage | Visit all 8 shrines and `meditate` at each → +1 to every Virtue per completed pilgrimage circuit (cooldown: one circuit per in-game month). |
 | Atonement quest | Per-Virtue scripted quest that restores up to +20 in the targeted Virtue. |
-| Memorial Quest `[BR]` | For each permadeath-locked companion lost, a per-companion scripted quest grants +5 Sacrifice. Cannot resurrect the companion. |
+| Memorial Quest `[BR]` | For each permadeath-locked companion lost, a per-companion scripted quest grants +5 Devotion. Cannot resurrect the companion. |
 
 ---
 
@@ -295,7 +295,7 @@ Use action: spawns a Healer NPC archetype within 5m, who walks to the nearest de
 
 ### 5.1 The Expanded Paperdoll `[SI]`
 
-Adopted verbatim from Serpent Isle, with two BR corrections to documented SI bugs.
+Adopted verbatim from The Iron Marches, with two BR corrections to documented SI bugs.
 
 | # | Slot | Type | Notes |
 |---|---|---|---|
@@ -399,7 +399,7 @@ Backed by `VerbDispatcher.trade()` (Doc #13 §2 verb registry). Player-to-player
 | Perishable food | venison | `decay_timer` per Doc #4.1 §3.1 |
 | Region-gated equipment | Fur cloak (polar zones) `[SI]` | `on_tick` script reads region temperature, applies penalty if absent |
 
-The Black Sword's soul-prism gem and the 23 Serpent Candle variants (per the SI research) are storyline-specific to *Serpent Isle*; BR carries them only as schema validators — proof that the inventory model handles complex multi-state plot items.
+The Black Sword's soul-prism gem and the 23 Serpent Candle variants (per the SI research) are storyline-specific to *The Iron Marches*; BR carries them only as schema validators — proof that the inventory model handles complex multi-state plot items.
 
 ---
 
@@ -425,7 +425,7 @@ steal(actor, item):
   5. emit WitnessEvent { actor, item, witnesses, region } to Virtue Engine
   6. Virtue Engine applies:
        - score_delta = item.steal_delta (always applied to score, per Doc #5 §4)
-       - if witnessed: push WitnessReport to Justice/Honesty engines
+       - if witnessed: push WitnessReport to Justice/Truth engines
                        → may flag actor as Wanted (Doc #6 §5)
                        → guard NPCs may auto-engage on next schedule tick
   7. dispatcher records OwnershipComponent.acquired_via = Stolen
@@ -433,7 +433,7 @@ steal(actor, item):
 
 ### 6.3 BR Diverges from SI on Companion Witnesses
 
-In *Serpent Isle*, party companions ignored theft and murder by the Avatar `[SI]`. BR restores the *Black Gate* behavior: **companions DO observe and react** (`witness_enabled = true` is the default in `CompanionPolicy`). Reason: the entire Virtues system (Doc #5) depends on the moral weight of party-witnessed choice. A companion who silently watches the Avatar murder a beggar undermines the pillar.
+In *The Iron Marches*, party companions ignored theft and murder by the Avatar `[SI]`. BR restores the *Black Gate* behavior: **companions DO observe and react** (`witness_enabled = true` is the default in `CompanionPolicy`). Reason: the entire Virtues system (Doc #5) depends on the moral weight of party-witnessed choice. A companion who silently watches the Avatar murder a beggar undermines the pillar.
 
 Concretely: a witnessing companion fires a dialogue barb, may lower their own loyalty (`CompanionPolicy` extension `[OPEN]`), and in extreme cases (witnessed murder of an `is_innocent = true` NPC) will leave the party. Companion-witness Virtue scoring is identical to NPC-witness scoring.
 
@@ -445,13 +445,13 @@ SI hardcoded the Monitor armory as always-watched `[SI]`. BR generalizes this to
 type RegionMetadata = {
   region_id:          RegionId
   always_watched:     bool                  // [BR] all theft witnessed regardless of LOS
-  always_watched_by:  Faction               // who reacts (e.g. "town_guard.britain")
+  always_watched_by:  Faction               // who reacts (e.g. "town_guard.highmere")
   pvp_allowed:        bool
   chaos_zone:         bool
 }
 ```
 
-Default `always_watched = true` zones in BR: Castle Britannia treasury, every shrine offering plate, Lycaeum's restricted library, Empath Abbey's vault.
+Default `always_watched = true` zones in BR: Castle Avermere treasury, every shrine offering plate, Lycaeum's restricted library, Empath Abbey's vault.
 
 ### 6.5 Bribery `[SI]`
 
@@ -464,12 +464,12 @@ bribe(actor, npc, gold_amount):
   5. if gold_amount >= final_cost:
        - dispatcher transfers gold (PlayerInventory scope)
        - clears actor's Wanted flag in this NPC's faction
-       - virtue_delta: Honesty -3 (bribery itself is dishonest)  [BR]
+       - virtue_delta: Truth -3 (bribery itself is dishonest)  [BR]
      else:
        - npc reacts as if insulted; may engage hostile
 ```
 
-The "high-Honor pays more" inversion is intentional — a paragon's reputation makes them a mark for graft, and bribery should sting their Honesty score.
+The "high-Honor pays more" inversion is intentional — a paragon's reputation makes them a mark for graft, and bribery should sting their Truth score.
 
 ### 6.6 Cross-References
 
@@ -507,7 +507,7 @@ Cross-Avatar reads of paperdoll, party, or stats are **forbidden** under the sha
 
 ---
 
-## 8. Phase 1 Prototype Scope (12-Week "Britain Alive")
+## 8. Phase 1 Prototype Scope (12-Week "Highmere Alive")
 
 Per Doc #11. Deliberately minimal; proves the dispatcher path end-to-end.
 
@@ -515,14 +515,14 @@ Per Doc #11. Deliberately minimal; proves the dispatcher path end-to-end.
 |---|---|---|
 | Character gen | Name + portrait + 3 of the 7 gypsy questions (single-player only); class skew computed but stat assignment fixed | Full 7 questions, shard binding, persistence write |
 | Stats | All 5 primary/secondary stats present in schema; fixed level 1; training disabled | Trainer NPCs, leveling, XP, atrophy |
-| Party | Iolo + Shamino only; default AI mode = `Attack Nearest`; no permadeath logic | All other companions, AI modes 3–10, trade dialog, MP party invites |
+| Party | Erevan + Theran only; default AI mode = `Attack Nearest`; no permadeath logic | All other companions, AI modes 3–10, trade dialog, MP party invites |
 | Paperdoll | 8 of 14 slots active: head, torso, back, belt, left_hand, right_hand, hands, feet | earrings, neck, cloak, rings, legs, quiver |
 | Inventory | Container nesting working at unlimited depth; weight constraint enforced; drag/drop | volume/bulk constraint, trade UI, stacking caps for non-gold items |
-| Resurrection | Avatar respawn at Lord British's chamber on death; no companion resurrection | Ankh of Renewal item, Resurrect spell, Memorial Quests |
+| Resurrection | Avatar respawn at Lord Avermere's chamber on death; no companion resurrection | Ankh of Renewal item, Resurrect spell, Memorial Quests |
 | Ownership | World vs NPC tagging only; theft witness check uses single-NPC line-of-sight | Player-witnesses, companion-witnesses, always-watched zones, bribery |
 | MCP | None of the §7 tools required for the Phase 1 slice | All §7 tools and resources deferred to Phase 2 |
 
-Phase 1 success metric (consistent with Doc #14 §8): a player can complete genesis, walk into Britain with Iolo and Shamino, equip a sword in left_hand, drag a torch from a bag-in-chest into their backpack (proving cascading weight), and steal a loaf of bread under one watching baker's nose to observe the Honesty/Justice delta.
+Phase 1 success metric (consistent with Doc #14 §8): a player can complete genesis, walk into Highmere with Erevan and Theran, equip a sword in left_hand, drag a torch from a bag-in-chest into their backpack (proving cascading weight), and steal a loaf of bread under one watching baker's nose to observe the Truth/Justice delta.
 
 ---
 
@@ -542,7 +542,7 @@ Phase 1 success metric (consistent with Doc #14 §8): a player can complete gene
 
 ## 10. Open Questions
 
-1. `[OPEN]` **Gypsy question content.** §1.2 specifies the format and a single sample question (the Valor-vs-Honor dilemma from U4). The full set of 7 BR-original questions needs a design pass. Constraints: each question must force a binary choice between exactly two of the Eight Virtues; the 7 questions collectively must touch all 8 Virtues at least once.
+1. `[OPEN]` **Gypsy question content.** §1.2 specifies the format and a single sample question (the Courage-vs-Honor dilemma from U4). The full set of 7 BR-original questions needs a design pass. Constraints: each question must force a binary choice between exactly two of the Eight Virtues; the 7 questions collectively must touch all 8 Virtues at least once.
 2. `[OPEN]` **Avatar customization beyond portrait.** Doc #10 §3 references dye systems for art assets; whether dyes apply to Avatar appearance (skin tone, hair color, equipment tinting) at genesis or only as in-game cosmetics is undecided. If at genesis, §1.1 needs a `cosmetics` block.
 3. `[OPEN]` **Atrophy formula for assembled companions.** If BR includes any Boydon-style assembled-from-parts companion `[SI]`, does §2.4 atrophy apply at all? An assembled companion arguably has no "training" to lose, but also no biological excuse for skill retention. Pending the Companion Roster doc.
 4. `[OPEN]` **Permadeath-locked companion list.** §3.4 names Spark and Tseramed as BG-equivalent candidates; final list awaits the BG storyline-fidelity pass.

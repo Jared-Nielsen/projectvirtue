@@ -15,7 +15,7 @@ Project Virtue frontend. Phase 2 deliverable; lives under
 | Character | `GET /v1/characters`, `GET /v1/characters/templates`, `GET /v1/characters/portraits`, `POST /v1/characters` | `data/character/*.json` |
 | Inventory + items | `GET /v1/inventory/items`, `GET /v1/inventory/equipment`, `GET /v1/inventory/loot/:lootId`, `GET /v1/items/catalog` | `data/inventory/**/*.json`, `data/items/*.json` |
 | Quests + journal + books | `GET /v1/quests/active`, `GET /v1/quests/log`, `GET /v1/quests/templates`, `GET /v1/journal`, `GET /v1/books/codex`, `GET /v1/books/:bookId` | `data/quests/*.json`, `data/journal/*.json`, `data/books/*.json` |
-| Dialog | `GET /v1/dialog/lord-british`, `GET /v1/dialog/iolo`, `GET /v1/dialog/branch` | `data/dialog/*.json` |
+| Dialog | `GET /v1/dialog/lord-avermere`, `GET /v1/dialog/erevan`, `GET /v1/dialog/branch` | `data/dialog/*.json` |
 | Combat | `GET /v1/combat/state`, `GET /v1/combat/abilities`, `GET /v1/combat/spellbook`, `GET /v1/combat/dragon-encounter` | `data/combat/*.json` |
 | Economy + crafting | `GET /v1/economy/market-listings`, `GET /v1/crafting/recipes`, `GET /v1/crafting/stations` | `data/economy/*.json`, `data/crafting/*.json` |
 | Social + voice | `GET /v1/social/friends`, `GET /v1/social/guild`, `GET /v1/social/chat-history`, `GET /v1/voice/channels` | `data/social/*.json`, `data/voice/*.json` |

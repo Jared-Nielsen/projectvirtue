@@ -11,7 +11,7 @@ Depends on: #5 Virtues, #6 Persistent World, #7 UGC, #8 Procedural Generation, #
 
 Resolves: Doc #13 §5 [OPEN] #12 (Sandbox levels for ScriptHook).
 
-Provenance tags: `[BG]` Black Gate (Ultima VII original), `[SI]` Serpent Isle, `[U4]` Ultima IV (Virtues canon), `[BR]` Project Virtue (new layer).
+Provenance tags: `[BG]` Black Gate (Ultima VII original), `[SI]` The Iron Marches, `[U4]` Ultima IV (Virtues canon), `[BR]` Project Virtue (new layer).
 
 ---
 
@@ -384,7 +384,7 @@ Dispatcher behavior for UGC callers:
 1. **`validate(inv)`** — checks `sandbox_level` against the verb's per-level capability bit (§5.1). Rejects with `ERR_SANDBOX_VIOLATION`.
 2. **`preconditions(inv)`** — same as player input (LOS, distance, ownership, state flags).
 3. **`resolve_effects(inv)`** — pure diff computation, identical to player path.
-4. **`score_virtues(inv, effects)`** — **fires identically**. UGC cannot bypass Virtue scoring. A UGC script that calls `forge.verb.attack` against an innocent NPC produces the same Compassion/Justice loss as a player swinging a sword.
+4. **`score_virtues(inv, effects)`** — **fires identically**. UGC cannot bypass Virtue scoring. A UGC script that calls `forge.verb.attack` against an innocent NPC produces the same Mercy/Justice loss as a player swinging a sword.
 5. **`apply_writes`** — same single-transaction commit.
 6. **Side-effect channels** — Virtue Engine, Persistence, Replication, Sound, Schedule Interruption, UGC hooks, MCP telemetry — all fire as in Doc #13 §4. UGC-originated invocations additionally emit a structured event to the creator's debug log.
 
@@ -453,14 +453,14 @@ VirtueAlignmentScore =
 
 - Script uniformly drives any Virtue negative across all reachable paths (anti-Virtue content) — score on that virtue ≤ −50 with no positive branch.
 - Script bypasses Virtue scoring by `flag.set` patterns that mimic verbs the dispatcher would have scored (e.g., setting an "owned_by_player" flag in a way that semantically equals a `steal` without invoking `steal`). Detected by a pattern matcher against known scoring-evasion idioms; matcher rules versioned alongside this doc.
-- Script targets `[BG]` canonical NPCs (Lord British, Iolo, Shamino, Spark, Dupre, Jaana, Geoffrey, Julia, Katrina, Sentri, Mariah, Tseramed) with `attack`, `TeleportActor`, or `DespawnEntity` outside an Alternate Britannia opt-in (Doc #3 §7).
+- Script targets `[BG]` canonical NPCs (Lord Avermere, Erevan, Theran, Spark, Bron, Jaana, Geoffrey, Julia, Katrina, Sentri, Eris, Tseramed) with `attack`, `TeleportActor`, or `DespawnEntity` outside an Alternate Avermere opt-in (Doc #3 §7).
 - Script invokes verbs above its sandbox level (already a compile error; flagged here for moderation transparency).
 - Script causes runaway state (e.g., infinite spawn loops not captured by §7 budgets) detected by graph cycle analysis.
 
 ### 8.4 Approval rule
 
 ```
-publish_allowed = (no red flags) AND (VirtueAlignmentScore >= 0 OR alternate_britannia_opt_in)
+publish_allowed = (no red flags) AND (VirtueAlignmentScore >= 0 OR alternate_avermere_opt_in)
 ```
 
 ### 8.5 Player-facing badge
@@ -469,7 +469,7 @@ publish_allowed = (no red flags) AND (VirtueAlignmentScore >= 0 OR alternate_bri
 |---|---|
 | ≥ 50  | "Virtuous Content" |
 | 0..49 | "Neutral" |
-| < 0 (Alternate Britannia only) | "Challenges Virtues" |
+| < 0 (Alternate Avermere only) | "Challenges Virtues" |
 
 Badges render in the Hall of Wonders browser (Doc #7 §3).
 
@@ -648,7 +648,7 @@ Success criterion (matches Doc #7 §6): a Phase 1 creator builds a 1-room dungeo
 - `[OPEN]` **UGC migration between shards.** If a creator authored a creation on shard `virtue-01` and wants to deploy on `chaos-02`, what carries over? `WorldState` is per-shard by definition (Doc #6 §3); Virtue scores are global; the creation graph itself is portable. Need an "export creation" verb and an "import creation" verb with shard-specific re-validation.
 - `[OPEN]` **Party-wide quest progress sharing.** §3.3 mentioned `share_progress: true`; semantics for late-joining party members and dropouts undefined.
 - `[OPEN]` **`CompositeNode` permission inheritance.** When a `Restricted` creator embeds a `Trusted`-authored subgraph (`CompositeNode.subgraph`), does the subgraph execute at its author's level or the calling graph's level? Default plan: lowest-of-the-two, but this restricts useful sharing.
-- `[OPEN]` **Virtue weight tuning.** §8.2 uses uniform `weight(virtue) = 1.0`; whether some Virtues (Honor, Spirituality) deserve higher validator weights for skeleton/featured curation is undecided.
+- `[OPEN]` **Virtue weight tuning.** §8.2 uses uniform `weight(virtue) = 1.0`; whether some Virtues (Honor, Insight) deserve higher validator weights for skeleton/featured curation is undecided.
 
 ---
 

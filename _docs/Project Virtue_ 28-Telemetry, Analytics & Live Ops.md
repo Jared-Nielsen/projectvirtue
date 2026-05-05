@@ -226,7 +226,7 @@ Cross-link to Doc #1 §4 success metrics (500k active players, 10k+ UGC creation
 | MAU | Distinct `actor_anon_id` with ≥1 `session_start` per rolling 30 days | `session_start` |
 | Session length distribution | p50 / p90 / p99 of `session_end.duration_s` per day | `session_end` |
 | Retention curves | D1 / D7 / D30 / D365 cohort retention from `avatar_create` | `avatar_create`, `session_start` |
-| Tutorial funnel | `avatar_create` → `tutorial_britain_complete` flag (Doc #24 §1) | derived from quest events |
+| Tutorial funnel | `avatar_create` → `tutorial_highmere_complete` flag (Doc #24 §1) | derived from quest events |
 | Discord link conversion rate | % of active players (DAU window) who have linked a Discord account via the Doc #37 §Discord-interop OAuth flow. Tracked as a **community-health** metric, NOT a monetization metric, and never gated on. | `account_consents` (Discord-link state) joined to `session_start` |
 
 Telemetry does NOT capture Discord chat content, Discord message metadata, Discord voice activity, or any Discord-side behavior. Discord is outside the in-game perimeter (and outside our GDPR perimeter — see Doc #38); the only Discord-related datum the analytics pipeline observes is the presence/absence of a link record per account. See Doc #37 §Discord-interop.
@@ -604,7 +604,7 @@ Per §10.3: `telemetry.read`, `telemetry.admin`, `liveops.schedule`. These exten
 
 ## 13. Phase 1 Prototype Scope
 
-Per Doc #11, the prototype is single-shard, 8-player, Britain-only, 12 weeks. Telemetry scope is deliberately minimal.
+Per Doc #11, the prototype is single-shard, 8-player, Highmere-only, 12 weeks. Telemetry scope is deliberately minimal.
 
 | Element | Phase 1 | Deferred to Post-Phase 1 |
 |---|---|---|

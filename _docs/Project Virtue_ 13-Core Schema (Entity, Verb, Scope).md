@@ -21,8 +21,8 @@ All world objects (items, NPCs, players, containers, environmental fixtures, pro
 
 ```ts
 type EntityId = u64
-type ArchetypeId = string  // e.g. "item.torch", "npc.blacksmith.iolo"
-type RegionId = string     // e.g. "britain", "trinsic"
+type ArchetypeId = string  // e.g. "item.torch", "npc.blacksmith.erevan"
+type RegionId = string     // e.g. "highmere", "stonereach"
 
 type Entity = {
   id: EntityId                         // [I]
@@ -158,12 +158,12 @@ Archetype-level moral tagging. Verb dispatcher reads this to compute deltas.
 
 ```ts
 type VirtueDelta = Partial<Record<Virtue, int>>  // -100..+100 per virtue
-type Virtue = "Honesty" | "Compassion" | "Valor" | "Justice"
-            | "Sacrifice" | "Honor" | "Spirituality" | "Humility"
+type Virtue = "Truth" | "Mercy" | "Courage" | "Justice"
+            | "Devotion" | "Honor" | "Insight" | "Humility"
 
 type VirtueWeightsComponent = {
-  is_innocent: bool                   // [A] killing → Compassion/Justice loss
-  is_sacred:   bool                   // [A] desecration → Spirituality loss
+  is_innocent: bool                   // [A] killing → Mercy/Justice loss
+  is_sacred:   bool                   // [A] desecration → Insight loss
   is_holy_site: bool                  // [A] shrines, altars
   steal_delta:   VirtueDelta          // [A] applied if owner != actor
   destroy_delta: VirtueDelta          // [A]
@@ -179,7 +179,7 @@ type CombatComponent = {
   damage_type:   enum { Slash, Pierce, Blunt, Fire, Cold, Poison, Magic } // [A]
   armor_class:   int                 // [A/I] for wearables and NPCs
   hp_max:        int                 // [A]
-  faction:       string              // [I*] e.g. "town_guard.britain"
+  faction:       string              // [I*] e.g. "town_guard.highmere"
   hostile_to:    string[]            // [I*]
   resistances:   Partial<Record<DamageType, float>>   // [A] 0.0–1.0; final damage *= (1 - resistance) [amended from #16 §3.2]
   armor_pierce:  int                                  // [A] weapons only [amended from #16 §3.2]
@@ -232,29 +232,29 @@ Canonical, exhaustive list of interaction verbs implied by the docs. Every playe
 |---|---|---|---|---|---|---|---|
 | `examine`            | Doc #4 §2 | Physical, State, Ownership, Magic | — | — | yes | no | Always available; pure read |
 | `use`                | Doc #4 §2 | State, ScriptHook.on_use | State, Container | varies via script | yes | yes | Default left-click action |
-| `drag`               | Doc #4 §2 | Physical, Ownership | Physical.containedBy, Physical.position | Honesty, Justice (if owner≠actor) | yes | yes | Pickup/move |
+| `drag`               | Doc #4 §2 | Physical, Ownership | Physical.containedBy, Physical.position | Truth, Justice (if owner≠actor) | yes | yes | Pickup/move |
 | `drop`               | Doc #4 §2 | Physical | Physical.position, Physical.containedBy=null | — | no | yes | Inverse of drag |
 | `combine(other)`     | Doc #4 §2, #4.1 §4 | both Physical, ScriptHook.on_combine, recipe DB | spawns/destroys entities | varies (crafting) | yes | yes | Crafting is verb-driven, not menu-driven |
 | `right_click(action)`| Doc #4 §2 | varies | varies | varies | yes | yes | Dispatch wrapper; resolves to a concrete sub-verb. Sub-verb taxonomy resolved per #25 §T-13-1 (per-entity dynamic enum) |
-| `attack(target)`     | Doc #4 §7 | Combat, Physical | State.hp, State.broken | Valor, Compassion, Justice, Honor | yes | no (real-time) | Real-time; pauses only on inventory open |
-| `cast_spell(spell, target?)` | Doc #4 §6 | Magic, reagent inventory | varies — sets state, spawns entities | Spirituality, plus spell-specific | spell-dependent | partial | Telekinesis, Fireball, Create Food, etc. |
-| `throw(target_pos)`  | Doc #4 §3, §7 | Physical | Physical.velocity | Valor (if combat use) | yes | no | Momentum applied; gravity in flight |
-| `talk(npc)`          | Doc #2 §4.6, #4 §5 | NPC dialogue tree, VirtueWeights | dialogue state, possible quest flags | Honesty (lying option) | yes | yes | Branching; Virtue-gated lines |
-| `trade(npc, offer)`  | Doc #4 §4, #6 §4 | inventories, Ownership | Ownership transfer, gold | Honesty, Honor (broken contracts) | yes | yes | Player-driven economy |
-| `steal(item)`        | Doc #4 §4, #5 §4 | Ownership, witness LOS | Ownership.owner, Ownership.acquired_via=Stolen | Honesty −, Justice − | yes | yes | Implicit when `drag` from foreign Container; alerts via sound (Doc #4 §3) |
-| `lockpick(target)`   | Doc #4 §2, §4 | State.locked, skill | State.locked=false | Honesty −, Justice − | yes | yes | Right-click action |
-| `ignite(target)`     | Doc #4 §2, §3 | Physical.flammability | State.on_fire=true, State.lit=true | Compassion − (if owned/innocent) | yes | yes | Right-click action; spreads via sim |
+| `attack(target)`     | Doc #4 §7 | Combat, Physical | State.hp, State.broken | Courage, Mercy, Justice, Honor | yes | no (real-time) | Real-time; pauses only on inventory open |
+| `cast_spell(spell, target?)` | Doc #4 §6 | Magic, reagent inventory | varies — sets state, spawns entities | Insight, plus spell-specific | spell-dependent | partial | Telekinesis, Fireball, Create Food, etc. |
+| `throw(target_pos)`  | Doc #4 §3, §7 | Physical | Physical.velocity | Courage (if combat use) | yes | no | Momentum applied; gravity in flight |
+| `talk(npc)`          | Doc #2 §4.6, #4 §5 | NPC dialogue tree, VirtueWeights | dialogue state, possible quest flags | Truth (lying option) | yes | yes | Branching; Virtue-gated lines |
+| `trade(npc, offer)`  | Doc #4 §4, #6 §4 | inventories, Ownership | Ownership transfer, gold | Truth, Honor (broken contracts) | yes | yes | Player-driven economy |
+| `steal(item)`        | Doc #4 §4, #5 §4 | Ownership, witness LOS | Ownership.owner, Ownership.acquired_via=Stolen | Truth −, Justice − | yes | yes | Implicit when `drag` from foreign Container; alerts via sound (Doc #4 §3) |
+| `lockpick(target)`   | Doc #4 §2, §4 | State.locked, skill | State.locked=false | Truth −, Justice − | yes | yes | Right-click action |
+| `ignite(target)`     | Doc #4 §2, §3 | Physical.flammability | State.on_fire=true, State.lit=true | Mercy − (if owned/innocent) | yes | yes | Right-click action; spreads via sim |
 | `extinguish(target)` | Doc #4 §3 | State.on_fire | State.on_fire=false | — | yes | yes | Water or spell |
-| `meditate(shrine)`   | Doc #5 §3 | shrine entity | Player.virtues_visible=true | Spirituality + | yes | yes | Reveals current Virtue scores |
-| `donate(npc, item)`  | Doc #5 §2 | inventories | Ownership transfer | Sacrifice +, Compassion + | yes | yes | Specialization of `trade` with no return |
+| `meditate(shrine)`   | Doc #5 §3 | shrine entity | Player.virtues_visible=true | Insight + | yes | yes | Reveals current Virtue scores |
+| `donate(npc, item)`  | Doc #5 §2 | inventories | Ownership transfer | Devotion +, Mercy + | yes | yes | Specialization of `trade` with no return |
 | `sleep`              | Doc #6 §3 | Player.location | save state, time advance | — | no | yes | "Campfire save" in private instances |
 | `place(entity)`      | Doc #7 §2 | UGC permissions | spawns persistent entity | — | n/a | yes | UGC editor only; goes through dispatcher with `caller=UGC` |
 | `script_invoke(verb, args)` | Doc #7 §2 | UGC sandbox | varies | varies | n/a | yes | UGC scripts call through dispatcher; cannot bypass it |
 | `move_to(target, options?)` | Doc #23 §5 [amended from #23 §5] | Physical, MoverArchetype, TerrainCapSet, spatial index | spawns/updates `MoveTask`; `Physical.position` per tile-crossing under `WorldState` | none direct (trespass into private region rejected upstream as `ERR_VIRTUE_REJECTED`) | n/a (movement) | yes | A* pathfind; submitted by player click-to-move, NPC ScheduleSystem (Doc #17 §7), combat AI, MCP `avatar.basic` |
 | `defend(actor)` | Doc #16 §2.4 [amended from #16 §2.4] | Combat | sets `Combat.stance = Defensive` for 5s (`+50%` armor_class, `-25%` outgoing damage) | none | n/a | yes | Used by AI mode 5 (Defend) and player keybind `[D]` |
-| `flee(actor)` | Doc #16 §2.5 [amended from #16 §2.5] | Combat, RegionMetadata, spatial index | sets `Combat.stance = Fleeing`; engages flee pathfinding to nearest safe tile | Valor (companion abandonment context per Doc #5 §2; not direct delta on the verb itself) | n/a | yes | Used by AI mode 11 (Flee) and player verb; companion flee triggers Doc #5 abandonment evaluation |
-| `bribe(actor, npc, gold_amount)` | Doc #15 §6.5 [amended from #15 §6.5] | Ownership, OwnershipComponent, NPC.faction, actor.virtues.honor | gold transfer (PlayerInventory scope); clears actor's Wanted flag in NPC's faction; updates NPC reaction state | Honesty − (bribery itself is dishonest, default −3) | yes | yes | Requires `npc.faction.accepts_bribes == true`; high-Honor pays MORE (intentional inversion) |
-| `buy(merchant_or_stall, item, qty)` | Doc #18 §12 [amended from #18 §12] | Shop, MarketStall, Ownership | atomic gold→item transfer per Doc #18 §7.1 / §8.2; updates `OwnershipComponent.acquired_via = Purchased` | Honesty (low-Honesty buyer pays +50% in always_watched zones); none on the verb itself | yes | yes | Shop-component primitive; may return `ERR_VIRTUE_REJECTED` per §7.2 refusal rules |
+| `flee(actor)` | Doc #16 §2.5 [amended from #16 §2.5] | Combat, RegionMetadata, spatial index | sets `Combat.stance = Fleeing`; engages flee pathfinding to nearest safe tile | Courage (companion abandonment context per Doc #5 §2; not direct delta on the verb itself) | n/a | yes | Used by AI mode 11 (Flee) and player verb; companion flee triggers Doc #5 abandonment evaluation |
+| `bribe(actor, npc, gold_amount)` | Doc #15 §6.5 [amended from #15 §6.5] | Ownership, OwnershipComponent, NPC.faction, actor.virtues.honor | gold transfer (PlayerInventory scope); clears actor's Wanted flag in NPC's faction; updates NPC reaction state | Truth − (bribery itself is dishonest, default −3) | yes | yes | Requires `npc.faction.accepts_bribes == true`; high-Honor pays MORE (intentional inversion) |
+| `buy(merchant_or_stall, item, qty)` | Doc #18 §12 [amended from #18 §12] | Shop, MarketStall, Ownership | atomic gold→item transfer per Doc #18 §7.1 / §8.2; updates `OwnershipComponent.acquired_via = Purchased` | Truth (low-Truth buyer pays +50% in always_watched zones); none on the verb itself | yes | yes | Shop-component primitive; may return `ERR_VIRTUE_REJECTED` per §7.2 refusal rules |
 | `sell(merchant, item, qty)` | Doc #18 §12 [amended from #18 §12] | Shop, Ownership | atomic item→gold transfer per Doc #18 §7.1 | none direct | yes | yes | Shop-component primitive; NPC merchants only — stalls do not accept SELL |
 
 ### 2.1 GM verbs (per #26 §8) [amended from #26 §8]

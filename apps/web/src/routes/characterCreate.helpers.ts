@@ -44,9 +44,9 @@ export function virtueStarterBonus(v: VirtueAlignment): Stats {
     charisma: 0,
   };
   switch (v) {
-    case 'compassion':
+    case 'mercy':
       return { ...empty, charisma: 2, wisdom: 1 };
-    case 'honesty':
+    case 'truth':
       return { ...empty, intelligence: 2, charisma: 1 };
     case 'honor':
       return { ...empty, strength: 2, constitution: 1 };
@@ -54,11 +54,11 @@ export function virtueStarterBonus(v: VirtueAlignment): Stats {
       return { ...empty, wisdom: 2, charisma: -1 };
     case 'justice':
       return { ...empty, intelligence: 1, dexterity: 1, strength: 1 };
-    case 'sacrifice':
+    case 'devotion':
       return { ...empty, constitution: 2, charisma: 1 };
-    case 'spirituality':
+    case 'insight':
       return { ...empty, wisdom: 2, intelligence: 1 };
-    case 'valor':
+    case 'courage':
       return { ...empty, strength: 1, dexterity: 1, constitution: 1 };
     case 'balance':
       return empty;

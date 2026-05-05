@@ -82,7 +82,7 @@ Two presets ship today:
 | Mode | Tile (px) | Render | Camera | Notes |
 | --- | --- | --- | --- | --- |
 | `kenney-miniature` (default) | 128×64 | chunky | 0.4–2.0× | Matches the Kenney isometric-miniature kit currently in `_tileart/` |
-| `ultima-vii` | 64×32 | flatter | 0.7–3.5× | Larger world feel — for when we move to flatter Ultima VII-style art |
+| `flat-classic` | 64×32 | flatter | 0.7–3.5× | Larger world feel — for when we move to flatter flat 2:1 iso art with smaller per-tile footprint |
 
 Active mode resolution chain (first match wins):
 
@@ -99,7 +99,7 @@ picks it up automatically — no per-system patches.
 
 Today `tiles.ts` draws colored iso diamonds programmatically (decor too —
 trees, buildings, moongates as primitive shapes). This is fine for the demo
-but doesn't scale to authoring a real Britannia. Selected approach:
+but doesn't scale to authoring a real Avermere. Selected approach:
 
 **Tiled Map Editor + `pixi-tiledmap`** (selected 2026-05-05).
 
@@ -142,9 +142,9 @@ R2 paths assigned yet.
 1. `pnpm --filter @br/web add pixi-tiledmap@^2.4.0`
 2. Add `cdnBase: string` and `tileMapSource: string` to `ScaleMode`. For
    `kenney-miniature` mode `cdnBase` is one of the `media.gamecodex.com/tile/<kit>/iso/`
-   URLs above; for `ultima-vii` mode it points at the eventual flat-art
+   URLs above; for `flat-classic` mode it points at the eventual flat-art
    bucket. `tileMapSource` is a `.tmj` URL (also R2-hosted) referencing
-   tileset PNGs under that `cdnBase`. `?scale=ultima-vii` switches both
+   tileset PNGs under that `cdnBase`. `?scale=flat-classic` switches both
    projection and tileset.
 3. New `tiles.ts` path: load `.tmj` via `pixi-tiledmap`, parent its
    container under `world`. Keep the current programmatic drawing as the
@@ -153,7 +153,7 @@ R2 paths assigned yet.
    source into `@br/mocks/data/world/tiles/<region>.json`. Tiled becomes
    the *source*; the typed JSON in `@br/mocks` stays the *wire-format*
    placeholder for the eventual protobuf codegen target (Doc #22 §4.5).
-5. Per-region maps live on R2 (e.g. `media.gamecodex.com/maps/sosaria.kenney-miniature.tmj`),
+5. Per-region maps live on R2 (e.g. `media.gamecodex.com/maps/mythenor.kenney-miniature.tmj`),
    not in `apps/web/public/`. The `tools/r2-sync` script can pull them
    into `apps/web/public/maps/` during dev for offline iteration.
 

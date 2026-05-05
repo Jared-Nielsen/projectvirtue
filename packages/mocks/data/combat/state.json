@@ -1,6 +1,6 @@
 {
   "encounterId": "enc_forest_skirmish_01",
-  "regionId": "region_yew",
+  "regionId": "region_blackford",
   "tick": 1284567,
   "inCombat": true,
   "turnIndex": 3,
@@ -20,8 +20,8 @@
       "initiative": 14
     },
     {
-      "entityId": "ent_iolo_companion",
-      "name": "Iolo",
+      "entityId": "ent_erevan_companion",
+      "name": "Erevan",
       "faction": "ally",
       "hp": { "current": 60, "max": 72 },
       "mana": { "current": 18, "max": 24 },
@@ -29,7 +29,7 @@
       "stance": "defensive",
       "armorRating": 12,
       "statusEffects": [],
-      "portrait": "/assets/portraits/iolo.webp",
+      "portrait": "/assets/portraits/erevan.webp",
       "initiative": 12
     },
     {
@@ -77,7 +77,7 @@
       "tick": 1284564
     },
     {
-      "source": "ent_iolo_companion",
+      "source": "ent_erevan_companion",
       "target": "ent_goblin_brute_b",
       "amount": 6,
       "type": "fire",
