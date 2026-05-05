@@ -43,3 +43,7 @@ _tileart
 # Interface art (HUD chrome, panel frames, button bitmaps, etc.) — same
 # pipeline as _tileart: dev-local for prototyping, R2-hosted in production.
 _interfaceart
+
+# Monster / creature sprites + animations — same pipeline. Production
+# pulls from Cloudflare R2 (media.gamecodex.com).
+_monsterart
