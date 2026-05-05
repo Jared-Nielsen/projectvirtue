@@ -61,6 +61,15 @@ const TILE_OUTLINE_ALPHA = 0.25;
 const SPRITE_ANCHOR_X = 0.5;
 const SPRITE_ANCHOR_Y = 0.875;
 
+// Painted sprites are nudged by half a tile WIDTH east + half a tile WIDTH
+// south of the projected grid origin. Without this shift the sprite sits at
+// the iso grid intersection (where four cells meet), which reads as 50% NW
+// of the cell the user clicked. The grid-line projection still draws lines
+// through tile centers (a separate refactor), so this offset is a visual
+// patch tuned to land painted tiles inside the cell the click maps to.
+const PAINT_OFFSET_X = (m: IsoMetrics): number => m.tileW / 2;
+const PAINT_OFFSET_Y = (m: IsoMetrics): number => m.tileW / 2;
+
 /** Stable colour-from-id hash so the editor's tinted-diamond preview keeps
  *  the same colour for the same tile across paint sessions. Used as a
  *  fallback while the real Texture is still loading. */
@@ -141,8 +150,10 @@ export const EditorCanvas: Component<EditorCanvasProps> = (props) => {
         const decorId = state.decor[idx] ?? 0;
         const { sx, sy } = project(x, y);
 
-        // Empty floor cell — faint outline so authors can see the grid
-        // footprint without a noisy fill behind real tiles.
+        // Empty floor cell — faint outline at the projected grid origin so
+        // authors can see the grid footprint. Painted sprites are nudged
+        // by (PAINT_OFFSET_X, PAINT_OFFSET_Y); empty outlines stay at the
+        // raw projection so the grid markings remain meaningful.
         if (groundId <= 0) {
           const empty = makeFallbackDiamond(metrics, 0x000000, 0, false);
           empty.x = sx;
@@ -150,31 +161,35 @@ export const EditorCanvas: Component<EditorCanvasProps> = (props) => {
           empty.zIndex = x + y;
           tilesContainer.addChild(empty);
         } else {
+          const px = sx + PAINT_OFFSET_X(metrics);
+          const py = sy + PAINT_OFFSET_Y(metrics);
           const groundTex = tex.get(groundId);
           if (groundTex) {
             const sprite = new Sprite(groundTex);
             sprite.anchor.set(SPRITE_ANCHOR_X, SPRITE_ANCHOR_Y);
-            sprite.x = sx;
-            sprite.y = sy;
+            sprite.x = px;
+            sprite.y = py;
             sprite.zIndex = x + y;
             tilesContainer.addChild(sprite);
           } else {
             // Texture still loading or load failed — colored fallback.
             const fallback = makeFallbackDiamond(metrics, tileColor(groundId), 0.92, true);
-            fallback.x = sx;
-            fallback.y = sy;
+            fallback.x = px;
+            fallback.y = py;
             fallback.zIndex = x + y;
             tilesContainer.addChild(fallback);
           }
         }
 
         if (decorId > 0) {
+          const px = sx + PAINT_OFFSET_X(metrics);
+          const py = sy + PAINT_OFFSET_Y(metrics);
           const decorTex = tex.get(decorId);
           if (decorTex) {
             const sprite = new Sprite(decorTex);
             sprite.anchor.set(SPRITE_ANCHOR_X, SPRITE_ANCHOR_Y);
-            sprite.x = sx;
-            sprite.y = sy;
+            sprite.x = px;
+            sprite.y = py;
             sprite.zIndex = x + y + 0.5;
             tilesContainer.addChild(sprite);
           } else {
@@ -183,8 +198,8 @@ export const EditorCanvas: Component<EditorCanvasProps> = (props) => {
             const decor = new Graphics()
               .rect(-halfW * 0.32, -halfH * 1.4, halfW * 0.64, halfH * 1.5)
               .fill({ color: tileColor(decorId), alpha: 0.95 });
-            decor.x = sx;
-            decor.y = sy;
+            decor.x = px;
+            decor.y = py;
             decor.zIndex = x + y + 0.5;
             tilesContainer.addChild(decor);
           }
