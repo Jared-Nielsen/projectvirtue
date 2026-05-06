@@ -48,6 +48,11 @@ export class GameScene extends Phaser.Scene {
   private musicStarted = false;
   private cursorGfx!: Phaser.GameObjects.Graphics;
 
+  private shipSprite!: Phaser.GameObjects.Image;
+  private shipX = 0;
+  private shipY = 0;
+  private onShip = false;
+
   constructor() {
     super({ key: 'GameScene' });
   }
@@ -116,6 +121,8 @@ export class GameScene extends Phaser.Scene {
 
     this.cursorGfx = this.add.graphics().setDepth(10000).setScrollFactor(0);
     this.game.canvas.style.cursor = 'none';
+
+    this.createShip();
   }
 
   private placeWallSprites(): void {
@@ -208,6 +215,9 @@ export class GameScene extends Phaser.Scene {
     let vy = 0;
     let speed = PLAYER_SPEED;
 
+    const anchorX = this.onShip ? this.shipX : this.playerX;
+    const anchorY = this.onShip ? this.shipY : this.playerY;
+
     if (keyboardActive) {
       if (left)  vx -= 1;
       if (right) vx += 1;
@@ -217,8 +227,8 @@ export class GameScene extends Phaser.Scene {
     } else if (this.input.mousePointer.rightButtonDown()) {
       const ptr   = this.input.mousePointer;
       const world = this.cameras.main.getWorldPoint(ptr.x, ptr.y);
-      const dx    = world.x - this.playerX;
-      const dy    = world.y - this.playerY;
+      const dx    = world.x - anchorX;
+      const dy    = world.y - anchorY;
       const dist  = Math.sqrt(dx * dx + dy * dy);
 
       if (dist > MOUSE_DEAD_ZONE) {
@@ -229,45 +239,165 @@ export class GameScene extends Phaser.Scene {
       }
     }
 
-    // ── movement ────────────────────────────────────────────────────────────
-    const dt   = delta / 1000;
-    const newX = this.playerX + vx * speed * dt;
-    const newY = this.playerY + vy * speed * dt;
-
-    if (this.canMoveTo(newX, this.playerY)) this.playerX = newX;
-    if (this.canMoveTo(this.playerX, newY)) this.playerY = newY;
-
-    this.playerX = Math.max(TILE_SIZE, Math.min((WORLD_WIDTH  - 1) * TILE_SIZE, this.playerX));
-    this.playerY = Math.max(TILE_SIZE, Math.min((WORLD_HEIGHT - 1) * TILE_SIZE, this.playerY));
-
-    // ── facing + animation ──────────────────────────────────────────────────
+    const dt     = delta / 1000;
     const moving = vx !== 0 || vy !== 0;
 
-    if (moving) {
-      if (Math.abs(vx) >= Math.abs(vy)) {
-        this.facing = vx > 0 ? 'east' : 'west';
-      } else {
-        this.facing = vy > 0 ? 'south' : 'north';
+    if (this.onShip) {
+      // ── ship movement ──────────────────────────────────────────────────────
+      const sx = this.shipX + vx * speed * 0.55 * dt;
+      const sy = this.shipY + vy * speed * 0.55 * dt;
+
+      const movedX = this.canShipMoveTo(sx, this.shipY);
+      const movedY = this.canShipMoveTo(this.shipX, sy);
+      if (movedX) this.shipX = sx;
+      if (movedY) this.shipY = sy;
+
+      // Disembark: blocked in all axes and adjacent land is walkable
+      if (moving && !movedX && !movedY) {
+        const lx = this.shipX + vx * TILE_SIZE * 2;
+        const ly = this.shipY + vy * TILE_SIZE * 2;
+        if (this.canMoveTo(lx, ly)) {
+          this.playerX = lx;
+          this.playerY = ly;
+          this.onShip = false;
+        }
+      }
+
+      if (this.onShip) {
+        this.playerX = this.shipX;
+        this.playerY = this.shipY;
+      }
+    } else {
+      // ── land movement ──────────────────────────────────────────────────────
+      const newX = this.playerX + vx * speed * dt;
+      const newY = this.playerY + vy * speed * dt;
+
+      if (this.canMoveTo(newX, this.playerY)) this.playerX = newX;
+      if (this.canMoveTo(this.playerX, newY)) this.playerY = newY;
+
+      this.playerX = Math.max(TILE_SIZE, Math.min((WORLD_WIDTH  - 1) * TILE_SIZE, this.playerX));
+      this.playerY = Math.max(TILE_SIZE, Math.min((WORLD_HEIGHT - 1) * TILE_SIZE, this.playerY));
+
+      // Board ship when close enough
+      if (Math.hypot(this.playerX - this.shipX, this.playerY - this.shipY) < TILE_SIZE * 1.2) {
+        this.onShip = true;
+        this.playerX = this.shipX;
+        this.playerY = this.shipY;
       }
     }
 
-    const animKey = moving ? `walk-${this.facing}` : `idle-${this.facing}`;
-    if (this.player.anims.currentAnim?.key !== animKey) {
-      this.player.play(animKey);
+    // ── facing + animation ──────────────────────────────────────────────────
+    if (!this.onShip) {
+      if (moving) {
+        if (Math.abs(vx) >= Math.abs(vy)) {
+          this.facing = vx > 0 ? 'east' : 'west';
+        } else {
+          this.facing = vy > 0 ? 'south' : 'north';
+        }
+      }
+      const animKey = moving ? `walk-${this.facing}` : `idle-${this.facing}`;
+      if (this.player.anims.currentAnim?.key !== animKey) this.player.play(animKey);
+      this.player.setFlipX(this.facing === 'west');
     }
 
-    this.player.setFlipX(this.facing === 'west');
+    // ── ship sprite ─────────────────────────────────────────────────────────
+    this.shipSprite.setPosition(this.shipX, this.shipY);
+    this.shipSprite.setDepth(this.shipY - 1);
+    this.player.setVisible(!this.onShip);
 
-    // ── camera + sprite position ─────────────────────────────────────────────
+    // ── camera + player sprite ───────────────────────────────────────────────
     this.player.setPosition(this.playerX, this.playerY);
     this.player.setDepth(this.playerY);
 
+    const camX = this.onShip ? this.shipX : this.playerX;
+    const camY = this.onShip ? this.shipY : this.playerY;
     this.cameras.main.setScroll(
-      this.playerX - CANVAS_WIDTH  / 2,
-      this.playerY - CANVAS_HEIGHT / 2,
+      camX - CANVAS_WIDTH  / 2,
+      camY - CANVAS_HEIGHT / 2,
     );
 
     this.drawCursor();
+  }
+
+  private createShip(): void {
+    const W = 24, H = 44;
+    const g = this.make.graphics();
+
+    // Hull shadow
+    g.fillStyle(0x1a0a00, 1);
+    g.fillEllipse(W / 2 + 1, H / 2 + 1, W, H);
+
+    // Hull body
+    g.fillStyle(0x3d2008, 1);
+    g.fillEllipse(W / 2, H / 2, W, H);
+
+    // Deck planking
+    g.fillStyle(0x7a4c20, 1);
+    g.fillEllipse(W / 2, H / 2, W - 4, H - 6);
+
+    // Deck highlight stripe
+    g.fillStyle(0x9a6030, 1);
+    g.fillRect(W / 2 - 2, 6, 4, H - 12);
+
+    // Main sail
+    g.fillStyle(0xd8cfa0, 1);
+    g.fillRect(W / 2 - 7, 10, 14, 14);
+
+    // Fore sail
+    g.fillStyle(0xd8cfa0, 1);
+    g.fillRect(W / 2 - 4, H - 22, 8, 9);
+
+    // Mast (vertical, on top of sail)
+    g.fillStyle(0x1a0a04, 1);
+    g.fillRect(W / 2 - 1, 4, 2, H - 8);
+
+    // Yardarm (crossbar)
+    g.fillStyle(0x1a0a04, 1);
+    g.fillRect(W / 2 - 8, 14, 16, 1);
+
+    g.generateTexture('ship', W, H);
+    g.destroy();
+
+    const spawn = this.findShipSpawn();
+    this.shipX = spawn.x;
+    this.shipY = spawn.y;
+
+    this.shipSprite = this.add.image(this.shipX, this.shipY, 'ship')
+      .setOrigin(0.5, 0.5)
+      .setDepth(this.shipY - 1);
+  }
+
+  private findShipSpawn(): { x: number; y: number } {
+    // Search outward from the castle's south side for a shallow-water tile
+    const cx = Math.floor(WORLD_WIDTH  / 2);
+    const cy = Math.floor(WORLD_HEIGHT / 2) + 8;
+    for (let r = 1; r < 120; r++) {
+      for (let dy = -r; dy <= r; dy++) {
+        for (let dx = -r; dx <= r; dx++) {
+          if (Math.abs(dx) !== r && Math.abs(dy) !== r) continue;
+          const tx = cx + dx, ty = cy + dy;
+          if (tx < 2 || ty < 2 || tx >= WORLD_WIDTH - 2 || ty >= WORLD_HEIGHT - 2) continue;
+          const t = this.world[ty * WORLD_WIDTH + tx];
+          if (t === TileType.ShallowWater || t === TileType.DeepOcean) {
+            return { x: tx * TILE_SIZE + TILE_SIZE / 2, y: ty * TILE_SIZE + TILE_SIZE / 2 };
+          }
+        }
+      }
+    }
+    return { x: cx * TILE_SIZE, y: cy * TILE_SIZE };
+  }
+
+  private canShipMoveTo(cx: number, cy: number): boolean {
+    const hw = TILE_SIZE * 0.45;
+    const hh = TILE_SIZE * 0.45;
+    for (const [px, py] of [[cx, cy], [cx - hw, cy - hh], [cx + hw, cy - hh], [cx - hw, cy + hh], [cx + hw, cy + hh]] as [number, number][]) {
+      const tx = Math.floor(px / TILE_SIZE);
+      const ty = Math.floor(py / TILE_SIZE);
+      if (tx < 0 || ty < 0 || tx >= WORLD_WIDTH || ty >= WORLD_HEIGHT) return false;
+      const t = this.world[ty * WORLD_WIDTH + tx];
+      if (t !== TileType.DeepOcean && t !== TileType.ShallowWater) return false;
+    }
+    return true;
   }
 
   private drawCursor(): void {
