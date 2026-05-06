@@ -1,6 +1,6 @@
 export const TILE_SIZE = 16;
-export const WORLD_WIDTH = 256;
-export const WORLD_HEIGHT = 256;
+export const WORLD_WIDTH = 512;
+export const WORLD_HEIGHT = 512;
 export const CANVAS_WIDTH = 320;
 export const CANVAS_HEIGHT = 240;
 export const PLAYER_SPEED = 240;      // pixels per second (max)

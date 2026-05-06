@@ -39,6 +39,25 @@ export const TILE_COLORS: readonly number[] = [
   0x5a5a6a, // CastleWall (same as HighMountains — dark stone base under sprite)
 ];
 
+export const TILE_NAMES: readonly string[] = [
+  'Deep Ocean',      // DeepOcean
+  'Shallow Water',   // ShallowWater
+  'Swamp',           // Swamp
+  'Sandy Shore',     // Sand
+  'Grassland',       // LightGrass
+  'Meadow',          // DarkGrass
+  'Forest',          // Forest
+  'Dense Forest',    // DenseForest
+  'Hills',           // Hills
+  'Mountains',       // Mountains
+  'High Mountains',  // HighMountains
+  'Snow',            // Snow
+  'Lava',            // Lava
+  'Ancient Ruins',   // Ruins
+  'Road',            // Road
+  'Castle Wall',     // CastleWall
+];
+
 export const TILE_WALKABLE: readonly boolean[] = [
   false, // DeepOcean
   false, // ShallowWater
