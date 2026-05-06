@@ -1,0 +1,24 @@
+{
+    "buildId": "52826477431048393",
+    "clientId": "49552650753938435",
+    "gameId": "1207662623",
+    "language": "English",
+    "languages": [
+        "en-US"
+    ],
+    "name": "Ultima VII\u2122  - The Black Gate + The Forge of Virtue",
+    "playTasks": [
+        {
+            "category": "game",
+            "isPrimary": true,
+            "languages": [
+                "en-US"
+            ],
+            "name": "Ultima VII\u2122  - The Black Gate + The Forge of Virtue",
+            "path": "Contents/MacOS/Launcher",
+            "type": "FileTask"
+        }
+    ],
+    "rootGameId": "1207662623",
+    "version": 1
+}
