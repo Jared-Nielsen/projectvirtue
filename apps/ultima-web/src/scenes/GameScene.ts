@@ -5,15 +5,17 @@ import {
   PLAYER_SPEED, MOUSE_DEAD_ZONE, MOUSE_MAX_DIST,
 } from '../constants';
 import { TileType, TILE_WALKABLE, TILE_NAMES, TILE_COLORS } from '../world/TileType';
-import { generateWorld } from '../world/WorldGen';
+import { generateWorld, SHRINE_POSITIONS } from '../world/WorldGen';
 import { TILESET_KEY, TILESET_PATH } from '../rendering/TilesetBuilder';
 import { buildPlayerAnimations, PLAYER_KEY, PLAYER_PATH, FRAME_W, FRAME_H } from '../rendering/PlayerSpriteBuilder';
 import { MusicPlayer } from '../audio/MusicPlayer';
-import { ISLANDS_LORE, NpcTopic } from '../world/IslandLore';
+import { ISLANDS_LORE, NpcSkin, NpcTopic } from '../world/IslandLore';
 
 interface NpcEntry {
   sprite: Phaser.GameObjects.Sprite;
   name: string;
+  skin: NpcSkin;
+  sheetKey: string;
   tint: number;
   dialogue: string[];
   ambientLines: string[];
@@ -41,7 +43,14 @@ interface WorldObjectEntry {
   radius: number;
   label: string;
   color: number;
+  action?: () => void;
 }
+
+const NPC_SHEET_FRAME_W = 60;
+const NPC_SHEET_FRAME_H = 50;
+
+const NPC_SKINS: NpcSkin[] = ['noble', 'guard', 'mystic', 'healer', 'scholar', 'peasant', 'gypsy'];
+function npcSheetKey(skin: NpcSkin) { return `npc-sheet-${skin}`; }
 
 const WALL_KEY  = 'castle-wall';
 const WALL_PATH = 'assets/wall.png';
@@ -112,6 +121,19 @@ export class GameScene extends Phaser.Scene {
   private clickLabel: Phaser.GameObjects.Text | null = null;
   private clickLabelTween: Phaser.Tweens.Tween | null = null;
   private worldObjects: WorldObjectEntry[] = [];
+  private saveTimer = 0;
+
+  private mapOpen = false;
+  private mapObjects: Phaser.GameObjects.GameObject[] = [];
+  private mapTablePos: { x: number; y: number } | null = null;
+  private nearMapTable = false;
+  private worldMapCanvas: HTMLCanvasElement | null = null;
+  private mapOverlayElement: HTMLElement | null = null;
+
+  private moongatesPlaced = false;
+  private moongatePositions: { x: number; y: number }[] = [];
+  private nearMoongateIndex = -1;
+  private moongateTransporting = false;
 
   constructor() {
     super({ key: 'GameScene' });
@@ -123,10 +145,20 @@ export class GameScene extends Phaser.Scene {
     this.load.spritesheet(WALL_KEY,   WALL_PATH,   { frameWidth: WALL_FRAME_W, frameHeight: WALL_FRAME_H });
     this.load.spritesheet(TREE_KEY,   TREE_PATH,   { frameWidth: TREE_FRAME_W, frameHeight: TREE_FRAME_H });
     this.load.spritesheet(ITEMS_KEY,  ITEMS_PATH,  { frameWidth: ITEMS_FRAME_W, frameHeight: ITEMS_FRAME_H });
+    for (const skin of NPC_SKINS) {
+      this.load.image(`portrait-${skin}`, `assets/faces/portrait_${skin}.png`);
+      this.load.spritesheet(npcSheetKey(skin), `assets/npc-sprites/${skin}.png`, {
+        frameWidth: NPC_SHEET_FRAME_W, frameHeight: NPC_SHEET_FRAME_H,
+      });
+    }
   }
 
   create(): void {
     this.world = generateWorld(42);
+    const save = this.readSave();
+    if (save) {
+      for (const id of save.trophies) this.collectedTrophies.add(id);
+    }
 
     const mapData: number[][] = [];
     for (let ty = 0; ty < WORLD_HEIGHT; ty++) {
@@ -154,6 +186,7 @@ export class GameScene extends Phaser.Scene {
     this.placeObjects();
 
     buildPlayerAnimations(this);
+    this.buildNpcSheetAnimations();
 
     const spawn = this.findSpawn();
     this.playerX = spawn.x * TILE_SIZE + TILE_SIZE / 2;
@@ -185,14 +218,36 @@ export class GameScene extends Phaser.Scene {
     this.eKey = this.input.keyboard!.addKey('E');
 
     this.input.on('pointerdown', (ptr: Phaser.Input.Pointer) => {
-      if (!ptr.leftButtonDown() || this.convOpen) return;
+      if (!ptr.leftButtonDown() || this.convOpen || this.mapOpen) return;
       this.showClickLabel(ptr);
     });
 
+    this.buildWorldMapTexture();
     this.buildLandmarkTextures();
     this.placeIslandContent();
+    this.placeMapTable();
     this.createHUD();
     this.createShip();
+
+    if (save) {
+      if (this.canMoveTo(save.playerX, save.playerY)) {
+        this.playerX = save.playerX;
+        this.playerY = save.playerY;
+        this.player.setPosition(this.playerX, this.playerY);
+      }
+      if (this.canShipMoveTo(save.shipX, save.shipY)) {
+        this.shipX = save.shipX;
+        this.shipY = save.shipY;
+      }
+      this.onShip = save.onShip;
+      this.facing = save.facing as Direction;
+      this.player.play(`idle-${this.facing}`);
+      this.trophyHudText.setText(`Relics: ${this.collectedTrophies.size}/5`);
+    }
+
+    // Silently restore moongates if all trophies already collected from a previous session
+    const total = ISLANDS_LORE.filter(i => i.trophy).length;
+    if (this.collectedTrophies.size >= total) this.placeMonogates();
   }
 
   private placeWallSprites(): void {
@@ -248,8 +303,9 @@ export class GameScene extends Phaser.Scene {
     }
 
     // ── castle interior items ────────────────────────────────────────────────
-    const ox = Math.floor(WORLD_WIDTH  / 2) - 6;
-    const oy = Math.floor(WORLD_HEIGHT / 2) - 4;
+    // Castle is now 36×20 (2× scaled from 18×10); ox/oy match WorldGen
+    const ox = Math.floor(WORLD_WIDTH  / 2) - 18;
+    const oy = Math.floor(WORLD_HEIGHT / 2) - 10;
 
     const ITEM_LABELS = ['Treasure Chest', 'Barrel', 'Table'];
     const ITEM_COLORS = [0xddaa33, 0x995533, 0xbbaa77];
@@ -265,11 +321,11 @@ export class GameScene extends Phaser.Scene {
       });
     };
 
-    place(3,  3, ITEMS_KEY, 0);  // chest — inside the keep
-    place(10, 2, ITEMS_KEY, 0);  // chest — east courtyard corner
-    place(2,  6, ITEMS_KEY, 1);  // barrel — west wall
-    place(10, 5, ITEMS_KEY, 1);  // barrel — east side
-    place(7,  4, ITEMS_KEY, 2);  // table  — courtyard centre
+    place(6,  6, ITEMS_KEY, 0);  // chest — inside the keep
+    place(20, 4, ITEMS_KEY, 0);  // chest — east courtyard corner
+    place(4, 12, ITEMS_KEY, 1);  // barrel — west wall
+    place(20,10, ITEMS_KEY, 1);  // barrel — east side
+    place(14, 8, ITEMS_KEY, 2);  // table  — courtyard centre
   }
 
   private findSpawn(): { x: number; y: number } {
@@ -291,7 +347,11 @@ export class GameScene extends Phaser.Scene {
   }
 
   update(_time: number, delta: number): void {
-    if (this.convOpen) { this.drawCursor(); return; }
+    if (this.convOpen || this.mapOpen) {
+      if (this.mapOpen && Phaser.Input.Keyboard.JustDown(this.eKey)) this.closeWorldMap();
+      this.drawCursor();
+      return;
+    }
 
     const left  = this.cursors.left.isDown  || this.wasd.A.isDown;
     const right = this.cursors.right.isDown || this.wasd.D.isDown;
@@ -416,9 +476,17 @@ export class GameScene extends Phaser.Scene {
     this.updateNpcs(delta);
     this.checkInteractions();
 
+    this.saveTimer -= delta;
+    if (this.saveTimer <= 0) {
+      this.saveTimer = 10000;
+      this.saveProgress();
+    }
+
     if (Phaser.Input.Keyboard.JustDown(this.eKey)) {
       if (this.dialogueActive) {
         this.advanceDialogue();
+      } else if (this.nearMapTable) {
+        this.openWorldMap();
       } else if (this.nearestNpc) {
         this.openDialogue(this.nearestNpc.name, this.nearestNpc.dialogue);
       }
@@ -639,6 +707,7 @@ export class GameScene extends Phaser.Scene {
       if (d < wo.radius && d < closestDist) { closestDist = d; closest = wo; }
     }
     if (closest) {
+      if (closest.action) { closest.action(); return; }
       this.displayLabel(ptr.x, ptr.y, closest.label, closest.color);
       return;
     }
@@ -676,6 +745,8 @@ export class GameScene extends Phaser.Scene {
       strokeThickness: 3,
       padding: { x: 5, y: 3 },
       backgroundColor: '#000000bb',
+      wordWrap: { width: 200 },
+      align: 'center',
     }).setScrollFactor(0).setDepth(9850).setOrigin(0.5, 1).setAlpha(1);
 
     this.clickLabelTween = this.tweens.add({
@@ -690,6 +761,28 @@ export class GameScene extends Phaser.Scene {
         this.clickLabelTween = null;
       },
     });
+  }
+
+  private buildNpcSheetAnimations(): void {
+    // Sheet layout: 4 cols × 3 rows, Row0=South Row1=North Row2=East
+    // idle-south=0  walk-south=[1,2,3]
+    // idle-north=4  walk-north=[5,6,7]
+    // idle-east=8   walk-east=[9,10,11]
+    const WFR = 8;
+    for (const skin of NPC_SKINS) {
+      const key = npcSheetKey(skin);
+      const mk = (anim: string, frames: number | number[], loop = true) => {
+        const animFrames = Array.isArray(frames)
+          ? this.anims.generateFrameNumbers(key, { frames })
+          : [{ key, frame: frames as number }];
+        this.anims.create({ key: `${key}:${anim}`, frames: animFrames,
+          frameRate: Array.isArray(frames) ? WFR : 1, repeat: loop ? -1 : 0 });
+      };
+      mk('idle-south', 0);  mk('walk-south', [1, 2, 3]);
+      mk('idle-north', 4);  mk('walk-north', [5, 6, 7]);
+      mk('idle-east',  8);  mk('walk-east',  [9, 10, 11]);
+      mk('idle-west',  8);  mk('walk-west',  [9, 10, 11]);
+    }
   }
 
   private buildLandmarkTextures(): void {
@@ -788,6 +881,51 @@ export class GameScene extends Phaser.Scene {
       g.generateTexture('lm-ruins-circle', 24, 12);
       g.destroy();
     }
+    // sign: wooden post with notice board
+    {
+      const g = this.make.graphics();
+      // Post
+      g.fillStyle(0x7a4c20, 1);
+      g.fillRect(4, 8, 3, 14);
+      // Board
+      g.fillStyle(0xd4aa66, 1);
+      g.fillRect(0, 0, 11, 9);
+      g.fillStyle(0xc49955, 1);
+      g.fillRect(0, 7, 11, 2);  // bottom shadow
+      g.fillStyle(0xe8cc88, 1);
+      g.fillRect(0, 0, 11, 2);  // top highlight
+      // Text lines (implied)
+      g.fillStyle(0x5a3a10, 1);
+      g.fillRect(2, 2, 7, 1);
+      g.fillRect(2, 4, 5, 1);
+      g.fillRect(2, 6, 6, 1);
+      g.generateTexture('lm-sign', 11, 22);
+      g.destroy();
+    }
+    // moongate: door-shaped glowing blue portal
+    {
+      const DW = 28, DH = 46;   // door face
+      const GP = 9;              // glow padding — left / right / top only
+      const TW = DW + GP * 2, TH = DH + GP;
+      const g = this.make.graphics();
+      // stacked glow halos
+      g.fillStyle(0x0d55cc, 0.14); g.fillRoundedRect(0,  0,  TW,      TH,      6);
+      g.fillStyle(0x0d55cc, 0.18); g.fillRoundedRect(2,  2,  TW - 4,  TH - 2,  5);
+      g.fillStyle(0x1466cc, 0.24); g.fillRoundedRect(4,  4,  TW - 8,  TH - 4,  4);
+      g.fillStyle(0x1466cc, 0.32); g.fillRoundedRect(6,  6,  TW - 12, TH - 6,  3);
+      g.fillStyle(0x1a77dd, 0.44); g.fillRoundedRect(8,  8,  TW - 16, TH - 8,  2);
+      // solid door face
+      g.fillStyle(0x1a6ecc, 1);
+      g.fillRect(GP, GP, DW, DH);
+      // crisp bright border around the door perimeter
+      g.fillStyle(0x66aaff, 1);
+      g.fillRect(GP, GP, DW, 2);           // top
+      g.fillRect(GP, GP + DH - 2, DW, 2); // bottom
+      g.fillRect(GP, GP, 2, DH);           // left
+      g.fillRect(GP + DW - 2, GP, 2, DH); // right
+      g.generateTexture('moongate', TW, TH);
+      g.destroy();
+    }
     // trophy gem: white diamond shape (tinted per trophy)
     {
       const g = this.make.graphics();
@@ -826,6 +964,7 @@ export class GameScene extends Phaser.Scene {
         'hut':          { label: 'Dwelling',       color: 0xddbb88, h: 18 },
         'dome':         { label: 'Mystical Dome',  color: 0xbb99cc, h: 16 },
         'ruins-circle': { label: 'Fallen Stones',  color: 0x998877, h: 12 },
+        'sign':         { label: 'Signpost',       color: 0xe8cc88, h: 22 },
       };
 
       for (const lm of islandDef.landmarks) {
@@ -840,7 +979,8 @@ export class GameScene extends Phaser.Scene {
           this.worldObjects.push({
             x: wx, y: wy - info.h / 2,
             radius: Math.max(info.h / 2, TILE_SIZE),
-            label: info.label, color: info.color,
+            label: lm.hint ?? info.label,
+            color: info.color,
           });
         }
       }
@@ -851,15 +991,17 @@ export class GameScene extends Phaser.Scene {
         if (!isWalkableTile(tx, ty)) continue;
         const wx = tx * TILE_SIZE + TILE_SIZE / 2;
         const wy = ty * TILE_SIZE + TILE_SIZE / 2;
-        const sprite = this.add.sprite(wx, wy, PLAYER_KEY, 0)
+        const sheetKey = npcSheetKey(npc.skin);
+        const sprite = this.add.sprite(wx, wy, sheetKey, 0)
           .setOrigin(0.5, 0.9)
-          .setTint(npc.tint)
           .setDepth(wy)
           .setInteractive({ useHandCursor: true });
 
         const entry: NpcEntry = {
           sprite,
           name: npc.name,
+          skin: npc.skin,
+          sheetKey,
           tint: npc.tint,
           dialogue: npc.dialogue,
           ambientLines: npc.ambientLines,
@@ -889,7 +1031,7 @@ export class GameScene extends Phaser.Scene {
         this.npcSprites.push(entry);
       }
 
-      if (islandDef.trophy) {
+      if (islandDef.trophy && !this.collectedTrophies.has(islandDef.trophy.id)) {
         // Place trophy two tiles east and two south of island center
         const tx = cx + 2;
         const ty = cy + 2;
@@ -951,7 +1093,20 @@ export class GameScene extends Phaser.Scene {
   private checkInteractions(): void {
     if (this.onShip || this.dialogueActive) {
       this.interactHintText.setVisible(false);
+      this.nearMapTable = false;
       return;
+    }
+
+    if (this.mapTablePos) {
+      const distToMap = Math.hypot(this.playerX - this.mapTablePos.x, this.playerY - this.mapTablePos.y);
+      this.nearMapTable = distToMap < TILE_SIZE * 2;
+    }
+
+    this.nearMoongateIndex = this.moongatePositions.findIndex(
+      mg => Math.hypot(this.playerX - mg.x, this.playerY - mg.y) < TILE_SIZE * 1.2,
+    );
+    if (this.nearMoongateIndex >= 0 && !this.moongateTransporting) {
+      this.useMoongate(this.nearMoongateIndex);
     }
 
     // Trophy proximity: walk over to collect
@@ -971,7 +1126,9 @@ export class GameScene extends Phaser.Scene {
       if (dist < nearestDist) { nearestDist = dist; nearest = npc; }
     }
     this.nearestNpc = nearest;
-    if (nearest) {
+    if (this.nearMapTable) {
+      this.interactHintText.setText('E: World Map').setVisible(true);
+    } else if (nearest) {
       this.interactHintText.setText(`E: ${nearest.name}`).setVisible(true);
     } else {
       this.interactHintText.setVisible(false);
@@ -985,6 +1142,132 @@ export class GameScene extends Phaser.Scene {
     entry.sprite.destroy();
     this.trophyHudText.setText(`Relics: ${this.collectedTrophies.size}/5`);
     this.showNotification(`Obtained: ${entry.name}`);
+    this.saveProgress();
+    this.checkCompletion();
+  }
+
+  private checkCompletion(): void {
+    const total = ISLANDS_LORE.filter(i => i.trophy).length;
+    if (this.collectedTrophies.size < total || this.moongatesPlaced) return;
+    this.time.delayedCall(900, () => this.showCompletionOverlay());
+  }
+
+  private showCompletionOverlay(): void {
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+    const mc = document.createElement('canvas');
+    mc.width  = W;
+    mc.height = H;
+    mc.style.cssText = [
+      'position:fixed', 'top:0', 'left:0',
+      'width:100%', 'height:100%',
+      'cursor:default', 'z-index:9999',
+    ].join(';');
+    const ctx = mc.getContext('2d')!;
+
+    ctx.fillStyle = '#000011';
+    ctx.fillRect(0, 0, W, H);
+
+    const glow = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, W * 0.55);
+    glow.addColorStop(0, 'rgba(20,60,200,0.45)');
+    glow.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, W, H);
+
+    ctx.textAlign = 'center';
+
+    ctx.fillStyle = '#88bbff';
+    ctx.font = 'bold 32px monospace';
+    ctx.fillText('THE BLACK GATE IS SEALED', W / 2, H / 2 - 64);
+
+    ctx.fillStyle = '#f5c842';
+    ctx.font = 'bold 22px monospace';
+    ctx.fillText('All Five Relics United', W / 2, H / 2 - 22);
+
+    ctx.strokeStyle = '#3a2008';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(W / 2 - 180, H / 2 - 6); ctx.lineTo(W / 2 + 180, H / 2 - 6); ctx.stroke();
+
+    ctx.fillStyle = '#c8a060';
+    ctx.font = '16px monospace';
+    ctx.fillText('The Moongate network awakens across the realm.', W / 2, H / 2 + 22);
+    ctx.fillText('Eight gateways shimmer back into existence.', W / 2, H / 2 + 46);
+
+    ctx.fillStyle = '#5a4020';
+    ctx.font = '14px monospace';
+    ctx.fillText('Click to continue', W / 2, H / 2 + 110);
+
+    mc.addEventListener('click', () => {
+      mc.remove();
+      this.placeMonogates();
+    });
+    document.body.appendChild(mc);
+  }
+
+  private placeMonogates(): void {
+    this.moongatesPlaced = true;
+    for (const [nx, ny] of SHRINE_POSITIONS) {
+      const wx = Math.floor(nx * WORLD_WIDTH)  * TILE_SIZE + TILE_SIZE / 2;
+      const wy = Math.floor(ny * WORLD_HEIGHT) * TILE_SIZE + TILE_SIZE / 2;
+      const sprite = this.add.image(wx, wy, 'moongate')
+        .setOrigin(0.5, 1)
+        .setDepth(wy + 30);
+      this.tweens.add({
+        targets: sprite,
+        alpha: 0.75,
+        scaleX: 1.05,
+        scaleY: 1.05,
+        yoyo: true,
+        repeat: -1,
+        duration: 1600,
+        ease: 'Sine.easeInOut',
+      });
+      this.moongatePositions.push({ x: wx, y: wy });
+      this.worldObjects.push({
+        x: wx, y: wy - 18,
+        radius: TILE_SIZE * 2,
+        label: 'Moongate',
+        color: 0x4488ff,
+      });
+    }
+  }
+
+  private useMoongate(fromIndex: number): void {
+    const others = this.moongatePositions
+      .map((pos, i) => ({ pos, i }))
+      .filter(({ i }) => i !== fromIndex);
+    if (others.length === 0) return;
+
+    const dest = others[Math.floor(Math.random() * others.length)];
+
+    this.moongateTransporting = true;
+
+    const flash = this.add.rectangle(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT, 0x88bbff, 0)
+      .setScrollFactor(0).setOrigin(0, 0).setDepth(9998);
+    this.tweens.add({
+      targets: flash,
+      alpha: 1,
+      duration: 180,
+      ease: 'Quad.easeIn',
+      onComplete: () => {
+        this.playerX = dest.pos.x;
+        this.playerY = dest.pos.y + TILE_SIZE * 1.8;
+        if (this.playerSprite) {
+          this.playerSprite.setPosition(this.playerX, this.playerY);
+        }
+        this.cameras.main.centerOn(this.playerX, this.playerY);
+        this.tweens.add({
+          targets: flash,
+          alpha: 0,
+          duration: 280,
+          ease: 'Quad.easeOut',
+          onComplete: () => {
+            flash.destroy();
+            this.moongateTransporting = false;
+          },
+        });
+      },
+    });
   }
 
   private showNotification(text: string): void {
@@ -1016,7 +1299,7 @@ export class GameScene extends Phaser.Scene {
 
       // Always show idle animation while idling
       if (npc.wanderState === 'idle') {
-        const idleAnim = `idle-${npc.facing}`;
+        const idleAnim = `${npc.sheetKey}:idle-${npc.facing}`;
         if (npc.sprite.anims.currentAnim?.key !== idleAnim) npc.sprite.play(idleAnim);
         npc.idleTimer -= delta;
         if (npc.idleTimer > 0) continue;
@@ -1072,7 +1355,7 @@ export class GameScene extends Phaser.Scene {
       npc.sprite.setFlipX(npc.facing === 'west');
       npc.sprite.setDepth(npc.sprite.y);
 
-      const walkAnim = `walk-${npc.facing}`;
+      const walkAnim = `${npc.sheetKey}:walk-${npc.facing}`;
       if (npc.sprite.anims.currentAnim?.key !== walkAnim) npc.sprite.play(walkAnim);
     }
   }
@@ -1144,9 +1427,10 @@ export class GameScene extends Phaser.Scene {
       pfx.lineBetween(cx, cy, cx, cy + sy * 6);
     });
 
-    // NPC sprite in portrait (2.8× scale, anchored to portrait bottom)
-    add(this.add.sprite(PX + PW / 2, PY + PH - 4, PLAYER_KEY, 0)
-      .setTint(npc.tint).setScale(2.8).setOrigin(0.5, 0.9)
+    // U7 portrait image, scaled to fill the panel
+    add(this.add.image(PX + PW / 2, PY + PH / 2, `portrait-${npc.skin}`)
+      .setDisplaySize(PW - 4, PH - 4)
+      .setOrigin(0.5, 0.5)
       .setScrollFactor(0).setDepth(D + 3));
 
     // NPC name across portrait bottom
@@ -1252,11 +1536,325 @@ export class GameScene extends Phaser.Scene {
     }
   }
 
+  private buildWorldMapTexture(): void {
+    const canvas = document.createElement('canvas');
+    canvas.width  = WORLD_WIDTH;
+    canvas.height = WORLD_HEIGHT;
+    const ctx = canvas.getContext('2d')!;
+    const img = ctx.createImageData(WORLD_WIDTH, WORLD_HEIGHT);
+    for (let i = 0; i < WORLD_WIDTH * WORLD_HEIGHT; i++) {
+      const c = TILE_COLORS[this.world[i]];
+      img.data[i * 4]     = (c >> 16) & 0xff;
+      img.data[i * 4 + 1] = (c >>  8) & 0xff;
+      img.data[i * 4 + 2] =  c        & 0xff;
+      img.data[i * 4 + 3] = 255;
+    }
+    ctx.putImageData(img, 0, 0);
+    this.worldMapCanvas = canvas;
+    this.textures.addCanvas('world-map', canvas);
+  }
+
+  private placeMapTable(): void {
+    // Map room interior: doubled cols 24–28, rows 6–8; table at col 26, row 7
+    const ox = Math.floor(0.50 * WORLD_WIDTH)  - 18;
+    const oy = Math.floor(0.50 * WORLD_HEIGHT) - 10;
+    const tx = ox + 26;
+    const ty = oy + 7;
+    const wx = tx * TILE_SIZE + TILE_SIZE / 2;
+    const wy = (ty + 1) * TILE_SIZE;
+
+    // Map table texture: wooden table with parchment spread on top
+    const g = this.make.graphics();
+    g.fillStyle(0x5a3510, 1);
+    g.fillRect(0, 8, 28, 14);       // table legs/body shadow
+    g.fillStyle(0x8a5520, 1);
+    g.fillRect(0, 4, 28, 10);       // table surface
+    g.fillStyle(0xa06828, 1);
+    g.fillRect(0, 4, 28, 3);        // top highlight
+    g.fillStyle(0xd4b870, 1);
+    g.fillRect(3, 6, 22, 6);        // parchment
+    g.fillStyle(0xc0a050, 1);
+    g.fillRect(3, 6, 22, 1);        // parchment top edge
+    // Rough map lines on parchment
+    g.fillStyle(0x7a5020, 1);
+    g.fillRect(5,  8, 4, 2);
+    g.fillRect(11, 7, 6, 3);
+    g.fillRect(17, 9, 4, 1);
+    g.fillRect(8, 10, 3, 1);
+    g.generateTexture('map-table', 28, 22);
+    g.destroy();
+
+    this.add.image(wx, wy, 'map-table').setOrigin(0.5, 1.0).setDepth(wy);
+    this.mapTablePos = { x: wx, y: wy - 11 };
+    this.worldObjects.push({ x: wx, y: wy - 11, radius: 20, label: 'World Map', color: 0xd4b870, action: () => this.openWorldMap() });
+  }
+
+  private openWorldMap(): void {
+    this.mapOpen = true;
+    if (!this.worldMapCanvas) return;
+
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+
+    const SIDEBAR = 220;
+    const TITLE_H = 56;
+    const FOOT_H  = 40;
+    const PAD     = 28;
+
+    const MAP_SIZE = Math.max(200, Math.min(
+      W - SIDEBAR - PAD * 3,
+      H - TITLE_H - FOOT_H - PAD * 2,
+    ));
+
+    // Full-screen canvas — no wrapper div needed
+    const mc = document.createElement('canvas');
+    mc.width  = W;
+    mc.height = H;
+    mc.style.cssText = [
+      'position:fixed', 'top:0', 'left:0',
+      'width:100%', 'height:100%',
+      'cursor:default', 'z-index:9999',
+      'image-rendering:pixelated',
+    ].join(';');
+
+    const ctx = mc.getContext('2d')!;
+    ctx.imageSmoothingEnabled = false;
+
+    // ── Full-screen background ────────────────────────────────────────────────
+    ctx.fillStyle = '#080300';
+    ctx.fillRect(0, 0, W, H);
+
+    // Subtle vignette gradient
+    const vg = ctx.createRadialGradient(W / 2, H / 2, MAP_SIZE * 0.3, W / 2, H / 2, W * 0.75);
+    vg.addColorStop(0, 'rgba(0,0,0,0)');
+    vg.addColorStop(1, 'rgba(0,0,0,0.6)');
+    ctx.fillStyle = vg;
+    ctx.fillRect(0, 0, W, H);
+
+    // ── Title bar ────────────────────────────────────────────────────────────
+    ctx.fillStyle = 'rgba(20,10,0,0.85)';
+    ctx.fillRect(0, 0, W, TITLE_H);
+    ctx.fillStyle = '#f5c842';
+    ctx.font = 'bold 28px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('MAP OF BRITANNIA', W / 2, TITLE_H - 14);
+    ctx.strokeStyle = '#3a2008';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(0, TITLE_H); ctx.lineTo(W, TITLE_H);
+    ctx.stroke();
+
+    // ── World map image ───────────────────────────────────────────────────────
+    // Center map vertically between title and footer; left-align with padding
+    const MX = PAD;
+    const MY = TITLE_H + Math.floor((H - TITLE_H - FOOT_H - MAP_SIZE) / 2);
+
+    ctx.drawImage(this.worldMapCanvas, MX, MY, MAP_SIZE, MAP_SIZE);
+
+    // Map border
+    ctx.strokeStyle = '#7a4f1a';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(MX - 1, MY - 1, MAP_SIZE + 2, MAP_SIZE + 2);
+    ctx.strokeStyle = '#3a2008';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(MX - 3, MY - 3, MAP_SIZE + 6, MAP_SIZE + 6);
+
+    // ── Island markers & labels ───────────────────────────────────────────────
+    const DOT_R   = Math.max(5, Math.round(MAP_SIZE / 70));
+    const FONT_SZ = Math.max(12, Math.round(MAP_SIZE / 34));
+
+    for (const island of ISLANDS_LORE) {
+      const ix = MX + island.nx * MAP_SIZE;
+      const iy = MY + island.ny * MAP_SIZE;
+      const collected = island.trophy ? this.collectedTrophies.has(island.trophy.id) : false;
+      const hasRelic  = !!island.trophy;
+      const tint = island.trophy?.tint ?? 0xaaaaaa;
+      const hex  = '#' + (collected ? 0x666666 : tint).toString(16).padStart(6, '0');
+
+      // Drop shadow for dots
+      ctx.beginPath();
+      ctx.arc(ix + 1, iy + 1, hasRelic ? DOT_R : DOT_R - 1, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(0,0,0,0.5)';
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.arc(ix, iy, hasRelic ? DOT_R : DOT_R - 1, 0, Math.PI * 2);
+      ctx.fillStyle = hex;
+      ctx.fill();
+      if (hasRelic && !collected) {
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
+
+      const rightSide = island.nx >= 0.55;
+      const lx = rightSide ? ix - DOT_R - 4 : ix + DOT_R + 4;
+      ctx.font = `${hasRelic ? 'bold ' : ''}${FONT_SZ}px monospace`;
+      ctx.textAlign = rightSide ? 'right' : 'left';
+
+      // Text shadow
+      ctx.fillStyle = 'rgba(0,0,0,0.7)';
+      ctx.fillText(island.name, lx + 1, iy + FONT_SZ * 0.35 + 1);
+      ctx.fillStyle = hasRelic ? (collected ? '#888' : '#f5c842') : '#778899';
+      ctx.fillText(island.name, lx, iy + FONT_SZ * 0.35);
+    }
+
+    // ── Player position ───────────────────────────────────────────────────────
+    const ppx = MX + (this.playerX / (WORLD_WIDTH  * TILE_SIZE)) * MAP_SIZE;
+    const ppy = MY + (this.playerY / (WORLD_HEIGHT * TILE_SIZE)) * MAP_SIZE;
+    ctx.beginPath();
+    ctx.arc(ppx, ppy, DOT_R + 1, 0, Math.PI * 2);
+    ctx.fillStyle = '#ff3333';
+    ctx.fill();
+    ctx.strokeStyle = '#ffffff';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+
+    // ── Sidebar ───────────────────────────────────────────────────────────────
+    const SX = MX + MAP_SIZE + PAD * 2;
+    const SY = MY;
+    const SW = W - SX - PAD;
+
+    // Sidebar panel bg
+    ctx.fillStyle = 'rgba(10,5,0,0.75)';
+    ctx.fillRect(SX - PAD / 2, SY - 4, SW + PAD / 2, MAP_SIZE + 8);
+    ctx.strokeStyle = '#3a2008';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(SX - PAD / 2, SY - 4, SW + PAD / 2, MAP_SIZE + 8);
+
+    // Legend heading
+    ctx.fillStyle = '#f5c842';
+    ctx.font = 'bold 16px monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('LEGEND', SX, SY + 20);
+    ctx.strokeStyle = '#3a2008';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(SX, SY + 26); ctx.lineTo(SX + SW, SY + 26);
+    ctx.stroke();
+
+    const legend: [string, string, boolean][] = [
+      ['#ff3333', 'You are here',  false],
+      ['#f5c842', 'Relic island',  true],
+      ['#888888', 'Collected',     false],
+      ['#778899', 'Other island',  false],
+    ];
+    legend.forEach(([col, label, outline], i) => {
+      const ly = SY + 50 + i * 32;
+      ctx.beginPath();
+      ctx.arc(SX + 8, ly, 6, 0, Math.PI * 2);
+      ctx.fillStyle = col;
+      ctx.fill();
+      if (outline) {
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+      ctx.fillStyle = '#c8a060';
+      ctx.font = '14px monospace';
+      ctx.textAlign = 'left';
+      ctx.fillText(label, SX + 22, ly + 5);
+    });
+
+    // Relic progress
+    const relicTotal   = ISLANDS_LORE.filter(i => i.trophy).length;
+    const relicCollect = ISLANDS_LORE.filter(i => i.trophy && this.collectedTrophies.has(i.trophy.id)).length;
+    const progressY = SY + 50 + legend.length * 32 + 24;
+    ctx.strokeStyle = '#3a2008';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(SX, progressY - 10); ctx.lineTo(SX + SW, progressY - 10);
+    ctx.stroke();
+    ctx.fillStyle = '#f5c842';
+    ctx.font = 'bold 14px monospace';
+    ctx.textAlign = 'left';
+    ctx.fillText('RELICS', SX, progressY + 6);
+    ctx.fillStyle = '#c8a060';
+    ctx.font = '14px monospace';
+    ctx.fillText(`${relicCollect} / ${relicTotal} found`, SX, progressY + 24);
+
+    // Compass rose
+    const CX = SX + Math.floor(SW / 2);
+    const CY = SY + MAP_SIZE - 60;
+    const CR = 22;
+    ctx.strokeStyle = '#5a4020';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(CX, CY - CR); ctx.lineTo(CX, CY + CR); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(CX - CR, CY); ctx.lineTo(CX + CR, CY); ctx.stroke();
+    // North arrow filled
+    ctx.fillStyle = '#c8a060';
+    ctx.beginPath();
+    ctx.moveTo(CX, CY - CR); ctx.lineTo(CX - 5, CY); ctx.lineTo(CX + 5, CY); ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = '#f5c842';
+    ctx.font = 'bold 16px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('N', CX, CY - CR - 6);
+    ctx.fillStyle = '#c8a060';
+    ctx.font = '14px monospace';
+    ctx.fillText('S', CX, CY + CR + 16);
+    ctx.textAlign = 'right';
+    ctx.fillText('W', CX - CR - 6, CY + 5);
+    ctx.textAlign = 'left';
+    ctx.fillText('E', CX + CR + 6, CY + 5);
+
+    // ── Footer bar ────────────────────────────────────────────────────────────
+    ctx.fillStyle = 'rgba(20,10,0,0.85)';
+    ctx.fillRect(0, H - FOOT_H, W, FOOT_H);
+    ctx.strokeStyle = '#3a2008';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(0, H - FOOT_H); ctx.lineTo(W, H - FOOT_H);
+    ctx.stroke();
+    ctx.fillStyle = '#5a4020';
+    ctx.font = '14px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('Click anywhere  ·  [E] Close', W / 2, H - FOOT_H + 24);
+
+    // ── Close on click ────────────────────────────────────────────────────────
+    mc.addEventListener('click', () => this.closeWorldMap());
+
+    document.body.appendChild(mc);
+    this.mapOverlayElement = mc;
+  }
+
+  private closeWorldMap(): void {
+    this.mapOpen = false;
+    this.mapOverlayElement?.remove();
+    this.mapOverlayElement = null;
+    for (const o of this.mapObjects) o.destroy();
+    this.mapObjects = [];
+  }
+
   private closeDialogue(): void {
     this.dialogueActive = false;
     this.dialogueBg.setVisible(false);
     this.dialogueNameText.setVisible(false);
     this.dialogueBodyText.setVisible(false);
     this.dialogueHintText.setVisible(false);
+  }
+
+  private saveProgress(): void {
+    localStorage.setItem('britannia-save', JSON.stringify({
+      playerX: this.playerX,
+      playerY: this.playerY,
+      shipX: this.shipX,
+      shipY: this.shipY,
+      onShip: this.onShip,
+      facing: this.facing,
+      trophies: [...this.collectedTrophies],
+    }));
+  }
+
+  private readSave(): { playerX: number; playerY: number; shipX: number; shipY: number; onShip: boolean; facing: string; trophies: string[] } | null {
+    try {
+      const raw = localStorage.getItem('britannia-save');
+      if (!raw) return null;
+      const d = JSON.parse(raw);
+      if (typeof d.playerX !== 'number' || typeof d.playerY !== 'number') return null;
+      return d;
+    } catch {
+      return null;
+    }
   }
 }

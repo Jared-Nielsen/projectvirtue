@@ -25,7 +25,7 @@ const CASTLE_CENTERS: Array<[number, number]> = [
 ];
 
 // Shrine positions spread across all islands
-const SHRINE_POSITIONS: ReadonlyArray<readonly [number, number]> = [
+export const SHRINE_POSITIONS: ReadonlyArray<readonly [number, number]> = [
   [0.50, 0.44],  // Spirituality — near main castle
   [0.54, 0.56],  // Honesty — main island east
   [0.12, 0.12],  // Compassion — NW island
@@ -64,8 +64,8 @@ export function generateWorld(seed: number): Uint8Array {
 
   placeRuins(tiles);
   for (const [ncx, ncy] of CASTLE_CENTERS) {
-    const ox = Math.floor(ncx * WORLD_WIDTH)  - 6;
-    const oy = Math.floor(ncy * WORLD_HEIGHT) - 4;
+    const ox = Math.floor(ncx * WORLD_WIDTH)  - 18;
+    const oy = Math.floor(ncy * WORLD_HEIGHT) - 10;
     flattenForCastle(tiles, ox, oy);
     placeCastle(tiles, ox, oy);
   }
@@ -93,8 +93,8 @@ function determineTile(e: number, m: number, d: number): TileType {
 
 // Ensure a clear grass footprint so the castle doesn't float in ocean
 function flattenForCastle(tiles: Uint8Array, ox: number, oy: number): void {
-  for (let dy = -2; dy < 13; dy++) {
-    for (let dx = -2; dx < 17; dx++) {
+  for (let dy = -2; dy < 22; dy++) {
+    for (let dx = -2; dx < 38; dx++) {
       const tx = ox + dx, ty = oy + dy;
       if (tx < 0 || ty < 0 || tx >= WORLD_WIDTH || ty >= WORLD_HEIGHT) continue;
       const t = tiles[ty * WORLD_WIDTH + tx];
@@ -107,17 +107,28 @@ function placeCastle(tiles: Uint8Array, ox: number, oy: number): void {
   const W = TileType.CastleWall;
   const F = TileType.Road;
 
-  const PATTERN: TileType[][] = [
-    [W,W,W,W,W,W,W,W,W,W,W,W,W],
-    [W,F,F,F,F,F,F,F,F,F,F,F,W],
-    [W,F,W,W,W,F,F,F,F,F,F,F,W],
-    [W,F,W,F,F,F,F,F,F,F,F,F,W],
-    [W,F,W,W,W,F,F,F,F,F,F,F,W],
-    [W,F,F,F,F,F,F,F,F,F,F,F,W],
-    [W,F,F,F,F,F,F,F,F,F,F,F,W],
-    [W,F,F,F,F,F,F,F,F,F,F,F,W],
-    [W,W,W,W,W,F,F,F,W,W,W,W,W],
+  // Base 18×10 layout; each cell is scaled 2×2 to produce the final 36×20 footprint.
+  // Map room: base cols 11–15, rows 2–5  →  doubled cols 22–30, rows 4–10
+  // Map room interior: base cols 12–14, rows 3–4  →  doubled cols 24–28, rows 6–8
+  const BASE: TileType[][] = [
+    [W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W,W],
+    [W,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,W],
+    [W,F,W,W,W,F,F,F,F,F,F,W,W,W,W,W,F,W],
+    [W,F,W,F,F,F,F,F,F,F,F,W,F,F,F,W,F,W],
+    [W,F,W,W,W,F,F,F,F,F,F,W,F,F,F,W,F,W],
+    [W,F,F,F,F,F,F,F,F,F,F,W,W,F,W,W,F,W],
+    [W,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,W],
+    [W,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,W],
+    [W,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,F,W],
+    [W,W,W,W,W,F,F,F,W,W,W,W,W,W,W,W,W,W],
   ];
+
+  const PATTERN: TileType[][] = [];
+  for (const row of BASE) {
+    const r: TileType[] = [];
+    for (const t of row) r.push(t, t);
+    PATTERN.push([...r], [...r]);
+  }
 
   for (let dy = 0; dy < PATTERN.length; dy++) {
     for (let dx = 0; dx < PATTERN[dy].length; dx++) {

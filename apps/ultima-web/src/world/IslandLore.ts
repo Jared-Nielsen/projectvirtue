@@ -1,13 +1,16 @@
-export type LandmarkType = 'monolith' | 'altar' | 'tower' | 'hut' | 'dome' | 'ruins-circle';
+export type LandmarkType = 'monolith' | 'altar' | 'tower' | 'hut' | 'dome' | 'ruins-circle' | 'sign';
 
 export interface NpcTopic {
   keyword: string;
   response: string;
 }
 
+export type NpcSkin = 'noble' | 'guard' | 'mystic' | 'healer' | 'scholar' | 'peasant' | 'gypsy';
+
 export interface Npc {
   id: string;
   name: string;
+  skin: NpcSkin;
   tint: number;
   dx: number;
   dy: number;
@@ -20,6 +23,7 @@ export interface Landmark {
   type: LandmarkType;
   dx: number;
   dy: number;
+  hint?: string;
 }
 
 export interface Trophy {
@@ -48,6 +52,7 @@ export const ISLANDS_LORE: IslandDef[] = [
       {
         id: 'seneschal',
         name: 'Seneschal Aldric',
+        skin: 'noble',
         tint: 0xd4af37,
         dx: 4, dy: 3,
         dialogue: [
@@ -61,11 +66,13 @@ export const ISLANDS_LORE: IslandDef[] = [
           { keyword: 'trophies',    response: 'Five ancient relics hidden across the archipelago. Find them all and the Moongate network will wake once more. Each major island holds one.' },
           { keyword: 'fellowship',  response: 'The Fellowship spreads through the islands like rot through timber. Unity they claim — but power is what they seek. Do not trust their smiling faces.' },
           { keyword: 'lord british',response: 'He has retreated to the inner sanctum. The weight of the realm — and something darker — bears heavily upon him. I manage in his absence.' },
+          { keyword: 'directions',  response: 'The Ferryman tends a crossing to the northwest. Seek him first — he knows these waters better than anyone alive.' },
         ],
       },
       {
         id: 'guard',
         name: 'Guard Captain Mira',
+        skin: 'guard',
         tint: 0x8888cc,
         dx: -4, dy: 2,
         dialogue: [
@@ -84,6 +91,7 @@ export const ISLANDS_LORE: IslandDef[] = [
     landmarks: [
       { type: 'altar', dx: 0, dy: -6 }, { type: 'altar', dx: 7, dy: 4 },
       { type: 'hut',   dx: -8, dy: 5 }, { type: 'hut',   dx: 8, dy: -3 },
+      { type: 'sign',  dx: 6,  dy: -2, hint: "The Ferryman's crossing lies to the northwest" },
     ],
     trophy: { id: 'moonstone', name: 'Moonstone of Transcendence', description: 'A deep blue orb humming with ethereal light. The Moongates cannot wake without it.', tint: 0x4488ff },
   },
@@ -95,6 +103,7 @@ export const ISLANDS_LORE: IslandDef[] = [
       {
         id: 'ferryman',
         name: 'The Ferryman',
+        skin: 'peasant',
         tint: 0x446688,
         dx: 0, dy: -6,
         dialogue: [
@@ -108,11 +117,13 @@ export const ISLANDS_LORE: IslandDef[] = [
           { keyword: 'medallion',  response: 'A wounded knight pressed it into my hand. He said it came from Knight\'s End bridge. He did not make the return crossing.' },
           { keyword: 'compassion', response: 'It means carrying others\' burdens even when the water is rough. Especially then. The shrine knows the difference.' },
           { keyword: 'channel',    response: 'The Channel between the islands runs deeper than any chart shows. Strange things drift in it on moonless nights. I do not look at them.' },
+          { keyword: 'route',      response: 'The knights watch from their peaks to the northeast. I have carried many to that shore. Cold crossing, that one.' },
         ],
       },
       {
         id: 'healer',
         name: 'Healer Thessaly',
+        skin: 'healer',
         tint: 0x88cc88,
         dx: 3, dy: 3,
         dialogue: [
@@ -131,6 +142,7 @@ export const ISLANDS_LORE: IslandDef[] = [
     landmarks: [
       { type: 'altar',        dx: 0,  dy:  0 }, { type: 'hut',  dx:  4, dy: 4 },
       { type: 'hut',          dx: -5, dy:  5 }, { type: 'ruins-circle', dx: -3, dy: -5 },
+      { type: 'sign', dx: 2, dy: 2, hint: 'The knights\' peaks watch from the northeast' },
     ],
     trophy: { id: 'ferryman-medallion', name: "Medallion of the Ferryman", description: 'A tarnished silver disc etched with a boat crossing still waters. Those who carry it may call the Ferryman in times of need.', tint: 0x88aacc },
   },
@@ -142,6 +154,7 @@ export const ISLANDS_LORE: IslandDef[] = [
       {
         id: 'knight',
         name: 'Knight-Commander Haverstock',
+        skin: 'guard',
         tint: 0xaaaaee,
         dx: 2, dy: -3,
         dialogue: [
@@ -155,11 +168,13 @@ export const ISLANDS_LORE: IslandDef[] = [
           { keyword: 'bridge',    response: 'Knight\'s End. The bridge stood a hundred years before they tore it down around us. We kept one slab. It is all that matters.' },
           { keyword: 'fellowship',response: 'We drove them off the island once. I expect they will return. The Fellowship is patient in a way that unnerves me.' },
           { keyword: 'valor',     response: 'Valor without honor is recklessness. I have seen both. The difference between them is whether your people survive.' },
+          { keyword: 'relics',    response: 'Sacrificia\'s crater burns to the south. You can see the glow on clear nights. Whatever fell there, it did not come from this world.' },
         ],
       },
       {
         id: 'squire',
         name: 'Squire Tobias',
+        skin: 'peasant',
         tint: 0xffcc88,
         dx: -3, dy: 4,
         dialogue: [
@@ -178,6 +193,7 @@ export const ISLANDS_LORE: IslandDef[] = [
     landmarks: [
       { type: 'tower',   dx: -3, dy: -4 }, { type: 'tower',   dx: 4, dy: -4 },
       { type: 'altar',   dx:  0, dy:  3 }, { type: 'monolith',dx: -6, dy:  1 },
+      { type: 'sign', dx: -5, dy: 2, hint: 'Crater-fire of Sacrificia burns to the south' },
     ],
     trophy: { id: 'bridge-fragment', name: "Knight's Bridge Fragment", description: "A heavy slab of enchanted stone from the fallen bridge at Knight's End. Knights speak of it only in whispers.", tint: 0xaaaaee },
   },
@@ -189,6 +205,7 @@ export const ISLANDS_LORE: IslandDef[] = [
       {
         id: 'archivist',
         name: 'Archivist Vellum',
+        skin: 'scholar',
         tint: 0xddbb88,
         dx: 3, dy: 2,
         dialogue: [
@@ -202,11 +219,13 @@ export const ISLANDS_LORE: IslandDef[] = [
           { keyword: 'theodorian', response: 'A brilliant man who believed justice was a solvable equation. He solved it wrong and the island fell silent. I am what\'s left.' },
           { keyword: 'device',     response: 'It hums in the sealed vault. Louder each year. The archives say it was meant to render perfect judgment. It has not stopped judging.' },
           { keyword: 'justice',    response: 'Justice requires judgment, and judgment requires mercy. Theodorian built his equation without the mercy variable. That was the flaw.' },
+          { keyword: 'relics',     response: 'The crater-isle lies to the east. Sacrificia, the archives call it. The meteor left something behind. I would look there next.' },
         ],
       },
       {
         id: 'spirit-judge',
         name: 'Spirit of the Judge',
+        skin: 'mystic',
         tint: 0x88ff88,
         dx: -4, dy: -3,
         dialogue: [
@@ -225,6 +244,7 @@ export const ISLANDS_LORE: IslandDef[] = [
     landmarks: [
       { type: 'dome',         dx:  0, dy:  0 }, { type: 'ruins-circle', dx:  5, dy: -4 },
       { type: 'monolith',     dx: -5, dy:  3 }, { type: 'altar',        dx:  2, dy:  5 },
+      { type: 'sign', dx: 2, dy: -5, hint: 'The crater-isle of Sacrificia glows to the east' },
     ],
     trophy: { id: 'alchemist-scale', name: "Theodorian's Scale", description: 'A brass scale of impossible precision. Each pan is etched with runes of truth and consequence. It is warm to the touch.', tint: 0xddaa44 },
   },
@@ -236,6 +256,7 @@ export const ISLANDS_LORE: IslandDef[] = [
       {
         id: 'crater-keeper',
         name: 'Crater Keeper Soran',
+        skin: 'peasant',
         tint: 0xff6644,
         dx: 1, dy: -4,
         dialogue: [
@@ -249,11 +270,13 @@ export const ISLANDS_LORE: IslandDef[] = [
           { keyword: 'caddelite', response: 'The meteor left ore unlike anything else in these islands. It stays warm. It does not rust. It hums faintly near magic — try it.' },
           { keyword: 'crater',    response: 'Something arrived inside the meteor. Not ore — something else. It watches from the crater center at night. I\'ve grown accustomed to it.' },
           { keyword: 'sacrifice', response: 'The shrine does not want prayer. It wants something real — something you genuinely value. I paid once. I won\'t say what. I have no regrets.' },
+          { keyword: 'beacons',   response: 'The sealed vault lies to the west. Justiciar Isle. I have watched their lights for forty years. They went quiet about ten years ago.' },
         ],
       },
       {
         id: 'pilgrim',
         name: 'Pilgrim Drest',
+        skin: 'gypsy',
         tint: 0xcc8866,
         dx: 4, dy: 4,
         dialogue: [
@@ -272,6 +295,7 @@ export const ISLANDS_LORE: IslandDef[] = [
     landmarks: [
       { type: 'ruins-circle', dx:  0, dy:  0 }, { type: 'monolith', dx:  3, dy: -5 },
       { type: 'monolith',     dx: -3, dy: -4 }, { type: 'altar',    dx:  0, dy: -6 },
+      { type: 'sign', dx: -3, dy: 2, hint: 'The sealed vault of Justiciar Isle lies to the west' },
     ],
     trophy: { id: 'caddelite-shard', name: 'Shard of Caddelite', description: 'A jagged fragment of the celestial meteor. It pulses with warmth even in the coldest night and hums near magic.', tint: 0xff8833 },
   },
@@ -283,6 +307,7 @@ export const ISLANDS_LORE: IslandDef[] = [
       {
         id: 'lightkeeper',
         name: 'Lightkeeper Oswin',
+        skin: 'peasant',
         tint: 0xeeeeaa,
         dx: 0, dy: 1,
         dialogue: [
@@ -310,6 +335,7 @@ export const ISLANDS_LORE: IslandDef[] = [
       {
         id: 'fisherman',
         name: 'Old Margot',
+        skin: 'peasant',
         tint: 0x8899aa,
         dx: 0, dy: 0,
         dialogue: [
@@ -338,6 +364,7 @@ export const ISLANDS_LORE: IslandDef[] = [
       {
         id: 'stranger',
         name: 'The Stranger',
+        skin: 'mystic',
         tint: 0x334455,
         dx: 2, dy: 1,
         dialogue: [
@@ -367,6 +394,7 @@ export const ISLANDS_LORE: IslandDef[] = [
       {
         id: 'gypsy-elder',
         name: 'Fortune-Reader Ishtara',
+        skin: 'gypsy',
         tint: 0xdd88ff,
         dx: 1, dy: 2,
         dialogue: [
@@ -385,6 +413,7 @@ export const ISLANDS_LORE: IslandDef[] = [
       {
         id: 'gypsy-dancer',
         name: 'Dancer Zephira',
+        skin: 'gypsy',
         tint: 0xff99cc,
         dx: -4, dy: 3,
         dialogue: [

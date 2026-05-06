@@ -222,10 +222,15 @@ export function buildNpcSprites(scene: Phaser.Scene): void {
     // Register animations keyed to this skin texture
     const WFR = 8;
     const mk = (anim: string, frames: number | number[], loop = true) => {
-      const cfg = Array.isArray(frames)
-        ? { key, frames: scene.anims.generateFrameNumbers(key, { frames }) }
-        : { key, frames: [{ key, frame: frames as number }] };
-      scene.anims.create({ key: `${key}:${anim}`, ...cfg, frameRate: Array.isArray(frames) ? WFR : 1, repeat: loop ? -1 : 0 });
+      const animFrames = Array.isArray(frames)
+        ? scene.anims.generateFrameNumbers(key, { frames })
+        : [{ key, frame: frames as number }];
+      scene.anims.create({
+        key: `${key}:${anim}`,
+        frames: animFrames,
+        frameRate: Array.isArray(frames) ? WFR : 1,
+        repeat: loop ? -1 : 0,
+      });
     };
     mk('idle-south', 0); mk('walk-south', [1,2,3]);
     mk('idle-north', 4); mk('walk-north', [5,6,7]);
