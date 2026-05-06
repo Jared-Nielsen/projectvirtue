@@ -18,7 +18,8 @@
       "**/*.tsbuildinfo",
       "_conceptart",
       "_docs",
-      "_todo"
+      "_todo",
+      "apps/ultima-web"
     ]
   },
   "organizeImports": {
