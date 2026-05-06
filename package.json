@@ -25,8 +25,11 @@
   "pnpm": {
     "onlyBuiltDependencies": ["@biomejs/biome", "esbuild"],
     "overrides": {
-      "@storybook/builder-vite": "8.4.7",
-      "@storybook/types": "8.4.7"
+      "@storybook/builder-vite": "8.6.17",
+      "@storybook/types": "8.6.17",
+      "vite": "^6.4.2",
+      "esbuild": "^0.25.0",
+      "yaml": "^2.8.3"
     }
   }
 }
