@@ -1,0 +1,14 @@
+## Todo Batch 3
+1. map editor canvas plus palette should have the topMenuProjectVirtue in the header (but not very tall to preserve space for the editor)
+2. map editor canvas plus palette should fill the entire screen width and height
+3. map editor canvas should have icons to enter "drag" mode and "paint" mode and "delete" mode so laptops with touchpads are compatible.
+4. map editor items should be clickable and should be deletable.  Clicking on any object should open a modal that lets that tile turn into a container (with an inventory panel), and should be editable
+5. floors should be a different type so that items can be painted on top of them instead of replacing them.
+6. the map palette should be searchable and scrollable to all library items can be screen
+7. the map palette should allow other tilesets to be selectable like farm, dungeon, library
+8. in the map editor, when I mouse over a paintable cell, highlight that cell so I know which cell I'm about to paint on.
+9. floor tiles aren't like carpets, but carpets always lay on top of floor tiles but can also have items or furniture painted on top of them.  Maybe we enable a tile layer concept so we can classify the tileset icoms
+10. tiles should be able to take damage and be destroyed. 
+11. tiles should be able to contain a music track which will play at a default volume but then distance will mute it progressively.
+12. there should be a toggle that highlights any tile that has music
+13. tiles should be able to contain a light source.  There should be a toggle that highlights any tile that has a light source.
