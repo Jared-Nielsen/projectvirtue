@@ -30,6 +30,12 @@ export interface CameraOptions {
   /** Initial zoom — defaults to 1. Scale mode pre-sets a comfortable zoom
    *  for the active art pack. */
   readonly initialZoom?: number;
+  /** Skip the keyboard pan listeners (Arrow / WASD / F-follow). The
+   *  editor disables these so canvas movement is mouse-only. */
+  readonly disableKeyboardPan?: boolean;
+  /** Skip the automatic edge-pan inside pointermove. The editor handles
+   *  edge-pan locally so it only fires while a paint drag is active. */
+  readonly disableEdgePan?: boolean;
 }
 
 const KEY_PAN_SPEED = 480; // px/sec at zoom 1
@@ -169,18 +175,27 @@ export class Camera {
     };
   }
 
+  /** External nudge to the camera target (e.g. from a host that wants its
+   *  own edge-pan logic). Clamped on the next update tick. */
+  panTargetBy(dx: number, dy: number): void {
+    this.targetX += dx / this.targetZoom;
+    this.targetY += dy / this.targetZoom;
+  }
+
   private attachInput(): void {
-    const onKeyDown = (ev: KeyboardEvent): void => {
-      this.keysHeld.add(ev.code);
-      if (ev.code === 'KeyF') this.toggleFollow();
-    };
-    const onKeyUp = (ev: KeyboardEvent): void => {
-      this.keysHeld.delete(ev.code);
-    };
-    window.addEventListener('keydown', onKeyDown);
-    window.addEventListener('keyup', onKeyUp);
-    this.cleanupFns.push(() => window.removeEventListener('keydown', onKeyDown));
-    this.cleanupFns.push(() => window.removeEventListener('keyup', onKeyUp));
+    if (!this.opts.disableKeyboardPan) {
+      const onKeyDown = (ev: KeyboardEvent): void => {
+        this.keysHeld.add(ev.code);
+        if (ev.code === 'KeyF') this.toggleFollow();
+      };
+      const onKeyUp = (ev: KeyboardEvent): void => {
+        this.keysHeld.delete(ev.code);
+      };
+      window.addEventListener('keydown', onKeyDown);
+      window.addEventListener('keyup', onKeyUp);
+      this.cleanupFns.push(() => window.removeEventListener('keydown', onKeyDown));
+      this.cleanupFns.push(() => window.removeEventListener('keyup', onKeyUp));
+    }
 
     const canvas = this.opts.app.canvas;
     const onWheel = (ev: WheelEvent): void => {
@@ -201,6 +216,7 @@ export class Camera {
         this.followEnabled = false;
       }
     };
+    const disableEdgePan = this.opts.disableEdgePan === true;
     const onPointerMove = (ev: FederatedPointerEvent): void => {
       if (this.dragging) {
         const dx = ev.global.x - this.lastPointerX;
@@ -209,6 +225,11 @@ export class Camera {
         this.lastPointerY = ev.global.y;
         this.targetX -= dx / this.targetZoom;
         this.targetY -= dy / this.targetZoom;
+      }
+      if (disableEdgePan) {
+        this.edgePanX = 0;
+        this.edgePanY = 0;
+        return;
       }
       // Edge-pan based on pointer screen position.
       const view = this.viewSize();
