@@ -61,14 +61,23 @@ const TILE_OUTLINE_ALPHA = 0.25;
 const SPRITE_ANCHOR_X = 0.5;
 const SPRITE_ANCHOR_Y = 0.875;
 
-// Painted sprites are nudged by half a tile WIDTH east + half a tile WIDTH
-// south of the projected grid origin. Without this shift the sprite sits at
-// the iso grid intersection (where four cells meet), which reads as 50% NW
-// of the cell the user clicked. The grid-line projection still draws lines
-// through tile centers (a separate refactor), so this offset is a visual
-// patch tuned to land painted tiles inside the cell the click maps to.
-const PAINT_OFFSET_X = (m: IsoMetrics): number => m.tileW / 2;
+// Painted sprites are nudged south by half a tile width so they land
+// inside the visual cell rather than straddling the grid intersection.
+// East shift is intentionally zero — an earlier +tileW/2 east offset
+// pushed painted sprites one full iso-east step away from the click,
+// which reads as "one cell east of where I clicked." The grid lines
+// still pass through tile centers (a separate refactor will move them
+// to true cell boundaries); these offsets are a visual patch tuned
+// against the current convention.
+const PAINT_OFFSET_X = (_m: IsoMetrics): number => 0;
 const PAINT_OFFSET_Y = (m: IsoMetrics): number => m.tileW / 2;
+
+// Drag-paint edge-pan: while the user is left-button-drag-painting and
+// their pointer reaches a window edge, the canvas scrolls to follow.
+// The instant they release the mouse the scroll stops — no inertia, no
+// keyboard pan, no auto-edge-pan when not actively painting.
+const DRAG_EDGE_PAN_SPEED = 480; // px/sec at zoom 1
+const DRAG_EDGE_PAN_THRESHOLD = 32; // px from canvas edge
 
 /** Stable colour-from-id hash so the editor's tinted-diamond preview keeps
  *  the same colour for the same tile across paint sessions. Used as a
@@ -283,6 +292,9 @@ export const EditorCanvas: Component<EditorCanvasProps> = (props) => {
       };
     };
 
+    // Editor camera: keyboard pan + auto-edge-pan are OFF. Movement is
+    // right/middle-click drag only (Camera's built-in handler), plus the
+    // local drag-paint edge-pan below.
     const camera = new Camera({
       stage: app.stage,
       app,
@@ -291,6 +303,8 @@ export const EditorCanvas: Component<EditorCanvasProps> = (props) => {
       minZoom: EDITOR_ZOOM.min,
       maxZoom: EDITOR_ZOOM.max,
       initialZoom: EDITOR_ZOOM.initial,
+      disableKeyboardPan: true,
+      disableEdgePan: true,
     });
     camera.centerOn(0, 0);
 
@@ -315,14 +329,28 @@ export const EditorCanvas: Component<EditorCanvasProps> = (props) => {
     // Drag-paint: while the left button is held, repeat paint on each
     // pointermove that lands on a new cell. We track the last painted
     // cell so we don't burn cycles on duplicate ops.
+    //
+    // Drag-paint edge-pan: while a drag is active and the pointer is
+    // near a canvas edge, we nudge the camera target toward that edge
+    // each frame. The instant pointerup fires we zero the velocity so
+    // there's no inertial scroll after the user lets go. The window-level
+    // pointermove handler keeps tracking even when the cursor leaves the
+    // tilesContainer (so the user can drag past the canvas edge).
     let lastCell: { x: number; y: number } | null = null;
     let dragging = false;
+    let edgeVelX = 0;
+    let edgeVelY = 0;
+    let lastClientX = 0;
+    let lastClientY = 0;
+
     function onPointerDown(ev: FederatedPointerEvent): void {
       if (ev.button === 0) dragging = true;
     }
     function onPointerUp(): void {
       dragging = false;
       lastCell = null;
+      edgeVelX = 0;
+      edgeVelY = 0;
     }
     function onPointerMove(ev: FederatedPointerEvent): void {
       if (!dragging) return;
@@ -342,11 +370,44 @@ export const EditorCanvas: Component<EditorCanvasProps> = (props) => {
     tilesContainer.on('pointerup', onPointerUp);
     tilesContainer.on('pointerupoutside', onPointerUp);
 
+    // Window-level pointermove + pointerup so drag-paint edge-pan keeps
+    // working even when the cursor is past the canvas edge (Pixi's stage
+    // events stop firing once the pointer leaves the canvas DOM rect).
+    function onWindowPointerMove(ev: PointerEvent): void {
+      lastClientX = ev.clientX;
+      lastClientY = ev.clientY;
+    }
+    function onWindowPointerUp(): void {
+      onPointerUp();
+    }
+    window.addEventListener('pointermove', onWindowPointerMove);
+    window.addEventListener('pointerup', onWindowPointerUp);
+
     rebuildTiles(props.state(), props.metrics);
     rebuildGridLines(props.state(), props.metrics);
 
     app.ticker.add((ticker) => {
-      camera.update(ticker.deltaMS / 1000);
+      const dt = ticker.deltaMS / 1000;
+      camera.update(dt);
+
+      if (dragging && host) {
+        const rect = host.getBoundingClientRect();
+        const x = lastClientX - rect.left;
+        const y = lastClientY - rect.top;
+        edgeVelX =
+          x < DRAG_EDGE_PAN_THRESHOLD ? -1 : x > rect.width - DRAG_EDGE_PAN_THRESHOLD ? 1 : 0;
+        edgeVelY =
+          y < DRAG_EDGE_PAN_THRESHOLD ? -1 : y > rect.height - DRAG_EDGE_PAN_THRESHOLD ? 1 : 0;
+        if (edgeVelX !== 0 || edgeVelY !== 0) {
+          camera.panTargetBy(
+            edgeVelX * DRAG_EDGE_PAN_SPEED * dt,
+            edgeVelY * DRAG_EDGE_PAN_SPEED * dt,
+          );
+        }
+      } else {
+        edgeVelX = 0;
+        edgeVelY = 0;
+      }
     });
 
     return {
@@ -358,6 +419,8 @@ export const EditorCanvas: Component<EditorCanvasProps> = (props) => {
         tilesContainer?.off('pointermove', onPointerMove);
         tilesContainer?.off('pointerup', onPointerUp);
         tilesContainer?.off('pointerupoutside', onPointerUp);
+        window.removeEventListener('pointermove', onWindowPointerMove);
+        window.removeEventListener('pointerup', onWindowPointerUp);
         app.ticker.stop();
         app.destroy(true, { children: true, texture: false });
       },
