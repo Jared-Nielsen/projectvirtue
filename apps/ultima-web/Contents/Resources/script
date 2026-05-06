@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#run game
+realpath() {
+    [[ $1 = /* ]] && echo "$1" || echo "$PWD/${1#./}"
+}
+DYLD_LIBRARY_PATH="`realpath`dosbox/"
+echo $DYLD_LIBRARY_PATH
+./dosbox/dosbox -conf game/dosboxULTIMA7.conf -conf game/dosboxULTIMA7_single.conf

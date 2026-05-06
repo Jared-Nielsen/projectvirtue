@@ -1,0 +1,19 @@
+{
+  "name": "britannia-reborn",
+  "version": "0.1.0",
+  "description": "Browser-based Ultima 7-inspired RPG",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tonejs/midi": "^2.0.28",
+    "phaser": "^3.87.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5",
+    "vite": "^5.2.11"
+  }
+}
